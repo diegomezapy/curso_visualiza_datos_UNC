@@ -19,11 +19,13 @@
       <button id="menu" aria-label="Abrir menú" aria-expanded="false">☰</button>
       <div id="crumb" class="crumb"></div>
       <a class="user" href="#/perfil" id="user">Ingresar</a>
+      <button id="logout" class="user" hidden>Salir</button>
     </header>
     <main id="main" tabindex="-1"></main>
   </div>
 </div>
 <script src="data.js"></script>
-<script src="aula.js"></script>
+<script type="module" src="aula.js"></script>
+<div id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

@@ -26,7 +26,7 @@ Universidad Nacional de Concepción · Facultad de Ciencias Exactas y Tecnológi
 
 🌐 **Sitio web:** https://diegomezapy.github.io/curso_visualiza_datos_UNC/
 
-Documentos: [aula virtual (guía)](docs/aula_virtual.md) · [programa](docs/programa.md) · [cronograma](docs/cronograma.md) · [evaluación](docs/evaluacion.md) · [rúbricas](docs/rubricas.md) · [proyecto integrador](docs/proyecto_integrador.md) · [banco de quizzes](docs/banco_quizzes.md) · [bibliografía y recursos](docs/bibliografia.md)
+Documentos: [aula virtual (guía)](docs/aula_virtual.md) · [activar cuentas (Firebase)](docs/configurar_firebase.md) · [programa](docs/programa.md) · [cronograma](docs/cronograma.md) · [evaluación](docs/evaluacion.md) · [rúbricas](docs/rubricas.md) · [proyecto integrador](docs/proyecto_integrador.md) · [banco de quizzes](docs/banco_quizzes.md) · [bibliografía y recursos](docs/bibliografia.md)
 
 ## Evaluación (sugerida en el programa)
 **Teoría 30 %** (quizzes y lecturas guiadas) · **Práctica 50 %** (laboratorios y mini-proyectos) · **Integrador 20 %** (informe técnico + presentación). Detalle en [docs/evaluacion.md](docs/evaluacion.md).

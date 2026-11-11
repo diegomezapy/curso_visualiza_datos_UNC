@@ -9,20 +9,22 @@
 - **Recursos:** carpetas de Drive, datasets, documentos, glosario (25 términos).
 - **Panel docente:** importa reportes de estudiantes, registra notas, calcula la final y exporta CSV.
 
+## Cuentas y acceso
+- **Primer acceso:** el estudiante elige *Crear cuenta*, completa sus datos (nombres y apellidos, cédula, fecha de nacimiento, sexo, nacionalidad, departamento y ciudad, dirección, teléfono, institución, profesión, cohorte) y elige su propia contraseña; recibe un correo de verificación. También puede **ingresar con Google** y completar los datos la primera vez.
+- **Recuperación:** “¿Olvidaste tu contraseña?” → enlace por correo. **Cambio de contraseña:** en *Mi perfil*.
+- **Cédula única:** no se permiten dos cuentas con la misma cédula. La cédula no se puede editar (solo el docente puede corregirla).
+- Requiere conectar Firebase: ver [configurar_firebase.md](configurar_firebase.md). Sin eso, el aula corre en **modo demostración** (solo navegador).
+
 ## Flujo del estudiante
-1. Completa su **perfil** (nombre, C.I.). 2. Estudia el módulo, abre el lab en Colab, hace el quiz. 3. Entrega sus trabajos en `ENTREGAS_ESTUDIANTES` (Drive) con el nombre sugerido. 4. Descarga su **reporte (.json)** en *Mis notas* y lo sube a la carpeta de entregas. 5. Importa la **hoja de calificaciones** que le devuelve el docente.
+1. Crea su cuenta y entra. 2. Estudia el módulo, abre el lab en Colab, hace el quiz. 3. Entrega sus trabajos en `ENTREGAS_ESTUDIANTES` (Drive) o por formulario, con el nombre sugerido. 4. Consulta sus notas en *Mis notas* (se actualizan cuando el docente las carga).
 
 ## Flujo del docente
-1. Descarga los `reporte_*.json` de Drive. 2. En **Panel docente** los arrastra (la huella ✔ indica que no fueron editados). 3. Carga las notas de cada actividad calificada con las rúbricas. 4. **Exporta CSV** (planilla oficial) y, por estudiante, la **Hoja** (`calificaciones_*.json`) para devolverla.
-5. Respaldo: *Exportar copia* del panel (los datos se guardan solo en el navegador del docente).
+1. Crea su cuenta (su correo debe estar en la colección `docentes`). 2. **Panel docente** lista a todos los estudiantes con su avance y quizzes. 3. Carga las notas de cada actividad (se guardan al instante). 4. **Exporta la planilla CSV** con datos personales y notas.
 
 ## Configuración (`aula/config.json`)
-- `formulario_entregas`: URL de un Google Form con campo de subir archivo (recomendado, ver abajo).
-- `fechas`: fecha límite/sesión por módulo (texto libre).
-- IDs de las carpetas de Drive.
-Luego: `python tools/build_aula.py` (se ejecuta solo en el workflow de Pages).
+- `firebase`: credenciales web del proyecto (ver guía). `formulario_entregas`: URL de un Google Form con subida de archivos. `fechas`: fecha de cada módulo. IDs de carpetas de Drive.
+- Luego: `python tools/build_aula.py` (se ejecuta solo en el workflow de Pages).
 
 ## Limitaciones y recomendaciones
-- **Sin servidor:** el progreso vive en el navegador de cada estudiante; se comparte mediante el reporte. No hay inicio de sesión.
-- **Integridad:** los quizzes se resuelven en el navegador y sus respuestas están en el código de la página; la huella detecta ediciones accidentales, no manipulación deliberada. Para evaluación formal, aplicar quizzes en sesión sincrónica o con Google Forms.
-- **Privacidad de Drive:** si la carpeta raíz está compartida con “cualquiera con el enlace puede *editar*”, cualquiera puede borrar o ver todas las entregas. Recomendado: compartir la raíz como **Lector** y usar un **Google Form** (con subida de archivos) para recibir entregas de forma privada. No guardar calificaciones en un Drive compartido.
+- **Integridad de los quizzes:** se corrigen en el navegador y sus respuestas están en el código de la página. Para evaluación formal, aplicarlos en sesión sincrónica o con Google Forms.
+- **Privacidad de Drive:** si la carpeta raíz permite “cualquiera con el enlace puede *editar*”, cualquiera puede borrar o ver entregas. Compartir como **Lector** y recibir entregas por **Google Form**. No guardar calificaciones ni datos personales en un Drive compartido.

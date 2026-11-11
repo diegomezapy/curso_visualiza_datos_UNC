@@ -1,0 +1,8 @@
+{
+  "name": "cvd-firebase-vendor",
+  "private": true,
+  "description": "Empaqueta el SDK modular de Firebase (auth + firestore) en aula/vendor/firebase.js",
+  "scripts": { "build": "esbuild entry.js --bundle --format=esm --minify --target=es2020 --outfile=../../aula/vendor/firebase.js" },
+  "dependencies": { "firebase": "10.12.2" },
+  "devDependencies": { "esbuild": "0.21.5" }
+}

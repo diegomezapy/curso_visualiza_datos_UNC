@@ -1,0 +1,56 @@
+rules_version = '2';
+// Reglas de seguridad del aula virtual (Visualización de Datos · FACET-UNC)
+// - Cada estudiante lee/escribe solo SU perfil y SU progreso.
+// - Las calificaciones oficiales solo las escribe un docente (correo verificado y registrado en /docentes/{correo}).
+// - Un docente puede leer todos los perfiles, progresos y calificaciones.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signed() { return request.auth != null; }
+    function own(uid) { return signed() && request.auth.uid == uid; }
+    function docente() {
+      return signed() && request.auth.token.email_verified == true
+        && exists(/databases/$(database)/documents/docentes/$(request.auth.token.email));
+    }
+    function perfilValido(d) {
+      return d.keys().hasAll(['nombres', 'apellidos', 'cedula', 'fechaNac', 'sexo', 'departamento', 'ciudad', 'email', 'consentimiento'])
+        && d.nombres is string && d.nombres.size() > 0 && d.nombres.size() <= 80
+        && d.apellidos is string && d.apellidos.size() > 0 && d.apellidos.size() <= 80
+        && d.cedula is string && d.cedula.matches('^[0-9]{4,10}$')
+        && d.email == request.auth.token.email
+        && d.consentimiento is map;
+    }
+
+    match /usuarios/{uid} {
+      allow read: if own(uid) || docente();
+      allow create: if own(uid) && perfilValido(request.resource.data);
+      // la cédula no se puede cambiar (solo el docente puede corregirla)
+      allow update: if (own(uid) && perfilValido(request.resource.data) && request.resource.data.cedula == resource.data.cedula) || docente();
+      allow delete: if false;
+    }
+
+    // Una cédula = una cuenta. Se crea en el mismo lote que el perfil.
+    match /cedulas/{cedula} {
+      allow create: if signed() && request.resource.data.keys().hasOnly(['uid'])
+        && request.resource.data.uid == request.auth.uid
+        && getAfter(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.cedula == cedula;
+      allow read, update, delete: if false;
+    }
+
+    match /progreso/{uid} {
+      allow read: if own(uid) || docente();
+      allow write: if own(uid);
+    }
+
+    match /calificaciones/{uid} {
+      allow read: if own(uid) || docente();
+      allow write: if docente();
+    }
+
+    // Lista de docentes: se administra solo desde la consola de Firebase.
+    match /docentes/{email} {
+      allow get: if signed() && request.auth.token.email == email;
+      allow list, write: if false;
+    }
+  }
+}

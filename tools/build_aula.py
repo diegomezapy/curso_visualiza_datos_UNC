@@ -39,6 +39,7 @@ data = {
                  ("anscombe.csv", "Cuarteto de Anscombe")],
 }
 (SITE / "data.js").write_text("window.CURSO=" + json.dumps(data, ensure_ascii=False) + ";", encoding="utf-8")
-for f in ("index.html", "aula.css", "aula.js"):
+for f in ("index.html", "aula.css", "aula.js", "backend.js"):
     shutil.copy(RAIZ / "aula" / f, SITE / f)
+shutil.copytree(RAIZ / "aula" / "vendor", SITE / "vendor", dirs_exist_ok=True)
 print("aula generada en", SITE)
