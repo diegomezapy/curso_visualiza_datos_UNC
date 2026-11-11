@@ -5,5 +5,4 @@ venv/
 salidas/*
 !salidas/.gitkeep
 .DS_Store
-sesiones/**/*.ipynb
 site/

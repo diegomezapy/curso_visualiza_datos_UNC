@@ -22,9 +22,11 @@ Universidad Nacional de Concepción · Facultad de Ciencias Exactas y Tecnológi
 | 7 | [Alta dimensionalidad, series y geodatos](sesiones/07_estructuras_complejas/) | U3 | `lab07_complejas.py` |
 | 8 | [Redes (opcional) + presentación del integrador](sesiones/08_redes_e_integrador/) | U4 | `lab08_redes.py` |
 
+🎓 **Aula virtual:** https://diegomezapy.github.io/curso_visualiza_datos_UNC/aula/
+
 🌐 **Sitio web:** https://diegomezapy.github.io/curso_visualiza_datos_UNC/
 
-Documentos: [programa](docs/programa.md) · [cronograma](docs/cronograma.md) · [evaluación](docs/evaluacion.md) · [rúbricas](docs/rubricas.md) · [proyecto integrador](docs/proyecto_integrador.md) · [banco de quizzes](docs/banco_quizzes.md) · [bibliografía y recursos](docs/bibliografia.md)
+Documentos: [aula virtual (guía)](docs/aula_virtual.md) · [programa](docs/programa.md) · [cronograma](docs/cronograma.md) · [evaluación](docs/evaluacion.md) · [rúbricas](docs/rubricas.md) · [proyecto integrador](docs/proyecto_integrador.md) · [banco de quizzes](docs/banco_quizzes.md) · [bibliografía y recursos](docs/bibliografia.md)
 
 ## Evaluación (sugerida en el programa)
 **Teoría 30 %** (quizzes y lecturas guiadas) · **Práctica 50 %** (laboratorios y mini-proyectos) · **Integrador 20 %** (informe técnico + presentación). Detalle en [docs/evaluacion.md](docs/evaluacion.md).

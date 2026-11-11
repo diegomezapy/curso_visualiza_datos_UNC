@@ -1,0 +1,28 @@
+{
+  "curso": "Visualización de Datos",
+  "programa": "Maestría en Ingeniería y Ciencia de Datos · FACET – UNC",
+  "semestre": "2º 2026",
+  "repo": "https://github.com/diegomezapy/curso_visualiza_datos_UNC",
+  "raw": "https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main",
+  "colab": "https://colab.research.google.com/github/diegomezapy/curso_visualiza_datos_UNC/blob/main",
+  "drive": {
+    "raiz": "1-I5wi33JElH-_dA77VXa_kPXwAQlpSqC",
+    "programa": "1GvB9bDW7nOylwGNg-2DBdqOiEX0wtW5G",
+    "datos": "1LQm9k4qAvBGmZX2K8pMubq55peCafcxj",
+    "entregas": "1s1C0GtNhU7z07qyFpQlULGM2c1mECXjJ",
+    "integrador": "1wlZ0fLXFRbnohcHBPH-AFE7xh5l9gdJa",
+    "sesiones": {
+      "1": "1CnzRhzSn5HNNaNPiM9cICEuM3qNAYV5-",
+      "2": "1ZohmuwFlcsyKvG9uUU6-f8VynoJbQTlY",
+      "3": "1gI5CbPlPEiD0451Xtu3EO2-NMU_mab0_",
+      "4": "1OEMSysNSB5CC-hXuZQaDx2oUTQQyeVt9",
+      "5": "1XYb30dNjn8-4udDi_wsMyTm8VyoqUibK",
+      "6": "15Ufe9eMPqh8tC269neeqVYJCeIHVS9cC",
+      "7": "16DhJ5tN1mf6trMuj2hUmW6Kcy6whlE2W",
+      "8": "1c2sBRrGyFJASTCdbos0yfeTfbx02R7Ir"
+    }
+  },
+  "formulario_entregas": "",
+  "contacto_docente": "",
+  "fechas": {"1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": ""}
+}
