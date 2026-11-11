@@ -34,7 +34,12 @@
     "7": "",
     "8": ""
   },
-  "firebase": {},
+  "firebase": {
+    "apiKey": "AIzaSyB2D8LobDZInpVCBIzoEwy5LuCzBB5QWNY",
+    "authDomain": "cursovisualizadatosunc.firebaseapp.com",
+    "projectId": "cursovisualizadatosunc",
+    "appId": "1:735681391911:web:7ba5725405340b37dd8d02"
+  },
   "demo": {
     "docentes": [
       "docente@demo.local"
