@@ -1,0 +1,14 @@
+pandas>=2.0
+numpy>=1.26
+matplotlib>=3.8
+seaborn>=0.13
+plotly>=5.20
+networkx>=3.2
+scikit-learn>=1.4
+scipy>=1.11
+jinja2>=3.1
+nbformat>=5.9
+nbconvert>=7.0
+ipykernel>=6.0
+kaleido>=0.2.1
+dash>=2.16        # opcional (sesión 5)
