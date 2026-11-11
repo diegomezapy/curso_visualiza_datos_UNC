@@ -12,3 +12,4 @@ nbconvert>=7.0
 ipykernel>=6.0
 kaleido>=0.2.1
 dash>=2.16        # opcional (sesión 5)
+markdown>=3.5
