@@ -1,6 +1,6 @@
 const {chromium}=require('playwright');
 const U='http://localhost:8765/aula/index.html';
-const toast=async p=>{await p.waitForSelector('#toast.show',{timeout:5000});return (await p.locator('#toast').innerText())};
+const toast=async p=>{await p.waitForSelector('#toast.show',{state:'attached',timeout:5000});return (await p.locator('#toast').innerText())};
 async function llenar(p,d){
   for(const [k,v] of Object.entries(d)){const el=p.locator('#f_'+k);const tag=await el.evaluate(e=>e.tagName);
     if(tag==='SELECT')await el.selectOption(v);else await el.fill(v);}

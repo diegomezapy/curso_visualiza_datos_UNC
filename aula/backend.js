@@ -61,7 +61,12 @@ async function crearFirebase(cfg) {
     cargarProgreso: uid => get("progreso", uid),
     guardarProgreso: (uid, p) => fb.setDoc(fb.doc(db, "progreso", uid), { ...p, actualizado: fb.serverTimestamp() }),
     async cargarCalificaciones(uid) { return (await get("calificaciones", uid))?.oficial || {}; },
-    async esDocente(u) { if (!u?.emailVerified) return false; try { return !!(await get("docentes", u.email)); } catch { return false; } },
+    diag: {},
+    async esDocente(u) {
+      if (!u?.emailVerified) { this.diag.motivo = "correo_no_verificado"; return false; }
+      try { const ok = !!(await get("docentes", u.email)); this.diag.motivo = ok ? "ok" : "no_figura_en_docentes"; return ok; }
+      catch (e) { this.diag.motivo = "error:" + (e.code || e.message); return false; }
+    },
     async listarAlumnos() {
       const [us, pr, ca] = await Promise.all(["usuarios", "progreso", "calificaciones"].map(c => fb.getDocs(fb.collection(db, c))));
       const m = {}; us.forEach(d => m[d.id] = { uid: d.id, perfil: d.data(), progreso: {}, oficial: {} });
@@ -120,7 +125,8 @@ function crearDemo(cfg) {
     async cargarProgreso(u) { return db0().progreso[u] || null; },
     async guardarProgreso(u, p) { const d = db0(); d.progreso[u] = p; wr(d); },
     async cargarCalificaciones(u) { return db0().calificaciones[u] || {}; },
-    async esDocente(u) { return !!u && (cfg.demo?.docentes || []).includes(u.email); },
+    diag: {},
+    async esDocente(u) { const ok = !!u && (cfg.demo?.docentes || []).includes(u.email); this.diag.motivo = ok ? "ok" : "no_figura_en_docentes"; return ok; },
     async listarAlumnos() { const d = db0(); return Object.entries(d.usuarios).map(([u, perfil]) => ({ uid: u, perfil, progreso: d.progreso[u] || {}, oficial: d.calificaciones[u] || {} })); },
     async guardarCalificaciones(u, o) { const d = db0(); d.calificaciones[u] = o; wr(d); },
   };

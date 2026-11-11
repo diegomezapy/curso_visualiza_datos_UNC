@@ -300,15 +300,25 @@ function bindVerificar() {
   $("#vout").addEventListener("click", salir);
 }
 
+const MOTIVOS = { ok: "Sos docente: se habilitó el Panel docente.", correo_no_verificado: "Tu correo no figura como verificado, y el rol docente lo exige.", no_figura_en_docentes: "No existe un documento en la colección «docentes» cuyo ID sea exactamente tu correo (en minúsculas, sin espacios).", };
+const motivoTxt = m => MOTIVOS[m] || (m ? "No se pudo comprobar el rol (" + esc(m) + "). Revisá que las reglas de Firestore estén publicadas." : "");
+function estadoCuenta() {
+  return `<h2>Estado de la cuenta</h2><div class="card"><table><tbody>
+   <tr><th>Correo</th><td><code>${esc(USER.email)}</code></td></tr>
+   <tr><th>Correo verificado</th><td>${USER.emailVerified ? "Sí" : "No"}</td></tr>
+   <tr><th>Rol</th><td><b>${ES_DOC ? "Docente" : "Estudiante"}</b></td></tr></tbody></table>
+   ${ES_DOC ? "" : `<p class="muted" style="margin-bottom:0">¿Sos docente? ${motivoTxt(B.diag?.motivo)} Si lo acabás de crear, cerrá sesión y volvé a ingresar.</p>`}</div>`;
+}
 function vPerfil() {
   const p = PERFIL;
-  if (p.virtual) return `<h1>Mi cuenta</h1><div class="card">Sesión docente: <b>${esc(USER.email)}</b>.<div class="row" style="margin-top:.8rem"><button class="btn sec" id="out3">Cerrar sesión</button></div></div>`;
+  if (p.virtual) return `<h1>Mi cuenta</h1><div class="card">Sesión docente: <b>${esc(USER.email)}</b>.<div class="row" style="margin-top:.8rem"><button class="btn sec" id="out3">Cerrar sesión</button></div></div>${estadoCuenta()}`;
   return `<h1>Mi perfil</h1><p class="sub">Tu cuenta: <b>${esc(USER.email)}</b> · ingreso con ${USER.proveedor === "google.com" ? "Google" : "correo y contraseña"}.</p>
   <form id="pf" class="card">${camposPerfil(p, true)}<p class="muted">La cédula no se puede modificar; si hay un error, pedí la corrección al docente.</p>
    <div class="row"><button class="btn" type="submit">Guardar cambios</button></div></form>
   ${USER.proveedor === "password" ? `<h2>Cambiar contraseña</h2><form id="cp" class="card"><div class="form-grid"><div><label for="p0">Contraseña actual</label><input type="password" id="p0" required autocomplete="current-password"></div><div></div>
    <div><label for="p1">Nueva contraseña</label><input type="password" id="p1" required minlength="8" autocomplete="new-password">${medidor}</div><div><label for="p2">Repetir nueva contraseña</label><input type="password" id="p2" required autocomplete="new-password"></div></div>
    <div class="row" style="margin-top:1rem"><button class="btn" type="submit">Cambiar contraseña</button></div></form>` : ""}
+  ${estadoCuenta()}
   <h2>Sesión y datos</h2><div class="card row"><button class="btn sec" id="out3">Cerrar sesión</button><button class="btn sec" id="mydata">⬇ Descargar mis datos (JSON)</button></div>`;
 }
 function bindPerfil() {
