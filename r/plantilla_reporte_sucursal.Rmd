@@ -1,0 +1,44 @@
+---
+title: "Informe comercial · `r params$sucursal`"
+subtitle: "Año `r params$anio` · Fuente: ventas_retail (datos sintéticos del curso)"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    theme: flatly
+    df_print: paged
+params:
+  sucursal: "Asunción"
+  anio: 2025
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 3.6, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+d  <- leer("ventas_retail.csv") %>% filter(sucursal == params$sucursal) %>% mutate(anio = year(fecha), mes = month(fecha))
+a  <- d %>% filter(anio == params$anio); p <- d %>% filter(anio == params$anio - 1)
+vt <- sum(a$ventas_gs_miles) / 1e3; vp <- sum(p$ventas_gs_miles) / 1e3
+mg <- (1 - sum(a$costo_gs_miles) / sum(a$ventas_gs_miles)) * 100; mgp <- (1 - sum(p$costo_gs_miles) / sum(p$ventas_gs_miles)) * 100
+crec <- (vt / vp - 1) * 100; dif_mg <- mg - mgp
+```
+
+## `r if (crec >= 0) "Las ventas crecieron" else "Las ventas cayeron"` `r fmt_num(abs(crec))` % en `r params$anio`
+
+- **Ventas:** `r fmt_num(vt, 0)` millones de Gs. (`r params$anio - 1`: `r fmt_num(vp, 0)`).
+- **Margen bruto:** `r fmt_num(mg)` % (`r ifelse(dif_mg >= 0, "+", "")``r fmt_num(dif_mg, 2)` pp vs `r params$anio - 1`).
+`r if (dif_mg < -2) "- ⚠️ **Alerta:** el margen cayó más de 2 puntos porcentuales; revisar costos y descuentos."`
+
+```{r grafico}
+bind_rows(mutate(p, tipo = as.character(params$anio - 1)), mutate(a, tipo = as.character(params$anio))) %>%
+  group_by(tipo, mes) %>% summarise(v = sum(ventas_gs_miles) / 1e3, .groups = "drop") %>%
+  ggplot(aes(mes, v, color = tipo)) + geom_line(linewidth = 1.2) + scale_x_continuous(breaks = 1:12) +
+  scale_color_manual(values = c(GRIS, ENFASIS)) + labs(x = "Mes", y = "Millones de Gs.", color = NULL, title = "Evolución mensual de ventas")
+```
+
+### Detalle por categoría
+
+```{r tabla}
+a %>% group_by(categoria) %>% summarise(ventas = sum(ventas_gs_miles) / 1e3, margen_pct = (1 - sum(costo_gs_miles) / sum(ventas_gs_miles)) * 100) %>%
+  arrange(desc(ventas)) %>% mutate(across(where(is.numeric), ~ round(.x, 1))) %>% knitr::kable()
+```
+
+*Nota: valores en millones de Gs. Margen = (ventas − costo) / ventas.*

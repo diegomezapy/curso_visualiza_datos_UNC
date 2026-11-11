@@ -6,3 +6,6 @@ salidas/*
 !salidas/.gitkeep
 .DS_Store
 site/
+firebase/*.log
+*.log
+salidas_informes/

@@ -8,11 +8,11 @@ const D = window.CURSO, C = D.config;
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
-const empty = () => ({ perfil: {}, done: {}, quiz: {}, auto: {}, oficial: {} });
+const empty = () => ({ perfil: {}, done: {}, quiz: {}, auto: {}, oficial: {}, enlaces: {} });
 let S = empty(), USER = null, PERFIL = null, ES_DOC = false, ocupado = false, B;
 let tmr;
 const persist = () => { if (!USER || !PERFIL || PERFIL.virtual) return; clearTimeout(tmr); tmr = setTimeout(flush, 500); };
-const flush = () => { clearTimeout(tmr); if (USER && PERFIL && !PERFIL.virtual) B.guardarProgreso(USER.uid, { done: S.done, quiz: S.quiz, auto: S.auto }).catch(e => aviso(msgError(e), "bad")); };
+const flush = () => { clearTimeout(tmr); if (USER && PERFIL && !PERFIL.virtual) B.guardarProgreso(USER.uid, { done: S.done, quiz: S.quiz, auto: S.auto, enlaces: S.enlaces }).catch(e => aviso(msgError(e), "bad")); };
 addEventListener("pagehide", flush);
 function aviso(msg, tipo = "ok") { const t = $("#toast"); t.textContent = msg; t.className = "show " + tipo; clearTimeout(aviso.t); aviso.t = setTimeout(() => t.className = "", 4500); }
 const drive = id => `https://drive.google.com/drive/folders/${id}`;
@@ -92,27 +92,52 @@ function vInicio() {
    <p class="muted" style="margin-bottom:0">Tu progreso se guarda en tu cuenta: podés continuar desde cualquier dispositivo.</p></div>`;
 }
 
+const ytUrl = v => v.tipo === "playlist" ? `https://www.youtube.com/playlist?list=${v.id}` : `https://www.youtube.com/watch?v=${v.id}`;
+const LEC_ICO = { pdf: "📄", libro: "📘", "artículo": "🧾", web: "🔗", datos: "🗂" };
+const RE_ENL = { rpubs: /^https:\/\/(www\.)?rpubs\.com\/.+/i, colab: /^https:\/\/(colab\.research\.google\.com|drive\.google\.com|colab\.google)\/.+/i };
+const ENL_TXT = { rpubs: ["📊 Enlace de tu publicación en RPubs", "https://rpubs.com/tu_usuario/titulo"], colab: ["🐍 Enlace de tu Colab (compartido: cualquiera con el enlace, Lector)", "https://colab.research.google.com/drive/..."] };
+function videosHtml(s) {
+  if (!s.videos?.length) return "";
+  const vistos = s.videos.filter(v => S.done["vid_" + v.id]).length;
+  return `<h2>🎬 Videos <span class="muted" style="font-weight:400;font-size:.9rem">· vistos ${vistos}/${s.videos.length}</span></h2>
+  <p class="muted" style="margin-top:0">Selección en español. Marcá los que ya viste. Si alguno no se reproduce acá, usá “Abrir en YouTube”.</p>
+  <div class="vgrid">${s.videos.map(v => `<div class="vcard"><div class="vbox" id="vb_${v.id}"><button class="vthumb ${v.tipo === "playlist" ? "pl" : ""}" data-play="${v.id}" data-tipo="${v.tipo}" data-t="${esc(v.t)}" aria-label="Reproducir: ${esc(v.t)}" ${v.tipo === "playlist" ? "" : `style="background-image:url(https://i.ytimg.com/vi/${v.id}/hqdefault.jpg)"`}><span>${v.tipo === "playlist" ? "▶ Lista de reproducción" : "▶"}</span></button></div>
+   <div class="vinfo"><b>${esc(v.t)}</b>${v.nota ? `<div class="muted">${esc(v.nota)}</div>` : ""}
+   <div class="row" style="justify-content:space-between;margin-top:.3rem"><label class="chk2"><input type="checkbox" data-vis="${v.id}" ${S.done["vid_" + v.id] ? "checked" : ""}> Visto</label><a target="_blank" rel="noopener" href="${ytUrl(v)}">Abrir en YouTube ↗</a></div></div></div>`).join("")}</div>`;
+}
+function lecturasHtml(s) {
+  if (!s.lecturas?.length) return "";
+  return `<h2>📚 Lecturas y documentos</h2><div class="card"><ul class="res">${s.lecturas.map(l => `<li><span class="ico">${LEC_ICO[l.tipo] || "🔗"}</span><span><a target="_blank" rel="noopener" href="${esc(l.u)}">${esc(l.t)}</a> <span class="tag">${esc(l.idioma)}</span>${l.nota ? ` <span class="muted">· ${esc(l.nota)}</span>` : ""}</span></li>`).join("")}</ul></div>`;
+}
+function enlacesHtml(a) {
+  if (!a.ent?.length) return "";
+  const e = S.enlaces[a.id] || {};
+  return `<div style="margin-top:.6rem"><b style="font-size:.9rem">Entrega por enlace</b>${a.ent.map(t => `<label for="enl_${a.id}_${t}" style="font-weight:400">${ENL_TXT[t][0]} ${e[t] ? "✅" : ""}</label><input type="url" id="enl_${a.id}_${t}" data-enl="${a.id}" data-t="${t}" placeholder="${ENL_TXT[t][1]}" value="${esc(e[t] || "")}">`).join("")}
+  <p class="muted" style="margin:.3rem 0 0">Al guardar todos los enlaces requeridos, la actividad se marca como entregada. Recordá: RPubs es público (sin datos personales).</p></div>`;
+}
 function vSesion(n) {
   const s = D.sesiones.find(x => x.n === n); if (!s) return vInicio();
   const p = progSes(s), prev = D.sesiones.find(x => x.n === n - 1), next = D.sesiones.find(x => x.n === n + 1);
-  const ico = { guia: "📖", colab: "🚀", codigo: "💻", drive: "📁", lectura: "📄" };
+  const ico = { guia: "📖", colab: "🐍", codigo: "💻", drive: "📁", pdf: "📄", rmd: "📊", descarga: "⬇️" };
   const q = S.quiz[n];
   const entregaNombre = id => `S${n}_${id}_${`${slug(PERFIL.apellidos)}_${slug(PERFIL.nombres)}`}`;
   return `<span class="tag">${s.unidad} · Sesión ${s.n}</span>${s.n === 8 ? ' <span class="tag warn">Redes opcional</span>' : ""}
   <h1>${esc(s.titulo)}</h1><p class="sub">${esc(s.resumen)}${C.fechas?.[n] ? " · <b>" + esc(C.fechas[n]) + "</b>" : ""}</p>
   ${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} completado</span>
   <h2>🎯 Objetivos</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.objetivos.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>
-  <h2>🧰 Recursos</h2><div class="card"><ul class="res">${s.recursos.map(r => `<li><span class="ico">${ico[r.k] || "🔗"}</span>${r.u ? `<a href="${esc(r.u)}" target="${r.k === "guia" ? "_self" : "_blank"}" rel="noopener">${esc(r.t)}</a>` : esc(r.t)}</li>`).join("")}</ul>
-   <p class="muted" style="margin:.5rem 0 0">Datasets del curso en <a href="#/recursos">Recursos</a>. En Colab: <i>Entorno de ejecución → Ejecutar todas</i>.</p></div>
+  <h2>🧰 Materiales de la sesión</h2><div class="card"><ul class="res">${s.recursos.map(r => `<li><span class="ico">${ico[r.k] || "🔗"}</span>${r.u ? `<a href="${esc(r.u)}" target="${r.k === "guia" ? "_self" : "_blank"}" rel="noopener">${esc(r.t)}</a>` : esc(r.t)}</li>`).join("")}</ul>
+   <p class="muted" style="margin:.5rem 0 0">🐍 <b>Python</b> en Colab (<i>Entorno de ejecución → Ejecutar todas</i>) · 📊 <b>R</b> en RStudio: abrí el .Rmd, presioná <i>Knit</i> y publicá con <i>Publish → RPubs</i>. Datasets en <a href="#/recursos">Recursos</a>; guía en <a href="../materiales/pdf/00_guia_inicio.pdf" target="_blank">Guía de inicio (PDF)</a>.</p></div>
+  ${videosHtml(s)}${lecturasHtml(s)}
   <h2>✅ Actividades y entregas</h2>
   ${s.actividades.map(a => { const r = D.rubricas[a.rubrica]; const ap = autoPct(S.auto, a); return `<div class="card"><div class="act">
     <input type="checkbox" id="chk_${a.id}" data-act="${a.id}" ${S.done[a.id] ? "checked" : ""} aria-label="Marcar como hecha">
     <div style="flex:1"><label for="chk_${a.id}" style="margin:0;font-weight:600">${esc(a.titulo)}</label>
     <div class="row" style="margin-top:.3rem">${a.pts ? `<span class="tag">${a.pts} pts</span>` : '<span class="tag warn">Hito sin nota</span>'}${a.rubrica ? `<span class="tag">Rúbrica ${a.rubrica}</span>` : ""}${(S.oficial[a.id] ?? "") !== "" ? `<span class="tag ok">Nota oficial: ${fmt(+S.oficial[a.id])}/${a.pts}</span>` : ""}</div>
     ${a.entrega ? `<details style="margin-top:.6rem"><summary>Cómo entregar</summary><div style="padding:.4rem 0">
-      <p style="margin:.3rem 0">Nombrá tu archivo: <code>${esc(entregaNombre(a.id))}.ext</code></p>
+      <p style="margin:.3rem 0">Si entregás un archivo, nombralo: <code>${esc(entregaNombre(a.id))}.ext</code></p>
       <div class="row"><a class="btn sec" target="_blank" rel="noopener" href="${drive(C.drive.entregas)}">📁 Abrir carpeta de entregas (Drive)</a>
       ${C.formulario_entregas ? `<a class="btn" target="_blank" rel="noopener" href="${esc(C.formulario_entregas)}">📝 Entregar por formulario</a>` : ""}</div></div></details>` : ""}
+    ${enlacesHtml(a)}
     ${r ? `<details style="margin-top:.4rem"><summary>Autoevaluación con rúbrica (${esc(r.titulo)})</summary><div style="padding:.5rem 0">
       <div class="tw"><table><thead><tr><th>Criterio</th><th>Peso</th><th>Tu nivel</th></tr></thead><tbody>${r.criterios.map((c, i) => `<tr><td>${esc(c.n)}</td><td>${c.w}%</td><td><select data-auto="${a.id}" data-i="${i}" aria-label="${esc(c.n)}"><option value="0">–</option>${[1, 2, 3, 4].map(v => `<option value="${v}" ${S.auto[a.id]?.[i] == v ? "selected" : ""}>${v} · ${LVL[v]}</option>`).join("")}</select></td></tr>`).join("")}</tbody></table></div>
       <p class="muted" id="ap_${a.id}" style="margin:.4rem 0 0">${ap == null ? "Completá los niveles para ver tu autoestimación." : `Autoestimación: <b>${fmt(ap * a.pts)}/${a.pts}</b> pts (${fmt(ap * 100, 0)}%) — referencial; la nota oficial la asigna el docente.`}</p></div></details>` : ""}
@@ -181,6 +206,9 @@ function vRecursos() {
    <li><span class="ico">📤</span><a target="_blank" rel="noopener" href="${drive(C.drive.entregas)}">Entregas de estudiantes</a></li>
    <li><span class="ico">🎓</span><a target="_blank" rel="noopener" href="${drive(C.drive.integrador)}">Proyecto integrador</a></li>
    ${D.sesiones.map(s => `<li><span class="ico">${s.n}</span><a target="_blank" rel="noopener" href="${drive(C.drive.sesiones[s.n])}">Sesión ${s.n}: materiales</a></li>`).join("")}</ul></div>
+  <h2>📄 Fichas y hojas de referencia (PDF)</h2><div class="card"><ul class="res">
+   ${D.materiales.map(([f, t]) => `<li><span class="ico">📄</span><a target="_blank" href="../materiales/pdf/${f}.pdf">${esc(t)}</a></li>`).join("")}
+   ${D.sesiones.map(s => `<li><span class="ico">${s.n}</span><a target="_blank" href="../materiales/pdf/${["ficha_01_percepcion", "ficha_02_eleccion", "ficha_03_color_etica", "ficha_04_kpis_storytelling", "ficha_05_dashboards", "ficha_06_reporting", "ficha_07_complejas", "ficha_08_redes"][s.n - 1]}.pdf">Ficha de estudio · Sesión ${s.n}: ${esc(s.corto)}</a></li>`).join("")}</ul></div>
   <h2>🗃 Datasets (descarga directa)</h2><div class="card tw"><table><tbody>${D.datasets.map(([f, d]) => `<tr><td><a href="${C.raw}/datos/${f}" download>${f}</a></td><td class="muted">${esc(d)}</td></tr>`).join("")}</tbody></table><p class="muted">Sintéticos y reproducibles (<code>datos/generar_datos.py</code>). Para mini-proyectos e integrador usá datos reales (datos.gov.py, INE, BCP, Our World in Data).</p></div>
   <h2>📜 Documentos</h2><div class="card"><ul class="res">
    ${[["programa", "Programa de estudios"], ["cronograma", "Cronograma"], ["evaluacion", "Evaluación"], ["rubricas", "Rúbricas"], ["proyecto_integrador", "Proyecto integrador"], ["bibliografia", "Bibliografía y fuentes de datos"], ["banco_quizzes", "Banco de quizzes (con respuestas)"]].map(([f, t]) => `<li><span class="ico">📄</span><a href="../docs/${f}.html">${t}</a></li>`).join("")}</ul></div>
@@ -188,7 +216,8 @@ function vRecursos() {
 cd curso_visualiza_datos_UNC
 python -m venv .venv &amp;&amp; source .venv/bin/activate
 pip install -r requirements.txt
-python tools/py2nb.py &amp;&amp; jupyter lab</code></pre></div>
+python tools/py2nb.py &amp;&amp; jupyter lab
+# R: abrir r/01_percepcion.Rmd en RStudio y ejecutar antes r/instalar_paquetes.R</code></pre></div>
   <h2>🔤 Glosario</h2><div class="card"><input type="text" id="gq" placeholder="Buscar término…" aria-label="Buscar en el glosario"><dl id="gl">${D.glosario.map(g => `<div data-t="${esc((g.t + " " + g.d).toLowerCase())}"><dt>${esc(g.t)}</dt><dd>${esc(g.d)}</dd></div>`).join("")}</dl></div>`;
 }
 function bindRecursos() { $("#gq")?.addEventListener("input", e => { const q = e.target.value.toLowerCase(); $$("#gl > div").forEach(d => d.hidden = !d.dataset.t.includes(q)); }); }
@@ -330,7 +359,7 @@ function bindPerfil() {
     if (!claveOk(n)) return aviso("La nueva contraseña debe tener mínimo 8 caracteres, con letras y números.", "bad");
     if (n !== $("#p2").value) return aviso("Las contraseñas nuevas no coinciden.", "bad");
     try { await B.cambiarClave($("#p0").value, n); e.target.reset(); aviso("Contraseña actualizada ✔"); } catch (er) { aviso(msgError(er), "bad"); } });
-  $("#mydata")?.addEventListener("click", () => descargar(`mis_datos_${slug(PERFIL.apellidos)}.json`, JSON.stringify({ cuenta: { email: USER.email }, perfil: PERFIL, progreso: { done: S.done, quiz: S.quiz, auto: S.auto }, calificaciones: S.oficial }, null, 1)));
+  $("#mydata")?.addEventListener("click", () => descargar(`mis_datos_${slug(PERFIL.apellidos)}.json`, JSON.stringify({ cuenta: { email: USER.email }, perfil: PERFIL, progreso: { done: S.done, quiz: S.quiz, auto: S.auto, enlaces: S.enlaces }, calificaciones: S.oficial }, null, 1)));
 }
 async function salir() { flush(); await B.salir(); USER = null; PERFIL = null; ES_DOC = false; S = empty(); location.hash = "#/acceso"; render(); }
 
@@ -338,9 +367,14 @@ async function salir() { flush(); await B.salir(); USER = null; PERFIL = null; E
 let ALUMNOS = [];
 const GRADED = ACTS.filter(a => a.pts);
 const timers = {};
+function chipsEnlaces(enl) {
+  const items = Object.entries(enl || {}).flatMap(([id, o]) => Object.entries(o || {}).map(([t, u]) => ({ id, t, u }))).filter(x => /^https:\/\//.test(x.u));
+  if (!items.length) return "";
+  return `<div class="chips">${items.map(x => `<a target="_blank" rel="noopener noreferrer" href="${esc(x.u)}" title="${esc(x.u)}">S${actById(x.id)?.n ?? "?"}${x.id.includes("mp") ? " MP" + x.id.match(/mp(\d)/)[1] : ""} ${x.t === "rpubs" ? "📊" : "🐍"}</a>`).join("")}</div>`;
+}
 function filaDoc(a) {
   const c = calcular(a.progreso.quiz, a.oficial), pg = progTotal({ done: a.progreso.done || {}, quiz: a.progreso.quiz || {} }), p = a.perfil;
-  return `<tr data-u="${esc(a.uid)}" data-q="${esc((nombreCompleto(p) + " " + p.cedula + " " + p.email).toLowerCase())}"><td><b>${esc(nombreCompleto(p))}</b><div class="muted">C.I. ${esc(p.cedula)} · ${esc(p.email)}</div></td>
+  return `<tr data-u="${esc(a.uid)}" data-q="${esc((nombreCompleto(p) + " " + p.cedula + " " + p.email).toLowerCase())}"><td><b>${esc(nombreCompleto(p))}</b><div class="muted">C.I. ${esc(p.cedula)} · ${esc(p.email)}</div>${chipsEnlaces(a.progreso.enlaces)}</td>
    <td>${Math.round(pg * 100)}%</td><td>${fmt(c.teoria)}</td>
    ${GRADED.map(g => `<td><input type="number" min="0" max="${g.pts}" step="0.5" data-u="${esc(a.uid)}" data-id="${g.id}" value="${a.oficial[g.id] ?? ""}" aria-label="${esc(nombreCompleto(p))} ${g.id}"></td>`).join("")}
    <td data-c="pr">${fmt(c.practica)}</td><td data-c="it">${fmt(c.integ)}</td><td data-c="tt"><b>${fmt(c.total)}</b></td><td data-c="es"><b>${c.escala}</b></td></tr>`;
@@ -381,7 +415,7 @@ async function cargarSesion() {
     PERFIL = await B.cargarPerfil(USER.uid);
     if (PERFIL) {
       const pr = (await B.cargarProgreso(USER.uid)) || {}, of = (await B.cargarCalificaciones(USER.uid)) || {};
-      S = { perfil: { ...PERFIL, nombre: nombreCompleto(PERFIL), doc: PERFIL.cedula }, done: pr.done || {}, quiz: pr.quiz || {}, auto: pr.auto || {}, oficial: of };
+      S = { perfil: { ...PERFIL, nombre: nombreCompleto(PERFIL), doc: PERFIL.cedula }, done: pr.done || {}, quiz: pr.quiz || {}, auto: pr.auto || {}, enlaces: pr.enlaces || {}, oficial: of };
     } else if (ES_DOC) PERFIL = { nombres: USER.displayName || USER.email, apellidos: "", cedula: "", virtual: true };
   } catch (e) { aviso(msgError(e), "bad"); }
 }
@@ -414,6 +448,21 @@ async function render() {
   $("#side").classList.remove("open"); $("#menu").setAttribute("aria-expanded", "false");
 }
 function bindSesion() {
+  $$("[data-play]").forEach(b => b.addEventListener("click", () => {
+    const id = b.dataset.play, pl = b.dataset.tipo === "playlist";
+    const src = pl ? `https://www.youtube-nocookie.com/embed/videoseries?list=${id}&autoplay=1` : `https://www.youtube-nocookie.com/embed/${id}?rel=0&autoplay=1`;
+    $("#vb_" + id).innerHTML = `<iframe src="${src}" title="${esc(b.dataset.t)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  }));
+  $$("[data-vis]").forEach(c => c.addEventListener("change", () => { const k = "vid_" + c.dataset.vis; if (c.checked) S.done[k] = true; else delete S.done[k]; persist(); }));
+  $$("[data-enl]").forEach(inp => inp.addEventListener("change", () => {
+    const id = inp.dataset.enl, t = inp.dataset.t, v = inp.value.trim(), a = actById(id);
+    S.enlaces[id] = S.enlaces[id] || {};
+    if (v && !RE_ENL[t].test(v)) { aviso(t === "rpubs" ? "El enlace debe ser de rpubs.com (https://rpubs.com/...)." : "El enlace debe ser de Google Colab o Drive (https://colab.research.google.com/...).", "bad"); return; }
+    if (v) S.enlaces[id][t] = v; else delete S.enlaces[id][t];
+    const completo = a.ent.every(x => S.enlaces[id][x]);
+    if (completo) S.done[id] = true; else if (!v) delete S.done[id];
+    persist(); aviso(v ? (completo ? "Entrega registrada ✔" : "Enlace guardado ✔") : "Enlace quitado"); render();
+  }));
   $$("[data-act]").forEach(c => c.addEventListener("change", () => { S.done[c.dataset.act] = c.checked; if (!c.checked) delete S.done[c.dataset.act]; persist(); navHtml(location.hash.replace(/^#/, "")); }));
   $$("[data-auto]").forEach(sl => sl.addEventListener("change", () => {
     const id = sl.dataset.auto; S.auto[id] = S.auto[id] || {}; S.auto[id][sl.dataset.i] = +sl.value; persist();

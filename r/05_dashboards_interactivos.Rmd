@@ -1,0 +1,62 @@
+---
+title: "Sesión 5 · Dashboards interactivos (plotly + crosstalk)"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+```
+
+> **Importante:** RPubs publica **HTML estático** (no ejecuta servidores Shiny). Por eso, para tableros que se publican en RPubs usamos **plotly + crosstalk + DT**: los filtros funcionan en el navegador, sin servidor. Principio: *overview first, zoom & filter, details on demand*.
+
+```{r datos}
+library(plotly); library(crosstalk); library(DT)
+v <- leer("ventas_retail.csv") %>% mutate(mes = floor_date(fecha, "month"), anio = factor(year(fecha)))
+m <- v %>% group_by(mes, anio, sucursal, categoria) %>% summarise(ventas = sum(ventas_gs_miles) / 1e3, costo = sum(costo_gs_miles) / 1e3, .groups = "drop")
+```
+
+# 1. KPIs (tarjetas HTML)
+
+```{r kpis, results='asis'}
+tot <- sum(v$ventas_gs_miles) / 1e6; mg <- (1 - sum(v$costo_gs_miles) / sum(v$ventas_gs_miles)) * 100
+tarjeta <- function(t, x) sprintf('<div style="flex:1;border:1px solid #ddd;border-radius:8px;padding:.8rem"><div style="color:#666">%s</div><div style="font-size:2rem;font-weight:700;color:#0072B2">%s</div></div>', t, x)
+cat('<div style="display:flex;gap:1rem">', tarjeta("Ventas 2024-25 (miles de millones de Gs.)", fmt_num(tot)), tarjeta("Margen bruto", paste0(fmt_num(mg), "%")), tarjeta("Sucursales", length(unique(v$sucursal))), '</div>')
+```
+
+# 2. Tablero con filtros (se aplican a todos los gráficos y a la tabla)
+
+```{r dashboard, fig.height=5}
+sd <- SharedData$new(m, key = ~ paste(mes, sucursal, categoria))
+bscols(widths = c(3, 9),
+  list(filter_select("suc", "Sucursal", sd, ~ sucursal), filter_select("cat", "Categoría", sd, ~ categoria), filter_checkbox("anio", "Año", sd, ~ anio, inline = TRUE)),
+  plot_ly(sd, x = ~ mes, y = ~ ventas, color = ~ sucursal, colors = okabe_ito, type = "bar") %>%
+    layout(barmode = "stack", title = "Ventas mensuales (millones de Gs.)", xaxis = list(title = ""), yaxis = list(title = ""), legend = list(orientation = "h")))
+```
+
+# 3. Detalle bajo demanda
+
+```{r tabla}
+datatable(sd, rownames = FALSE, extensions = "Buttons", options = list(pageLength = 6, dom = "Bfrtip", buttons = c("csv"))) %>% formatRound(c("ventas", "costo"), 1)
+```
+
+# Checklist de dashboard
+
+- ¿Se responde la pregunta de la audiencia en **5 segundos**? - ¿Los KPIs tienen **comparación y unidad**? - ¿Los filtros afectan **a todo lo que dicen afectar**? - ¿Carga rápido (< 3 s)? - ¿Es **accesible** (contraste, tamaño, no solo color)?
+
+# Tu turno · Mini-proyecto 2
+
+Extendé el tablero con: (a) filtro de año, (b) un **heatmap** mes × categoría o un mapa, (c) un **texto de insight** que cambie con los filtros *(pista: solo posible con Shiny; en RPubs escribí el insight para el estado inicial y explicá cómo cambiaría)*. Versión Python: `app_dash.py` y Plotly en Colab.
+
+# Publicar en RPubs
+
+1. **Knit** → HTML. 2. Botón **Publish → RPubs** en la vista previa (cuenta gratuita en <https://rpubs.com>). 3. Pegá el enlace en el **aula virtual**. Recordá que RPubs es **público**: sin datos personales.

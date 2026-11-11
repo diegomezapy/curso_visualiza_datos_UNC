@@ -24,3 +24,9 @@
 
 ## Laboratorio
 [`lab04_kpis_storytelling.py`](lab04_kpis_storytelling.py)
+
+### Pista R (RStudio → RPubs)
+[`r/04_kpis_storytelling.Rmd`](../../r/04_kpis_storytelling.Rmd) — publicar con *Publish → RPubs* y pegar el enlace en el aula.
+
+### Material de estudio
+[Ficha de estudio (PDF)](../../materiales/pdf/ficha_04_kpis_storytelling.pdf) · videos y lecturas en el [aula virtual](../../aula/index.html#/sesion/4).

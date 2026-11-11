@@ -5,22 +5,25 @@ Universidad Nacional de Concepción · Facultad de Ciencias Exactas y Tecnológi
 
 > **Fundamentación.** La visualización es central para explorar datos, comunicar resultados y apoyar decisiones. El módulo entrena criterios de diseño, ética visual y construcción de productos (dashboards/reportes).
 
+## Dos lenguajes, un curso
+**Python en Google Colab** (laboratorios) y **R en RStudio publicado en RPubs** (informes). Ver [docs/pista_python_r.md](docs/pista_python_r.md).
+
 ## Competencias
 1. Diseñar visualizaciones efectivas según objetivo, audiencia y tipo de dato.
 2. Construir reportes y tableros con criterios de claridad, integridad y ética.
 
 ## Mapa del curso
 
-| # | Sesión | Unidad del programa | Lab |
-|---|--------|--------------------|-----|
-| 1 | [Principios: percepción y por qué visualizar](sesiones/01_principios/) | U1 | `lab01_percepcion.py` |
-| 2 | [Elección de gráficos](sesiones/02_eleccion_graficos/) | U1 | `lab02_eleccion_graficos.py` |
-| 3 | [Color, diseño y ética visual](sesiones/03_color_diseno_etica/) | U1 | `lab03_color_diseno_etica.py` |
-| 4 | [Visual analytics, KPIs y storytelling](sesiones/04_visual_analytics_kpis/) | U2 | `lab04_kpis_storytelling.py` |
-| 5 | [Dashboards interactivos](sesiones/05_dashboards_interactivos/) | U2 | `lab05_dashboards_plotly.py`, `app_dash.py` |
-| 6 | [Reporting automatizado](sesiones/06_reporting_automatizado/) | U2 | `lab06_reportes_automaticos.py` |
-| 7 | [Alta dimensionalidad, series y geodatos](sesiones/07_estructuras_complejas/) | U3 | `lab07_complejas.py` |
-| 8 | [Redes (opcional) + presentación del integrador](sesiones/08_redes_e_integrador/) | U4 | `lab08_redes.py` |
+| # | Sesión | Unidad del programa | Lab Python (Colab) | Documento R (RPubs) |
+|---|--------|--------------------|-----|-----|
+| 1 | [Principios: percepción y por qué visualizar](sesiones/01_principios/) | U1 | `lab01_percepcion.py` | [`01_percepcion.Rmd`](r/01_percepcion.Rmd) |
+| 2 | [Elección de gráficos](sesiones/02_eleccion_graficos/) | U1 | `lab02_eleccion_graficos.py` | [`02_eleccion_graficos.Rmd`](r/02_eleccion_graficos.Rmd) |
+| 3 | [Color, diseño y ética visual](sesiones/03_color_diseno_etica/) | U1 | `lab03_color_diseno_etica.py` | [`03_color_diseno_etica.Rmd`](r/03_color_diseno_etica.Rmd) |
+| 4 | [Visual analytics, KPIs y storytelling](sesiones/04_visual_analytics_kpis/) | U2 | `lab04_kpis_storytelling.py` | [`04_kpis_storytelling.Rmd`](r/04_kpis_storytelling.Rmd) |
+| 5 | [Dashboards interactivos](sesiones/05_dashboards_interactivos/) | U2 | `lab05_dashboards_plotly.py`, `app_dash.py` | [`05_dashboards_interactivos.Rmd`](r/05_dashboards_interactivos.Rmd) |
+| 6 | [Reporting automatizado](sesiones/06_reporting_automatizado/) | U2 | `lab06_reportes_automaticos.py` | [`06_reporting_automatizado.Rmd`](r/06_reporting_automatizado.Rmd) |
+| 7 | [Alta dimensionalidad, series y geodatos](sesiones/07_estructuras_complejas/) | U3 | `lab07_complejas.py` | [`07_estructuras_complejas.Rmd`](r/07_estructuras_complejas.Rmd) |
+| 8 | [Redes (opcional) + presentación del integrador](sesiones/08_redes_e_integrador/) | U4 | `lab08_redes.py` | [`08_redes.Rmd`](r/08_redes.Rmd) |
 
 🎓 **Aula virtual:** https://diegomezapy.github.io/curso_visualiza_datos_UNC/aula/
 
@@ -45,7 +48,9 @@ Los laboratorios están escritos en formato *percent* (`# %%`): se ejecutan como
 
 ## Estructura
 ```
-datos/        datasets sintéticos y reproducibles (+ generar_datos.py)
+datos/        datasets (sintéticos y exportados de Python) + scripts generadores
+r/            pista R: 8 documentos R Markdown para RStudio → RPubs
+materiales/   fichas de estudio y hojas de referencia (PDF) + su contenido
 src/cvd/      estilo (paleta accesible Okabe-Ito) y cargadores de datos
 sesiones/     una carpeta por sesión: README (guía) + laboratorio
 docs/         programa, cronograma, evaluación, rúbricas, integrador, quizzes

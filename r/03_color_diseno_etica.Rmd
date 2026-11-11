@@ -1,0 +1,97 @@
+---
+title: "Sesión 3 · Color, tipografía, anotación y ética visual"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+```
+
+> **Parte A:** buenas prácticas de diseño. **Parte B:** galería de **gráficos engañosos** y su corrección. Versión en **R** del laboratorio 3.
+
+```{r datos}
+v <- leer("ventas_retail.csv")
+```
+
+# A1. Paletas: cualitativa, secuencial, divergente
+
+```{r paletas, fig.height=3}
+pal <- bind_rows(
+  tibble(tipo = "Cualitativa (Okabe-Ito)", x = 1:8, col = okabe_ito),
+  tibble(tipo = "Secuencial (viridis)", x = 1:8, col = viridisLite::viridis(8)),
+  tibble(tipo = "Divergente (azul-naranja)", x = 1:8, col = colorRampPalette(c("#0072B2", "white", "#D55E00"))(8)))
+ggplot(pal, aes(x, 1, fill = col)) + geom_tile(color = "white") + scale_fill_identity() +
+  facet_wrap(~ tipo, ncol = 1) + theme_void() + theme(strip.text = element_text(face = "bold", hjust = 0))
+```
+
+# A2. Anotar es mejor que usar leyendas
+
+Etiquetado directo y un **título que dice el mensaje**:
+
+```{r anotacion, fig.height=4.8}
+m <- v %>% mutate(mes = floor_date(fecha, "month")) %>% group_by(mes, categoria) %>% summarise(ventas = sum(ventas_gs_miles) / 1e3, .groups = "drop")
+ult <- m %>% filter(mes == max(mes))
+pico <- m %>% filter(categoria == "Electrónica") %>% slice_max(ventas, n = 1)
+ggplot(m, aes(mes, ventas, group = categoria, color = categoria == "Electrónica", linewidth = categoria == "Electrónica")) +
+  geom_line() +
+  scale_color_manual(values = c(`FALSE` = GRIS_CLARO, `TRUE` = ENFASIS), guide = "none") +
+  scale_linewidth_manual(values = c(`FALSE` = .7, `TRUE` = 1.5), guide = "none") +
+  ggrepel::geom_text_repel(data = ult, aes(label = categoria), nudge_x = 60, direction = "y", hjust = 0, segment.color = NA, show.legend = FALSE) +
+  annotate("text", x = pico$mes - 150, y = pico$ventas * .95, label = "Pico navideño", hjust = 1) +
+  scale_x_date(expand = expansion(mult = c(.02, .15))) +
+  labs(title = "Electrónica concentra las ventas y se dispara en diciembre", x = NULL, y = "Ventas (millones de Gs.)")
+```
+
+# B. Galería de engaños y su corrección
+
+## B1. Eje truncado en barras
+
+```{r truncado, fig.height=3.8, fig.width=10}
+vals <- tibble(g = c("A", "B", "C"), v = c(96.5, 97.2, 98.1))
+b1 <- ggplot(vals, aes(g, v)) + geom_col(fill = BASE) + coord_cartesian(ylim = c(96, 98.5)) + labs(title = "❌ Eje truncado: \"C triplica a A\"", x = NULL, y = NULL)
+b2 <- ggplot(vals, aes(g, v)) + geom_col(fill = BASE) + coord_cartesian(ylim = c(0, 100)) + labs(title = "✅ Eje en cero: diferencias modestas", x = NULL, y = NULL)
+b1 + b2
+```
+
+## B2. Doble eje que fabrica correlación
+
+```{r doble-eje, fig.height=3.8, fig.width=11}
+set.seed(3)
+s <- tibble(t = 1:12, s1 = 100 + cumsum(rnorm(12, 0, 3)), s2 = 50 + cumsum(rnorm(12, 0, 3)))
+d1 <- ggplot(s, aes(t)) + geom_line(aes(y = s1), color = BASE, linewidth = 1) + geom_line(aes(y = s2 * 2 - 40), color = ENFASIS, linewidth = 1) +
+  scale_y_continuous(sec.axis = sec_axis(~ (. + 40) / 2)) + labs(title = "❌ Doble eje: la escala la elige el autor", x = NULL, y = NULL)
+d2 <- s %>% mutate(`Serie 1` = s1 / first(s1) * 100, `Serie 2` = s2 / first(s2) * 100) %>% pivot_longer(c(`Serie 1`, `Serie 2`)) %>%
+  ggplot(aes(t, value, color = name)) + geom_line(linewidth = 1) + labs(title = "✅ Índice base 100, un solo eje", x = NULL, y = NULL, color = NULL)
+d1 + d2
+```
+
+## B3. Recorte temporal a conveniencia (*cherry-picking*)
+
+```{r recorte, fig.height=3.6, fig.width=11}
+d <- leer("demanda_energia.csv")
+c1 <- d %>% filter(fecha >= "2023-07-01", fecha <= "2023-09-30") %>% ggplot(aes(fecha, demanda_mwh)) + geom_line(color = ENFASIS) + labs(title = "❌ Recorte conveniente (3 meses)", x = NULL, y = NULL)
+c2 <- d %>% mutate(mes = floor_date(fecha, "month")) %>% group_by(mes) %>% summarise(m = mean(demanda_mwh)) %>% ggplot(aes(mes, m)) + geom_line(color = BASE) + labs(title = "✅ Serie completa (media mensual)", x = NULL, y = NULL)
+c1 + c2
+```
+
+# Checklist ético (usar en todo entregable)
+
+1. ¿El eje de barras empieza en 0? 2. ¿Las escalas son comparables entre paneles? 3. ¿Se muestra la incertidumbre y el *n*? 4. ¿Hay fuente, fecha y definición de la métrica? 5. ¿El color es apto para daltonismo? 6. ¿El título afirma algo que los datos sí sostienen?
+
+# Tu turno
+
+Tomá un gráfico "malo" (el que indique el docente o uno de la prensa), identificá **≥ 3 problemas** con el checklist, corregilo con ggplot2 y escribí **150 palabras** sobre el daño potencial de la versión original.
+
+# Publicar en RPubs
+
+1. **Knit** → HTML. 2. Botón **Publish → RPubs** en la vista previa (cuenta gratuita en <https://rpubs.com>). 3. Pegá el enlace en el **aula virtual**. Recordá que RPubs es **público**: sin datos personales.

@@ -24,3 +24,9 @@
 
 ## Laboratorio
 [`lab05_dashboards_plotly.py`](lab05_dashboards_plotly.py) · [`app_dash.py`](app_dash.py)
+
+### Pista R (RStudio → RPubs)
+[`r/05_dashboards_interactivos.Rmd`](../../r/05_dashboards_interactivos.Rmd) — publicar con *Publish → RPubs* y pegar el enlace en el aula.
+
+### Material de estudio
+[Ficha de estudio (PDF)](../../materiales/pdf/ficha_05_dashboards.pdf) · videos y lecturas en el [aula virtual](../../aula/index.html#/sesion/5).

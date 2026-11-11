@@ -24,3 +24,9 @@ Ejercicio S3 (5 pts, R1) · Quiz 3.
 
 ## Laboratorio
 [`lab03_color_diseno_etica.py`](lab03_color_diseno_etica.py)
+
+### Pista R (RStudio → RPubs)
+[`r/03_color_diseno_etica.Rmd`](../../r/03_color_diseno_etica.Rmd) — publicar con *Publish → RPubs* y pegar el enlace en el aula.
+
+### Material de estudio
+[Ficha de estudio (PDF)](../../materiales/pdf/ficha_03_color_etica.pdf) · videos y lecturas en el [aula virtual](../../aula/index.html#/sesion/3).

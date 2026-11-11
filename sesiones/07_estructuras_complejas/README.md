@@ -25,3 +25,9 @@
 
 ## Laboratorio
 [`lab07_complejas.py`](lab07_complejas.py)
+
+### Pista R (RStudio → RPubs)
+[`r/07_estructuras_complejas.Rmd`](../../r/07_estructuras_complejas.Rmd) — publicar con *Publish → RPubs* y pegar el enlace en el aula.
+
+### Material de estudio
+[Ficha de estudio (PDF)](../../materiales/pdf/ficha_07_complejas.pdf) · videos y lecturas en el [aula virtual](../../aula/index.html#/sesion/7).

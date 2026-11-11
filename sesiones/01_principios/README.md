@@ -25,3 +25,9 @@ Ejercicio S1 (5 pts, rúbrica R1) · Quiz 1 (teoría).
 
 ## Laboratorio
 [`lab01_percepcion.py`](lab01_percepcion.py) — Anscombe, jerarquía perceptiva, color de énfasis.
+
+### Pista R (RStudio → RPubs)
+[`r/01_percepcion.Rmd`](../../r/01_percepcion.Rmd) — publicar con *Publish → RPubs* y pegar el enlace en el aula.
+
+### Material de estudio
+[Ficha de estudio (PDF)](../../materiales/pdf/ficha_01_percepcion.pdf) · videos y lecturas en el [aula virtual](../../aula/index.html#/sesion/1).

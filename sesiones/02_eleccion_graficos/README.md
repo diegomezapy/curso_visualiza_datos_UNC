@@ -24,3 +24,9 @@ Ejercicio S2 (5 pts, R1) · Quiz 2.
 
 ## Laboratorio
 [`lab02_eleccion_graficos.py`](lab02_eleccion_graficos.py)
+
+### Pista R (RStudio → RPubs)
+[`r/02_eleccion_graficos.Rmd`](../../r/02_eleccion_graficos.Rmd) — publicar con *Publish → RPubs* y pegar el enlace en el aula.
+
+### Material de estudio
+[Ficha de estudio (PDF)](../../materiales/pdf/ficha_02_eleccion.pdf) · videos y lecturas en el [aula virtual](../../aula/index.html#/sesion/2).

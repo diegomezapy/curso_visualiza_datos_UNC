@@ -1,0 +1,103 @@
+---
+title: "Sesión 1 · Percepción y por qué visualizar"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+```
+
+> **Objetivos.** (1) Ver por qué las estadísticas resumen engañan; (2) comparar la precisión de distintas codificaciones visuales (posición > longitud > ángulo/área); (3) usar atributos *preatentivos* para guiar la mirada.
+> Esta es la versión en **R** del laboratorio 1 (la versión Python está en Google Colab).
+
+# 1. El cuarteto de Anscombe
+
+Cuatro conjuntos de datos con **la misma media, varianza, correlación y recta de regresión**:
+
+```{r anscombe-tabla}
+a <- leer("anscombe.csv")
+a %>%
+  group_by(dataset) %>%
+  summarise(x_media = mean(x), y_media = mean(y), y_varianza = var(y), correlacion = cor(x, y)) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 2)))
+```
+
+Los números son casi idénticos. ¿Y los gráficos?
+
+```{r anscombe-grafico, fig.height=3.4, fig.width=10}
+ggplot(a, aes(x, y)) +
+  geom_point(color = BASE, size = 2.6) +
+  geom_smooth(method = "lm", se = FALSE, color = ENFASIS, linewidth = 0.9) +
+  facet_wrap(~ dataset, nrow = 1, labeller = label_both) +
+  labs(title = "Mismos números, historias distintas",
+       subtitle = "Recta de regresión idéntica en los cuatro conjuntos", x = NULL, y = NULL)
+```
+
+**Lección:** nunca confíes solo en estadísticos resumen; **graficá siempre** los datos.
+
+# 2. Jerarquía de la percepción (Cleveland & McGill)
+
+Los mismos 5 valores codificados con **posición**, **longitud** y **ángulo**. ¿Con cuál es más fácil decir cuál categoría es la mayor y cuál la segunda?
+
+```{r jerarquia, fig.height=3.6, fig.width=11}
+d <- tibble(cat = LETTERS[1:5], val = c(23, 25, 21, 24, 26))
+
+p1 <- ggplot(d, aes(val, reorder(cat, -val))) + geom_point(color = BASE, size = 3.5) +
+  labs(title = "Posición (puntos)", x = NULL, y = NULL)
+p2 <- ggplot(d, aes(val, cat)) + geom_col(fill = BASE) + scale_y_discrete(limits = rev) +
+  labs(title = "Longitud (barras)", x = NULL, y = NULL)
+p3 <- ggplot(d, aes("", val, fill = cat)) + geom_col(width = 1, color = "white") + coord_polar("y") +
+  labs(title = "Ángulo (torta)", fill = NULL) + theme_void() + theme(plot.title = element_text(face = "bold"))
+
+p1 + p2 + p3
+```
+
+**Pregunta:** cronometrá cuánto tardás con cada panel. La posición sobre una escala común es la tarea perceptiva más precisa.
+
+# 3. Atributos preatentivos: el color como foco
+
+Contá cuántos puntos "atípicos" hay. Primero sin guía; luego con color de énfasis.
+
+```{r preatentivo, fig.height=4, fig.width=10}
+set.seed(1)
+p <- tibble(x = rnorm(300), y = rnorm(300), fuera = seq_len(300) %in% sample(300, 8))
+
+g1 <- ggplot(p, aes(x, y)) + geom_point(color = BASE) + labs(title = "Sin énfasis")
+g2 <- ggplot(p, aes(x, y, color = fuera)) + geom_point() +
+  scale_color_manual(values = c(`FALSE` = GRIS_CLARO, `TRUE` = ENFASIS), guide = "none") +
+  labs(title = "Con color de énfasis")
+g1 + g2
+```
+
+# 4. Tu turno (entregable de la sesión)
+
+1. Elegí **un gráfico de un medio de prensa** o informe institucional (pegá la imagen con `knitr::include_graphics("ruta.png")` o un enlace).
+2. Identificá variable, codificación visual y mensaje; evalúalo con la jerarquía de Cleveland-McGill.
+3. **Rehacelo con ggplot2** aplicando *data-ink ratio* (Tufte): quitá lo que no informa.
+4. Escribí 5 líneas de justificación.
+
+```{r turno, eval=FALSE}
+# Tu código aquí
+```
+
+# 5. Publicar en RPubs
+
+1. Presioná **Knit** → se genera el HTML.
+2. En la ventana de vista previa, botón **Publish** → *RPubs* → iniciá sesión (o creá tu cuenta en <https://rpubs.com>).
+3. Copiá el enlace (`https://rpubs.com/tu_usuario/...`) y pegalo en el **aula virtual**, en la actividad correspondiente.
+
+> Recordá: lo que publicás en RPubs es **público**. No incluyas datos personales ni información confidencial.
+
+```{r sesion-info}
+sessionInfo()$R.version$version.string
+```

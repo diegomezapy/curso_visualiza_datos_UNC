@@ -25,3 +25,9 @@ Ejercicio S6 (5 pts, R2) · Propuesta del integrador (hito) · Quiz 6.
 
 ## Laboratorio
 [`lab06_reportes_automaticos.py`](lab06_reportes_automaticos.py) · `python tools/generar_reportes.py`
+
+### Pista R (RStudio → RPubs)
+[`r/06_reporting_automatizado.Rmd`](../../r/06_reporting_automatizado.Rmd) — publicar con *Publish → RPubs* y pegar el enlace en el aula.
+
+### Material de estudio
+[Ficha de estudio (PDF)](../../materiales/pdf/ficha_06_reporting.pdf) · videos y lecturas en el [aula virtual](../../aula/index.html#/sesion/6).

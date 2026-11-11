@@ -1,0 +1,73 @@
+---
+title: "Sesión 8 · Redes (opcional): grafos y su visualización"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+```
+
+> Datos: *Zachary Karate Club* y *Les Misérables* (exportados a CSV desde `networkx`). Paquete: `igraph`. Versión en **R** del laboratorio 8.
+
+```{r datos}
+library(igraph)
+ar <- leer("karate_aristas.csv"); nodos <- leer("karate_nodos.csv")
+G <- graph_from_data_frame(ar, directed = FALSE, vertices = nodos)
+G
+```
+
+# 1. Layouts: el mismo grafo, lecturas distintas
+
+```{r layouts, fig.height=4.3, fig.width=12}
+op <- par(mfrow = c(1, 3), mar = c(0, 0, 2, 0))
+set.seed(7)
+for (l in list(list("Fuerzas (Fruchterman-Reingold)", layout_with_fr(G)), list("Circular", layout_in_circle(G)), list("Kamada-Kawai", layout_with_kk(G)))) {
+  plot(G, layout = l[[2]], vertex.size = 7, vertex.label = NA, vertex.color = BASE, vertex.frame.color = "white", edge.color = GRIS_CLARO, main = l[[1]])
+}
+par(op)
+```
+
+# 2. Codificar métricas: tamaño = centralidad, color = comunidad
+
+```{r metricas, fig.height=5.8, fig.width=7}
+set.seed(7)
+cen <- betweenness(G, normalized = TRUE); com <- cluster_louvain(G)
+top <- names(sort(cen, decreasing = TRUE))[1:3]
+plot(G, layout = layout_with_fr(G), vertex.size = 5 + 40 * cen, vertex.color = okabe_ito[membership(com)], vertex.frame.color = "white",
+     vertex.label = ifelse(V(G)$name %in% top, V(G)$name, NA), vertex.label.color = "white", vertex.label.font = 2, edge.color = GRIS_CLARO,
+     main = sprintf("%d comunidades; los nodos %s son puentes clave", length(com), paste(top, collapse = ", ")))
+```
+
+# 3. Cuando el "hairball" falla: matriz de adyacencia (Les Misérables)
+
+```{r matriz, fig.height=7, fig.width=7.5}
+lm <- leer("lesmis_aristas.csv")
+fuerza <- bind_rows(select(lm, n = origen, peso), select(lm, n = destino, peso)) %>% group_by(n) %>% summarise(f = sum(peso)) %>% slice_max(f, n = 35)
+orden <- fuerza$n
+mat <- lm %>% bind_rows(rename(lm, origen = destino, destino = origen)) %>% filter(origen %in% orden, destino %in% orden)
+ggplot(mat, aes(factor(origen, levels = orden), factor(destino, levels = rev(orden)), fill = peso)) + geom_tile(color = "white") +
+  scale_fill_gradient(low = "#DCEBF5", high = BASE) + labs(title = "Matriz de adyacencia: los 35 personajes más conectados", x = NULL, y = NULL, fill = "Apariciones\njuntos") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5, size = 7), axis.text.y = element_text(size = 7), legend.position = "right")
+```
+
+# Reglas para redes
+
+Layout con propósito · filtrar aristas débiles · no saturar etiquetas · si hay > 500 nodos, agregar o usar matriz / arc-diagram · reportar métricas, no solo "se ve bonito". Herramientas: `igraph`, `ggraph`, `visNetwork` (interactivo), **Gephi**, Cytoscape.
+
+# Ejercicio opcional (+3 pts)
+
+Construí una red de **co-ocurrencias** (a partir de un texto o de productos comprados juntos en `ventas_retail`) y presentá **2 hallazgos**. Publicalo en RPubs.
+
+# Publicar en RPubs
+
+1. **Knit** → HTML. 2. Botón **Publish → RPubs** en la vista previa (cuenta gratuita en <https://rpubs.com>). 3. Pegá el enlace en el **aula virtual**. Recordá que RPubs es **público**: sin datos personales.

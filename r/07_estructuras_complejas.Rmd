@@ -1,0 +1,108 @@
+---
+title: "Sesión 7 · Alta dimensionalidad, series temporales y geodatos"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+```
+
+> Versión en **R** del laboratorio 7. Datos: `wine.csv` (13 variables, 3 clases), `demanda_energia.csv` y `departamentos_py.csv`.
+
+# A. Alta dimensionalidad (vinos: 13 variables)
+
+## A1. Coordenadas paralelas y matriz de correlación
+
+```{r wine}
+w <- leer("wine.csv")
+X <- w %>% select(-clase)
+Z <- as.data.frame(scale(X))
+```
+
+```{r paralelas, fig.height=4.6, fig.width=11}
+Z %>% mutate(clase = w$clase, id = row_number()) %>%
+  pivot_longer(-c(clase, id)) %>%
+  ggplot(aes(factor(name, levels = names(X)), value, group = id, color = clase)) +
+  geom_line(alpha = .35) + labs(title = "Coordenadas paralelas (variables estandarizadas)", x = NULL, y = "z", color = NULL) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r correlacion, fig.height=5.5, fig.width=7}
+cor(X) %>% as.data.frame() %>% tibble::rownames_to_column("v1") %>% pivot_longer(-v1, names_to = "v2", values_to = "r") %>%
+  ggplot(aes(v1, v2, fill = r)) + geom_tile() +
+  scale_fill_gradient2(low = "#0072B2", mid = "white", high = "#D55E00", limits = c(-1, 1)) +
+  labs(title = "Correlaciones (paleta divergente centrada en 0)", x = NULL, y = NULL, fill = NULL) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5), legend.position = "right")
+```
+
+## A2. Reducción de dimensión: PCA vs t-SNE
+
+PCA es **lineal** y sus distancias globales tienen sentido; t-SNE conserva **vecindades locales**, pero el **tamaño y la distancia entre clústeres no se interpretan**.
+
+```{r pca-tsne, fig.height=4.3, fig.width=11}
+pc <- prcomp(X, scale. = TRUE); var_exp <- sum(pc$sdev[1:2]^2) / sum(pc$sdev^2)
+set.seed(0)
+ts <- Rtsne::Rtsne(as.matrix(Z), perplexity = 30, check_duplicates = FALSE, pca = TRUE)
+dd <- bind_rows(
+  tibble(m = sprintf("PCA (%s de la varianza)", percent(var_exp, accuracy = 1)), a = pc$x[, 1], b = pc$x[, 2], clase = w$clase),
+  tibble(m = "t-SNE", a = ts$Y[, 1], b = ts$Y[, 2], clase = w$clase))
+ggplot(dd, aes(a, b, color = clase)) + geom_point(size = 2) + facet_wrap(~ m, scales = "free") + labs(x = NULL, y = NULL, color = NULL)
+```
+
+# B. Series temporales (`demanda_energia`)
+
+## B1. Tendencia, residuo y anomalías
+
+```{r serie, fig.height=6}
+s <- leer("demanda_energia.csv") %>% arrange(fecha)
+ma <- function(x, k) as.numeric(stats::filter(x, rep(1 / k, k), sides = 2))
+s <- s %>% mutate(tendencia = ma(demanda_mwh, 365), resid = demanda_mwh - ma(demanda_mwh, 28), z = (resid - mean(resid, na.rm = TRUE)) / sd(resid, na.rm = TRUE))
+anom <- s %>% filter(abs(z) > 4)
+p1 <- ggplot(s, aes(fecha)) + geom_line(aes(y = demanda_mwh), color = GRIS_CLARO) + geom_line(aes(y = tendencia), color = ENFASIS, linewidth = 1.1, na.rm = TRUE) +
+  geom_point(data = anom, aes(y = demanda_mwh), color = "black", size = 2) + labs(title = "Demanda diaria de energía (MWh)", subtitle = "Naranja: tendencia (media móvil 365 d) · Negro: anomalías (|z| > 4)", x = NULL, y = NULL)
+p2 <- ggplot(s, aes(fecha, resid)) + geom_line(color = BASE, na.rm = TRUE) + labs(title = "Residuo vs media móvil de 28 días", x = NULL, y = NULL)
+p1 / p2
+```
+
+## B2. Heatmap: año × mes
+
+```{r heatmap, fig.height=3}
+s %>% mutate(anio = year(fecha), mes = month(fecha)) %>% group_by(anio, mes) %>% summarise(m = mean(demanda_mwh), .groups = "drop") %>%
+  ggplot(aes(factor(mes), factor(anio), fill = m)) + geom_tile(color = "white") +
+  scale_fill_viridis_c(option = "magma", direction = -1) + labs(title = "Estacionalidad anual: pico en verano austral (dic-feb)", x = "Mes", y = NULL, fill = "MWh") +
+  theme(legend.position = "right")
+```
+
+# C. Geodatos
+
+Centroides departamentales **aproximados** con indicadores **sintéticos** (sin shapefiles pesados). Para coropletas reales: límites administrativos (INE/DGEEC, *geoBoundaries*) + paquete `sf`.
+
+```{r mapa, fig.height=5}
+dp <- leer("departamentos_py.csv")
+library(plotly)
+plot_geo(dp, lat = ~ lat, lon = ~ lon) %>%
+  add_markers(size = ~ poblacion_miles, color = ~ indice_acceso_internet, colors = "viridis", text = ~ paste0(departamento, "<br>Acceso: ", indice_acceso_internet),
+              hoverinfo = "text", marker = list(sizemode = "area", sizeref = 2 * max(dp$poblacion_miles) / (40^2), line = list(width = 0))) %>%
+  layout(title = "Acceso a internet por departamento (datos sintéticos)",
+         geo = list(scope = "south america", lataxis = list(range = c(-28, -19)), lonaxis = list(range = c(-63, -53)), showcountries = TRUE, countrycolor = "#999999"))
+```
+
+**Regla:** nunca colorear por conteos absolutos entre áreas de población desigual → usar **tasas o densidades**, y tener presente el problema del área modificable (**MAUP**).
+
+# Tu turno · Mini-proyecto 3
+
+Elegí un **dataset real** (datos.gov.py, BCP, INE, Our World in Data…) con dimensión temporal **o** geográfica y construí **3 vistas complementarias** con un titular analítico. Publicalo en RPubs.
+
+# Publicar en RPubs
+
+1. **Knit** → HTML. 2. Botón **Publish → RPubs** en la vista previa (cuenta gratuita en <https://rpubs.com>). 3. Pegá el enlace en el **aula virtual**. Recordá que RPubs es **público**: sin datos personales.

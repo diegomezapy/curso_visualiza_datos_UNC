@@ -1,0 +1,81 @@
+---
+title: "Sesión 2 · Elección del gráfico según pregunta y tipo de dato"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+```
+
+> Catálogo: **distribución · cantidad · proporción · relación · tiempo**. Datos: `notas_estudiantes` y `ventas_retail`. Versión en **R** del laboratorio 2.
+
+```{r datos}
+n <- leer("notas_estudiantes.csv")
+v <- leer("ventas_retail.csv")
+glimpse(n)
+```
+
+# 1. Distribuciones: ¿cómo se reparten las notas?
+
+El histograma **depende del ancho de bin**; ECDF y violín complementan.
+
+```{r distribuciones, fig.height=7, fig.width=10}
+h1 <- ggplot(n, aes(nota_final)) + geom_histogram(bins = 8,  fill = BASE, color = "white") + labs(title = "Histograma · 8 bins", x = NULL, y = NULL)
+h2 <- ggplot(n, aes(nota_final)) + geom_histogram(bins = 40, fill = BASE, color = "white") + labs(title = "Histograma · 40 bins", x = NULL, y = NULL)
+vi <- ggplot(n, aes(carrera, nota_final)) + geom_violin(fill = BASE, alpha = .35, draw_quantiles = c(.25, .5, .75)) + labs(title = "Violín por carrera", x = NULL, y = NULL)
+ec <- ggplot(n, aes(nota_final, color = carrera)) + stat_ecdf(linewidth = 1) + labs(title = "ECDF por carrera", x = NULL, y = NULL, color = NULL)
+(h1 + h2) / (vi + ec)
+```
+
+# 2. Cantidades: ranking con barras ordenadas (mejor que la torta)
+
+```{r ranking, fig.height=3.8}
+t <- v %>% group_by(sucursal) %>% summarise(ventas = sum(ventas_gs_miles) / 1e6) %>% arrange(ventas)
+ggplot(t, aes(ventas, reorder(sucursal, ventas), fill = ventas == max(ventas))) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = fmt_num(ventas)), hjust = -0.15) +
+  scale_fill_manual(values = c(`FALSE` = GRIS_CLARO, `TRUE` = ENFASIS)) +
+  scale_x_continuous(expand = expansion(mult = c(0, .12))) +
+  labs(title = "Asunción lidera las ventas 2024-25", x = "Ventas (miles de millones de Gs.)", y = NULL) +
+  theme(panel.grid.major.y = element_blank())
+```
+
+# 3. Relaciones: dispersión y el problema del *overplotting*
+
+```{r relaciones, fig.height=4, fig.width=11}
+base <- ggplot(n, aes(horas_estudio_sem, nota_final)) + labs(x = "Horas de estudio / semana", y = "Nota final")
+(base + geom_point(color = BASE) + labs(title = "Puntos opacos")) +
+(base + geom_point(color = BASE, alpha = .25) + labs(title = "Transparencia")) +
+(base + geom_bin2d(bins = 18) + scale_fill_gradient(low = "#DCEBF5", high = BASE) + labs(title = "Densidad (bin2d)") + theme(legend.position = "none"))
+```
+
+# 4. Matriz de decisión
+
+```{r matriz, echo=FALSE}
+knitr::kable(data.frame(
+  Pregunta = c("¿Cómo se distribuye X?", "¿Cuánto por categoría?", "¿Qué parte del total?", "¿Se relacionan X e Y?", "¿Cómo cambia en el tiempo?"),
+  Datos = c("1 numérica", "categórica + numérica", "partes → todo", "2 numéricas", "serie temporal"),
+  `Gráfico` = c("histograma / ECDF / violín", "barras ordenadas / lollipop", "barras apiladas 100 % (torta solo ≤ 3 partes)", "dispersión / densidad / suavizado", "línea / small multiples")))
+```
+
+# Tu turno
+
+Para **5 preguntas de negocio** sobre `ventas_retail` (p. ej. *¿qué categoría tiene mayor margen?*): elegí el gráfico, justificalo con la matriz y construilo con ggplot2. Entregá el documento con 5 figuras y **una frase-mensaje** por figura.
+
+```{r turno, eval=FALSE}
+# Tu código aquí
+```
+
+# Publicar en RPubs
+
+1. **Knit** → HTML. 2. Botón **Publish → RPubs** en la vista previa (cuenta gratuita en <https://rpubs.com>). 3. Pegá el enlace en el **aula virtual**. Recordá que RPubs es **público**: sin datos personales.

@@ -1,0 +1,88 @@
+---
+title: "Sesión 4 · Visual analytics: KPIs, small multiples y storytelling"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+```
+
+> Del dato crudo a una narrativa: **contexto → conflicto → resolución**. Dataset: `ventas_retail`. Versión en **R** del laboratorio 4.
+
+```{r datos}
+v <- leer("ventas_retail.csv") %>% mutate(mes = floor_date(fecha, "month"), anio = year(fecha))
+```
+
+# 1. Definir KPIs (con fórmula, unidad y comparación)
+
+| KPI | Definición | Comparación |
+|---|---|---|
+| Ventas | Σ ventas | vs. año anterior (%) |
+| Margen bruto | (ventas − costo) / ventas | vs. año anterior (pp) |
+| Ticket por unidad | ventas / unidades | vs. año anterior (%) |
+
+```{r kpis}
+k <- v %>% group_by(anio) %>%
+  summarise(ventas = sum(ventas_gs_miles) / 1e6, margen = (1 - sum(costo_gs_miles) / sum(ventas_gs_miles)) * 100,
+            ticket = sum(ventas_gs_miles) / sum(unidades))
+k %>% mutate(across(-anio, ~ round(.x, 2)))
+```
+
+```{r tarjetas, fig.height=2.4, fig.width=10}
+a <- k %>% filter(anio == 2025); b <- k %>% filter(anio == 2024)
+tj <- tibble(
+  kpi   = c("Ventas 2025\n(miles de millones de Gs.)", "Margen bruto 2025\n(ventas − costo) / ventas", "Ticket por unidad 2025\n(miles de Gs.)"),
+  valor = c(fmt_num(a$ventas), paste0(fmt_num(a$margen), "%"), fmt_num(a$ticket, 0)),
+  delta = c((a$ventas / b$ventas - 1) * 100, a$margen - b$margen, (a$ticket / b$ticket - 1) * 100),
+  unidad = c("%", " pp", "%")) %>%
+  mutate(txt = paste0(ifelse(delta >= 0, "▲ ", "▼ "), ifelse(unidad == " pp", fmt_num(abs(delta), 2), fmt_num(abs(delta), 1)), unidad, " vs 2024"), idx = seq_len(n()))
+ggplot(tj) +
+  geom_text(aes(x = 0, y = 2.2, label = kpi), hjust = 0, size = 3.6, color = GRIS) +
+  geom_text(aes(x = 0, y = 1.3, label = valor), hjust = 0, size = 11, fontface = "bold", color = BASE) +
+  geom_text(aes(x = 0, y = .4, label = txt, color = delta >= 0), hjust = 0, size = 4) +
+  scale_color_manual(values = c(`TRUE` = "#009E73", `FALSE` = ENFASIS), guide = "none") +
+  facet_wrap(~ idx, nrow = 1) + coord_cartesian(xlim = c(-.05, 3), ylim = c(0, 3)) + theme_void() + theme(strip.text = element_blank())
+```
+
+# 2. *Small multiples*: comparar muchas series sin saturar
+
+```{r small-multiples, fig.height=3, fig.width=12}
+s <- v %>% group_by(mes, sucursal) %>% summarise(ventas = sum(ventas_gs_miles) / 1e3, .groups = "drop")
+ggplot(s, aes(mes, ventas)) +
+  geom_line(data = select(s, mes, ventas, otra = sucursal), aes(group = otra), color = GRIS_CLARO, linewidth = .5) +
+  geom_line(color = ENFASIS, linewidth = 1) +
+  facet_wrap(~ sucursal, nrow = 1) +
+  labs(title = "Ventas mensuales por sucursal (millones de Gs.)", x = NULL, y = NULL) +
+  scale_x_date(date_labels = "%Y", date_breaks = "1 year")
+```
+
+# 3. Storytelling: un gráfico, un mensaje
+
+**¿Qué sucursal explica el crecimiento 2025 vs 2024?** (contribución al cambio)
+
+```{r contribucion, fig.height=3.6}
+cc <- v %>% group_by(sucursal, anio) %>% summarise(v = sum(ventas_gs_miles) / 1e6, .groups = "drop") %>%
+  pivot_wider(names_from = anio, values_from = v, names_prefix = "a") %>% mutate(delta = a2025 - a2024)
+ggplot(cc, aes(delta, reorder(sucursal, delta), fill = delta == max(delta))) + geom_col(show.legend = FALSE) +
+  scale_fill_manual(values = c(`FALSE` = GRIS_CLARO, `TRUE` = ENFASIS)) +
+  labs(title = sprintf("%s aporta %s del crecimiento 2025", cc$sucursal[which.max(cc$delta)], percent(max(cc$delta) / sum(cc$delta), accuracy = 1)),
+       x = "Variación de ventas 2025 vs 2024 (miles de millones de Gs.)", y = NULL) + theme(panel.grid.major.y = element_blank())
+```
+
+# Tu turno · Mini-proyecto 1
+
+Preparar **una página** (figura única o panel de ≤ 4 gráficos) para un gerente comercial que responda *"¿dónde actuar el próximo trimestre?"*. Incluí: título-mensaje, KPIs con comparación, 1 gráfico de apoyo, fuente y nota metodológica. Evaluación con la **rúbrica R2** (`docs/rubricas`).
+
+# Publicar en RPubs
+
+1. **Knit** → HTML. 2. Botón **Publish → RPubs** en la vista previa (cuenta gratuita en <https://rpubs.com>). 3. Pegá el enlace en el **aula virtual**. Recordá que RPubs es **público**: sin datos personales.

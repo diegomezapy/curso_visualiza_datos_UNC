@@ -1,0 +1,75 @@
+---
+title: "Sesión 6 · Reporting automatizado con R Markdown parametrizado"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+```
+
+> Idea central: **un reporte = plantilla + datos + parámetros**. Con R Markdown generamos **un informe por sucursal** sin tocar nada a mano. Versión en **R** del laboratorio 6 (la de Python usa Jinja2).
+
+# 1. La plantilla
+
+La plantilla es `plantilla_reporte_sucursal.Rmd`. En su encabezado (YAML) declara los **parámetros** y el texto/código los usa con `params$sucursal` y `params$anio`:
+
+```yaml
+params:
+  sucursal: "Asunción"
+  anio: 2025
+```
+
+El título, los KPIs, el gráfico y hasta una **alerta condicional** (margen que cae más de 2 puntos) cambian con los parámetros.
+
+# 2. Renderizar un informe
+
+```{r un-informe}
+options(knitr.duplicate.label = "allow")   # permite renderizar otro .Rmd desde dentro de este
+dir.create("salidas_informes", showWarnings = FALSE)
+f <- rmarkdown::render("plantilla_reporte_sucursal.Rmd", params = list(sucursal = "Concepción", anio = 2025),
+                       output_file = "informe_Concepcion.html", output_dir = "salidas_informes", envir = new.env(), quiet = TRUE)
+basename(f)
+```
+
+# 3. Renderizar todos (el reporte "se escribe solo")
+
+```{r todos}
+sucursales <- unique(leer("ventas_retail.csv")$sucursal)
+archivos <- vapply(sucursales, function(s) {
+  rmarkdown::render("plantilla_reporte_sucursal.Rmd", params = list(sucursal = s, anio = 2025),
+                    output_file = paste0("informe_", gsub("[^A-Za-z]", "", iconv(s, to = "ASCII//TRANSLIT")), ".html"),
+                    output_dir = "salidas_informes", envir = new.env(), quiet = TRUE) |> basename()
+}, character(1))
+knitr::kable(data.frame(sucursal = sucursales, archivo = archivos))
+```
+
+# 4. Pipeline reproducible y automatización
+
+- **Script:** `Rscript render_todo.R` (programable con `cron` o **GitHub Actions**).
+- **Desde RStudio:** *Knit with Parameters…* abre un formulario para elegir sucursal y año.
+- **Python:** el equivalente es `papermill nb.ipynb out.ipynb -p sucursal "Asunción"` (Colab/Jupyter) o Quarto (`quarto render informe.qmd -P sucursal:Asunción`).
+
+# 5. Publicar uno de los informes en RPubs
+
+Abrí `plantilla_reporte_sucursal.Rmd` en RStudio, elegí **Knit with Parameters**, y publicá el HTML con **Publish → RPubs**.
+
+# Tu turno · Ejercicio S6
+
+1. Agregá a la plantilla una **alerta** si el margen cae más de 2 pp (ya hay una base: mejorala con contexto y destinatario).
+2. Añadí un **gráfico de contribución por categoría**.
+3. Publicá **un informe** en RPubs y pegá el enlace en el aula virtual.
+4. Redactá además la **propuesta del proyecto integrador** (1 página).
+
+# Publicar en RPubs
+
+1. **Knit** → HTML. 2. Botón **Publish → RPubs** en la vista previa (cuenta gratuita en <https://rpubs.com>). 3. Pegá el enlace en el **aula virtual**. Recordá que RPubs es **público**: sin datos personales.

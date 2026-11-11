@@ -23,3 +23,9 @@
 
 ## Laboratorio
 [`lab08_redes.py`](lab08_redes.py)
+
+### Pista R (RStudio → RPubs)
+[`r/08_redes.Rmd`](../../r/08_redes.Rmd) — publicar con *Publish → RPubs* y pegar el enlace en el aula.
+
+### Material de estudio
+[Ficha de estudio (PDF)](../../materiales/pdf/ficha_08_redes.pdf) · videos y lecturas en el [aula virtual](../../aula/index.html#/sesion/8).
