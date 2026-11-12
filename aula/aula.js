@@ -1,6 +1,7 @@
 /* Aula virtual · Visualización de Datos (FACET-UNC).
    Autenticación y datos: Firebase (Auth + Firestore) o modo demo local (ver backend.js). */
 import { crearBackend, msgError } from "./backend.js";
+import { heroHtml, afterRender, initFx } from "./fx.js";
 (async () => {
 "use strict";
 const D = window.CURSO, C = D.config;
@@ -77,7 +78,7 @@ function vInicio() {
   const reg = PERFIL?.nombres;
   const sig = D.sesiones.find(s => progSes(s).pct < 1);
   const c = calcular(S.quiz, S.oficial);
-  return `<h1>Hola, ${esc((reg || "").split(" ")[0])} 👋</h1>
+  return `${heroHtml(progTotal(), esc((reg || "").split(" ")[0]))}
   <p class="sub">${esc(C.curso)} · ${esc(C.programa)} · ${esc(C.semestre)}</p>
   <div class="kpis">
     <div class="card"><div class="muted">Avance del curso</div><div class="big">${Math.round(progTotal() * 100)}%</div>${bar(progTotal())}</div>
@@ -660,7 +661,7 @@ async function render() {
   document.body.classList.toggle("guest", guest);
   $("#main").innerHTML = html; $("#crumb").textContent = `${C.curso} › ${crumb}`;
   if (!guest) navHtml("/" + [a, b].filter(Boolean).join("/")); else $("#user").textContent = "";
-  $("#logout").hidden = !USER; bind();
+  $("#logout").hidden = !USER; bind(); afterRender();
   document.title = `${crumb} · Aula virtual · Visualización de Datos UNC`;
   $("#side").classList.remove("open"); $("#menu").setAttribute("aria-expanded", "false");
 }
@@ -693,6 +694,7 @@ $("#logout").addEventListener("click", salir);
 $("#lnk-drive").href = drive(C.drive.raiz);
 
 /* ---------- arranque ---------- */
+initFx();
 B = await crearBackend(C);
 await B.listo;
 USER = B.actual(); await cargarSesion(); render();
