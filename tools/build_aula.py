@@ -52,7 +52,7 @@ data = {
     "rubricas": {k: {"titulo": v[0], "criterios": [{"n": a, "w": b} for a, b in v[1]]} for k, v in c.RUBRICAS.items()},
     "abiertos": {"fuentes": cat.FUENTES, "estados": {k: list(v) for k, v in cat.ESTADOS.items()},
                  "practicas": [{"id": pid, "nombre": nm, "desc": ds, "sesiones": ses, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS]},
-    "tutor": {**tt.TUTOR, "links": cfg.get("tutor_links", [])},
+    "tutor": {**tt.TUTOR, "links": tt.LINKS + cfg.get("tutor_links", [])},
     "glosario": [{"t": a, "d": b} for a, b in c.GLOSARIO],
     "materiales": [("00_guia_inicio", "Guía de inicio: Colab, RStudio y RPubs"), ("elegir_grafico", "Hoja de ruta: elegir el gráfico"), ("checklist_calidad_etica", "Checklist de calidad visual y ética"), ("rubricas", "Rúbricas de evaluación"), ("evaluacion", "Cómo se evalúa el curso")],
     "datasets": [("ventas_retail.csv", "Ventas diarias 2024-25 (5 sucursales × 4 categorías)"), ("notas_estudiantes.csv", "Horas de estudio, asistencia y notas"),

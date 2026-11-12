@@ -504,12 +504,13 @@ function vTutor() {
    <div><h2 style="margin:0">${esc(T.nombre)}</h2><div class="mut">${esc(T.rol)}</div></div></div>
    <p>${esc(T.resumen)}</p>
    <div class="chips2">${T.areas.map(a => `<span class="chip">${esc(a)}</span>`).join("")}</div>
-   <p style="margin:.8rem 0 0">${links ? `<b>Perfiles y producción:</b> <span class="chips2" style="display:inline-flex">${links}</span>` : '<span class="mut">Los enlaces a ORCID, Google Scholar y CVPy se muestran acá cuando el docente los carga en <code>aula/config.json</code> (<code>tutor_links</code>).</span>'}</p>
+   <p style="margin:.8rem 0 0">${links ? `<b>Perfiles y producción:</b> <span class="chips2" style="display:inline-flex">${links}</span>` : '<span class="mut"></span>'}</p>
    <p class="mut" style="margin:.5rem 0 0">Citar como: ${esc(T.cita)} · Idiomas: ${esc(T.idiomas)}${C.contacto_docente ? ` · Contacto: <a href="mailto:${esc(C.contacto_docente)}">${esc(C.contacto_docente)}</a>` : ""}</p></div>
   <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(340px,1fr))">
    <div class="card" style="margin:0"><h3>🎓 Formación</h3>${T.formacion.map(fila).join("")}</div>
    <div class="card" style="margin:0"><h3>💼 Experiencia</h3>${T.experiencia.map(fila).join("")}</div></div>
-  <div class="card"><h3>📄 Producción</h3>${T.produccion.map(([k, t]) => `<div class="tl"><div class="tl-y"><span class="tag ok">${esc(k)}</span></div><div>${esc(t)}</div></div>`).join("")}</div>
+  <div class="card"><h3>📄 Producción</h3>${T.produccion.map(([k, t, u]) => `<div class="tl"><div class="tl-y"><span class="tag ok">${esc(k)}</span></div><div>${esc(t)}${u ? ` <a target="_blank" rel="noopener" href="${esc(u)}">Ver ↗</a>` : ""}</div></div>`).join("")}</div>
+  <div class="card"><h3>✍️ Divulgación en LinkedIn</h3><p class="muted">Artículos sobre R, Python, datos abiertos y enseñanza de la estadística: varios sirven como lectura complementaria del curso.</p>${(T.divulgacion || []).map(([f, t, u]) => `<div class="tl"><div class="tl-y">${esc(f)}</div><div><a target="_blank" rel="noopener" href="${esc(u)}">${esc(t)}</a></div></div>`).join("")}</div>
   <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(340px,1fr))">
    <div class="card" style="margin:0"><h3>🏅 Reconocimientos</h3><ul>${T.premios.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>
    <div class="card" style="margin:0"><h3>🧭 Tutorías</h3><ul>${T.docencia_inv.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div></div>`;
