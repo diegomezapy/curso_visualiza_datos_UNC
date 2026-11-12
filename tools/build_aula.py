@@ -9,6 +9,7 @@ import contenido as c
 SITE = RAIZ / "site" / "aula"
 SITE.mkdir(parents=True, exist_ok=True)
 cfg = json.loads((RAIZ / "aula" / "config.json").read_text(encoding="utf-8"))
+
 SES_DIR = {1: "01_principios", 2: "02_eleccion_graficos", 3: "03_color_diseno_etica", 4: "04_visual_analytics_kpis",
            5: "05_dashboards_interactivos", 6: "06_reporting_automatizado", 7: "07_estructuras_complejas", 8: "08_redes_e_integrador"}
 LABS = {1: "lab01_percepcion", 2: "lab02_eleccion_graficos", 3: "lab03_color_diseno_etica", 4: "lab04_kpis_storytelling",
@@ -21,6 +22,7 @@ FICHA = {1: "ficha_01_percepcion", 2: "ficha_02_eleccion", 3: "ficha_03_color_et
          5: "ficha_05_dashboards", 6: "ficha_06_reporting", 7: "ficha_07_complejas", 8: "ficha_08_redes"}
 import recursos as rc
 import tutor as tt
+import agenda as ag
 sys.path.insert(0, str(RAIZ / "datos_reales"))
 import catalogo as cat
 R_OK = {"pr01_explorador", "pr02_dncp", "pr03_banco_mundial"}
@@ -45,8 +47,10 @@ for s in c.SESIONES:
     s2 = {k: v for k, v in s.items() if k != "lecturas"}
     sesiones.append({**s2, "corto": CORTO[n], "practicas_reales": prs, "recursos": rec, "videos": rc.VIDEOS.get(n, []), "lecturas": rc.LECTURAS.get(n, []), "quiz": n in c.QUIZZES})
 
+cfg["fechas"] = {**cfg.get("fechas", {}), **{k: v for k, v in ag.fechas().items() if not cfg.get("fechas", {}).get(k)}}
 data = {
     "config": cfg,
+    "agenda_base": {"eventos": ag.eventos(), "nota": "Calendario base cargado desde el aula."},
     "sesiones": sesiones,
     "quizzes": {str(k): {"titulo": v[0], "preguntas": v[1]} for k, v in c.QUIZZES.items()},
     "rubricas": {k: {"titulo": v[0], "criterios": [{"n": a, "w": b} for a, b in v[1]]} for k, v in c.RUBRICAS.items()},

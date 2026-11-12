@@ -559,9 +559,10 @@ function agendaEjemplo() {
 async function cargarAgenda(forzar) {
   if (AGENDA && !forzar) return;
   const ep = agendaUrl(); AGENDA_ERR = "";
-  if (!ep) { AGENDA = { eventos: [] }; return; }
-  try { const r = await fetch(ep + (ep.includes("?") ? "&" : "?") + "action=agenda"); AGENDA = await r.json(); }
-  catch (e) { AGENDA = { eventos: [] }; AGENDA_ERR = "No se pudo leer la agenda del servidor."; }
+  const base = () => ({ eventos: D.agenda_base?.eventos || [], estatica: true });
+  if (!ep) { AGENDA = base(); return; }
+  try { const r = await fetch(ep + (ep.includes("?") ? "&" : "?") + "action=agenda"); AGENDA = await r.json(); if (!AGENDA.eventos?.length) AGENDA = base(); }
+  catch (e) { AGENDA = base(); AGENDA_ERR = "No se pudo leer la agenda del servidor; se muestra el calendario base de clases."; }
 }
 const evFecha = e => new Date(e.inicio_iso), pad2 = n => String(n).padStart(2, "0");
 const hoyZ = () => new Date().toLocaleDateString("sv-SE", { timeZone: "America/Asuncion" });
@@ -583,7 +584,8 @@ function vCalendario() {
   return `<h1>📅 Calendario del curso</h1><p class="sub">Clases, tutorías virtuales y fechas de entrega. Horario de Paraguay (UTC−3).</p>
   ${calEjemplo ? '<div class="card note"><b>Ejemplo.</b> Esta agenda es ilustrativa. La agenda real aparecerá aquí cuando el docente la publique.</div>' : ""}
   ${AGENDA_ERR ? `<div class="card note">${esc(AGENDA_ERR)}</div>` : ""}
-  ${!agendaUrl() && !calEjemplo ? `<div class="card note"><b>La agenda todavía no está publicada.</b> El docente la carga en la hoja de cálculo del curso (pestaña <i>Agenda</i>) y se muestra aquí automáticamente. <button class="btn sec" id="ejCal" style="margin-left:.5rem">Ver un ejemplo</button></div>` : ""}
+  ${AGENDA?.estatica && !calEjemplo ? `<div class="card note"><b>Calendario base de clases.</b> Clases virtuales los viernes de 18:00 a 22:00 y los sábados de 08:00 a 12:00. Las tutorías, las fechas de entrega y los correos de asistencia se suman acá cuando el docente los publique.</div>` : ""}
+  ${!agendaUrl() && !calEjemplo && !AGENDA?.eventos?.length ? `<div class="card note"><b>La agenda todavía no está publicada.</b> El docente la carga en la hoja de cálculo del curso (pestaña <i>Agenda</i>) y se muestra aquí automáticamente. <button class="btn sec" id="ejCal" style="margin-left:.5rem">Ver un ejemplo</button></div>` : ""}
   <div class="row" style="margin:.6rem 0"><button class="btn sec" id="cPrev" aria-label="Mes anterior">←</button><b style="min-width:11rem;text-align:center">${esc(mes)}</b><button class="btn sec" id="cNext" aria-label="Mes siguiente">→</button>
    <select id="cFil" aria-label="Filtrar por tipo" style="width:auto"><option value="todos">Todos los tipos</option>${Object.entries(TIPO_EV).map(([k, v]) => `<option value="${k}" ${calFiltro === k ? "selected" : ""}>${v[0]} ${v[1]}</option>`).join("")}</select>
    <button class="btn sec" id="cRef">↻ Actualizar</button><button class="btn sec" id="cIcs" ${evs.length ? "" : "disabled"}>⬇ Agregar a mi calendario (.ics)</button></div>

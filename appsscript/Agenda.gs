@@ -30,7 +30,11 @@ function configurarTodo() {
   const ag = tab_(HOJA_AGENDA, COL_AGENDA); tab_(HOJA_EST, COL_EST); tab_(HOJA_ASIST, COL_ASIST); tab_(HOJA_MINI, COL_MINI);
   const cfg = tab_(HOJA_CFG, ['clave', 'valor']);
   if (cfg.getLastRow() < 2) {
-    [['PUBLICAR_ENLACES', 'NO'], ['clase_1', ''], ['hora_inicio', '19:00'], ['hora_fin', '21:00'], ['dias_entrega', '7']].forEach(function (r) { cfg.appendRow(r); });
+    [['PUBLICAR_ENLACES', 'NO'], ['hora_inicio', '18:00'], ['hora_fin', '22:00'], ['dias_entrega', '7'],
+      ['clase_1', '2026-11-13'], ['clase_2', '2026-11-14'], ['hora_inicio_2', '08:00'], ['hora_fin_2', '12:00'],
+      ['clase_3', '2026-11-20'], ['clase_4', '2026-11-21'], ['hora_inicio_4', '08:00'], ['hora_fin_4', '12:00'],
+      ['clase_5', '2026-11-27'], ['clase_6', '2026-11-28'], ['hora_inicio_6', '08:00'], ['hora_fin_6', '12:00'],
+      ['clase_7', '2026-12-04'], ['clase_8', '2026-12-05'], ['hora_inicio_8', '08:00'], ['hora_fin_8', '12:00']].forEach(function (r) { cfg.appendRow(r); });
   }
   try { ag.getRange('B2:D500').setNumberFormat('@'); } catch (e) {}          // fecha y horas como texto
   if (!prop_('SECRETO')) PropertiesService.getScriptProperties().setProperty('SECRETO', Utilities.getUuid() + Utilities.getUuid());
@@ -52,7 +56,7 @@ function generarAgendaBase() {
   const existentes = ag.getLastRow() > 1 ? ag.getRange(2, 1, ag.getLastRow() - 1, 1).getValues().map(function (r) { return r[0]; }) : [];
   for (var n = 1; n <= 8; n++) {
     var f = txtFecha_(cfg['clase_' + n]); if (!f) continue;
-    if (existentes.indexOf('clase-' + n) < 0) ag.appendRow(['clase-' + n, f, cfg.hora_inicio || '19:00', cfg.hora_fin || '21:00', 'clase', 'Sesión ' + n + ' · ' + titulos[n - 1], n, '', '', 'SI', 'SI', '', '']);
+    if (existentes.indexOf('clase-' + n) < 0) ag.appendRow(['clase-' + n, f, cfg['hora_inicio_' + n] || cfg.hora_inicio || '18:00', cfg['hora_fin_' + n] || cfg.hora_fin || '22:00', 'clase', 'Sesión ' + n + ' · ' + titulos[n - 1], n, '', '', 'SI', 'SI', '', '']);
     if (existentes.indexOf('entrega-' + n) < 0) ag.appendRow(['entrega-' + n, sumarDias_(f, +cfg.dias_entrega || 7), '23:00', '23:59', 'entrega', 'Entrega de actividades · Sesión ' + n, n, '', 'Publicar en RPubs/Colab y pegar el enlace en el aula', 'NO', 'NO', '', '']);
   }
 }

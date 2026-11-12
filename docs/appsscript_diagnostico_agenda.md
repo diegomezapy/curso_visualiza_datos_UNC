@@ -47,7 +47,7 @@ Pestaña **Agenda** (una fila por evento):
 
 - `tipo`: `clase`, `tutoria`, `entrega`, `evaluacion`, `otro`. Fecha `aaaa-mm-dd` y horas `HH:MM` **como texto** (la pestaña ya viene con ese formato). Hora de Paraguay.
 - `asistencia = SI` → correo de asistencia a la hora de inicio. `mini = SI` → correo de mini-evaluación al terminar.
-- **Atajo:** en la pestaña *Config* escribí las fechas `clase_1 … clase_8` y ejecutá **`generarAgendaBase`**: crea cada clase (con asistencia y mini-evaluación) y su entrega a +7 días.
+- **Atajo:** en la pestaña *Config* escribí las fechas `clase_1 … clase_8` y ejecutá **`generarAgendaBase`**: crea cada clase (con asistencia y mini-evaluación) y su entrega a +7 días. Para una sesión con otro horario, agregá en *Config* `hora_inicio_N` y `hora_fin_N` (por ejemplo, los sábados `08:00`–`12:00`). Un *Config* nuevo ya viene con el calendario del módulo (vie 13/11/2026 en adelante: viernes 18:00–22:00 y sábados 08:00–12:00); ajustá si cambia.
 - Los enlaces de Meet **no se publican** en el calendario del aula salvo que pongas `PUBLICAR_ENLACES = SI` en *Config*; siempre llegan en el correo de asistencia.
 
 ## 3. Estudiantes
