@@ -39,6 +39,7 @@ Crear una cuenta de prueba → debe llegar el correo de verificación → ingres
 | `progreso/{uid}` | actividades hechas, quizzes, autoevaluaciones | lee/escribe lo suyo | lee todo |
 | `calificaciones/{uid}` | notas oficiales | **solo lee** lo suyo | lee y escribe |
 | `cedulas/{n}` | índice para impedir cédulas duplicadas | nadie lo lee | nadie lo lee |
+| `foros/{tema}` y `foros/{tema}/respuestas/{id}` | temas y respuestas del foro | lee y publica; edita/borra lo suyo | modera todo |
 | `docentes/{correo}` | lista de docentes | — | solo se edita en la consola |
 
 ## Contraseñas y recuperación

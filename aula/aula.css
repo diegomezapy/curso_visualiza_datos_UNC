@@ -74,3 +74,8 @@ input[type=url]{width:100%;padding:.5rem .6rem;border:1px solid var(--bd);border
 .cd .dn{font-size:.78rem;color:var(--mut);text-align:right}.cd .ev{font-size:.7rem;line-height:1.2;text-decoration:none;color:var(--fg);border-left:3px solid var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);border-radius:3px;padding:1px 3px;overflow:hidden}
 .cd .ev span{display:inline}.leg{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.82rem;margin:.5rem 0}.leg span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--c);margin-right:.3rem}
 @media(max-width:640px){.cd{min-height:64px}.cd .ev span{display:none}}
+
+.chips2{display:flex;flex-wrap:wrap;gap:.35rem}.chip{display:inline-block;padding:.2rem .7rem;border:1px solid var(--bd);border-radius:999px;font-size:.85rem;text-decoration:none;color:var(--fg);background:var(--card)}.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.fth{display:flex;justify-content:space-between;gap:1rem;align-items:center;margin:.5rem 0}.fth .ftit{font-weight:700}.fth .fmeta{display:flex;gap:.4rem;align-items:center;flex:none}.fcount{font-size:.9rem;color:var(--mut)}
+.post .ptxt{margin-top:.4rem;overflow-wrap:anywhere}.reply.sol{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 6%,var(--card))}.reply.doc{border-left:4px solid var(--ac)}.btn.sm{padding:.25rem .6rem;font-size:.82rem}
+@media(max-width:560px){.fth{flex-direction:column;align-items:flex-start}}
