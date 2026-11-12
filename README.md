@@ -1,6 +1,6 @@
 # Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos (FACET – UNC)
 
-Materiales del módulo **1.2.3 Visualización de datos (Obligatoria)** · Semestre 2º 2026 · 8 sesiones · 60 h (30 sincrónicas / 30 asincrónicas).
+Materiales del módulo **1.2.3 Visualización de datos (Obligatoria)** · Semestre 2º 2026 · 8 sesiones · 54 h (32 sincrónicas / 22 asincrónicas).
 Universidad Nacional de Concepción · Facultad de Ciencias Exactas y Tecnológicas · Concepción, Paraguay.
 
 > **Fundamentación.** La visualización es central para explorar datos, comunicar resultados y apoyar decisiones. El módulo entrena criterios de diseño, ética visual y construcción de productos (dashboards/reportes).

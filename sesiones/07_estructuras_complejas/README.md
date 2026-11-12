@@ -1,5 +1,5 @@
 # Sesión 7 · Estructuras complejas: alta dimensionalidad, series y geodatos
-**Unidad del programa:** U3 · **Duración:** ≈3,75 h sincrónicas + ≈3,75 h asincrónicas
+**Unidad del programa:** U3 · **Duración:** 4 h sincrónicas + ≈2,75 h asincrónicas
 
 ## Resultados de aprendizaje
 - Visualizar datos multivariados con coordenadas paralelas, PCA y t-SNE interpretando sus límites.
@@ -13,7 +13,7 @@
 | 90-105 | Pausa |
 | 105-150 | Geodatos: proyecciones, coropletas, tasas vs. conteos, MAUP |
 | 150-205 | **Lab 7** guiado |
-| 205-225 | Avance del integrador: prototipo y feedback |
+| 205-240 | Avance del integrador: prototipo y feedback |
 
 ## Trabajo asincrónico
 - Lectura: Wilke caps. 13-16 (series, tendencias, geoespacial, incertidumbre); artículo *How to Use t-SNE Effectively* (Distill).

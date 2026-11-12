@@ -1,5 +1,5 @@
 # Sesión 8 · Redes (opcional) y presentación del integrador
-**Unidad del programa:** U4 · **Duración:** ≈3,75 h sincrónicas + ≈3,75 h asincrónicas
+**Unidad del programa:** U4 · **Duración:** 4 h sincrónicas + ≈2,75 h asincrónicas
 
 ## Resultados de aprendizaje
 - (Opcional) Representar redes con layouts, métricas y matrices de adyacencia.
@@ -11,7 +11,7 @@
 | 0-60 | **Redes (opcional):** grafos, layouts, centralidad, comunidades, matriz vs. nodo-enlace; **Lab 8** |
 | 60-75 | Pausa |
 | 75-210 | **Presentaciones del integrador** (10 min + 5 min de preguntas por equipo/persona) y coevaluación |
-| 210-225 | Cierre del curso, retroalimentación y encuesta |
+| 210-240 | Cierre del curso, retroalimentación y encuesta |
 
 ## Trabajo asincrónico
 - Entrega final del **informe técnico** (hasta 7 días tras la sesión).

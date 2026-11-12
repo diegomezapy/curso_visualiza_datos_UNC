@@ -1,5 +1,5 @@
 # Sesión 6 · Reporting automatizado
-**Unidad del programa:** U2 · **Duración:** ≈3,75 h sincrónicas + ≈3,75 h asincrónicas
+**Unidad del programa:** U2 · **Duración:** 4 h sincrónicas + ≈2,75 h asincrónicas
 
 ## Resultados de aprendizaje
 - Convertir un análisis en un reporte parametrizado y reproducible.
@@ -12,7 +12,7 @@
 | 40-90 | Jinja2, Quarto, papermill; automatización (cron, GitHub Actions) |
 | 90-105 | Pausa |
 | 105-180 | **Lab 6** guiado: informe por sucursal |
-| 180-225 | Presentación breve de **propuestas del integrador** (2 min c/u) y feedback |
+| 180-240 | Presentación breve de **propuestas del integrador** (2 min c/u) y feedback |
 
 ## Trabajo asincrónico
 - Lectura: documentación de Quarto *Parameters*; Wilke caps. 21-22 (paneles, títulos y tablas).

@@ -1,5 +1,5 @@
 # Sesión 2 · Elección de gráficos según objetivo, audiencia y dato
-**Unidad del programa:** U1 · **Duración:** ≈3,75 h sincrónicas + ≈3,75 h asincrónicas
+**Unidad del programa:** U1 · **Duración:** 4 h sincrónicas + ≈2,75 h asincrónicas
 
 ## Resultados de aprendizaje
 - Clasificar preguntas analíticas (distribución, cantidad, proporción, relación, tiempo) y mapearlas a gráficos.
@@ -12,7 +12,7 @@
 | 30-90 | **Catálogo de gráficos:** distribuciones, cantidades, proporciones, relaciones, series |
 | 90-105 | Pausa |
 | 105-190 | **Lab 2** guiado: matriz de decisión aplicada a notas y ventas |
-| 190-225 | *Chart clinic*: el grupo critica 3 gráficos voluntarios |
+| 190-240 | *Chart clinic*: el grupo critica 3 gráficos voluntarios |
 
 ## Trabajo asincrónico
 - Lectura: Wilke caps. 5-12 (distribuciones, cantidades, proporciones, relaciones).

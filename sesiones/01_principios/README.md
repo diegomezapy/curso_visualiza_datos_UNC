@@ -1,5 +1,5 @@
 # Sesión 1 · Principios de visualización: percepción
-**Unidad del programa:** U1 · **Duración:** ≈3,75 h sincrónicas + ≈3,75 h asincrónicas
+**Unidad del programa:** U1 · **Duración:** 4 h sincrónicas + ≈2,75 h asincrónicas
 
 ## Resultados de aprendizaje
 - Explicar por qué visualizar (Anscombe) y qué propiedades perceptivas condicionan la lectura de un gráfico.
@@ -13,7 +13,7 @@
 | 60-105 | **Percepción:** posición > longitud > ángulo > área > color; preatentivos; Gestalt |
 | 105-120 | Pausa |
 | 120-190 | **Lab 1** guiado + dinámica de cronometraje (¿qué gráfico se lee más rápido?) |
-| 190-225 | Discusión del ejercicio asincrónico y dudas |
+| 190-240 | Discusión del ejercicio asincrónico y dudas |
 
 ## Trabajo asincrónico
 - Lectura: Cairo (2011), capítulos introductorios; Wilke (2019) caps. 1-4 y 26.

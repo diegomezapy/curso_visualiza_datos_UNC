@@ -3,7 +3,7 @@ Maestría en Ingeniería y Ciencia de Datos · FACET – UNC
 
 ## I. Identificación
 - **Semestre:** 2º 2026 · **Sesiones:** 8
-- **Carga horaria:** 60 h (30 sincrónicas / 30 asincrónicas)
+- **Carga horaria:** 54 h (32 sincrónicas / 22 asincrónicas)
 - **Pre-requisito:** Curso de Nivelación
 
 ## II. Fundamentación

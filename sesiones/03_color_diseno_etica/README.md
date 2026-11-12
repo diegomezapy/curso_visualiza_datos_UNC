@@ -1,5 +1,5 @@
 # Sesión 3 · Color, tipografía, anotación y ética visual
-**Unidad del programa:** U1 · **Duración:** ≈3,75 h sincrónicas + ≈3,75 h asincrónicas
+**Unidad del programa:** U1 · **Duración:** 4 h sincrónicas + ≈2,75 h asincrónicas
 
 ## Resultados de aprendizaje
 - Seleccionar paletas cualitativas, secuenciales y divergentes accesibles.
@@ -12,7 +12,7 @@
 | 45-90 | Tipografía, anotación, etiquetado directo, títulos-mensaje |
 | 90-105 | Pausa |
 | 105-170 | **Ética visual:** ejes truncados, doble eje, cherry-picking, áreas 3D, mapas engañosos; casos reales |
-| 170-225 | **Lab 3:** corregir la galería de engaños + debate (¿cuándo es manipulación?) |
+| 170-240 | **Lab 3:** corregir la galería de engaños + debate (¿cuándo es manipulación?) |
 
 ## Trabajo asincrónico
 - Lectura: Wilke caps. 17, 19-20 y 29; Cairo, *How Charts Lie* (selección).

@@ -1,5 +1,5 @@
 # Sesión 5 · Dashboards interactivos
-**Unidad del programa:** U2 · **Duración:** ≈3,75 h sincrónicas + ≈3,75 h asincrónicas
+**Unidad del programa:** U2 · **Duración:** 4 h sincrónicas + ≈2,75 h asincrónicas
 
 ## Resultados de aprendizaje
 - Diseñar la jerarquía y los filtros de un tablero según la audiencia.
@@ -12,7 +12,7 @@
 | 40-90 | Principios de diseño de dashboards; mantra de Shneiderman; anti-patrones |
 | 90-105 | Pausa |
 | 105-190 | **Lab 5** (Plotly) + demo de `app_dash.py` con callbacks |
-| 190-225 | Planificación del **Mini-proyecto 2** |
+| 190-240 | Planificación del **Mini-proyecto 2** |
 
 ## Trabajo asincrónico
 - Lectura: Few (2013), capítulos sobre errores y principios de diseño; documentación de Plotly y Dash.

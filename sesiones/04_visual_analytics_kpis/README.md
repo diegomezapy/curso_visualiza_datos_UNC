@@ -1,5 +1,5 @@
 # Sesión 4 · Visual analytics, KPIs y storytelling
-**Unidad del programa:** U2 · **Duración:** ≈3,75 h sincrónicas + ≈3,75 h asincrónicas
+**Unidad del programa:** U2 · **Duración:** 4 h sincrónicas + ≈2,75 h asincrónicas
 
 ## Resultados de aprendizaje
 - Definir KPIs accionables con comparación y contexto.
@@ -12,7 +12,7 @@
 | 45-90 | Storytelling con datos; anatomía de una página ejecutiva |
 | 90-105 | Pausa |
 | 105-190 | **Lab 4** guiado |
-| 190-225 | Arranque del **Mini-proyecto 1** y formación de dupla |
+| 190-240 | Arranque del **Mini-proyecto 1** y formación de dupla |
 
 ## Trabajo asincrónico
 - Lectura: Knaflic (2015), capítulos iniciales (selección); Few (2013), capítulos sobre diseño de tableros.
