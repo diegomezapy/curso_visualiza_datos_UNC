@@ -20,10 +20,10 @@ def aviso(msg):
 # ## 1. Cargar y descartar identificadores **inmediatamente**
 
 # %%
-ORIGEN = ""   # URL o ruta del archivo real (si lo usás, trabajá solo con el resultado de las celdas siguientes)
+ORIGEN = "https://datos.sfp.gov.py/data/funcionarios/download"   # conjunto «funcionarios» de la SFP (o una ruta local). Ponelo en "" para usar solo la plantilla sintética.
 if ORIGEN:
     try: crudo = A.leer_tabla(ORIGEN)
-    except Exception as e: aviso(f"No se pudo leer ({e}). Se usa la plantilla SINTÉTICA."); crudo = pd.read_csv(EJ / "nomina_demo.csv")
+    except Exception as e: aviso(f"No se pudo leer ({e}).\nSe usa la plantilla SINTÉTICA. Si el problema es de conexión: descargá el archivo con tu navegador, subilo a Colab y poné su ruta en ORIGEN."); crudo = pd.read_csv(EJ / "nomina_demo.csv")
 else:
     aviso("Usando plantilla SINTÉTICA (sin nombres ni documentos)."); crudo = pd.read_csv(EJ / "nomina_demo.csv")
 df, eliminadas = A.quitar_identificadores(crudo); del crudo
@@ -34,7 +34,7 @@ print("Columnas eliminadas por identificar personas:", eliminadas or "(ninguna d
 
 # %%
 COL = dict(entidad="entidad", sexo="sexo", salario="salario_gs", nivel="nivel", categoria="categoria")
-assert all(v in df.columns for v in COL.values()), "Ajustá COL a las columnas reales."
+assert all(v in df.columns for v in COL.values()), f"Ajustá COL a las columnas reales. Columnas disponibles: {list(df.columns)}"
 d = df.rename(columns={v: k for k, v in COL.items()}); d["salario"] = pd.to_numeric(d["salario"], errors="coerce"); print(d.salario.describe().round(0).to_string())
 
 # %% [markdown]

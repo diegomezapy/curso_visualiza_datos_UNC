@@ -21,6 +21,11 @@ def leer_tabla(origen, **kw) -> pd.DataFrame:
     """Lee CSV/XLSX/JSON desde una URL o ruta. Prueba separadores y codificaciones comunes en Paraguay (utf-8, latin-1)."""
     nombre = str(origen).lower().split("?")[0]
     datos = descargar(origen) if str(origen).startswith(("http://", "https://")) else open(origen, "rb").read()
+    if datos[:2] == b"PK" and not nombre.endswith((".xlsx", ".xls")):          # ZIP: usa el primer CSV/XLSX/JSON que contenga
+        import zipfile
+        with zipfile.ZipFile(io.BytesIO(datos)) as z:
+            dentro = next(n for n in z.namelist() if n.lower().endswith((".csv", ".xlsx", ".json")))
+            datos, nombre = z.read(dentro), dentro.lower()
     if nombre.endswith((".xlsx", ".xls")): return pd.read_excel(io.BytesIO(datos), **kw)
     if nombre.endswith(".json"): return pd.json_normalize(json.loads(datos.decode("utf-8", "replace")))
     for enc in ("utf-8", "utf-8-sig", "latin-1"):
@@ -170,3 +175,42 @@ def suprimir_celdas_pequenas(tabla: pd.DataFrame, col_n: str = "n", k: int = 5, 
     for c in t.columns:
         if c != col_n and pd.api.types.is_numeric_dtype(t[c]): t.loc[peq, c] = marca
     t["suprimida"] = peq; return t
+
+
+# ------------------------------------------------------------------ EPHC (INE) — URLs y archivos verificados (nov. 2026)
+def url_ephc(anio: int, tabla: str = "REG02") -> str:
+    """URL del CSV anual de la EPHC en el INE. tabla: REG02 (personas), REG01 (viviendas) o INGREFAM (ingreso familiar). Años confirmados: 2022–2025."""
+    return f"https://www.ine.gov.py/microdatos/register/EPHC-ANUAL/EPHC_{anio}_ANUAL/{tabla}_EPHC_ANUAL_{anio}.csv"
+
+def a_numerico(s: pd.Series) -> pd.Series:
+    """Convierte texto numérico de los archivos del INE: celdas con espacios en blanco → NaN y coma decimal → punto."""
+    return pd.to_numeric(s.astype(str).str.strip().str.replace(",", ".", regex=False), errors="coerce")
+
+def leer_ephc(origen, tabla: str = "REG02", columnas=None, numericas=None) -> pd.DataFrame:
+    """Lee un CSV de la EPHC (separador ';', UTF-8 con BOM, coma decimal, blancos como vacío). `origen`: año (int) o URL/ruta."""
+    fuente = url_ephc(origen, tabla) if isinstance(origen, int) else origen
+    datos = descargar(fuente, timeout=180) if str(fuente).startswith("http") else open(fuente, "rb").read()
+    df = pd.read_csv(io.BytesIO(datos), sep=";", encoding="utf-8-sig", low_memory=False, usecols=columnas)
+    for c in (numericas or []):
+        if c in df: df[c] = a_numerico(df[c])
+    return df
+
+# ------------------------------------------------------------------ DNIT: recaudación tributaria (Excel por año)
+DNIT_ESTADISTICAS = "https://www.dnit.gov.py/web/portal-institucional/estadisticas"
+MESES = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"]
+
+def buscar_url_dnit_recaudacion(anio: int, html: str | None = None) -> str:
+    """Busca en la página de Estadísticas de la DNIT el enlace vigente del Excel «Recaudación por impuesto, departamento, distrito y actividad económica» del año.
+    El enlace cambia (lleva un identificador y una marca de tiempo), por eso se busca en la página en vez de fijarlo."""
+    html = html or descargar(DNIT_ESTADISTICAS).decode("utf-8", "replace")
+    m = re.search(r'href="([^"]*Departamento_Distrito_Actividad_Economica_%d\.xlsx[^"]*)"' % anio, html)
+    if not m: raise SinConexion(f"No se encontró el archivo de recaudación {anio} en la página de Estadísticas de la DNIT")
+    u = m.group(1).replace("&amp;", "&"); return u if u.startswith("http") else "https://www.dnit.gov.py" + u
+
+def limpiar_recaudacion(df: pd.DataFrame) -> pd.DataFrame:
+    """El Excel trae al pie notas explicativas dentro de la columna Mes y la columna Año como texto. Devuelve la tabla ordenada con fecha (primer día del mes)."""
+    d = df.copy(); d.columns = [str(c).strip() for c in d.columns]
+    d = d[d["Mes"].astype(str).str.upper().isin(MESES) & pd.to_numeric(d["Recaudacion"], errors="coerce").notna()].copy()
+    d["Año"] = pd.to_numeric(d["Año"], errors="coerce").astype("Int64"); d["Recaudacion"] = pd.to_numeric(d["Recaudacion"], errors="coerce")
+    d["mes_n"] = d["Mes"].str.upper().map({m: i + 1 for i, m in enumerate(MESES)}); d["fecha"] = pd.to_datetime(dict(year=d["Año"].astype(int), month=d["mes_n"], day=1))
+    return d.reset_index(drop=True)

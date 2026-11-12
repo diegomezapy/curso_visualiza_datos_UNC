@@ -2,10 +2,11 @@
 Fuente de verdad: de aquí salen la página «Datos abiertos» del aula, docs/datos_abiertos_reales.md y las prácticas.
 
 CAMPO `estado` (honestidad sobre lo que se pudo comprobar al armar el catálogo, noviembre de 2026):
+  "verificado"   → se DESCARGÓ y se inspeccionó el archivo real (columnas, filas, calidad). Solo: EPHC (INE) y recaudación (DNIT).
   "documentado"  → la fuente y su acceso aparecen en documentación oficial o en varias fuentes; no se pudo abrir desde el entorno de desarrollo.
   "verificar"    → hay indicios de que existe pero su disponibilidad o URL vigente es incierta: comprobar con practicas_reales/pr00_verificar_fuentes.
   "incierto"     → hubo cambios o bajas recientes (ver `aviso`).
-Ninguna fila fue descargada ni inspeccionada aquí: los nombres de columnas se confirman con el diccionario de datos de cada fuente."""
+Salvo las fuentes "verificado", ninguna fila fue descargada ni inspeccionada: los nombres de columnas se confirman con el diccionario de cada fuente."""
 
 FUENTES = [
  dict(id="dncp", nombre="Contrataciones públicas abiertas (DNCP)", inst="Dirección Nacional de Contrataciones Públicas", estado="documentado", sensible=False, tipo="API + descargas masivas",
@@ -20,24 +21,30 @@ FUENTES = [
   sesiones=[2, 3, 7], practica="pr03_banco_mundial", titulo_practica="Paraguay en la región: comercio exterior y economía",
   ideas=["Series temporales comparadas (S2–S3)", "Engaños: ejes y escalas (S3)", "Small multiples por país (S4)"],
   aviso="Los años más recientes suelen venir sin dato (NA). Es la alternativa estable para comercio exterior mientras se aclara el estado del portal de Aduanas."),
- dict(id="ephc", nombre="Encuesta Permanente de Hogares Continua (EPHC)", inst="Instituto Nacional de Estadística (INE)", estado="verificar", sensible=True, tipo="Microdatos de encuesta",
-  formato="CSV / SPSS / Stata (según publicación)", url="https://www.ine.gov.py", doc="https://www.bancomundial.org/es/news/press-release/2022/03/17/banco-mundial-apoya-desarrollo-del-primer-cat-logo-de-metadatos-y-microdatos-del-paraguay",
-  contiene="Hogares y personas: ingresos, empleo, educación, vivienda. Es una muestra: se necesita el factor de expansión para estimar a la población.",
-  sesiones=[2, 3, 7], practica="pr04_ephc_pesos", titulo_practica="Datos de encuesta: por qué el peso muestral cambia la historia",
-  ideas=["Distribuciones ponderadas vs sin ponderar (S2)", "Gráficos honestos con incertidumbre (S3)", "Mapas por departamento con tasas (S7)"],
-  aviso="El INE presentó en 2022 un catálogo de microdatos (7 de 13 operativos con acceso). Algunas bases se descargan directo y otras requieren solicitud. Hay subconjuntos publicados en datos.gov.py. Confirmar el acceso vigente y leer el diccionario de variables."),
- dict(id="nomina", nombre="Nómina de funcionarios públicos", inst="Viceministerio de Capital Humano y Gestión Organizacional (MEF)", estado="verificar", sensible=True, tipo="Portal de datos abiertos",
-  formato="CSV (a confirmar)", url="https://www.datos.gov.py", doc="https://www.datos.gov.py",
-  contiene="Registros del personal permanente y contratado de las entidades del Estado (SICCA). La información no es completa: depende de lo que cada entidad reporta.",
+ dict(id="ephc", nombre="Encuesta Permanente de Hogares Continua (EPHC) anual", inst="Instituto Nacional de Estadística (INE)", estado="verificado", sensible=True, tipo="Microdatos de encuesta (descarga directa)",
+  formato="CSV (;) · SAV · diccionario XLS/DOC", url="https://www.ine.gov.py/microdatos/", doc="https://www.ine.gov.py/microdatos/register/EPHC-ANUAL/EPHC_2025_ANUAL/diccionario_EPHC_ANUAL_2025.xls",
+  contiene="Personas, viviendas e ingreso familiar de hogares paraguayos, años 2022–2025 (tablas REG02 personas, REG01 viviendas, INGREFAM). El archivo de personas 2025 tiene 55.934 filas y 213 variables. Es una muestra: se necesita el factor de expansión (variable FACTOR) para estimar a la población.",
+  sesiones=[2, 3, 7], practica="pr04_ephc_pesos", titulo_practica="Encuestas: por qué el peso muestral cambia la historia",
+  ideas=["Distribuciones ponderadas vs sin ponderar (S2)", "Brecha de ingreso con intervalo de confianza (S3)", "Pobreza por departamento como tasa ponderada (S7)"],
+  aviso="Verificada: archivo REG02 2025 descargado e inspeccionado. Particularidades reales: separador «;», UTF-8 con BOM, coma decimal, celdas en blanco como espacio, códigos especiales (p. ej. añoest = 99) y valores extremos de ingreso. Variables útiles: FACTOR, AREA (1 urbana, 6 rural), P06 (1 hombre, 6 mujer), P02 (edad), DPTO (0–15), añoest, e01aimde (ingreso mensual de la ocupación principal), PEAA (1 ocupados), pobrezai (1 extrema, 2 no extrema, 3 no pobre), ipcm, quintili. Licencia (Decreto 4064/Ley 5282/2014): citar la fuente y la fecha de actualización y no sugerir patrocinio oficial. Los microdatos están anonimizados pero describen personas: trabajar con agregados. La práctica incluye una muestra real de 3.000 filas para uso sin conexión."),
+ dict(id="nomina", nombre="Funcionarios públicos (SFP)", inst="Secretaría de la Función Pública (SFP) · datos del SICCA", estado="verificar", sensible=True, tipo="Portal de datos abiertos (descarga)",
+  formato="a confirmar (CSV/ZIP)", url="https://datos.sfp.gov.py", doc="https://datos.sfp.gov.py/data/funcionarios/download",
+  contiene="Registros del personal permanente y contratado de las entidades del Estado. Según constancias del MEF, la información no es completa: depende de lo que cada entidad reporta, y los datos deben ser corroborados por quien los usa.",
   sesiones=[2, 3, 4, 8], practica="pr05_nomina_privacidad", titulo_practica="Datos personales: visualizar sin exponer personas",
   ideas=["Distribución salarial por entidad y brecha de género (S2–S3)", "KPIs de plantilla (S4)", "Ética: agregación y supresión de celdas pequeñas (S3)"],
-  aviso="⚠️ Contiene datos personales de personas identificables aunque sean públicos por ley. En el curso se trabaja SOLO con agregados: se descartan nombres y documentos al cargar y se suprimen grupos pequeños. Citar la fuente es obligatorio y los datos deben ser corroborados por quien los usa (aviso del propio VCHGO). Esta práctica usa datos sintéticos por defecto."),
- dict(id="aduanas", nombre="Comercio exterior · Aduanas (DNIT)", inst="Dirección Nacional de Ingresos Tributarios (absorbió a la Aduana)", estado="incierto", sensible=False, tipo="Portal (en revisión)",
-  formato="a confirmar", url="https://www.dnit.gov.py", doc="https://www.abc.com.py/economia/2024/12/20/dnit-actualizara-portal-de-datos-abiertos/",
-  contiene="Operaciones de importación y exportación. Su portal de datos abiertos fue retirado a fines de 2024 y la DNIT lo declaró «en revisión» (la ley restringe algunos datos). No se pudo confirmar si volvió a publicarse.",
+  aviso="⚠️ No se pudo conectar a datos.sfp.gov.py desde el entorno de desarrollo (el servidor cierra la conexión TLS durante el handshake), por eso NO se inspeccionó el archivo ni se conocen sus columnas. Probar desde Colab (pr00) o descargarlo con el navegador y subirlo. Contiene datos personales de personas identificables aunque sean públicos por ley: en el curso se trabaja SOLO con agregados (se descartan nombres y documentos al cargar y se suprimen grupos pequeños). Esta práctica usa datos sintéticos por defecto."),
+ dict(id="dnit", nombre="Recaudación tributaria por impuesto, departamento, distrito y actividad (DNIT)", inst="Dirección Nacional de Ingresos Tributarios (DNIT)", estado="verificado", sensible=False, tipo="Excel por año (descarga directa)",
+  formato="XLSX (≈35 MB por año) · 2016–2026", url="https://www.dnit.gov.py/web/portal-institucional/estadisticas", doc="https://www.dnit.gov.py/web/portal-institucional/estadisticas",
+  contiene="Recaudación mensual por tipo de impuesto (internos y aduaneros), categoría y tipo de contribuyente, actividad económica principal (694 actividades), departamento y distrito (247). El archivo de 2025 tiene 652.021 filas y suma ≈ 42,3 billones de Gs. También hay detalle de contribuyentes por estado, departamento y obligación, y reportes mensuales en PDF.",
+  sesiones=[2, 4, 5, 7], practica="pr07_dnit_recaudacion", titulo_practica="¿Quién paga y dónde? Recaudación tributaria en Paraguay",
+  ideas=["Serie mensual y estacionalidad (S2, S7)", "Pareto de actividades económicas (S2)", "KPIs de recaudación (S4)", "Concentración por distrito: curva de Lorenz (S7)"],
+  aviso="Verificada: archivo 2025 descargado e inspeccionado. Hay que limpiar: al pie del Excel hay notas explicativas dentro de la columna Mes y el año viene como texto. El departamento es el del DOMICILIO FISCAL del contribuyente, no el lugar donde ocurre la actividad (CAPITAL concentra más de la mitad). Los datos son agregados (no personas). El enlace de descarga cambia (lleva identificador y marca de tiempo): la práctica lo busca en la página de Estadísticas. Citar la fuente y la fecha; la DNIT puede restringir datos por ley."),
+ dict(id="aduanas", nombre="Comercio exterior · Aduanas (importaciones y exportaciones)", inst="Dirección Nacional de Ingresos Tributarios (absorbió a la Aduana)", estado="incierto", sensible=False, tipo="Sin conjunto descargable verificado",
+  formato="—", url="https://www.dnit.gov.py/web/portal-institucional/datos-abiertos", doc="https://www.abc.com.py/economia/2024/12/20/dnit-actualizara-portal-de-datos-abiertos/",
+  contiene="Verificado en noviembre de 2026: la página «Datos abiertos» de la DNIT NO lista conjuntos descargables y su sección «Estadísticas» publica recaudación (ver arriba), no flujos de importación/exportación. El portal de datos aduaneros fue retirado a fines de 2024 y la DNIT lo declaró «en revisión».",
   sesiones=[4, 5, 7], practica="pr03_banco_mundial", titulo_practica="Comercio exterior (con alternativas)",
-  ideas=["Si el portal está activo: series de importaciones/exportaciones por producto y país", "Alternativas: Banco Mundial (WITS/WDI), UN Comtrade, Reporte de Comercio Exterior del BCP"],
-  aviso="NO asumir que hay datos aduaneros disponibles. Verificar con pr00_verificar_fuentes o consultar a la DNIT; mientras tanto usar las alternativas."),
+  ideas=["Alternativas: Banco Mundial (WDI/WITS), UN Comtrade, Reporte de Comercio Exterior del BCP", "Recaudación aduanera por departamento/actividad (práctica DNIT)"],
+  aviso="NO asumir que hay datos de comercio exterior por producto o país en la DNIT. Consultar a la institución o usar las alternativas."),
  dict(id="mapbiomas", nombre="MapBiomas Paraguay · Cobertura y uso del suelo", inst="MapBiomas Paraguay", estado="documentado", sensible=False, tipo="Ráster en Google Earth Engine + estadísticas descargables",
   formato="Ráster 30 m anual (1985–2023, Colección 2) · tablas de estadísticas", url="https://paraguay.mapbiomas.org", doc="https://paraguay.mapbiomas.org/en/productos/",
   contiene="Mapas anuales de cobertura y uso del suelo. Las estadísticas en hectáreas por departamento y distrito se pueden descargar sin usar Earth Engine.",
@@ -71,13 +78,14 @@ FUENTES = [
 ]
 
 POR_ID = {f["id"]: f for f in FUENTES}
-ESTADOS = {"documentado": ("✅", "Documentada"), "verificar": ("🔎", "Verificar acceso"), "incierto": ("⚠️", "Estado incierto")}
+ESTADOS = {"verificado": ("🟢", "Verificada (descargada e inspeccionada)"), "documentado": ("✅", "Documentada"), "verificar": ("🔎", "Verificar acceso"), "incierto": ("⚠️", "Estado incierto")}
 PRACTICAS = [
  ("pr00_verificar_fuentes", "Verificar fuentes (docente)", "Comprueba en Colab cuáles fuentes responden hoy y qué estructura tienen.", [1], "docente"),
  ("pr01_explorador", "Explorador de datasets", "Perfila cualquier CSV/Excel y propone gráficos según el tipo de dato.", [1, 2], "estudiante"),
  ("pr02_dncp", "Contrataciones públicas (DNCP)", "OCDS → tabla ordenada → KPIs, series y red comprador–proveedor.", [4, 5, 8], "estudiante"),
  ("pr03_banco_mundial", "Paraguay en la región (Banco Mundial)", "API pública: series, comparaciones y gráficos honestos.", [2, 3], "estudiante"),
- ("pr04_ephc_pesos", "Encuestas y pesos muestrales", "Por qué ponderar cambia las conclusiones.", [2, 3], "estudiante"),
+ ("pr04_ephc_pesos", "EPHC (INE): encuestas y pesos muestrales", "Microdatos reales: por qué ponderar cambia las conclusiones.", [2, 3], "estudiante"),
  ("pr05_nomina_privacidad", "Datos personales y agregación", "Visualizar sin exponer: anonimizar, agregar, suprimir celdas pequeñas.", [3, 4], "estudiante"),
  ("pr06_earth_engine_mapbiomas", "Earth Engine y MapBiomas", "Cambio de uso del suelo con geemap.", [7], "estudiante"),
+ ("pr07_dnit_recaudacion", "Recaudación tributaria (DNIT)", "Datos reales sucios: limpiar, tidy, Pareto, series y concentración.", [2, 4, 7], "estudiante"),
 ]

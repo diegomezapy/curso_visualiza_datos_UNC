@@ -44,4 +44,20 @@ pr = pd.DataFrame({"Nombre y Apellido": ["a"], "CI": [1], "teléfono": [2], "sal
 assert set(quitadas) == {"Nombre y Apellido", "CI", "teléfono", "ruc"} and list(sin.columns) == ["salario", "entidad"]; print("✔ quitar_identificadores:", quitadas)
 nm = pd.read_csv(E / "nomina_demo.csv"); g = nm.groupby("entidad").agg(n=("salario_gs", "size"), salario_medio=("salario_gs", "mean")).reset_index(); g.loc[0, "n"] = 3
 s = A.suprimir_celdas_pequenas(g, "n", 5); assert s.loc[0, "suprimida"] and np.isnan(s.loc[0, "salario_medio"]) and not s.loc[1, "suprimida"]; print("✔ suprimir_celdas_pequenas: grupos con n < 5 ocultos")
+
+# EPHC real (muestra de 3.000 filas del archivo REG02 2025 del INE)
+assert A.url_ephc(2025, "REG02") == "https://www.ine.gov.py/microdatos/register/EPHC-ANUAL/EPHC_2025_ANUAL/REG02_EPHC_ANUAL_2025.csv"
+r = A.leer_ephc(str(E / "ephc_2025_muestra.csv"), numericas=["FACTOR", "e01aimde", "añoest", "P02", "AREA", "P06", "PEAA"]); assert len(r) == 3000 and r["FACTOR"].notna().all() and r["e01aimde"].dtype.kind == "f"
+oc = r[(r.PEAA == 1) & (r.e01aimde > 0)]; assert len(oc) > 500 and A.media_ponderada(oc.e01aimde, oc.FACTOR) != oc.e01aimde.mean(); print(f"✔ EPHC real (muestra): {len(r)} filas, {len(oc)} ocupados con ingreso; coma decimal y blancos convertidos")
+assert abs(A.a_numerico(pd.Series(["4917667,813", " ", "12", None])).fillna(-1).tolist()[0] - 4917667.813) < 1e-6 and A.a_numerico(pd.Series([" "])).isna().all(); print("✔ a_numerico: coma decimal y espacios")
+# DNIT
+html = '<a href="/documents/20123/3872761/5.+Recaudaci%C3%B3n_Por_Impuesto_Departamento_Distrito_Actividad_Economica_2025.xlsx/ba8c07fb?t=17925" download>Descargar</a><a href="/documents/x/Departamento_Distrito_Actividad_Economica_2024.xlsx/aa?t=1">d</a>'
+u = A.buscar_url_dnit_recaudacion(2025, html); assert u.startswith("https://www.dnit.gov.py/documents/") and "2025.xlsx" in u and "?t=17925" in u
+try: A.buscar_url_dnit_recaudacion(2019, html); raise SystemExit("debía fallar")
+except A.SinConexion: pass
+print("✔ buscar_url_dnit_recaudacion: encuentra el enlace del año aunque cambie el identificador")
+dm = pd.read_csv(E / "dnit_recaudacion_2025_muestra.csv"); sucio = pd.concat([dm, pd.DataFrame({"Mes": ["Tributos Internos:", None], "Recaudacion": [None, None]})], ignore_index=True); sucio["Año"] = sucio["Año"].astype(object)
+L = A.limpiar_recaudacion(sucio); assert len(L) == len(dm) and L["fecha"].min().month == 1 and L["Año"].dtype.name == "Int64" and (L["Recaudacion"] > 0).all(); print(f"✔ limpiar_recaudacion: elimina notas al pie ({len(sucio)-len(L)} filas) y crea fecha")
+import zipfile, io
+b = io.BytesIO(); z = zipfile.ZipFile(b, "w"); z.writestr("datos.csv", "a,b\n1,2\n3,4\n"); z.close(); Path("/tmp/prueba.zip").write_bytes(b.getvalue()); assert A.leer_tabla("/tmp/prueba.zip").shape == (2, 2); print("✔ leer_tabla: archivos ZIP")
 print("\nTodas las pruebas de abiertos.py pasaron.")

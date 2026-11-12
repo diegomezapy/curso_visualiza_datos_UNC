@@ -5,9 +5,9 @@
 Las prácticas del curso usan **datos abiertos reales de Paraguay y de fuentes globales** (compras públicas, encuestas de hogares, nómina estatal, imágenes satelitales, comercio exterior…) para dar a cada ejercicio una pregunta con sentido y una audiencia real.
 
 ## ⚠️ Lea esto primero: estado real de cada fuente
-El catálogo se armó con búsquedas en noviembre de 2026; **desde el entorno de desarrollo no se pudo abrir ninguna fuente ni inspeccionar filas**. Por eso:
-- Cada fuente trae un **estado** (✅ documentada · 🔎 verificar acceso · ⚠️ incierto).
-- **No hay nombres de columnas “de memoria”**: las prácticas se adaptan al esquema real (perfilado automático) o piden mapear las columnas con el diccionario oficial.
+El catálogo se armó en noviembre de 2026. **Dos fuentes se descargaron e inspeccionaron de verdad** (🟢 EPHC del INE y recaudación de la DNIT); **las demás solo se documentaron con búsquedas** porque desde el entorno de desarrollo no fue posible abrirlas. Por eso:
+- Cada fuente trae un **estado** (🟢 verificada · ✅ documentada · 🔎 verificar acceso · ⚠️ incierto).
+- En las fuentes no verificadas **no hay nombres de columnas “de memoria”**: las prácticas se adaptan al esquema real (perfilado automático) o piden mapear las columnas con el diccionario oficial.
 - Todas las prácticas **funcionan sin conexión con datos sintéticos claramente rotulados**, y se activan con datos reales al pegar la URL.
 - **Antes de la primera clase**, el docente debe ejecutar `practicas_reales/pr00_verificar_fuentes` en Colab y revisar los pasos manuales (registro en Earth Engine, diccionario de la EPHC, ID del asset de MapBiomas…).
 
@@ -17,9 +17,10 @@ El catálogo se armó con búsquedas en noviembre de 2026; **desde el entorno de
 |---|---|---|---|
 | [Contrataciones públicas abiertas (DNCP)](#dncp) | ✅ Documentada | 2, 4, 5, 6, 8 | `pr02_dncp` |
 | [Banco Mundial · Indicadores de desarrollo (WDI)](#bm) | ✅ Documentada | 2, 3, 7 | `pr03_banco_mundial` |
-| [Encuesta Permanente de Hogares Continua (EPHC)](#ephc) | 🔎 Verificar acceso · 🔒 datos personales | 2, 3, 7 | `pr04_ephc_pesos` |
-| [Nómina de funcionarios públicos](#nomina) | 🔎 Verificar acceso · 🔒 datos personales | 2, 3, 4, 8 | `pr05_nomina_privacidad` |
-| [Comercio exterior · Aduanas (DNIT)](#aduanas) | ⚠️ Estado incierto | 4, 5, 7 | `pr03_banco_mundial` |
+| [Encuesta Permanente de Hogares Continua (EPHC) anual](#ephc) | 🟢 Verificada (descargada e inspeccionada) · 🔒 datos personales | 2, 3, 7 | `pr04_ephc_pesos` |
+| [Funcionarios públicos (SFP)](#nomina) | 🔎 Verificar acceso · 🔒 datos personales | 2, 3, 4, 8 | `pr05_nomina_privacidad` |
+| [Recaudación tributaria por impuesto, departamento, distrito y actividad (DNIT)](#dnit) | 🟢 Verificada (descargada e inspeccionada) | 2, 4, 5, 7 | `pr07_dnit_recaudacion` |
+| [Comercio exterior · Aduanas (importaciones y exportaciones)](#aduanas) | ⚠️ Estado incierto | 4, 5, 7 | `pr03_banco_mundial` |
 | [MapBiomas Paraguay · Cobertura y uso del suelo](#mapbiomas) | ✅ Documentada | 7 | `pr06_earth_engine_mapbiomas` |
 | [Google Earth Engine · Catálogo global](#gee) | ✅ Documentada | 7 | `pr06_earth_engine_mapbiomas` |
 | [Portal de Datos Abiertos de Paraguay](#datosgov) | 🔎 Verificar acceso | 1, 2, 7 | `pr01_explorador` |
@@ -48,38 +49,49 @@ Miles de indicadores por país y año (economía, comercio exterior, población,
 - **Ideas:** Series temporales comparadas (S2–S3); Engaños: ejes y escalas (S3); Small multiples por país (S4)
 - **Cuidado:** Los años más recientes suelen venir sin dato (NA). Es la alternativa estable para comercio exterior mientras se aclara el estado del portal de Aduanas.
 
-### Encuesta Permanente de Hogares Continua (EPHC) {#ephc}
+### Encuesta Permanente de Hogares Continua (EPHC) anual {#ephc}
 
-**Instituto Nacional de Estadística (INE)** · 🔎 Verificar acceso · Microdatos de encuesta · CSV / SPSS / Stata (según publicación)
+**Instituto Nacional de Estadística (INE)** · 🟢 Verificada (descargada e inspeccionada) · Microdatos de encuesta (descarga directa) · CSV (;) · SAV · diccionario XLS/DOC
 
-Hogares y personas: ingresos, empleo, educación, vivienda. Es una muestra: se necesita el factor de expansión para estimar a la población.
+Personas, viviendas e ingreso familiar de hogares paraguayos, años 2022–2025 (tablas REG02 personas, REG01 viviendas, INGREFAM). El archivo de personas 2025 tiene 55.934 filas y 213 variables. Es una muestra: se necesita el factor de expansión (variable FACTOR) para estimar a la población.
 
-- **Portal:** <https://www.ine.gov.py> · **Documentación:** <https://www.bancomundial.org/es/news/press-release/2022/03/17/banco-mundial-apoya-desarrollo-del-primer-cat-logo-de-metadatos-y-microdatos-del-paraguay>
-- **Práctica:** `pr04_ephc_pesos` — Datos de encuesta: por qué el peso muestral cambia la historia (Python/Colab)
-- **Ideas:** Distribuciones ponderadas vs sin ponderar (S2); Gráficos honestos con incertidumbre (S3); Mapas por departamento con tasas (S7)
-- **Cuidado:** El INE presentó en 2022 un catálogo de microdatos (7 de 13 operativos con acceso). Algunas bases se descargan directo y otras requieren solicitud. Hay subconjuntos publicados en datos.gov.py. Confirmar el acceso vigente y leer el diccionario de variables.
+- **Portal:** <https://www.ine.gov.py/microdatos/> · **Documentación:** <https://www.ine.gov.py/microdatos/register/EPHC-ANUAL/EPHC_2025_ANUAL/diccionario_EPHC_ANUAL_2025.xls>
+- **Práctica:** `pr04_ephc_pesos` — Encuestas: por qué el peso muestral cambia la historia (Python/Colab)
+- **Ideas:** Distribuciones ponderadas vs sin ponderar (S2); Brecha de ingreso con intervalo de confianza (S3); Pobreza por departamento como tasa ponderada (S7)
+- **Cuidado:** Verificada: archivo REG02 2025 descargado e inspeccionado. Particularidades reales: separador «;», UTF-8 con BOM, coma decimal, celdas en blanco como espacio, códigos especiales (p. ej. añoest = 99) y valores extremos de ingreso. Variables útiles: FACTOR, AREA (1 urbana, 6 rural), P06 (1 hombre, 6 mujer), P02 (edad), DPTO (0–15), añoest, e01aimde (ingreso mensual de la ocupación principal), PEAA (1 ocupados), pobrezai (1 extrema, 2 no extrema, 3 no pobre), ipcm, quintili. Licencia (Decreto 4064/Ley 5282/2014): citar la fuente y la fecha de actualización y no sugerir patrocinio oficial. Los microdatos están anonimizados pero describen personas: trabajar con agregados. La práctica incluye una muestra real de 3.000 filas para uso sin conexión.
 
-### Nómina de funcionarios públicos {#nomina}
+### Funcionarios públicos (SFP) {#nomina}
 
-**Viceministerio de Capital Humano y Gestión Organizacional (MEF)** · 🔎 Verificar acceso · Portal de datos abiertos · CSV (a confirmar)
+**Secretaría de la Función Pública (SFP) · datos del SICCA** · 🔎 Verificar acceso · Portal de datos abiertos (descarga) · a confirmar (CSV/ZIP)
 
-Registros del personal permanente y contratado de las entidades del Estado (SICCA). La información no es completa: depende de lo que cada entidad reporta.
+Registros del personal permanente y contratado de las entidades del Estado. Según constancias del MEF, la información no es completa: depende de lo que cada entidad reporta, y los datos deben ser corroborados por quien los usa.
 
-- **Portal:** <https://www.datos.gov.py> · **Documentación:** <https://www.datos.gov.py>
+- **Portal:** <https://datos.sfp.gov.py> · **Documentación:** <https://datos.sfp.gov.py/data/funcionarios/download>
 - **Práctica:** `pr05_nomina_privacidad` — Datos personales: visualizar sin exponer personas (Python/Colab)
 - **Ideas:** Distribución salarial por entidad y brecha de género (S2–S3); KPIs de plantilla (S4); Ética: agregación y supresión de celdas pequeñas (S3)
-- **Cuidado:** ⚠️ Contiene datos personales de personas identificables aunque sean públicos por ley. En el curso se trabaja SOLO con agregados: se descartan nombres y documentos al cargar y se suprimen grupos pequeños. Citar la fuente es obligatorio y los datos deben ser corroborados por quien los usa (aviso del propio VCHGO). Esta práctica usa datos sintéticos por defecto.
+- **Cuidado:** ⚠️ No se pudo conectar a datos.sfp.gov.py desde el entorno de desarrollo (el servidor cierra la conexión TLS durante el handshake), por eso NO se inspeccionó el archivo ni se conocen sus columnas. Probar desde Colab (pr00) o descargarlo con el navegador y subirlo. Contiene datos personales de personas identificables aunque sean públicos por ley: en el curso se trabaja SOLO con agregados (se descartan nombres y documentos al cargar y se suprimen grupos pequeños). Esta práctica usa datos sintéticos por defecto.
 
-### Comercio exterior · Aduanas (DNIT) {#aduanas}
+### Recaudación tributaria por impuesto, departamento, distrito y actividad (DNIT) {#dnit}
 
-**Dirección Nacional de Ingresos Tributarios (absorbió a la Aduana)** · ⚠️ Estado incierto · Portal (en revisión) · a confirmar
+**Dirección Nacional de Ingresos Tributarios (DNIT)** · 🟢 Verificada (descargada e inspeccionada) · Excel por año (descarga directa) · XLSX (≈35 MB por año) · 2016–2026
 
-Operaciones de importación y exportación. Su portal de datos abiertos fue retirado a fines de 2024 y la DNIT lo declaró «en revisión» (la ley restringe algunos datos). No se pudo confirmar si volvió a publicarse.
+Recaudación mensual por tipo de impuesto (internos y aduaneros), categoría y tipo de contribuyente, actividad económica principal (694 actividades), departamento y distrito (247). El archivo de 2025 tiene 652.021 filas y suma ≈ 42,3 billones de Gs. También hay detalle de contribuyentes por estado, departamento y obligación, y reportes mensuales en PDF.
 
-- **Portal:** <https://www.dnit.gov.py> · **Documentación:** <https://www.abc.com.py/economia/2024/12/20/dnit-actualizara-portal-de-datos-abiertos/>
+- **Portal:** <https://www.dnit.gov.py/web/portal-institucional/estadisticas> · **Documentación:** <https://www.dnit.gov.py/web/portal-institucional/estadisticas>
+- **Práctica:** `pr07_dnit_recaudacion` — ¿Quién paga y dónde? Recaudación tributaria en Paraguay (Python/Colab)
+- **Ideas:** Serie mensual y estacionalidad (S2, S7); Pareto de actividades económicas (S2); KPIs de recaudación (S4); Concentración por distrito: curva de Lorenz (S7)
+- **Cuidado:** Verificada: archivo 2025 descargado e inspeccionado. Hay que limpiar: al pie del Excel hay notas explicativas dentro de la columna Mes y el año viene como texto. El departamento es el del DOMICILIO FISCAL del contribuyente, no el lugar donde ocurre la actividad (CAPITAL concentra más de la mitad). Los datos son agregados (no personas). El enlace de descarga cambia (lleva identificador y marca de tiempo): la práctica lo busca en la página de Estadísticas. Citar la fuente y la fecha; la DNIT puede restringir datos por ley.
+
+### Comercio exterior · Aduanas (importaciones y exportaciones) {#aduanas}
+
+**Dirección Nacional de Ingresos Tributarios (absorbió a la Aduana)** · ⚠️ Estado incierto · Sin conjunto descargable verificado · —
+
+Verificado en noviembre de 2026: la página «Datos abiertos» de la DNIT NO lista conjuntos descargables y su sección «Estadísticas» publica recaudación (ver arriba), no flujos de importación/exportación. El portal de datos aduaneros fue retirado a fines de 2024 y la DNIT lo declaró «en revisión».
+
+- **Portal:** <https://www.dnit.gov.py/web/portal-institucional/datos-abiertos> · **Documentación:** <https://www.abc.com.py/economia/2024/12/20/dnit-actualizara-portal-de-datos-abiertos/>
 - **Práctica:** `pr03_banco_mundial` — Comercio exterior (con alternativas) (Python/Colab y R/RPubs)
-- **Ideas:** Si el portal está activo: series de importaciones/exportaciones por producto y país; Alternativas: Banco Mundial (WITS/WDI), UN Comtrade, Reporte de Comercio Exterior del BCP
-- **Cuidado:** NO asumir que hay datos aduaneros disponibles. Verificar con pr00_verificar_fuentes o consultar a la DNIT; mientras tanto usar las alternativas.
+- **Ideas:** Alternativas: Banco Mundial (WDI/WITS), UN Comtrade, Reporte de Comercio Exterior del BCP; Recaudación aduanera por departamento/actividad (práctica DNIT)
+- **Cuidado:** NO asumir que hay datos de comercio exterior por producto o país en la DNIT. Consultar a la institución o usar las alternativas.
 
 ### MapBiomas Paraguay · Cobertura y uso del suelo {#mapbiomas}
 
@@ -144,9 +156,10 @@ Presupuesto aprobado y ejecutado por entidad. Los datos provienen del sistema co
 | 1, 2 | `pr01_explorador` · Explorador de datasets | Perfila cualquier CSV/Excel y propone gráficos según el tipo de dato. |
 | 4, 5, 8 | `pr02_dncp` · Contrataciones públicas (DNCP) | OCDS → tabla ordenada → KPIs, series y red comprador–proveedor. |
 | 2, 3 | `pr03_banco_mundial` · Paraguay en la región (Banco Mundial) | API pública: series, comparaciones y gráficos honestos. |
-| 2, 3 | `pr04_ephc_pesos` · Encuestas y pesos muestrales | Por qué ponderar cambia las conclusiones. |
+| 2, 3 | `pr04_ephc_pesos` · EPHC (INE): encuestas y pesos muestrales | Microdatos reales: por qué ponderar cambia las conclusiones. |
 | 3, 4 | `pr05_nomina_privacidad` · Datos personales y agregación | Visualizar sin exponer: anonimizar, agregar, suprimir celdas pequeñas. |
 | 7 | `pr06_earth_engine_mapbiomas` · Earth Engine y MapBiomas | Cambio de uso del suelo con geemap. |
+| 2, 4, 7 | `pr07_dnit_recaudacion` · Recaudación tributaria (DNIT) | Datos reales sucios: limpiar, tidy, Pareto, series y concentración. |
 
 ## Reglas de oro con datos reales
 1. **Citar** la fuente, la URL y la **fecha de descarga**; completar la *ficha del dataset* (práctica 1).
@@ -160,7 +173,8 @@ Presupuesto aprobado y ejecutado por entidad. Los datos provienen del sistema co
 ## Para el docente: lista de verificación previa
 - [ ] Ejecutar `pr00_verificar_fuentes` en Colab y guardar la tabla.
 - [ ] **Earth Engine:** que cada estudiante se registre y cree un proyecto de Cloud (puede demorar); verificar el ID del asset de MapBiomas.
-- [ ] **EPHC:** descargar la base vigente y su diccionario; anotar el nombre del factor de expansión; subir una **muestra** a la carpeta del curso (Drive).
-- [ ] **Nómina:** localizar el conjunto y confirmar que se puede usar solo con agregados.
-- [ ] **Aduanas:** confirmar si la DNIT volvió a publicar; si no, usar Banco Mundial / UN Comtrade / BCP.
+- [x] **EPHC (INE):** verificada (archivo REG02 2025). Revisar cada año que se use y el diccionario de variables.
+- [x] **Recaudación (DNIT):** verificada (Excel 2025). Su enlace cambia: la práctica lo busca en la página de Estadísticas.
+- [ ] **Funcionarios (SFP):** el servidor no pudo abrirse desde el entorno de desarrollo (falla la verificación del certificado TLS). Probar desde Colab; si falla, descargar con el navegador, subir el archivo y mapear las columnas (práctica 5).
+- [ ] **Aduanas:** la DNIT no publica importaciones/exportaciones en su página de datos abiertos (verificado); usar Banco Mundial / UN Comtrade / BCP.
 - [ ] **DNCP:** probar una descarga masiva OCDS (JSON) y pegar la URL o ruta en la práctica 2.

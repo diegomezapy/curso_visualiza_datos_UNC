@@ -432,13 +432,13 @@ function bindDocente() {
 
 /* ---------- datos abiertos reales ---------- */
 let DA_FILTRO = "todas";
-const ESTADO_CLS = { documentado: "ok", verificar: "warn", incierto: "bad" };
+const ESTADO_CLS = { verificado: "ok", documentado: "ok", verificar: "warn", incierto: "bad" };
 function vDatos() {
   const A = D.abiertos, fs = A.fuentes.filter(f => DA_FILTRO === "todas" || (DA_FILTRO === "personales" ? f.sensible : DA_FILTRO.startsWith("s") ? f.sesiones.includes(+DA_FILTRO.slice(1)) : f.estado === DA_FILTRO));
-  const chips = [["todas", "Todas"], ["documentado", "✅ Documentadas"], ["verificar", "🔎 Verificar"], ["incierto", "⚠️ Inciertas"], ["personales", "🔒 Datos personales"], ...D.sesiones.map(s => ["s" + s.n, "Sesión " + s.n])];
+  const chips = [["todas", "Todas"], ["verificado", "🟢 Verificadas"], ["documentado", "✅ Documentadas"], ["verificar", "🔎 Verificar"], ["incierto", "⚠️ Inciertas"], ["personales", "🔒 Datos personales"], ...D.sesiones.map(s => ["s" + s.n, "Sesión " + s.n])];
   const prac = id => A.practicas.find(p => p.id === id);
   return `<h1>🗺️ Datos abiertos reales</h1><p class="sub">Las prácticas usan datos reales de Paraguay y fuentes globales: compras públicas, encuestas de hogares, nómina estatal, imágenes satelitales, comercio exterior…</p>
-  <div class="card note"><b>Leé esto primero.</b> El catálogo se armó con búsquedas y <b>no se pudo abrir ninguna fuente ni inspeccionar filas</b> en el entorno de desarrollo. Cada fuente tiene un <b>estado</b>; los nombres de columnas se toman del <b>diccionario oficial</b> (o se detectan automáticamente). Todas las prácticas funcionan <b>sin conexión con datos sintéticos rotulados</b> y pasan a datos reales al pegar la URL.
+  <div class="card note"><b>Leé esto primero.</b> Solo la <b>EPHC (INE)</b> y la <b>recaudación de la DNIT</b> están 🟢 <b>verificadas</b>: se descargaron e inspeccionaron archivos reales. El resto se armó con búsquedas y <b>no se pudo abrir ni inspeccionar filas</b>. Cada fuente tiene un <b>estado</b>; los nombres de columnas se toman del <b>diccionario oficial</b> (o se detectan automáticamente). Todas las prácticas funcionan <b>sin conexión con datos sintéticos rotulados</b> y pasan a datos reales al pegar la URL.
    El docente debe correr antes <a target="_blank" rel="noopener" href="${esc(prac("pr00_verificar_fuentes").colab)}">pr00 · Verificar fuentes</a> en Colab.</div>
   <div class="chips2" style="margin:.8rem 0">${chips.map(([k, t]) => `<a class="chip ${DA_FILTRO === k ? "on" : ""}" href="#/datos/${k}">${t}</a>`).join("")}</div>
   <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(340px,1fr))">${fs.map(f => { const pr = prac(f.practica), ic = A.estados[f.estado];
