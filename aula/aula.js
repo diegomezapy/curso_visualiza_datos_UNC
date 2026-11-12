@@ -60,7 +60,7 @@ const bar = (p, cls = "") => `<div class="bar ${cls}" role="progressbar" aria-va
 /* ---------- navegación ---------- */
 function navHtml(ruta) {
   const it = (h, t, extra = "") => `<a href="#${h}" ${ruta === h ? 'aria-current="page"' : ""}><span>${t}</span>${extra}</a>`;
-  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/foros", "💬 Foros") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
+  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
   D.sesiones.forEach(s => { const p = progSes(s); h += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`, `<span class="dot">${p.pct >= 1 ? "✅" : Math.round(p.pct * 100) + "%"}</span>`); });
   h += `<div class="grp">Cuenta</div>` + it("/perfil", "👤 Mi perfil") + (ES_DOC ? it("/docente", "🧑‍🏫 Panel docente") : "");
   $("#nav").innerHTML = h;
@@ -145,7 +145,6 @@ function vSesion(n) {
   return `<span class="tag">${s.unidad} · Sesión ${s.n}</span>${s.n === 8 ? ' <span class="tag warn">Redes opcional</span>' : ""}
   <h1>${esc(s.titulo)}</h1><p class="sub">${esc(s.resumen)}${C.fechas?.[n] ? " · <b>" + esc(C.fechas[n]) + "</b>" : ""}</p>
   ${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} completado</span>
-  <p><a class="btn sec" href="#/foros/${n}">💬 Foro del módulo ${n}: preguntas y discusión</a></p>
   <h2>🎯 Objetivos</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.objetivos.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>
   <h2>🧰 Materiales de la sesión</h2><div class="card"><ul class="res">${s.recursos.map(r => `<li><span class="ico">${ico[r.k] || "🔗"}</span>${r.u ? `<a href="${esc(r.u)}" target="${r.k === "guia" ? "_self" : "_blank"}" rel="noopener">${esc(r.t)}</a>` : esc(r.t)}</li>`).join("")}</ul>
    <p class="muted" style="margin:.5rem 0 0">🐍 <b>Python</b> en Colab (<i>Entorno de ejecución → Ejecutar todas</i>) · 📊 <b>R</b> en RStudio: abrí el .Rmd, presioná <i>Knit</i> y publicá con <i>Publish → RPubs</i>. Datasets en <a href="#/recursos">Recursos</a>; guía en <a href="../materiales/pdf/00_guia_inicio.pdf" target="_blank">Guía de inicio (PDF)</a>.</p></div>
@@ -430,84 +429,6 @@ function bindDocente() {
   });
 }
 
-/* ---------- foros de discusión ---------- */
-let FORO = { temas: null, modulo: "todos", q: "", actual: null, error: "" };
-const modTxt = m => +m === 0 ? "General" : `Módulo ${m}`;
-const nombreForo = () => PERFIL.virtual ? "Docente" : `${(PERFIL.nombres || "").trim().split(" ")[0]} ${(PERFIL.apellidos || "").trim().charAt(0)}.`.trim();
-const hace = ms => { if (!ms) return "ahora"; const s = Math.round((Date.now() - ms) / 1000), rtf = new Intl.RelativeTimeFormat("es", { numeric: "auto" });
-  return s < 60 ? "hace un momento" : s < 3600 ? rtf.format(-Math.round(s / 60), "minute") : s < 86400 ? rtf.format(-Math.round(s / 3600), "hour") : rtf.format(-Math.round(s / 86400), "day"); };
-const fmtTexto = t => esc(t).replace(/(https:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener nofollow ugc">$1</a>').replace(/\n/g, "<br>");
-async function cargarTemas() { FORO.error = ""; try { FORO.temas = await B.listarTemas(); } catch (e) { FORO.temas = []; FORO.error = msgError(e); } }
-function filtrarTemas() {
-  const q = FORO.q.trim().toLowerCase();
-  return (FORO.temas || []).filter(t => FORO.modulo === "todos" || String(t.modulo) === String(FORO.modulo))
-    .filter(t => !q || (t.titulo + " " + t.cuerpo + " " + t.autorNombre).toLowerCase().includes(q))
-    .sort((a, b) => (b.fijado ? 1 : 0) - (a.fijado ? 1 : 0) || b.actualizado - a.actualizado);
-}
-function listaForoHtml() {
-  const L = filtrarTemas(); if (!L.length) return '<div class="card muted">Todavía no hay temas aquí. ¡Sé la primera persona en preguntar!</div>';
-  return L.map(t => `<a class="card link fth" href="#/foro/${esc(t.id)}"><div class="fmain"><div class="ftit">${t.fijado ? "📌 " : ""}${esc(t.titulo)}</div>
-    <div class="muted">${esc(t.autorNombre)} · <span class="tag">${modTxt(t.modulo)}</span> · ${hace(t.actualizado)}</div></div>
-    <div class="fmeta">${t.resuelto ? '<span class="tag ok">✔ resuelto</span>' : ""}${t.cerrado ? '<span class="tag warn">🔒 cerrado</span>' : ""}<span class="fcount" title="Respuestas">💬 ${t.respuestas || 0}</span></div></a>`).join("");
-}
-function vForos(mod) {
-  FORO.modulo = mod === undefined || mod === "" ? "todos" : mod;
-  const chips = [["todos", "Todos"], ["0", "General"], ...D.sesiones.map(s => [String(s.n), `Módulo ${s.n}`])];
-  return `<h1>💬 Foros de discusión</h1><p class="sub">Preguntá, compartí recursos y ayudá a tus compañeros. Un foro general y uno por módulo. Respetá a las demás personas y no publiques datos personales.</p>
-  ${FORO.error ? `<div class="card note">${esc(FORO.error)}</div>` : ""}
-  <div class="chips2">${chips.map(([k, t]) => `<a class="chip ${String(FORO.modulo) === k ? "on" : ""}" href="#/foros${k === "todos" ? "" : "/" + k}">${t}</a>`).join("")}</div>
-  <div class="row" style="margin:.7rem 0"><input type="text" id="fq" placeholder="Buscar en los temas…" value="${esc(FORO.q)}" aria-label="Buscar en el foro" style="max-width:340px"><button class="btn" id="fnew">➕ Nuevo tema</button></div>
-  <form id="fform" class="card" hidden><h2 style="margin-top:0">Nuevo tema</h2>
-   <label for="fm">Foro</label><select id="fm">${[["0", "General"], ...D.sesiones.map(s => [String(s.n), `Módulo ${s.n} · ${s.corto}`])].map(([k, t]) => `<option value="${k}" ${String(FORO.modulo) === k ? "selected" : ""}>${esc(t)}</option>`).join("")}</select>
-   <label for="ft">Título *</label><input type="text" id="ft" maxlength="120" required placeholder="Resumí tu pregunta o tema en una línea">
-   <label for="fc">Mensaje *</label><textarea id="fc" rows="6" maxlength="5000" required placeholder="Contá el contexto, qué intentaste y qué resultado esperabas. Podés pegar enlaces (https://…)." style="width:100%;padding:.5rem;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--fg);font:inherit"></textarea>
-   <div class="row" style="margin-top:.7rem"><button class="btn" type="submit">Publicar</button><button class="btn sec" type="button" id="fcancel">Cancelar</button></div></form>
-  <div id="flist">${listaForoHtml()}</div>`;
-}
-function bindForos() {
-  $("#fq")?.addEventListener("input", e => { FORO.q = e.target.value; $("#flist").innerHTML = listaForoHtml(); });
-  $("#fnew")?.addEventListener("click", () => { $("#fform").hidden = false; $("#ft").focus(); });
-  $("#fcancel")?.addEventListener("click", () => { $("#fform").hidden = true; });
-  $("#fform")?.addEventListener("submit", async e => { e.preventDefault(); const b = e.submitter; b.disabled = true;
-    try { const id = await B.crearTema({ modulo: +$("#fm").value, titulo: $("#ft").value.trim(), cuerpo: $("#fc").value.trim(), autorUid: USER.uid, autorNombre: nombreForo() }); aviso("Tema publicado ✔"); location.hash = "#/foro/" + id; }
-    catch (er) { aviso(msgError(er), "bad"); b.disabled = false; } });
-}
-async function cargarTemaForo(id) { FORO.error = ""; try { FORO.actual = await B.cargarTema(id); } catch (e) { FORO.actual = null; FORO.error = msgError(e); } }
-const esAutor = t => t.autorUid === USER.uid;
-function vTemaForo() {
-  const A = FORO.actual; if (!A) return `<a href="#/foros">← Foros</a><h1>Tema no encontrado</h1>${FORO.error ? `<div class="card note">${esc(FORO.error)}</div>` : ""}`;
-  const t = A.tema, mod = ES_DOC, autor = esAutor(t);
-  return `<a href="#/foros${t.modulo ? "/" + t.modulo : ""}">← Foro · ${modTxt(t.modulo)}</a>
-  <h1>${t.fijado ? "📌 " : ""}${esc(t.titulo)}</h1>
-  <div class="row"><span class="tag">${modTxt(t.modulo)}</span>${t.resuelto ? '<span class="tag ok">✔ resuelto</span>' : ""}${t.cerrado ? '<span class="tag warn">🔒 cerrado: no admite respuestas</span>' : ""}</div>
-  <div class="card post"><div class="muted">${esc(t.autorNombre)} · ${hace(t.creado)}</div><div class="ptxt">${fmtTexto(t.cuerpo)}</div>
-   <div class="row" style="margin-top:.7rem">
-    ${autor || mod ? `<button class="btn sec" data-a="resuelto">${t.resuelto ? "↩ Reabrir" : "✔ Marcar como resuelto"}</button>` : ""}
-    ${mod ? `<button class="btn sec" data-a="fijar">${t.fijado ? "Quitar de fijados" : "📌 Fijar"}</button><button class="btn sec" data-a="cerrar">${t.cerrado ? "🔓 Reabrir tema" : "🔒 Cerrar tema"}</button>` : ""}
-    ${mod || (autor && !(t.respuestas > 0)) ? `<button class="btn sec" data-a="borrar" style="color:var(--bad);border-color:var(--bad)">🗑 Eliminar tema</button>` : ""}</div></div>
-  <h2>${A.respuestas.length} respuesta${A.respuestas.length === 1 ? "" : "s"}</h2>
-  ${A.respuestas.map(r => `<div class="card post reply ${r.solucion ? "sol" : ""} ${r.esDocente ? "doc" : ""}"><div class="muted">${esc(r.autorNombre)} ${r.esDocente ? '<span class="tag">Docente</span>' : ""} ${r.solucion ? '<span class="tag ok">✔ solución</span>' : ""} · ${hace(r.creado)}</div>
-   <div class="ptxt">${fmtTexto(r.cuerpo)}</div>
-   <div class="row" style="margin-top:.5rem">${autor || mod ? `<button class="btn sec sm" data-sol="${esc(r.id)}" data-v="${r.solucion ? "0" : "1"}">${r.solucion ? "Quitar solución" : "✔ Marcar como solución"}</button>` : ""}
-    ${r.autorUid === USER.uid || mod ? `<button class="btn sec sm" data-del="${esc(r.id)}" style="color:var(--bad);border-color:var(--bad)">Eliminar</button>` : ""}</div></div>`).join("")}
-  ${t.cerrado && !mod ? "" : `<form id="rform" class="card"><label for="rc" style="margin-top:0">Tu respuesta</label><textarea id="rc" rows="5" maxlength="5000" required placeholder="Escribí tu respuesta… (podés pegar enlaces https://)" style="width:100%;padding:.5rem;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--fg);font:inherit"></textarea>
-   <div class="row" style="margin-top:.6rem"><button class="btn" type="submit" ${t.cerrado ? "disabled" : ""}>Responder</button>${t.cerrado ? '<span class="muted">El tema está cerrado.</span>' : ""}</div></form>`}`;
-}
-function bindTemaForo(id) {
-  const A = FORO.actual; if (!A) return; const t = A.tema;
-  const hacer = async fn => { try { await fn(); await cargarTemaForo(id); render(); } catch (er) { aviso(msgError(er), "bad"); } };
-  $$("[data-a]").forEach(b => b.addEventListener("click", () => { const a = b.dataset.a;
-    if (a === "resuelto") hacer(() => B.actualizarTema(id, { resuelto: !t.resuelto }));
-    if (a === "fijar") hacer(() => B.actualizarTema(id, { fijado: !t.fijado }));
-    if (a === "cerrar") hacer(() => B.actualizarTema(id, { cerrado: !t.cerrado }));
-    if (a === "borrar" && confirm("¿Eliminar este tema" + (A.respuestas.length ? " y sus " + A.respuestas.length + " respuestas" : "") + "? No se puede deshacer.")) (async () => { try { await B.borrarTema(id); aviso("Tema eliminado"); location.hash = "#/foros"; } catch (er) { aviso(msgError(er), "bad"); } })(); }));
-  $$("[data-sol]").forEach(b => b.addEventListener("click", () => hacer(() => B.marcarSolucion(id, b.dataset.sol, b.dataset.v === "1"))));
-  $$("[data-del]").forEach(b => b.addEventListener("click", () => { if (confirm("¿Eliminar esta respuesta?")) hacer(() => B.borrarRespuesta(id, b.dataset.del)); }));
-  $("#rform")?.addEventListener("submit", async e => { e.preventDefault(); const btn = e.submitter; btn.disabled = true;
-    try { await B.responder(id, { cuerpo: $("#rc").value.trim(), autorUid: USER.uid, autorNombre: nombreForo(), esDocente: !!ES_DOC }); aviso("Respuesta publicada ✔"); await cargarTemaForo(id); render(); }
-    catch (er) { aviso(msgError(er), "bad"); btn.disabled = false; } });
-}
-
 /* ---------- calendario y agenda ---------- */
 const TIPO_EV = { clase: ["🎓", "Clase", "#0072B2"], tutoria: ["💬", "Tutoría", "#009E73"], entrega: ["📤", "Entrega", "#D55E00"], evaluacion: ["📝", "Evaluación", "#CC79A7"], otro: ["📌", "Otro", "#8C8C8C"] };
 let AGENDA = null, AGENDA_ERR = "", calMes = new Date(), calFiltro = "todos", calEjemplo = false;
@@ -606,8 +527,6 @@ async function render() {
       case "sesion": html = vSesion(n); crumb = `Módulo ${n}`; bind = bindSesion; break;
       case "quiz": html = vQuiz(n); crumb = `Módulo ${n} › Quiz`; bind = () => bindQuiz(n); break;
       case "notas": await refrescarNotas(); html = vNotas(); crumb = "Mis notas"; break;
-      case "foros": await cargarTemas(); html = vForos(b); crumb = "Foros"; bind = bindForos; break;
-      case "foro": await cargarTemaForo(b); html = vTemaForo(); crumb = "Foros › Tema"; bind = () => bindTemaForo(b); break;
       case "calendario": await cargarAgenda(); html = b ? vEvento(decodeURIComponent(b)) : vCalendario(); crumb = "Calendario"; bind = () => bindCalendario(b ? decodeURIComponent(b) : ""); break;
       case "recursos": html = vRecursos(); crumb = "Recursos"; bind = bindRecursos; break;
       case "perfil": html = vPerfil(); crumb = "Mi perfil"; bind = bindPerfil; break;

@@ -30,7 +30,6 @@ async function crearFirebase(cfg) {
   const emu = window.__CVD_EMULATOR__;
   if (emu) { fb.connectAuthEmulator(auth, emu.auth, { disableWarnings: true }); fb.connectFirestoreEmulator(db, emu.fsHost, emu.fsPort); }
   const U = u => u && ({ uid: u.uid, email: u.email, emailVerified: u.emailVerified, proveedor: u.providerData[0]?.providerId || "password", displayName: u.displayName || "" });
-  const ms = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, v && typeof v.toMillis === "function" ? v.toMillis() : v]));
   const get = async (col, id) => { const s = await fb.getDoc(fb.doc(db, col, id)); return s.exists() ? s.data() : null; };
   const wait = new Promise(r => { const off = fb.onAuthStateChanged(auth, () => { off(); r(); }); });
   return {
@@ -74,39 +73,6 @@ async function crearFirebase(cfg) {
       pr.forEach(d => m[d.id] && (m[d.id].progreso = d.data())); ca.forEach(d => m[d.id] && (m[d.id].oficial = d.data().oficial || {}));
       return Object.values(m);
     },
-    // ----- foros -----
-    async listarTemas() {
-      const q = fb.query(fb.collection(db, "foros"), fb.orderBy("actualizado", "desc"), fb.limit(300));
-      return (await fb.getDocs(q)).docs.map(d => ({ id: d.id, ...ms(d.data()) }));
-    },
-    async crearTema(t) {
-      const r = await fb.addDoc(fb.collection(db, "foros"), { ...t, respuestas: 0, resuelto: false, fijado: false, cerrado: false, creado: fb.serverTimestamp(), actualizado: fb.serverTimestamp() });
-      return r.id;
-    },
-    async cargarTema(id) {
-      const t = await fb.getDoc(fb.doc(db, "foros", id)); if (!t.exists()) return null;
-      const rs = await fb.getDocs(fb.query(fb.collection(db, "foros", id, "respuestas"), fb.orderBy("creado")));
-      return { tema: { id, ...ms(t.data()) }, respuestas: rs.docs.map(d => ({ id: d.id, ...ms(d.data()) })) };
-    },
-    async responder(id, r) {
-      const b = fb.writeBatch(db), ref = fb.doc(fb.collection(db, "foros", id, "respuestas"));
-      b.set(ref, { ...r, solucion: false, creado: fb.serverTimestamp() });
-      b.update(fb.doc(db, "foros", id), { respuestas: fb.increment(1), actualizado: fb.serverTimestamp() });
-      await b.commit(); return ref.id;
-    },
-    actualizarTema: (id, campos) => fb.updateDoc(fb.doc(db, "foros", id), campos),
-    async borrarTema(id) {
-      const rs = await fb.getDocs(fb.collection(db, "foros", id, "respuestas")), b = fb.writeBatch(db);
-      rs.docs.forEach(d => b.delete(d.ref)); b.delete(fb.doc(db, "foros", id)); await b.commit();
-    },
-    async marcarSolucion(tid, rid, valor) {
-      const b = fb.writeBatch(db);
-      b.update(fb.doc(db, "foros", tid, "respuestas", rid), { solucion: valor }); b.update(fb.doc(db, "foros", tid), { resuelto: valor }); await b.commit();
-    },
-    async borrarRespuesta(tid, rid) {
-      const b = fb.writeBatch(db);
-      b.delete(fb.doc(db, "foros", tid, "respuestas", rid)); b.update(fb.doc(db, "foros", tid), { respuestas: fb.increment(-1), actualizado: fb.serverTimestamp() }); await b.commit();
-    },
     guardarCalificaciones: (uid, oficial) => fb.setDoc(fb.doc(db, "calificaciones", uid), { oficial, actualizado: fb.serverTimestamp() }),
   };
 }
@@ -118,8 +84,6 @@ function crearDemo(cfg) {
   const rd = () => { try { return JSON.parse(localStorage.getItem(K)) || {}; } catch { return {}; } };
   const db0 = () => Object.assign({ cuentas: {}, usuarios: {}, progreso: {}, calificaciones: {}, cedulas: {} }, rd());
   const wr = d => { try { localStorage.setItem(K, JSON.stringify(d)); } catch {} };
-  const foros_ = () => { try { return Object.assign({ temas: {}, resp: {} }, JSON.parse(localStorage.getItem("cvd_demo_foros")) || {}); } catch { return { temas: {}, resp: {} }; } };
-  const wrf_ = f => { try { localStorage.setItem("cvd_demo_foros", JSON.stringify(f)); } catch {} };
   const listeners = [];
   const sesion = () => { try { return localStorage.getItem(KS); } catch { return null; } };
   const U = email => { const d = db0(), c = d.cuentas[email]; return c ? { uid: c.uid, email, emailVerified: true, proveedor: c.proveedor, displayName: c.displayName || "" } : null; };
@@ -163,15 +127,6 @@ function crearDemo(cfg) {
     async cargarCalificaciones(u) { return db0().calificaciones[u] || {}; },
     diag: {},
     async esDocente(u) { const ok = !!u && (cfg.demo?.docentes || []).includes(u.email); this.diag.motivo = ok ? "ok" : "no_figura_en_docentes"; return ok; },
-    // ----- foros (demo) -----
-    async listarTemas() { const f = foros_(); return Object.entries(f.temas).map(([id, t]) => ({ id, ...t })).sort((a, b) => b.actualizado - a.actualizado); },
-    async crearTema(t) { const f = foros_(), id = "t" + Date.now() + Math.floor(Math.random() * 1e3), n = Date.now(); f.temas[id] = { ...t, respuestas: 0, resuelto: false, fijado: false, cerrado: false, creado: n, actualizado: n }; f.resp[id] = []; wrf_(f); return id; },
-    async cargarTema(id) { const f = foros_(); return f.temas[id] ? { tema: { id, ...f.temas[id] }, respuestas: (f.resp[id] || []).slice().sort((a, b) => a.creado - b.creado) } : null; },
-    async responder(id, r) { const f = foros_(); if (f.temas[id].cerrado) throw err("permission-denied"); const rid = "r" + Date.now() + Math.floor(Math.random() * 1e3); f.resp[id].push({ id: rid, ...r, solucion: false, creado: Date.now() }); f.temas[id].respuestas++; f.temas[id].actualizado = Date.now(); wrf_(f); return rid; },
-    async actualizarTema(id, campos) { const f = foros_(); Object.assign(f.temas[id], campos); wrf_(f); },
-    async borrarTema(id) { const f = foros_(); delete f.temas[id]; delete f.resp[id]; wrf_(f); },
-    async marcarSolucion(tid, rid, valor) { const f = foros_(); f.resp[tid].forEach(r => { if (r.id === rid) r.solucion = valor; }); f.temas[tid].resuelto = valor; wrf_(f); },
-    async borrarRespuesta(tid, rid) { const f = foros_(); f.resp[tid] = f.resp[tid].filter(r => r.id !== rid); f.temas[tid].respuestas = f.resp[tid].length; wrf_(f); },
     async listarAlumnos() { const d = db0(); return Object.entries(d.usuarios).map(([u, perfil]) => ({ uid: u, perfil, progreso: d.progreso[u] || {}, oficial: d.calificaciones[u] || {} })); },
     async guardarCalificaciones(u, o) { const d = db0(); d.calificaciones[u] = o; wr(d); },
   };

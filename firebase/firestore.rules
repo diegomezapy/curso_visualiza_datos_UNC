@@ -47,57 +47,6 @@ service cloud.firestore {
       allow write: if docente();
     }
 
-    // ===== Foros de discusión =====
-    function miembro() {
-      return signed() && (exists(/databases/$(database)/documents/usuarios/$(request.auth.uid)) || docente());
-    }
-    function temaValido(d) {
-      return d.keys().hasAll(['modulo', 'titulo', 'cuerpo', 'autorUid', 'autorNombre', 'respuestas', 'resuelto', 'fijado', 'cerrado', 'creado', 'actualizado'])
-        && d.modulo is int && d.modulo >= 0 && d.modulo <= 8
-        && d.titulo is string && d.titulo.size() >= 4 && d.titulo.size() <= 120
-        && d.cuerpo is string && d.cuerpo.size() >= 1 && d.cuerpo.size() <= 5000
-        && d.autorNombre is string && d.autorNombre.size() >= 1 && d.autorNombre.size() <= 60;
-    }
-    function respValida(d) {
-      return d.keys().hasAll(['cuerpo', 'autorUid', 'autorNombre', 'esDocente', 'solucion', 'creado'])
-        && d.cuerpo is string && d.cuerpo.size() >= 1 && d.cuerpo.size() <= 5000
-        && d.autorNombre is string && d.autorNombre.size() >= 1 && d.autorNombre.size() <= 60;
-    }
-
-    match /foros/{tid} {
-      allow read: if miembro();
-      allow create: if miembro() && temaValido(request.resource.data)
-        && request.resource.data.autorUid == request.auth.uid
-        && request.resource.data.respuestas == 0 && request.resource.data.resuelto == false
-        && request.resource.data.fijado == false && request.resource.data.cerrado == false
-        && request.resource.data.creado == request.time && request.resource.data.actualizado == request.time;
-      allow update: if docente()
-        // el autor edita su tema o lo marca como resuelto
-        || (signed() && resource.data.autorUid == request.auth.uid && temaValido(request.resource.data)
-            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['titulo', 'cuerpo', 'resuelto', 'actualizado']))
-        // cualquier miembro suma o resta 1 al contador al crear/borrar una respuesta
-        || (miembro() && !resource.data.cerrado
-            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['respuestas', 'actualizado'])
-            && request.resource.data.respuestas >= 0
-            && (request.resource.data.respuestas == resource.data.respuestas + 1 || request.resource.data.respuestas == resource.data.respuestas - 1));
-      allow delete: if docente() || (signed() && resource.data.autorUid == request.auth.uid && resource.data.respuestas == 0);
-
-      match /respuestas/{rid} {
-        allow read: if miembro();
-        allow create: if miembro() && respValida(request.resource.data)
-          && !get(/databases/$(database)/documents/foros/$(tid)).data.cerrado
-          && request.resource.data.autorUid == request.auth.uid
-          && request.resource.data.esDocente == docente()
-          && request.resource.data.solucion == false
-          && request.resource.data.creado == request.time;
-        // el autor del tema marca la solución; el docente puede todo
-        allow update: if docente()
-          || (signed() && get(/databases/$(database)/documents/foros/$(tid)).data.autorUid == request.auth.uid
-              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['solucion']));
-        allow delete: if docente() || (signed() && resource.data.autorUid == request.auth.uid);
-      }
-    }
-
     // Lista de docentes: se administra solo desde la consola de Firebase.
     match /docentes/{email} {
       allow get: if signed() && request.auth.token.email == email;

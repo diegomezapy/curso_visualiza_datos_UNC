@@ -7,7 +7,6 @@
 - 8 quizzes autocorregidos (40 preguntas) con retroalimentación; reintentos ilimitados (cuenta el mejor).
 - **Mis notas:** teoría (30), práctica (50), integrador (20), total y escala sugerida 1-5.
 - **Recursos:** carpetas de Drive, datasets, documentos, glosario (25 términos).
-- **Foros de discusión:** general y por módulo, con respuestas, “resuelto”/solución y moderación ([foros.md](foros.md)).
 - **Panel docente:** importa reportes de estudiantes, registra notas, calcula la final y exporta CSV.
 
 ## Cuentas y acceso
