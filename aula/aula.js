@@ -60,7 +60,7 @@ const bar = (p, cls = "") => `<div class="bar ${cls}" role="progressbar" aria-va
 /* ---------- navegación ---------- */
 function navHtml(ruta) {
   const it = (h, t, extra = "") => `<a href="#${h}" ${ruta === h ? 'aria-current="page"' : ""}><span>${t}</span>${extra}</a>`;
-  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/datos", "🗺️ Datos abiertos") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
+  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
   D.sesiones.forEach(s => { const p = progSes(s); h += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`, `<span class="dot">${p.pct >= 1 ? "✅" : Math.round(p.pct * 100) + "%"}</span>`); });
   h += `<div class="grp">Cuenta</div>` + it("/perfil", "👤 Mi perfil") + (ES_DOC ? it("/docente", "🧑‍🏫 Panel docente") : "");
   $("#nav").innerHTML = h;
@@ -430,6 +430,27 @@ function bindDocente() {
   });
 }
 
+/* ---------- El tutor ---------- */
+function vTutor() {
+  const T = D.tutor, ini = T.nombre.split(" ").filter((_, i) => i === 0 || i === 2).map(x => x[0]).join("");
+  const fila = ([a, b, c]) => `<div class="tl"><div class="tl-y">${esc(a)}</div><div><b>${esc(b)}</b>${c ? `<div class="mut">${esc(c)}</div>` : ""}</div></div>`;
+  const links = (T.links || []).map(l => `<a class="chip" target="_blank" rel="noopener" href="${esc(l.u)}">${esc(l.t)}</a>`).join("");
+  return `<h1>👤 El tutor</h1>
+  <div class="card"><div class="row" style="gap:1rem;align-items:center"><div class="logo" style="width:64px;height:64px;font-size:1.5rem;flex:none">${esc(ini)}</div>
+   <div><h2 style="margin:0">${esc(T.nombre)}</h2><div class="mut">${esc(T.rol)}</div></div></div>
+   <p>${esc(T.resumen)}</p>
+   <div class="chips2">${T.areas.map(a => `<span class="chip">${esc(a)}</span>`).join("")}</div>
+   <p style="margin:.8rem 0 0">${links ? `<b>Perfiles y producción:</b> <span class="chips2" style="display:inline-flex">${links}</span>` : '<span class="mut">Los enlaces a ORCID, Google Scholar y CVPy se muestran acá cuando el docente los carga en <code>aula/config.json</code> (<code>tutor_links</code>).</span>'}</p>
+   <p class="mut" style="margin:.5rem 0 0">Citar como: ${esc(T.cita)} · Idiomas: ${esc(T.idiomas)}${C.contacto_docente ? ` · Contacto: <a href="mailto:${esc(C.contacto_docente)}">${esc(C.contacto_docente)}</a>` : ""}</p></div>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(340px,1fr))">
+   <div class="card" style="margin:0"><h3>🎓 Formación</h3>${T.formacion.map(fila).join("")}</div>
+   <div class="card" style="margin:0"><h3>💼 Experiencia</h3>${T.experiencia.map(fila).join("")}</div></div>
+  <div class="card"><h3>📄 Producción</h3>${T.produccion.map(([k, t]) => `<div class="tl"><div class="tl-y"><span class="tag ok">${esc(k)}</span></div><div>${esc(t)}</div></div>`).join("")}</div>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(340px,1fr))">
+   <div class="card" style="margin:0"><h3>🏅 Reconocimientos</h3><ul>${T.premios.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>
+   <div class="card" style="margin:0"><h3>🧭 Tutorías</h3><ul>${T.docencia_inv.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div></div>`;
+}
+
 /* ---------- datos abiertos reales ---------- */
 let DA_FILTRO = "todas";
 const ESTADO_CLS = { verificado: "ok", documentado: "ok", verificar: "warn", incierto: "bad" };
@@ -558,6 +579,7 @@ async function render() {
       case "sesion": html = vSesion(n); crumb = `Módulo ${n}`; bind = bindSesion; break;
       case "quiz": html = vQuiz(n); crumb = `Módulo ${n} › Quiz`; bind = () => bindQuiz(n); break;
       case "notas": await refrescarNotas(); html = vNotas(); crumb = "Mis notas"; break;
+      case "tutor": html = vTutor(); crumb = "El tutor"; break;
       case "datos": DA_FILTRO = b || "todas"; html = vDatos(); crumb = "Datos abiertos"; break;
       case "calendario": await cargarAgenda(); html = b ? vEvento(decodeURIComponent(b)) : vCalendario(); crumb = "Calendario"; bind = () => bindCalendario(b ? decodeURIComponent(b) : ""); break;
       case "recursos": html = vRecursos(); crumb = "Recursos"; bind = bindRecursos; break;
