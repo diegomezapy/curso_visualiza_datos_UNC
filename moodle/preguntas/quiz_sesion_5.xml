@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 5</text></category></question>
+<question type="multichoice"><name><text>S5-Q1</text></name><questiontext format="html"><text><![CDATA[<p>El mantra de Shneiderman para visualización interactiva es…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Primero visión general, luego filtrar/acercar y finalmente detalles bajo demanda.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Zoom, pan, rotate]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Overview first, zoom and filter, then details on demand]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Filter, sort, export]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Click, hover, drag]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S5-Q2</text></name><questiontext format="html"><text><![CDATA[<p>¿Dónde conviene ubicar los KPIs principales de un dashboard?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>En culturas de lectura izquierda-derecha y arriba-abajo esa es la zona que se ve primero.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Abajo a la derecha]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Arriba a la izquierda, en la zona de mayor atención]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[En una pestaña oculta]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[En el pie de página]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S5-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Un filtro global debe…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Si el usuario no sabe qué afecta el filtro, el tablero se vuelve engañoso.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Afectar solo a un gráfico sin avisar]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Afectar de forma coherente y visible a todas las vistas indicadas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Estar oculto]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Cambiar las escalas sin aviso]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S5-Q4</text></name><questiontext format="html"><text><![CDATA[<p>Una interacción &#x27;decorativa&#x27; es aquella que…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>La interacción debe servir a la tarea: filtrar, comparar, detallar.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Usa animación]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[No ayuda a responder la pregunta de la audiencia]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Es muy rápida]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usa tooltips]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S5-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Un objetivo razonable de rendimiento para un tablero web es…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Una carga lenta hace que los usuarios abandonen; conviene agregar y precalcular.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[Cargar en menos de 3 segundos agregando o precalculando datos]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Cargar todos los datos crudos en el navegador]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[No importa el rendimiento]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Más de 30 segundos]]></text></answer>
+</question>
+</quiz>

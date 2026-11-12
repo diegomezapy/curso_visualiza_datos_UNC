@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 2</text></category></question>
+<question type="multichoice"><name><text>S2-Q1</text></name><questiontext format="html"><text><![CDATA[<p>Para ver la forma de la distribución de 400 notas conviene…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Son los gráficos diseñados para mostrar forma, centro y dispersión; probá varios anchos de bin.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Un gráfico de torta]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Un histograma, ECDF o violín]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un área apilada]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un radar]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S2-Q2</text></name><questiontext format="html"><text><![CDATA[<p>Un diagrama de dispersión con 50 000 puntos sufre principalmente de…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Con muchos puntos superpuestos se pierde la densidad; transparencia o binning la recuperan.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Falta de datos]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Overplotting: se tapan puntos; usar transparencia, hexbin o densidad]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Exceso de color]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Escala logarítmica]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S2-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Ranking de categorías con nombres largos:</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Las barras horizontales dejan espacio a las etiquetas y el orden descendente facilita la lectura.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Barras verticales sin orden]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Barras horizontales ordenadas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Torta]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Líneas]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S2-Q4</text></name><questiontext format="html"><text><![CDATA[<p>Para mostrar partes de un todo a lo largo del tiempo con muchas categorías:</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Las tortas múltiples obligan a comparar ángulos entre gráficos; las barras apiladas o paneles facilitan la comparación.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Muchas tortas]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Barras apiladas al 100 % o small multiples]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un radar]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un 3D]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S2-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Las barras pueden empezar en un valor distinto de cero si se anota el eje.</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>En barras la longitud codifica el valor: truncar el eje exagera las diferencias. Para puntos/líneas sí puede justificarse.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Verdadero]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Falso]]></text></answer>
+</question>
+</quiz>

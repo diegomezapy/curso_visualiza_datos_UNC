@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 1</text></category></question>
+<question type="multichoice"><name><text>S1-Q1</text></name><questiontext format="html"><text><![CDATA[<p>Según Cleveland y McGill, ¿qué codificación visual se decodifica con mayor precisión?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>La posición sobre una escala común es la tarea perceptiva más precisa; luego longitud, ángulo/pendiente, área y color.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Área]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Posición sobre una escala común]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Ángulo]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Saturación de color]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S1-Q2</text></name><questiontext format="html"><text><![CDATA[<p>El cuarteto de Anscombe demuestra que…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Los cuatro datasets comparten media, varianza, correlación y recta, pero al graficarlos se ven totalmente diferentes.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[La correlación implica causalidad]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Estadísticos resumen idénticos pueden ocultar estructuras muy distintas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[La regresión lineal siempre es robusta]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Los outliers son siempre errores]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S1-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Un atributo preatentivo es aquel que…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Color de énfasis, tamaño u orientación se detectan en menos de ~250 ms, por eso sirven para guiar la mirada.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Requiere una leyenda para interpretarse]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[El sistema visual detecta rápidamente sin búsqueda serial]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Solo existe en gráficos 3D]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Es un error de diseño]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S1-Q4</text></name><questiontext format="html"><text><![CDATA[<p>El &#x27;data-ink ratio&#x27; de Tufte propone…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Se trata de quitar la tinta que no informa (no de eliminar todo): borrar el ruido para que destaque el dato.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Maximizar los adornos]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Maximizar la proporción de tinta que representa datos]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usar siempre 3D]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Eliminar siempre los ejes]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S1-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Para comparar 8 categorías con valores similares, ¿qué gráfico es más adecuado?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Las barras usan longitud/posición (más precisas) y el orden facilita el ranking; la torta usa ángulo/área.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Torta]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Barras ordenadas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Radar]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Área 3D]]></text></answer>
+</question>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 2</text></category></question>
+<question type="multichoice"><name><text>S2-Q1</text></name><questiontext format="html"><text><![CDATA[<p>Para ver la forma de la distribución de 400 notas conviene…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Son los gráficos diseñados para mostrar forma, centro y dispersión; probá varios anchos de bin.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Un gráfico de torta]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Un histograma, ECDF o violín]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un área apilada]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un radar]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S2-Q2</text></name><questiontext format="html"><text><![CDATA[<p>Un diagrama de dispersión con 50 000 puntos sufre principalmente de…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Con muchos puntos superpuestos se pierde la densidad; transparencia o binning la recuperan.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Falta de datos]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Overplotting: se tapan puntos; usar transparencia, hexbin o densidad]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Exceso de color]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Escala logarítmica]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S2-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Ranking de categorías con nombres largos:</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Las barras horizontales dejan espacio a las etiquetas y el orden descendente facilita la lectura.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Barras verticales sin orden]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Barras horizontales ordenadas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Torta]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Líneas]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S2-Q4</text></name><questiontext format="html"><text><![CDATA[<p>Para mostrar partes de un todo a lo largo del tiempo con muchas categorías:</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Las tortas múltiples obligan a comparar ángulos entre gráficos; las barras apiladas o paneles facilitan la comparación.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Muchas tortas]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Barras apiladas al 100 % o small multiples]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un radar]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un 3D]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S2-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Las barras pueden empezar en un valor distinto de cero si se anota el eje.</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>En barras la longitud codifica el valor: truncar el eje exagera las diferencias. Para puntos/líneas sí puede justificarse.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Verdadero]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Falso]]></text></answer>
+</question>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 3</text></category></question>
+<question type="multichoice"><name><text>S3-Q1</text></name><questiontext format="html"><text><![CDATA[<p>Para una variable continua con punto neutro (p. ej., variación respecto a una meta) se recomienda una paleta…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>La paleta divergente separa lo positivo de lo negativo alrededor de un valor neutro significativo.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Cualitativa]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Divergente centrada en el punto neutro]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Arcoíris]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Aleatoria]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S3-Q2</text></name><questiontext format="html"><text><![CDATA[<p>Aproximadamente 8 % de los varones tiene daltonismo rojo-verde. ¿Qué conviene hacer?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Las paletas seguras y la codificación redundante hacen el gráfico accesible.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Ignorarlo]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Usar paletas seguras (Okabe-Ito, viridis) y redundar con etiquetas o formas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usar más rojo y verde]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usar solo grises]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S3-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Un doble eje Y es problemático porque…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Cambiando las escalas se puede fabricar cualquier correlación aparente; mejor un índice base 100 o paneles separados.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Ocupa mucho espacio]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[La relación visual depende de escalas que elige arbitrariamente el autor]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[No existe en matplotlib]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Solo sirve con barras]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S3-Q4</text></name><questiontext format="html"><text><![CDATA[<p>¿Cuál es el mejor título para un gráfico de ventas?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Un título-mensaje afirma un hallazgo que el gráfico sostiene; los demás solo etiquetan.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Ventas]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Las ventas crecieron 7 % en 2025, impulsadas por Asunción]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Gráfico de ventas 2025]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Ventas (Gs.)]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S3-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Cherry-picking temporal consiste en…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Recortar el periodo a conveniencia puede invertir la tendencia aparente; hay que mostrar el contexto completo.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Usar la serie completa]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Elegir una ventana de tiempo que favorece la conclusión deseada]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Suavizar con medias móviles]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Mostrar intervalos de confianza]]></text></answer>
+</question>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 4</text></category></question>
+<question type="multichoice"><name><text>S4-Q1</text></name><questiontext format="html"><text><![CDATA[<p>Un buen KPI incluye…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Sin contexto (comparación, meta, unidad) un número no permite decidir.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Solo el valor actual]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Definición, unidad, periodo y comparación o meta]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un gráfico 3D]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Muchos decimales]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S4-Q2</text></name><questiontext format="html"><text><![CDATA[<p>Los small multiples sirven para…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Repetir el mismo gráfico por subgrupo, con ejes comunes, facilita comparar patrones.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Ahorrar tinta en la leyenda]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Comparar muchas series con la misma escala sin saturar un único gráfico]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Reemplazar tablas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Hacer gráficos 3D]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S4-Q3</text></name><questiontext format="html"><text><![CDATA[<p>La estructura clásica de una narrativa de datos es…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Storytelling con datos: situar a la audiencia, mostrar el problema/hallazgo y proponer qué hacer.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Datos → datos → datos]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Contexto → conflicto → resolución/llamado a la acción]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Título → leyenda → fuente]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Resumen → anexo]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S4-Q4</text></name><questiontext format="html"><text><![CDATA[<p>Más gráficos en un panel siempre aumentan la comprensión.</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>La saturación aumenta la carga cognitiva: cada elemento debe ganarse su lugar respondiendo la pregunta de la audiencia.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Verdadero]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Falso]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S4-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Una métrica &#x27;accionable&#x27; se diferencia de una de vanidad porque…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Las métricas de vanidad suben pero no orientan acciones.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Es más grande]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Permite tomar una decisión o cambiar algo]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Se ve mejor]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Es más reciente]]></text></answer>
+</question>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 5</text></category></question>
+<question type="multichoice"><name><text>S5-Q1</text></name><questiontext format="html"><text><![CDATA[<p>El mantra de Shneiderman para visualización interactiva es…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Primero visión general, luego filtrar/acercar y finalmente detalles bajo demanda.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Zoom, pan, rotate]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Overview first, zoom and filter, then details on demand]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Filter, sort, export]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Click, hover, drag]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S5-Q2</text></name><questiontext format="html"><text><![CDATA[<p>¿Dónde conviene ubicar los KPIs principales de un dashboard?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>En culturas de lectura izquierda-derecha y arriba-abajo esa es la zona que se ve primero.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Abajo a la derecha]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Arriba a la izquierda, en la zona de mayor atención]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[En una pestaña oculta]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[En el pie de página]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S5-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Un filtro global debe…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Si el usuario no sabe qué afecta el filtro, el tablero se vuelve engañoso.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Afectar solo a un gráfico sin avisar]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Afectar de forma coherente y visible a todas las vistas indicadas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Estar oculto]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Cambiar las escalas sin aviso]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S5-Q4</text></name><questiontext format="html"><text><![CDATA[<p>Una interacción &#x27;decorativa&#x27; es aquella que…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>La interacción debe servir a la tarea: filtrar, comparar, detallar.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Usa animación]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[No ayuda a responder la pregunta de la audiencia]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Es muy rápida]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usa tooltips]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S5-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Un objetivo razonable de rendimiento para un tablero web es…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Una carga lenta hace que los usuarios abandonen; conviene agregar y precalcular.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[Cargar en menos de 3 segundos agregando o precalculando datos]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Cargar todos los datos crudos en el navegador]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[No importa el rendimiento]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Más de 30 segundos]]></text></answer>
+</question>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 6</text></category></question>
+<question type="multichoice"><name><text>S6-Q1</text></name><questiontext format="html"><text><![CDATA[<p>Un reporte reproducible se define como…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Si se puede regenerar con un comando, es reproducible y programable.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Un PDF bonito]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Plantilla + datos + parámetros, ejecutable sin pasos manuales]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un Excel con macros]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Una captura de pantalla]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S6-Q2</text></name><questiontext format="html"><text><![CDATA[<p>¿Qué herramienta permite ejecutar un notebook con parámetros?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>papermill inyecta parámetros en una celda etiquetada y ejecuta el notebook; Quarto ofrece parámetros equivalentes.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[papermill (o Quarto con -P)]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[matplotlib]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[pip]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[git blame]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S6-Q3</text></name><questiontext format="html"><text><![CDATA[<p>¿Por qué incrustar imágenes en base64 dentro del HTML del informe?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Un único .html sin dependencias externas se puede enviar por correo o archivar.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Es más rápido siempre]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Genera un archivo autocontenido fácil de compartir]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Es obligatorio]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Mejora la accesibilidad]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S6-Q4</text></name><questiontext format="html"><text><![CDATA[<p>Una alerta automática útil debe tener…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Sin umbral y contexto se generan falsas alarmas o se ignoran.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[Un umbral explícito, contexto y destinatario]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Mayúsculas y rojo]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Sonido]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Solo un número]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S6-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Automatizar elimina la necesidad de validar los datos.</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Al contrario: un error en los datos se replica automáticamente; agregá chequeos y pruebas.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Verdadero]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Falso]]></text></answer>
+</question>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 7</text></category></question>
+<question type="multichoice"><name><text>S7-Q1</text></name><questiontext format="html"><text><![CDATA[<p>En t-SNE, ¿qué NO es interpretable?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>t-SNE preserva vecindades locales; distancias entre clústeres y su tamaño dependen de parámetros como la perplejidad.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[La cercanía local entre puntos]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Las distancias globales y el tamaño de los clústeres]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[La existencia de vecindarios]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Nada]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S7-Q2</text></name><questiontext format="html"><text><![CDATA[<p>PCA se basa en…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Los componentes principales son combinaciones lineales ortogonales ordenadas por varianza explicada.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[Una proyección lineal que maximiza la varianza explicada]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un modelo de redes neuronales]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Clustering jerárquico]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un muestreo aleatorio]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S7-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Regla básica de un mapa coroplético:</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Los conteos reflejan el tamaño de la población y no la intensidad del fenómeno; normalizá.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Colorear conteos absolutos]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Colorear tasas o densidades, no conteos absolutos]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usar siempre rojo]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Evitar leyenda]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S7-Q4</text></name><questiontext format="html"><text><![CDATA[<p>El problema del área modificable (MAUP) indica que…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Cambiar los límites o el nivel de agregación puede cambiar las conclusiones.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Los mapas no sirven]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[El patrón observado depende de cómo se agregan o delimitan las áreas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Solo afecta a series]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Es un error de proyección]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S7-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Para detectar estacionalidad en series diarias largas conviene…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Esas vistas separan componentes (tendencia, ciclo, estacionalidad) y facilitan detectar anomalías.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[Un heatmap calendario, gráfico de subseries o descomposición]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Una torta]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un radar]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un histograma]]></text></answer>
+</question>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 8</text></category></question>
+<question type="multichoice"><name><text>S8-Q1</text></name><questiontext format="html"><text><![CDATA[<p>Un &#x27;hairball&#x27; en visualización de redes es…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Cuando hay demasiadas aristas el grafo no comunica; simplificá o cambiá de representación.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Un layout óptimo]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Un grafo denso ilegible: filtrar aristas, agregar o usar matriz]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un tipo de nodo]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un algoritmo]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S8-Q2</text></name><questiontext format="html"><text><![CDATA[<p>La centralidad de intermediación (betweenness) mide…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Nodos con alta intermediación conectan comunidades y su eliminación fragmenta la red.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Cuántos vecinos tiene un nodo]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Cuánto actúa un nodo como puente en los caminos más cortos]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[El tamaño del nodo]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[La densidad de la red]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S8-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Para redes muy densas suele ser mejor…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>La matriz evita el solapamiento de aristas y deja ver bloques de comunidades.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Un layout circular]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Una matriz de adyacencia ordenada]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Una torta]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un 3D]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S8-Q4</text></name><questiontext format="html"><text><![CDATA[<p>Una codificación recomendada para redes es…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Codificar con propósito y etiquetar solo lo relevante mantiene la legibilidad.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[Tamaño = métrica, color = comunidad, pocas etiquetas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Todo del mismo color]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Etiquetar todos los nodos]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usar 3D]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S8-Q5</text></name><questiontext format="html"><text><![CDATA[<p>En un layout de fuerzas, las distancias tienen significado cuantitativo exacto.</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Los layouts de fuerzas son heurísticos: la posición ayuda a ver estructura pero no es una medida exacta.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Verdadero]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Falso]]></text></answer>
+</question>
+</quiz>

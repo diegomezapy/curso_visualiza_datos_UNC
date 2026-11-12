@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 8</text></category></question>
+<question type="multichoice"><name><text>S8-Q1</text></name><questiontext format="html"><text><![CDATA[<p>Un &#x27;hairball&#x27; en visualización de redes es…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Cuando hay demasiadas aristas el grafo no comunica; simplificá o cambiá de representación.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Un layout óptimo]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Un grafo denso ilegible: filtrar aristas, agregar o usar matriz]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un tipo de nodo]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un algoritmo]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S8-Q2</text></name><questiontext format="html"><text><![CDATA[<p>La centralidad de intermediación (betweenness) mide…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Nodos con alta intermediación conectan comunidades y su eliminación fragmenta la red.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Cuántos vecinos tiene un nodo]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Cuánto actúa un nodo como puente en los caminos más cortos]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[El tamaño del nodo]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[La densidad de la red]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S8-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Para redes muy densas suele ser mejor…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>La matriz evita el solapamiento de aristas y deja ver bloques de comunidades.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Un layout circular]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Una matriz de adyacencia ordenada]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Una torta]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un 3D]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S8-Q4</text></name><questiontext format="html"><text><![CDATA[<p>Una codificación recomendada para redes es…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Codificar con propósito y etiquetar solo lo relevante mantiene la legibilidad.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[Tamaño = métrica, color = comunidad, pocas etiquetas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Todo del mismo color]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Etiquetar todos los nodos]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usar 3D]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S8-Q5</text></name><questiontext format="html"><text><![CDATA[<p>En un layout de fuerzas, las distancias tienen significado cuantitativo exacto.</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Los layouts de fuerzas son heurísticos: la posición ayuda a ver estructura pero no es una medida exacta.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Verdadero]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Falso]]></text></answer>
+</question>
+</quiz>

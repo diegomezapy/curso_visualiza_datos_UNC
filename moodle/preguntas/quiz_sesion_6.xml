@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 6</text></category></question>
+<question type="multichoice"><name><text>S6-Q1</text></name><questiontext format="html"><text><![CDATA[<p>Un reporte reproducible se define como…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Si se puede regenerar con un comando, es reproducible y programable.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Un PDF bonito]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Plantilla + datos + parámetros, ejecutable sin pasos manuales]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un Excel con macros]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Una captura de pantalla]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S6-Q2</text></name><questiontext format="html"><text><![CDATA[<p>¿Qué herramienta permite ejecutar un notebook con parámetros?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>papermill inyecta parámetros en una celda etiquetada y ejecuta el notebook; Quarto ofrece parámetros equivalentes.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[papermill (o Quarto con -P)]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[matplotlib]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[pip]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[git blame]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S6-Q3</text></name><questiontext format="html"><text><![CDATA[<p>¿Por qué incrustar imágenes en base64 dentro del HTML del informe?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Un único .html sin dependencias externas se puede enviar por correo o archivar.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Es más rápido siempre]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Genera un archivo autocontenido fácil de compartir]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Es obligatorio]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Mejora la accesibilidad]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S6-Q4</text></name><questiontext format="html"><text><![CDATA[<p>Una alerta automática útil debe tener…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Sin umbral y contexto se generan falsas alarmas o se ignoran.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[Un umbral explícito, contexto y destinatario]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Mayúsculas y rojo]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Sonido]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Solo un número]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S6-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Automatizar elimina la necesidad de validar los datos.</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Al contrario: un error en los datos se replica automáticamente; agregá chequeos y pruebas.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Verdadero]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Falso]]></text></answer>
+</question>
+</quiz>

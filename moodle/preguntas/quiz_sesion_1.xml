@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 1</text></category></question>
+<question type="multichoice"><name><text>S1-Q1</text></name><questiontext format="html"><text><![CDATA[<p>Según Cleveland y McGill, ¿qué codificación visual se decodifica con mayor precisión?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>La posición sobre una escala común es la tarea perceptiva más precisa; luego longitud, ángulo/pendiente, área y color.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Área]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Posición sobre una escala común]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Ángulo]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Saturación de color]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S1-Q2</text></name><questiontext format="html"><text><![CDATA[<p>El cuarteto de Anscombe demuestra que…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Los cuatro datasets comparten media, varianza, correlación y recta, pero al graficarlos se ven totalmente diferentes.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[La correlación implica causalidad]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Estadísticos resumen idénticos pueden ocultar estructuras muy distintas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[La regresión lineal siempre es robusta]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Los outliers son siempre errores]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S1-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Un atributo preatentivo es aquel que…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Color de énfasis, tamaño u orientación se detectan en menos de ~250 ms, por eso sirven para guiar la mirada.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Requiere una leyenda para interpretarse]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[El sistema visual detecta rápidamente sin búsqueda serial]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Solo existe en gráficos 3D]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Es un error de diseño]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S1-Q4</text></name><questiontext format="html"><text><![CDATA[<p>El &#x27;data-ink ratio&#x27; de Tufte propone…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Se trata de quitar la tinta que no informa (no de eliminar todo): borrar el ruido para que destaque el dato.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Maximizar los adornos]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Maximizar la proporción de tinta que representa datos]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usar siempre 3D]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Eliminar siempre los ejes]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S1-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Para comparar 8 categorías con valores similares, ¿qué gráfico es más adecuado?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Las barras usan longitud/posición (más precisas) y el orden facilita el ranking; la torta usa ángulo/área.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Torta]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Barras ordenadas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Radar]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Área 3D]]></text></answer>
+</question>
+</quiz>

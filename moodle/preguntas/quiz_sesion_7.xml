@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 7</text></category></question>
+<question type="multichoice"><name><text>S7-Q1</text></name><questiontext format="html"><text><![CDATA[<p>En t-SNE, ¿qué NO es interpretable?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>t-SNE preserva vecindades locales; distancias entre clústeres y su tamaño dependen de parámetros como la perplejidad.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[La cercanía local entre puntos]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Las distancias globales y el tamaño de los clústeres]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[La existencia de vecindarios]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Nada]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S7-Q2</text></name><questiontext format="html"><text><![CDATA[<p>PCA se basa en…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Los componentes principales son combinaciones lineales ortogonales ordenadas por varianza explicada.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[Una proyección lineal que maximiza la varianza explicada]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un modelo de redes neuronales]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Clustering jerárquico]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un muestreo aleatorio]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S7-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Regla básica de un mapa coroplético:</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Los conteos reflejan el tamaño de la población y no la intensidad del fenómeno; normalizá.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Colorear conteos absolutos]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Colorear tasas o densidades, no conteos absolutos]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usar siempre rojo]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Evitar leyenda]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S7-Q4</text></name><questiontext format="html"><text><![CDATA[<p>El problema del área modificable (MAUP) indica que…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Cambiar los límites o el nivel de agregación puede cambiar las conclusiones.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Los mapas no sirven]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[El patrón observado depende de cómo se agregan o delimitan las áreas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Solo afecta a series]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Es un error de proyección]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S7-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Para detectar estacionalidad en series diarias largas conviene…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Esas vistas separan componentes (tendencia, ciclo, estacionalidad) y facilitan detectar anomalías.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="100" format="html"><text><![CDATA[Un heatmap calendario, gráfico de subseries o descomposición]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Una torta]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un radar]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Un histograma]]></text></answer>
+</question>
+</quiz>

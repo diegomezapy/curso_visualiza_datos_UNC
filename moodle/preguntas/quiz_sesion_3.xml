@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<question type="category"><category><text>$course$/top/Visualización de datos/Sesión 3</text></category></question>
+<question type="multichoice"><name><text>S3-Q1</text></name><questiontext format="html"><text><![CDATA[<p>Para una variable continua con punto neutro (p. ej., variación respecto a una meta) se recomienda una paleta…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>La paleta divergente separa lo positivo de lo negativo alrededor de un valor neutro significativo.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Cualitativa]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Divergente centrada en el punto neutro]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Arcoíris]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Aleatoria]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S3-Q2</text></name><questiontext format="html"><text><![CDATA[<p>Aproximadamente 8 % de los varones tiene daltonismo rojo-verde. ¿Qué conviene hacer?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Las paletas seguras y la codificación redundante hacen el gráfico accesible.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Ignorarlo]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Usar paletas seguras (Okabe-Ito, viridis) y redundar con etiquetas o formas]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usar más rojo y verde]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Usar solo grises]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S3-Q3</text></name><questiontext format="html"><text><![CDATA[<p>Un doble eje Y es problemático porque…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Cambiando las escalas se puede fabricar cualquier correlación aparente; mejor un índice base 100 o paneles separados.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Ocupa mucho espacio]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[La relación visual depende de escalas que elige arbitrariamente el autor]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[No existe en matplotlib]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Solo sirve con barras]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S3-Q4</text></name><questiontext format="html"><text><![CDATA[<p>¿Cuál es el mejor título para un gráfico de ventas?</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Un título-mensaje afirma un hallazgo que el gráfico sostiene; los demás solo etiquetan.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Ventas]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Las ventas crecieron 7 % en 2025, impulsadas por Asunción]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Gráfico de ventas 2025]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Ventas (Gs.)]]></text></answer>
+</question>
+<question type="multichoice"><name><text>S3-Q5</text></name><questiontext format="html"><text><![CDATA[<p>Cherry-picking temporal consiste en…</p>]]></text></questiontext><generalfeedback format="html"><text><![CDATA[<p>Recortar el periodo a conveniencia puede invertir la tendencia aparente; hay que mostrar el contexto completo.</p>]]></text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden><single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering><correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>
+<answer fraction="0" format="html"><text><![CDATA[Usar la serie completa]]></text></answer>
+<answer fraction="100" format="html"><text><![CDATA[Elegir una ventana de tiempo que favorece la conclusión deseada]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Suavizar con medias móviles]]></text></answer>
+<answer fraction="0" format="html"><text><![CDATA[Mostrar intervalos de confianza]]></text></answer>
+</question>
+</quiz>
