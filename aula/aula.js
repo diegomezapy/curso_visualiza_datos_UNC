@@ -60,7 +60,7 @@ const bar = (p, cls = "") => `<div class="bar ${cls}" role="progressbar" aria-va
 /* ---------- navegación ---------- */
 function navHtml(ruta) {
   const it = (h, t, extra = "") => `<a href="#${h}" ${ruta === h ? 'aria-current="page"' : ""}><span>${t}</span>${extra}</a>`;
-  let h = it("/", "🏠 Inicio") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
+  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
   D.sesiones.forEach(s => { const p = progSes(s); h += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`, `<span class="dot">${p.pct >= 1 ? "✅" : Math.round(p.pct * 100) + "%"}</span>`); });
   h += `<div class="grp">Cuenta</div>` + it("/perfil", "👤 Mi perfil") + (ES_DOC ? it("/docente", "🧑‍🏫 Panel docente") : "");
   $("#nav").innerHTML = h;
@@ -68,6 +68,11 @@ function navHtml(ruta) {
 }
 
 /* ---------- vistas ---------- */
+function proximosHtml() {
+  if (!AGENDA || !AGENDA.eventos?.length) return "";
+  const ev = AGENDA.eventos.filter(e => new Date(e.fin_iso) >= new Date()).slice(0, 3); if (!ev.length) return "";
+  return `<h2>📅 Próximos eventos</h2><div class="card"><ul class="res">${ev.map(e => { const t = TIPO_EV[e.tipo] || TIPO_EV.otro; return `<li><span class="ico">${t[0]}</span><span><a href="#/calendario/${encodeURIComponent(e.id)}"><b>${esc(e.titulo)}</b></a><br><span class="muted">${esc(fmtF(e))} · ${esc(e.inicio)}–${esc(e.fin)}</span></span></li>`; }).join("")}</ul><a href="#/calendario">Ver el calendario completo →</a></div>`;
+}
 function vInicio() {
   const reg = PERFIL?.nombres;
   const sig = D.sesiones.find(s => progSes(s).pct < 1);
@@ -80,6 +85,7 @@ function vInicio() {
     <div class="card"><div class="muted">Nota provisoria / 100</div><div class="big">${fmt(c.total)}</div><div class="muted">escala sugerida: ${c.escala}</div></div>
   </div>
   ${sig ? `<h2>Próximo paso</h2><a class="card link" href="#/sesion/${sig.n}"><span class="tag">Módulo ${sig.n}</span><h3>${esc(sig.titulo)}</h3><p class="muted" style="margin:.3rem 0 0">${esc(sig.resumen)}</p></a>` : `<div class="card"><b>¡Completaste todos los módulos!</b> Descargá tu reporte en <a href="#/notas">Mis notas</a>.</div>`}
+  ${proximosHtml()}
   <h2>Módulos</h2><div class="grid">${D.sesiones.map(s => { const p = progSes(s); return `<a class="card link" href="#/sesion/${s.n}">
     <div class="row" style="justify-content:space-between"><span class="tag">${s.unidad} · Sesión ${s.n}</span>${p.pct >= 1 ? '<span class="tag ok">Completo</span>' : ""}</div>
     <h3 style="margin-top:.5rem">${esc(s.titulo)}</h3>${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} actividades${C.fechas?.[s.n] ? " · " + esc(C.fechas[s.n]) : ""}</span></a>`; }).join("")}</div>
@@ -115,6 +121,21 @@ function enlacesHtml(a) {
   return `<div style="margin-top:.6rem"><b style="font-size:.9rem">Entrega por enlace</b>${a.ent.map(t => `<label for="enl_${a.id}_${t}" style="font-weight:400">${ENL_TXT[t][0]} ${e[t] ? "✅" : ""}</label><input type="url" id="enl_${a.id}_${t}" data-enl="${a.id}" data-t="${t}" placeholder="${ENL_TXT[t][1]}" value="${esc(e[t] || "")}">`).join("")}
   <p class="muted" style="margin:.3rem 0 0">Al guardar todos los enlaces requeridos, la actividad se marca como entregada. Recordá: RPubs es público (sin datos personales).</p></div>`;
 }
+function rutaDatosHtml(s) {
+  if (s.n !== 1) return "";
+  const dg = C.diagnostico || {}, tablero = dg.tablero_url || "../diagnostico/tablero.html", looker = dg.looker_url || "", embed = dg.looker_embed || "";
+  const colab = (s.recursos.find(r => r.k === "colab" && /lab00/.test(r.u)) || {}).u, rmd = (s.recursos.find(r => r.k === "rmd" && /00_diagnostico/.test(r.u)) || {}).u;
+  const via = (ico, t, d, a) => `<div class="card" style="margin:0"><div style="font-size:1.6rem">${ico}</div><h3>${t}</h3><p class="muted" style="margin:.2rem 0 .6rem">${d}</p>${a}</div>`;
+  return `<h2>📈 Del dato a la visualización: cuatro vías para los mismos datos</h2>
+  <p class="muted" style="margin-top:0">Después del <b>diagnóstico</b>, los datos viajan: <b>cuestionario → Google Apps Script → hoja de Google Sheets</b>, y de ahí salen cuatro formas de mostrarlos. Elegí la que mejor sirve a tu audiencia.</p>
+  <div class="grid">
+   ${via("⚡", "Tablero en vivo", "Apps Script · se actualiza con cada respuesta, con filtros interactivos.", `<a class="btn" target="_blank" rel="noopener" href="${esc(tablero)}">Abrir el tablero</a>`)}
+   ${via("📊", "Looker Studio", "Informe de Google conectado a la misma hoja (arrastrar y soltar).", looker ? `<a class="btn" target="_blank" rel="noopener" href="${esc(looker)}">Abrir en Looker Studio</a>` : `<span class="muted">El docente publicará el enlace aquí.</span>`)}
+   ${via("📘", "R → RPubs", "Informe reproducible en R Markdown, publicado como página web.", rmd ? `<a class="btn" target="_blank" rel="noopener" href="${esc(rmd)}">Abrir el .Rmd</a>` : "")}
+   ${via("🐍", "Python → Colab", "Notebook con matplotlib y plotly; compartís el enlace.", colab ? `<a class="btn" target="_blank" rel="noopener" href="${esc(colab)}">Abrir en Colab</a>` : "")}
+  </div>
+  ${embed ? `<details style="margin-top:.8rem"><summary><b>Ver el informe de Looker Studio aquí mismo</b></summary><iframe src="${esc(embed)}" style="width:100%;height:600px;border:1px solid var(--bd);border-radius:8px;margin-top:.5rem" loading="lazy" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups"></iframe></details>` : ""}`;
+}
 function vSesion(n) {
   const s = D.sesiones.find(x => x.n === n); if (!s) return vInicio();
   const p = progSes(s), prev = D.sesiones.find(x => x.n === n - 1), next = D.sesiones.find(x => x.n === n + 1);
@@ -133,6 +154,7 @@ function vSesion(n) {
     <input type="checkbox" id="chk_${a.id}" data-act="${a.id}" ${S.done[a.id] ? "checked" : ""} aria-label="Marcar como hecha">
     <div style="flex:1"><label for="chk_${a.id}" style="margin:0;font-weight:600">${esc(a.titulo)}</label>
     <div class="row" style="margin-top:.3rem">${a.pts ? `<span class="tag">${a.pts} pts</span>` : '<span class="tag warn">Hito sin nota</span>'}${a.rubrica ? `<span class="tag">Rúbrica ${a.rubrica}</span>` : ""}${(S.oficial[a.id] ?? "") !== "" ? `<span class="tag ok">Nota oficial: ${fmt(+S.oficial[a.id])}/${a.pts}</span>` : ""}</div>
+    ${a.accion ? `<p style="margin:.6rem 0 0"><a class="btn" target="_blank" rel="noopener" href="${esc(a.accion.u)}">${esc(a.accion.t)} →</a></p>` : ""}
     ${a.entrega ? `<details style="margin-top:.6rem"><summary>Cómo entregar</summary><div style="padding:.4rem 0">
       <p style="margin:.3rem 0">Si entregás un archivo, nombralo: <code>${esc(entregaNombre(a.id))}.ext</code></p>
       <div class="row"><a class="btn sec" target="_blank" rel="noopener" href="${drive(C.drive.entregas)}">📁 Abrir carpeta de entregas (Drive)</a>
@@ -142,6 +164,7 @@ function vSesion(n) {
       <div class="tw"><table><thead><tr><th>Criterio</th><th>Peso</th><th>Tu nivel</th></tr></thead><tbody>${r.criterios.map((c, i) => `<tr><td>${esc(c.n)}</td><td>${c.w}%</td><td><select data-auto="${a.id}" data-i="${i}" aria-label="${esc(c.n)}"><option value="0">–</option>${[1, 2, 3, 4].map(v => `<option value="${v}" ${S.auto[a.id]?.[i] == v ? "selected" : ""}>${v} · ${LVL[v]}</option>`).join("")}</select></td></tr>`).join("")}</tbody></table></div>
       <p class="muted" id="ap_${a.id}" style="margin:.4rem 0 0">${ap == null ? "Completá los niveles para ver tu autoestimación." : `Autoestimación: <b>${fmt(ap * a.pts)}/${a.pts}</b> pts (${fmt(ap * 100, 0)}%) — referencial; la nota oficial la asigna el docente.`}</p></div></details>` : ""}
     </div></div></div>`; }).join("")}
+  ${rutaDatosHtml(s)}
   ${s.quiz ? `<h2>🧠 Quiz de teoría</h2><div class="card"><div class="row" style="justify-content:space-between"><div><b>${esc(D.quizzes[n].titulo)}</b><div class="muted">5 preguntas · retroalimentación inmediata · reintentos ilimitados (cuenta tu mejor resultado)</div>
     ${q ? `<div class="muted">Mejor: <b>${q.mejor}%</b> · Intentos: ${q.intentos.length}</div>` : ""}</div><a class="btn" href="#/quiz/${n}">${q ? "Reintentar" : "Comenzar quiz"}</a></div></div>` : ""}
   ${s.extra?.length ? `<h2>💡 Para profundizar</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.extra.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
@@ -406,6 +429,77 @@ function bindDocente() {
   });
 }
 
+/* ---------- calendario y agenda ---------- */
+const TIPO_EV = { clase: ["🎓", "Clase", "#0072B2"], tutoria: ["💬", "Tutoría", "#009E73"], entrega: ["📤", "Entrega", "#D55E00"], evaluacion: ["📝", "Evaluación", "#CC79A7"], otro: ["📌", "Otro", "#8C8C8C"] };
+let AGENDA = null, AGENDA_ERR = "", calMes = new Date(), calFiltro = "todos", calEjemplo = false;
+const agendaUrl = () => (C.agenda?.endpoint || C.diagnostico?.endpoint || "");
+function agendaEjemplo() {
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0); const d = n => { const x = new Date(hoy); x.setDate(x.getDate() + n); return x; };
+  const f = x => x.toISOString().slice(0, 10), iso = (x, h) => `${f(x)}T${h}:00-03:00`, mk = (id, tipo, titulo, n, a, b, extra = {}) => ({ id, tipo, titulo, fecha: f(d(n)), inicio: a, fin: b, inicio_iso: iso(d(n), a), fin_iso: iso(d(n), b), sesion: null, descripcion: "", asistencia: false, mini: false, ...extra });
+  return { eventos: [mk("ej1", "clase", "Sesión 1 · Principios y percepción", 2, "19:00", "21:00", { sesion: 1, asistencia: true, mini: true }), mk("ej2", "tutoria", "Tutoría virtual · Dudas de la sesión 1", 5, "18:00", "19:00", { asistencia: true }),
+    mk("ej3", "entrega", "Entrega de actividades · Sesión 1", 9, "23:00", "23:59", { sesion: 1, descripcion: "Publicar en RPubs/Colab y pegar el enlace en el aula" }), mk("ej4", "clase", "Sesión 2 · Elección de gráficos", 9, "19:00", "21:00", { sesion: 2, asistencia: true, mini: true })] };
+}
+async function cargarAgenda(forzar) {
+  if (AGENDA && !forzar) return;
+  const ep = agendaUrl(); AGENDA_ERR = "";
+  if (!ep) { AGENDA = { eventos: [] }; return; }
+  try { const r = await fetch(ep + (ep.includes("?") ? "&" : "?") + "action=agenda"); AGENDA = await r.json(); }
+  catch (e) { AGENDA = { eventos: [] }; AGENDA_ERR = "No se pudo leer la agenda del servidor."; }
+}
+const evFecha = e => new Date(e.inicio_iso), pad2 = n => String(n).padStart(2, "0");
+const hoyZ = () => new Date().toLocaleDateString("sv-SE", { timeZone: "America/Asuncion" });
+const fmtF = e => new Date(e.inicio_iso).toLocaleDateString("es-PY", { weekday: "long", day: "numeric", month: "long", timeZone: "America/Asuncion" });
+function ics(evs) {
+  const z = d => new Date(d).toISOString().replace(/[-:]/g, "").replace(/\.\d+Z/, "Z"), esc2 = t => String(t || "").replace(/([,;\\])/g, "\\$1").replace(/\n/g, "\\n");
+  return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Visualizacion de Datos UNC//Aula//ES", "CALSCALE:GREGORIAN"].concat(evs.flatMap(e => ["BEGIN:VEVENT", `UID:${e.id}@aula-vd-unc`, `DTSTAMP:${z(new Date())}`, `DTSTART:${z(e.inicio_iso)}`, `DTEND:${z(e.fin_iso)}`,
+    `SUMMARY:${esc2((TIPO_EV[e.tipo] || TIPO_EV.otro)[0] + " " + e.titulo)}`, `DESCRIPTION:${esc2(e.descripcion || "")}`, ...(e.enlace ? [`URL:${e.enlace}`] : []), "END:VEVENT"])).concat("END:VCALENDAR").join("\r\n");
+}
+function vCalendario() {
+  const A = calEjemplo ? agendaEjemplo() : AGENDA, evs = (A?.eventos || []).filter(e => calFiltro === "todos" || e.tipo === calFiltro);
+  const y = calMes.getFullYear(), m = calMes.getMonth(), primero = new Date(y, m, 1), nDias = new Date(y, m + 1, 0).getDate(), off = (primero.getDay() + 6) % 7;
+  const porDia = {}; evs.forEach(e => { (porDia[e.fecha] = porDia[e.fecha] || []).push(e); });
+  const celdas = []; for (let i = 0; i < off; i++) celdas.push('<div class="cd off"></div>');
+  for (let d = 1; d <= nDias; d++) { const k = `${y}-${pad2(m + 1)}-${pad2(d)}`, lista = porDia[k] || [];
+    celdas.push(`<div class="cd ${k === hoyZ() ? "hoy" : ""}"><div class="dn">${d}</div>${lista.map(e => `<a href="#/calendario/${encodeURIComponent(e.id)}" class="ev" style="--c:${(TIPO_EV[e.tipo] || TIPO_EV.otro)[2]}" title="${esc(e.titulo)} · ${e.inicio}–${e.fin}">${(TIPO_EV[e.tipo] || TIPO_EV.otro)[0]} <span>${esc(e.inicio)} ${esc(e.titulo)}</span></a>`).join("")}</div>`); }
+  const proximos = (A?.eventos || []).filter(e => new Date(e.fin_iso) >= new Date()).filter(e => calFiltro === "todos" || e.tipo === calFiltro).slice(0, 8);
+  const mes0 = primero.toLocaleDateString("es-PY", { month: "long", year: "numeric" }).replace(" de ", " "), mes = mes0.charAt(0).toUpperCase() + mes0.slice(1);
+  return `<h1>📅 Calendario del curso</h1><p class="sub">Clases, tutorías virtuales y fechas de entrega. Horario de Paraguay (UTC−3).</p>
+  ${calEjemplo ? '<div class="card note"><b>Ejemplo.</b> Esta agenda es ilustrativa. La agenda real aparecerá aquí cuando el docente la publique.</div>' : ""}
+  ${AGENDA_ERR ? `<div class="card note">${esc(AGENDA_ERR)}</div>` : ""}
+  ${!agendaUrl() && !calEjemplo ? `<div class="card note"><b>La agenda todavía no está publicada.</b> El docente la carga en la hoja de cálculo del curso (pestaña <i>Agenda</i>) y se muestra aquí automáticamente. <button class="btn sec" id="ejCal" style="margin-left:.5rem">Ver un ejemplo</button></div>` : ""}
+  <div class="row" style="margin:.6rem 0"><button class="btn sec" id="cPrev" aria-label="Mes anterior">←</button><b style="min-width:11rem;text-align:center">${esc(mes)}</b><button class="btn sec" id="cNext" aria-label="Mes siguiente">→</button>
+   <select id="cFil" aria-label="Filtrar por tipo" style="width:auto"><option value="todos">Todos los tipos</option>${Object.entries(TIPO_EV).map(([k, v]) => `<option value="${k}" ${calFiltro === k ? "selected" : ""}>${v[0]} ${v[1]}</option>`).join("")}</select>
+   <button class="btn sec" id="cRef">↻ Actualizar</button><button class="btn sec" id="cIcs" ${evs.length ? "" : "disabled"}>⬇ Agregar a mi calendario (.ics)</button></div>
+  <div class="cal"><div class="ch">Lun</div><div class="ch">Mar</div><div class="ch">Mié</div><div class="ch">Jue</div><div class="ch">Vie</div><div class="ch">Sáb</div><div class="ch">Dom</div>${celdas.join("")}</div>
+  <div class="leg">${Object.values(TIPO_EV).map(v => `<span style="--c:${v[2]}">${v[0]} ${v[1]}</span>`).join("")}</div>
+  <h2>Próximos eventos</h2>${proximos.length ? `<div class="card"><ul class="res">${proximos.map(e => { const t = TIPO_EV[e.tipo] || TIPO_EV.otro;
+    return `<li><span class="ico">${t[0]}</span><span><a href="#/calendario/${encodeURIComponent(e.id)}"><b>${esc(e.titulo)}</b></a><br><span class="muted">${esc(fmtF(e))} · ${esc(e.inicio)}–${esc(e.fin)}</span>${e.asistencia ? ' <span class="tag">asistencia</span>' : ""}${e.mini ? ' <span class="tag">mini-evaluación sin nota</span>' : ""}</span></li>`; }).join("")}</ul></div>` : '<div class="card muted">No hay eventos próximos.</div>'}
+  <div class="card"><b>¿Cómo funcionan la asistencia y la mini-evaluación?</b><ul style="margin:.4rem 0 0;padding-left:1.2rem">
+   <li>📍 <b>Asistencia:</b> a la hora de cada clase o tutoría con registro recibís un <b>correo con tu enlace personal</b>. El formulario solo funciona durante el horario del evento (con 15 min de tolerancia).</li>
+   <li>📝 <b>Mini-evaluación:</b> al terminar cada clase recibís otro correo con 3 preguntas sobre lo visto. <b>No suma puntos</b> para la certificación.</li>
+   <li>Revisá tu bandeja de entrada y la carpeta de spam; los correos salen del sistema del curso.</li></ul></div>`;
+}
+function vEvento(id) {
+  const A = calEjemplo ? agendaEjemplo() : AGENDA, e = (A?.eventos || []).find(x => x.id === id), t = e && (TIPO_EV[e.tipo] || TIPO_EV.otro);
+  if (!e) return `<a href="#/calendario">← Calendario</a><h1>Evento no encontrado</h1>`;
+  return `<a href="#/calendario">← Calendario</a><h1>${t[0]} ${esc(e.titulo)}</h1><p class="sub">${esc(fmtF(e))} · ${esc(e.inicio)}–${esc(e.fin)} (hora de Paraguay)</p>
+  <div class="card">${e.descripcion ? `<p style="margin-top:0">${esc(e.descripcion)}</p>` : ""}
+   <div class="row"><span class="tag">${t[1]}</span>${e.sesion ? `<a href="#/sesion/${e.sesion}">Ir al módulo ${e.sesion}</a>` : ""}${e.enlace ? `<a class="btn" target="_blank" rel="noopener" href="${esc(e.enlace)}">Unirme a la sesión</a>` : ""}
+   <button class="btn sec" id="evIcs">⬇ Agregar a mi calendario</button></div>
+   ${e.asistencia ? '<p class="muted" style="margin:.8rem 0 0">📍 Recibirás por correo, a la hora de inicio, el enlace personal para registrar tu asistencia (solo funciona durante el horario).</p>' : ""}
+   ${e.mini ? '<p class="muted" style="margin:.4rem 0 0">📝 Al terminar recibirás una mini-evaluación de 3 preguntas. No suma puntos.</p>' : ""}
+   ${!e.enlace && (e.tipo === "clase" || e.tipo === "tutoria") ? '<p class="muted" style="margin:.4rem 0 0">El enlace de la sesión llega en el correo de asistencia.</p>' : ""}</div>`;
+}
+function bindCalendario(id) {
+  $("#cPrev")?.addEventListener("click", () => { calMes = new Date(calMes.getFullYear(), calMes.getMonth() - 1, 1); render(); });
+  $("#cNext")?.addEventListener("click", () => { calMes = new Date(calMes.getFullYear(), calMes.getMonth() + 1, 1); render(); });
+  $("#cFil")?.addEventListener("change", e => { calFiltro = e.target.value; render(); });
+  $("#cRef")?.addEventListener("click", async () => { await cargarAgenda(true); render(); });
+  $("#ejCal")?.addEventListener("click", () => { calEjemplo = true; calMes = new Date(); render(); });
+  $("#cIcs")?.addEventListener("click", () => descargar("calendario_visualizacion_datos.ics", ics((calEjemplo ? agendaEjemplo() : AGENDA).eventos), "text/calendar"));
+  $("#evIcs")?.addEventListener("click", () => descargar(`evento_${id}.ics`, ics([(calEjemplo ? agendaEjemplo() : AGENDA).eventos.find(x => x.id === id)]), "text/calendar"));
+}
+
 /* ---------- sesión y router ---------- */
 async function cargarSesion() {
   PERFIL = null; ES_DOC = false; S = empty();
@@ -433,10 +527,11 @@ async function render() {
       case "sesion": html = vSesion(n); crumb = `Módulo ${n}`; bind = bindSesion; break;
       case "quiz": html = vQuiz(n); crumb = `Módulo ${n} › Quiz`; bind = () => bindQuiz(n); break;
       case "notas": await refrescarNotas(); html = vNotas(); crumb = "Mis notas"; break;
+      case "calendario": await cargarAgenda(); html = b ? vEvento(decodeURIComponent(b)) : vCalendario(); crumb = "Calendario"; bind = () => bindCalendario(b ? decodeURIComponent(b) : ""); break;
       case "recursos": html = vRecursos(); crumb = "Recursos"; bind = bindRecursos; break;
       case "perfil": html = vPerfil(); crumb = "Mi perfil"; bind = bindPerfil; break;
       case "docente": html = await vDocente(); crumb = "Panel docente"; bind = bindDocente; break;
-      default: await refrescarNotas(); html = vInicio();
+      default: await refrescarNotas(); await cargarAgenda(); html = vInicio();
     }
   }
   if (tk !== renderTk) return;

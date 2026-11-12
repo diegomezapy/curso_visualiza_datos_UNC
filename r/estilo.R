@@ -25,3 +25,14 @@ tema_curso <- function(base_size = 12) {
 theme_set(tema_curso())
 
 fmt_num <- function(x, d = 1) formatC(x, format = "f", digits = d, big.mark = ".", decimal.mark = ",")
+
+# Diagnóstico inicial: lee la hoja en vivo (Apps Script) si el docente configuró el endpoint; si no, usa datos de ejemplo
+leer_diagnostico <- function() {
+  cfg <- if (file.exists("../aula/config.json")) "../aula/config.json" else "https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/aula/config.json"
+  ep <- tryCatch(jsonlite::fromJSON(cfg)$diagnostico$endpoint, error = function(e) "")
+  if (is.character(ep) && length(ep) == 1 && nzchar(ep)) {
+    d <- tryCatch(readr::read_csv(paste0(ep, "?action=csv"), show_col_types = FALSE), error = function(e) NULL)
+    if (!is.null(d) && nrow(d) > 0) return(list(datos = d, fuente = "hoja de Google Sheets (en vivo vía Apps Script)"))
+  }
+  list(datos = leer("diagnostico_ejemplo.csv"), fuente = "datos de ejemplo (sintéticos)")
+}

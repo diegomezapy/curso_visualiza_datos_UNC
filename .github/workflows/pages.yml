@@ -16,6 +16,7 @@ jobs:
       - run: for f in sesiones/0[1-8]*/lab*.py; do python -W ignore "$f"; done
       - run: python tools/build_site.py
       - run: python tools/build_aula.py
+      - run: python tools/build_diagnostico.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: site }

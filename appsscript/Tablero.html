@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tablero · Diagnóstico inicial · Visualización de Datos</title>
+<style>
+:root{--bg:#f6f8fa;--card:#fff;--fg:#1f2328;--mut:#59636e;--bd:#d1d9e0;--py:#0072B2;--r:#D55E00;--viz:#009E73;--gris:#8c8c8c;--ac:#0072B2}
+@media(prefers-color-scheme:dark){:root{--bg:#0d1117;--card:#161b22;--fg:#e6edf3;--mut:#9198a1;--bd:#30363d;--py:#56B4E9;--r:#E69F00;--viz:#2ecc9a;--gris:#6e7681;--ac:#56B4E9}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:.8rem 1rem;background:var(--card);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:5}
+.top{max-width:1200px;margin:auto;display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center}.top h1{font-size:1.2rem;margin:0;flex:1 1 280px}
+select,button{font:inherit;padding:.35rem .6rem;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--fg)}button{cursor:pointer}button:hover{border-color:var(--ac)}
+label.sw{display:flex;gap:.35rem;align-items:center;font-size:.88rem}
+main{max-width:1200px;margin:auto;padding:1rem}.muted{color:var(--mut);font-size:.85rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem}.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:.9rem 1rem}
+.kpi .v{font-size:2rem;font-weight:800;line-height:1.1}.kpi .l{color:var(--mut);font-size:.85rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:.9rem;margin-top:.9rem}.card h2{font-size:.98rem;margin:0 0 .2rem}.card .d{color:var(--mut);font-size:.8rem;margin-bottom:.6rem}
+.row{display:grid;grid-template-columns:210px 1fr 44px;gap:.5rem;align-items:center;margin:.25rem 0;font-size:.85rem}.row .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.row .t{background:color-mix(in srgb,var(--gris) 20%,transparent);border-radius:4px;height:14px;overflow:hidden}.row .t i{display:block;height:100%;border-radius:4px}.row .x{text-align:right;font-variant-numeric:tabular-nums}
+.cols{display:flex;align-items:flex-end;gap:.5rem;height:150px;margin-top:.4rem}.cols .g{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end}.cols .b{display:flex;gap:3px;align-items:flex-end;height:120px;width:100%;justify-content:center}.cols .b i{display:block;width:42%;border-radius:3px 3px 0 0;min-height:1px}.cols .a{font-size:.78rem;color:var(--mut);margin-top:.2rem}
+.stack{display:flex;height:34px;border-radius:6px;overflow:hidden;margin:.4rem 0}.stack div{display:grid;place-items:center;color:#fff;font-weight:700;font-size:.8rem;cursor:pointer;min-width:0}
+.leg{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.8rem;margin:.3rem 0}.leg span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--c);margin-right:.3rem}
+.chip{display:inline-block;padding:.15rem .6rem;border:1px solid var(--bd);border-radius:999px;font-size:.8rem;margin:.1rem;cursor:pointer}.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+svg text{fill:var(--mut);font-size:10px}.note{border:1px dashed #9a6700;border-radius:8px;padding:.5rem .8rem;font-size:.85rem;background:color-mix(in srgb,#9a6700 8%,transparent);margin-bottom:.8rem}
+.empty{padding:2rem;text-align:center;color:var(--mut)}a{color:var(--ac)}
+</style>
+</head>
+<body>
+<header><div class="top">
+  <h1>📊 Diagnóstico inicial · Visualización de Datos <span class="muted" id="act"></span></h1>
+  <select id="fa" aria-label="Filtrar por área"></select>
+  <select id="fe" aria-label="Filtrar por experiencia"></select>
+  <button id="rf" type="button">↻ Actualizar</button>
+  <label class="sw"><input type="checkbox" id="auto"> Auto (30 s)</label>
+  <button id="dl" type="button">⬇ CSV</button>
+</div></header>
+<main>
+<div id="aviso"></div>
+<div class="kpis" id="kpis"></div>
+<div class="grid" id="grid"></div>
+<p class="muted">Datos anónimos del cuestionario diagnóstico. Los filtros (área, experiencia, nivel) se aplican a todos los gráficos; hacé clic en un nivel para filtrar. Este tablero se alimenta en tiempo real de la hoja de cálculo del curso.</p>
+</main>
+<script>
+(() => {
+"use strict";
+const META = {"auto": [["au_python", "Programar en Python"], ["au_r", "Programar en R"], ["au_datos", "Manipular datos (pandas / dplyr)"], ["au_graf_py", "Graficar con matplotlib, seaborn o plotly"], ["au_graf_r", "Graficar con ggplot2"], ["au_colab", "Usar Google Colab o Jupyter"], ["au_rstudio", "Usar RStudio y R Markdown"], ["au_tablero", "Construir dashboards / tableros"], ["au_diseno", "Criterios de diseño visual (color, escalas, ética)"]], "temas": {"viz": "Visualización (conceptos)", "py": "Python", "r": "R"}, "herramientas": ["Excel / Google Sheets", "Python", "R / RStudio", "SQL", "Power BI / Tableau / Looker", "Google Colab / Jupyter", "Ninguna"], "areas": ["Ingeniería", "Ciencias exactas", "Informática / Sistemas", "Ciencias económicas / Administración", "Salud", "Educación", "Otra"], "experiencia": ["Ninguna", "Menos de 1 año", "1 a 3 años", "Más de 3 años"], "preguntas": [{"id": "V1", "tema": "viz", "q": "Un gráfico de barras cuyo eje Y empieza en 96 en lugar de 0…"}, {"id": "V2", "tema": "viz", "q": "¿Qué codificación visual se percibe con mayor precisión?"}, {"id": "V3", "tema": "viz", "q": "Para comparar la distribución de notas entre tres carreras conviene…"}, {"id": "V4", "tema": "viz", "q": "Para una variable con un punto neutro (por ejemplo, variación respecto a una meta) la paleta adecuada es…"}, {"id": "P1", "tema": "py", "q": "En pandas, df.groupby('sucursal')['ventas'].sum() devuelve…"}, {"id": "P2", "tema": "py", "q": "fig, ax = plt.subplots(1, 3) en matplotlib crea…"}, {"id": "P3", "tema": "py", "q": "En seaborn, para ver la distribución de una variable por grupo con forma de densidad usarías…"}, {"id": "P4", "tema": "py", "q": "¿Qué hace pd.read_csv('datos.csv', parse_dates=['fecha'])?"}, {"id": "R1", "tema": "r", "q": "En R, el operador %>% (o |>) sirve para…"}, {"id": "R2", "tema": "r", "q": "En ggplot2 las capas de un gráfico se combinan con…"}, {"id": "R3", "tema": "r", "q": "geom_col() frente a geom_bar(): la diferencia principal es que…"}, {"id": "R4", "tema": "r", "q": "En RStudio, ¿qué botón genera el HTML de un documento R Markdown?"}]}, ENDPOINT = '';
+const $ = s => document.querySelector(s), esc = s => String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+const C = { py: "var(--py)", r: "var(--r)", viz: "var(--viz)" }, NIV = ["Inicial", "Intermedio", "Avanzado"], NIVC = ["#c2410c", "#0072B2", "#1a7f4b"];
+let DATOS = [], COLS = [], nivelSel = null, timer = null;
+
+/* ---------- carga de datos (Apps Script, API pública o ejemplo) ---------- */
+function csv(t) { const rows = []; let r = [], f = "", q = false; for (let i = 0; i < t.length; i++) { const c = t[i];
+  if (q) { if (c === '"' && t[i + 1] === '"') { f += '"'; i++; } else if (c === '"') q = false; else f += c; }
+  else if (c === '"') q = true; else if (c === ",") { r.push(f); f = ""; } else if (c === "\n" || c === "\r") { if (c === "\r" && t[i + 1] === "\n") i++; r.push(f); f = ""; if (r.length > 1 || r[0] !== "") rows.push(r); r = []; } else f += c; }
+  if (f !== "" || r.length) { r.push(f); rows.push(r); } return { columnas: rows[0], filas: rows.slice(1) }; }
+function procesar(d, ejemplo) {
+  COLS = d.columnas; const ix = Object.fromEntries(COLS.map((c, i) => [c, i]));
+  DATOS = d.filas.map(f => { const o = {}; COLS.forEach((c, i) => o[c] = f[i]); ["score_viz", "score_py", "score_r", "score_total"].forEach(k => o[k] = +o[k]);
+    META.auto.forEach(([id]) => o[id] = +o[id]); META.preguntas.forEach(p => o["ok_" + p.id] = +o["ok_" + p.id]);
+    o.herr = String(o.herramientas || "").split(";").map(s => s.trim()).filter(Boolean); return o; });
+  $("#aviso").innerHTML = ejemplo ? '<div class="note"><b>Datos de ejemplo (sintéticos).</b> El tablero se conectará a las respuestas reales cuando el docente configure el endpoint de Apps Script.</div>' : "";
+  $("#act").textContent = "· actualizado " + new Date().toLocaleTimeString("es-PY", { hour: "2-digit", minute: "2-digit" });
+  llenarFiltros(); pintar();
+}
+function cargar() {
+  const fail = e => { $("#aviso").innerHTML = '<div class="note">No se pudieron cargar los datos: ' + esc(e && e.message || e) + "</div>"; };
+  if (window.google && google.script && google.script.run) { google.script.run.withSuccessHandler(d => procesar(d, false)).withFailureHandler(fail).getDatos(); return; }
+  if (ENDPOINT) { fetch(ENDPOINT + (ENDPOINT.includes("?") ? "&" : "?") + "action=datos").then(r => r.json()).then(d => procesar(d, false)).catch(fail); return; }
+  fetch("ejemplo.csv").then(r => r.text()).then(t => procesar(csv(t), true)).catch(fail);
+}
+
+/* ---------- filtros ---------- */
+function llenarFiltros() {
+  const sel = (id, ph, vals) => { const el = $(id), v = el.value; el.innerHTML = `<option value="">${ph}</option>` + vals.map(x => `<option>${esc(x)}</option>`).join(""); el.value = vals.includes(v) ? v : ""; };
+  sel("#fa", "Todas las áreas", [...new Set(DATOS.map(d => d.area))].sort()); sel("#fe", "Toda experiencia", META.experiencia);
+}
+const filtrados = () => DATOS.filter(d => (!$("#fa").value || d.area === $("#fa").value) && (!$("#fe").value || d.experiencia === $("#fe").value) && (!nivelSel || d.nivel === nivelSel));
+const prom = (a, k) => a.length ? a.reduce((s, d) => s + d[k], 0) / a.length : 0;
+const f1 = x => x.toFixed(1).replace(".", ",");
+
+/* ---------- gráficos ---------- */
+const barra = (n, v, max, color, txt, title) => `<div class="row" title="${esc(title || n)}"><div class="n">${esc(n)}</div><div class="t"><i style="width:${Math.max(0, v / max * 100)}%;background:${color}"></i></div><div class="x">${txt}</div></div>`;
+function pintar() {
+  const D = filtrados(), n = D.length, g = $("#grid");
+  const base = DATOS.length;
+  $("#kpis").innerHTML = [["Participantes", n + (n !== base ? ` <span class="muted" style="font-size:.9rem">de ${base}</span>` : "")], ["Puntaje promedio", f1(prom(D, "score_total")) + '<span class="muted" style="font-size:1rem"> / 12</span>'],
+    ["Nivel Avanzado", n ? Math.round(D.filter(d => d.nivel === "Avanzado").length / n * 100) + "%" : "–"], ["Brecha Python − R", (n ? (prom(D, "score_py") - prom(D, "score_r") >= 0 ? "+" : "") + f1(prom(D, "score_py") - prom(D, "score_r")) : "–") + '<span class="muted" style="font-size:1rem"> pts</span>']]
+    .map(([l, v]) => `<div class="card kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+  if (!n) { g.innerHTML = '<div class="card empty" style="grid-column:1/-1">No hay respuestas con estos filtros todavía.</div>'; return; }
+  const tem = ["viz", "py", "r"].map(t => barra(META.temas[t], prom(D, "score_" + t), 4, C[t], f1(prom(D, "score_" + t)) + "/4")).join("");
+  const dist = [0, 1, 2, 3, 4].map(k => { const a = D.filter(d => d.score_py === k).length / n, b = D.filter(d => d.score_r === k).length / n, m = 0.6;
+    return `<div class="g"><div class="b"><i title="Python: ${Math.round(a * 100)}% con ${k} aciertos" style="height:${Math.min(100, a / m * 100)}%;background:var(--py)"></i><i title="R: ${Math.round(b * 100)}% con ${k} aciertos" style="height:${Math.min(100, b / m * 100)}%;background:var(--r)"></i></div><div class="a">${k}</div></div>`; }).join("");
+  const cnt = NIV.map(v => D.filter(d => d.nivel === v).length), tot = cnt.reduce((a, b) => a + b, 0);
+  const niveles = `<div class="stack">${NIV.map((v, i) => cnt[i] ? `<div style="flex:${cnt[i]};background:${NIVC[i]};${nivelSel && nivelSel !== v ? "opacity:.35" : ""}" data-niv="${v}" title="${v}: ${cnt[i]} (${Math.round(cnt[i] / tot * 100)}%)">${Math.round(cnt[i] / tot * 100)}%</div>` : "").join("")}</div>
+    <div class="leg">${NIV.map((v, i) => `<span style="--c:${NIVC[i]}">${v} · ${cnt[i]}</span>`).join("")}</div>` + (nivelSel ? `<span class="chip on" id="qn">Filtro: ${nivelSel} ✕</span>` : '<span class="muted">Clic en un tramo para filtrar</span>');
+  const aut = META.auto.map(([id, t]) => [id, t, prom(D, id)]);
+  const col = id => /_r$|^au_r$|rstudio/.test(id) ? "var(--r)" : /python|_py$|colab/.test(id) ? "var(--py)" : "var(--gris)";
+  const auto = aut.map(([id, t, v]) => barra(t, v, 5, col(id), f1(v), t)).join("");
+  const herr = META.herramientas.map(h => [h, D.filter(d => d.herr.includes(h)).length / n]).sort((a, b) => b[1] - a[1]).map(([h, v]) => barra(h, v, 1, "var(--ac)", Math.round(v * 100) + "%")).join("");
+  const pre = META.preguntas.map(p => [p, D.filter(d => d["ok_" + p.id] === 1).length / n]).sort((a, b) => a[1] - b[1]).map(([p, v]) => barra(p.id + " · " + p.q, v, 1, C[p.tema], Math.round(v * 100) + "%", p.q)).join("");
+  const pts = D.map(d => { const x = (d.au_python + d.au_r) / 2, y = d.score_py + d.score_r; return [x + (Math.random() - .5) * .25, y + (Math.random() - .5) * .25]; });
+  const sx = x => 30 + (x - 1) / 4 * 290, sy = y => 130 - y / 8 * 115;
+  const scat = `<svg viewBox="0 0 330 150" width="100%" role="img" aria-label="Autoevaluación frente a aciertos en Python y R">${[0, 2, 4, 6, 8].map(y => `<line x1="30" x2="320" y1="${sy(y)}" y2="${sy(y)}" stroke="currentColor" opacity=".12"/><text x="24" y="${sy(y) + 3}" text-anchor="end">${y}</text>`).join("")}${[1, 2, 3, 4, 5].map(x => `<text x="${sx(x)}" y="145" text-anchor="middle">${x}</text>`).join("")}
+    ${pts.map(([x, y]) => `<circle cx="${sx(x).toFixed(1)}" cy="${sy(y).toFixed(1)}" r="3.2" fill="var(--py)" opacity=".55"/>`).join("")}</svg><div class="muted">Eje X: autoevaluación media (Python y R) · Eje Y: aciertos en Python + R (0–8)</div>`;
+  const card = (t, d, b) => `<div class="card"><h2>${t}</h2><div class="d">${d}</div>${b}</div>`;
+  g.innerHTML = card("Puntaje por área temática", "Promedio de aciertos sobre 4", tem) +
+    card("Python vs R: distribución de aciertos", '<span style="color:var(--py)">■</span> Python · <span style="color:var(--r)">■</span> R · % de participantes por número de aciertos (0–4)', `<div class="cols">${dist}</div>`) +
+    card("Niveles", "Inicial 0–4 · Intermedio 5–8 · Avanzado 9–12 aciertos", niveles) +
+    card("Autoevaluación promedio", '1 = nunca lo hice · 5 = con soltura · <span style="color:var(--py)">■</span> Python <span style="color:var(--r)">■</span> R', auto) +
+    card("Herramientas que ya usan", "% de participantes", herr) +
+    card("¿Se calibran bien?", "Cada punto es una persona: ¿quien se autoevalúa más alto acierta más?", scat) +
+    `<div class="card" style="grid-column:1/-1"><h2>Aciertos por pregunta</h2><div class="d">De la más difícil a la más fácil · <span style="color:var(--viz)">■</span> visualización <span style="color:var(--py)">■</span> Python <span style="color:var(--r)">■</span> R</div>${pre}</div>`;
+  g.querySelectorAll("[data-niv]").forEach(el => el.addEventListener("click", () => { nivelSel = nivelSel === el.dataset.niv ? null : el.dataset.niv; pintar(); }));
+  const q = $("#qn"); if (q) q.addEventListener("click", () => { nivelSel = null; pintar(); });
+}
+
+$("#fa").addEventListener("change", pintar); $("#fe").addEventListener("change", pintar); $("#rf").addEventListener("click", cargar);
+$("#auto").addEventListener("change", e => { clearInterval(timer); if (e.target.checked) timer = setInterval(cargar, 30000); });
+$("#dl").addEventListener("click", () => { const e = v => '"' + String(v ?? "").replace(/"/g, '""') + '"'; const t = [COLS.map(e).join(",")].concat(filtrados().map(d => COLS.map(c => e(d[c])).join(","))).join("\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["﻿" + t], { type: "text/csv" })); a.download = "diagnostico_filtrado.csv"; a.click(); });
+cargar();
+})();
+</script>
+</body>
+</html>

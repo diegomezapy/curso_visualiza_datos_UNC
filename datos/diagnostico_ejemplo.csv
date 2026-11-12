@@ -1,0 +1,73 @@
+ts,area,cohorte,experiencia,herramientas,au_python,au_r,au_datos,au_graf_py,au_graf_r,au_colab,au_rstudio,au_tablero,au_diseno,a_V1,a_V2,a_V3,a_V4,a_P1,a_P2,a_P3,a_P4,a_R1,a_R2,a_R3,a_R4,ok_V1,ok_V2,ok_V3,ok_V4,ok_P1,ok_P2,ok_P3,ok_P4,ok_R1,ok_R2,ok_R3,ok_R4,score_viz,score_py,score_r,score_total,nivel
+2026-11-12 09:00:52,Informática / Sistemas,MICD 2026,Menos de 1 año,Excel / Google Sheets; Python; R / RStudio; SQL,3,2,2,2,1,2,1,3,1,B,B,C,C,A,D,A,B,B,C,C,A,1,0,1,1,1,0,0,0,0,0,1,0,3,1,1,5,Intermedio
+2026-11-12 09:03:35,Informática / Sistemas,MICD 2026,1 a 3 años,Excel / Google Sheets; Python; SQL; Power BI / Tableau / Looker,3,2,4,4,1,4,2,1,4,B,A,NS,C,A,B,C,NS,A,B,NS,B,1,1,0,1,1,1,0,0,1,1,0,0,3,2,2,7,Intermedio
+2026-11-12 09:04:12,Otra,MICD 2026,1 a 3 años,Python; SQL; Google Colab / Jupyter,2,2,1,3,1,1,2,2,3,B,A,C,C,D,C,A,D,A,B,C,D,1,1,1,1,0,0,0,0,1,1,1,1,4,0,4,8,Intermedio
+2026-11-12 09:08:08,Informática / Sistemas,MICD 2026,Más de 3 años,Excel / Google Sheets; Python; SQL,4,2,3,4,4,4,4,3,2,B,A,C,B,B,B,D,C,NS,D,D,NS,1,1,1,0,0,1,1,1,0,0,0,0,3,3,0,6,Intermedio
+2026-11-12 09:08:28,Informática / Sistemas,MICD 2026,Menos de 1 año,Excel / Google Sheets; R / RStudio; SQL; Google Colab / Jupyter,2,3,2,2,1,1,2,2,1,C,A,C,C,A,B,A,D,C,A,C,B,0,1,1,1,1,1,0,0,0,0,1,0,3,2,1,6,Intermedio
+2026-11-12 09:08:58,Ingeniería,MICD 2026,Más de 3 años,Excel / Google Sheets; Python; SQL,5,3,3,3,3,3,3,3,3,NS,A,C,C,A,B,NS,C,D,B,D,B,0,1,1,1,1,1,0,1,0,1,0,0,3,3,1,7,Intermedio
+2026-11-12 09:11:51,Informática / Sistemas,MICD 2026,Ninguna,Excel / Google Sheets; Python,3,1,1,2,1,3,3,3,1,C,A,C,C,A,B,D,C,NS,D,NS,D,0,1,1,1,1,1,1,1,0,0,0,1,3,4,1,8,Intermedio
+2026-11-12 09:12:14,Ciencias exactas,MICD 2026,1 a 3 años,Excel / Google Sheets; Python; Power BI / Tableau / Looker,3,2,3,2,1,1,1,2,1,A,A,D,C,D,B,A,C,D,A,B,NS,0,1,0,1,0,1,0,1,0,0,0,0,2,2,0,4,Inicial
+2026-11-12 09:12:57,Ingeniería,MICD 2026,Ninguna,Excel / Google Sheets; Python,2,1,1,3,1,2,1,1,2,B,A,C,C,A,B,C,A,B,NS,B,D,1,1,1,1,1,1,0,0,0,0,0,1,4,2,1,7,Intermedio
+2026-11-12 09:13:20,Ingeniería,MICD 2026,Ninguna,Excel / Google Sheets; Python; SQL,3,1,2,1,1,3,1,1,1,NS,B,C,B,A,NS,D,C,NS,D,D,D,0,0,1,0,1,0,1,1,0,0,0,1,1,3,1,5,Intermedio
+2026-11-12 09:15:02,Salud,MICD 2026,Más de 3 años,Excel / Google Sheets; Python,4,3,4,3,3,5,3,3,4,B,A,B,C,A,B,D,C,A,B,A,D,1,1,0,1,1,1,1,1,1,1,0,1,3,4,3,10,Avanzado
+2026-11-12 09:15:11,Informática / Sistemas,MICD 2026,Menos de 1 año,Excel / Google Sheets; Python; R / RStudio; SQL,3,1,1,3,2,2,2,2,3,B,A,C,C,A,B,D,C,B,A,C,D,1,1,1,1,1,1,1,1,0,0,1,1,4,4,2,10,Avanzado
+2026-11-12 09:15:42,Informática / Sistemas,MICD 2026,Ninguna,Excel / Google Sheets; Python; SQL,1,2,3,1,2,1,1,1,2,B,D,C,C,B,NS,B,B,C,B,C,D,1,0,1,1,0,0,0,0,0,1,1,1,3,0,3,6,Intermedio
+2026-11-12 09:16:11,Ciencias exactas,MICD 2026,Ninguna,Excel / Google Sheets; Python; SQL; Power BI / Tableau / Looker; Google Colab / Jupyter,1,1,2,3,1,1,1,1,1,B,A,NS,C,A,B,A,B,B,C,D,D,1,1,0,1,1,1,0,0,0,0,0,1,3,2,1,6,Intermedio
+2026-11-12 09:16:52,Informática / Sistemas,MICD 2026,Más de 3 años,Excel / Google Sheets; Python; SQL,4,3,4,5,4,3,4,3,3,B,A,C,C,A,B,A,C,D,B,C,C,1,1,1,1,1,1,0,1,0,1,1,0,4,3,2,9,Avanzado
+2026-11-12 09:17:34,Informática / Sistemas,MICD 2026,Más de 3 años,SQL; Google Colab / Jupyter,4,4,5,3,3,4,3,2,3,B,NS,C,C,NS,D,NS,C,A,NS,C,B,1,0,1,1,0,0,0,1,1,0,1,0,3,1,2,6,Intermedio
+2026-11-12 09:18:50,Ingeniería,MICD 2026,Más de 3 años,R / RStudio; Google Colab / Jupyter,5,4,5,3,2,4,2,4,3,C,A,C,C,A,NS,D,C,NS,B,B,B,0,1,1,1,1,0,1,1,0,1,0,0,3,3,1,7,Intermedio
+2026-11-12 09:18:56,Ingeniería,MICD 2026,Menos de 1 año,Excel / Google Sheets; R / RStudio; SQL,3,1,2,1,1,1,1,3,3,B,NS,C,C,A,B,B,D,B,A,B,NS,1,0,1,1,1,1,0,0,0,0,0,0,3,2,0,5,Intermedio
+2026-11-12 09:18:57,Informática / Sistemas,MICD 2026,1 a 3 años,Python; SQL,3,2,4,3,2,5,2,1,4,A,A,C,NS,A,B,D,C,C,C,C,D,0,1,1,0,1,1,1,1,0,0,1,1,2,4,2,8,Intermedio
+2026-11-12 09:19:37,Ingeniería,MICD 2026,1 a 3 años,SQL,3,1,3,3,2,1,2,2,4,B,A,C,C,A,B,D,C,NS,B,D,A,1,1,1,1,1,1,1,1,0,1,0,0,4,4,1,9,Avanzado
+2026-11-12 09:21:13,Informática / Sistemas,MICD 2026,1 a 3 años,Python; R / RStudio,4,4,4,3,3,5,1,3,3,B,D,C,C,D,B,D,NS,A,B,C,C,1,0,1,1,0,1,1,0,1,1,1,0,3,2,3,8,Intermedio
+2026-11-12 09:21:46,Ingeniería,MICD 2026,Ninguna,Ninguna,1,1,1,2,1,2,1,1,2,B,NS,A,B,C,B,NS,D,A,C,B,C,1,0,0,0,0,1,0,0,1,0,0,0,1,1,1,3,Inicial
+2026-11-12 09:21:51,Ingeniería,MICD 2026,Menos de 1 año,Excel / Google Sheets; R / RStudio,2,1,2,2,1,3,2,1,1,C,A,B,C,B,B,NS,C,C,C,C,B,0,1,0,1,0,1,0,1,0,0,1,0,2,2,1,5,Intermedio
+2026-11-12 09:22:00,Educación,MICD 2026,Menos de 1 año,Excel / Google Sheets; Python,1,1,2,2,1,2,1,1,1,A,A,C,D,D,B,D,D,C,D,D,D,0,1,1,0,0,1,1,0,0,0,0,1,2,2,1,5,Intermedio
+2026-11-12 09:22:24,Ingeniería,MICD 2026,Ninguna,Excel / Google Sheets; Google Colab / Jupyter,3,1,1,2,1,2,1,1,1,C,C,C,C,C,B,D,A,B,B,C,D,0,0,1,1,0,1,1,0,0,1,1,1,2,2,3,7,Intermedio
+2026-11-12 09:23:28,Informática / Sistemas,MICD 2026,Ninguna,Excel / Google Sheets; Google Colab / Jupyter,1,1,2,1,1,2,1,3,2,D,A,B,B,B,B,C,C,A,C,B,D,0,1,0,0,0,1,0,1,1,0,0,1,1,2,2,5,Intermedio
+2026-11-12 09:24:25,Ciencias exactas,MICD 2026,Ninguna,Ninguna,1,1,1,2,1,1,1,1,1,D,A,C,B,A,B,A,C,A,NS,C,B,0,1,1,0,1,1,0,1,1,0,1,0,2,3,2,7,Intermedio
+2026-11-12 09:24:35,Ingeniería,MICD 2026,1 a 3 años,Excel / Google Sheets; Python; R / RStudio,3,2,3,2,2,2,1,3,4,B,A,C,C,A,B,D,C,B,C,A,D,1,1,1,1,1,1,1,1,0,0,0,1,4,4,1,9,Avanzado
+2026-11-12 09:27:16,Ingeniería,MICD 2026,Ninguna,Excel / Google Sheets,1,3,1,1,1,1,1,1,1,NS,D,C,C,NS,C,A,A,NS,B,A,B,0,0,1,1,0,0,0,0,0,1,0,0,2,0,1,3,Inicial
+2026-11-12 09:27:38,Otra,MICD 2026,Ninguna,Excel / Google Sheets; SQL,1,1,2,1,1,1,1,1,2,C,B,C,C,A,D,B,C,D,D,C,C,0,0,1,1,1,0,0,1,0,0,1,0,2,2,1,5,Intermedio
+2026-11-12 09:28:44,Ingeniería,MICD 2026,Menos de 1 año,Excel / Google Sheets,3,2,2,1,2,2,2,3,2,B,A,C,C,A,B,D,C,A,B,B,B,1,1,1,1,1,1,1,1,1,1,0,0,4,4,2,10,Avanzado
+2026-11-12 09:31:30,Informática / Sistemas,MICD 2026,Ninguna,Excel / Google Sheets; Python; Google Colab / Jupyter,2,2,2,1,1,3,1,1,1,NS,A,A,D,A,B,D,D,C,D,C,A,0,1,0,0,1,1,1,0,0,0,1,0,1,3,1,5,Intermedio
+2026-11-12 09:31:56,Otra,MICD 2026,Ninguna,Excel / Google Sheets,1,1,2,1,2,2,1,1,1,A,A,C,C,B,D,A,A,D,D,C,B,0,1,1,1,0,0,0,0,0,0,1,0,3,0,1,4,Inicial
+2026-11-12 09:31:58,Ingeniería,MICD 2026,Menos de 1 año,Excel / Google Sheets; Python,2,1,2,2,1,2,1,2,2,B,A,A,NS,A,B,D,C,B,C,C,A,1,1,0,0,1,1,1,1,0,0,1,0,2,4,1,7,Intermedio
+2026-11-12 09:32:33,Informática / Sistemas,MICD 2026,Menos de 1 año,Excel / Google Sheets; Python; R / RStudio; SQL; Google Colab / Jupyter,2,1,4,3,2,2,1,1,2,B,A,A,C,D,C,D,D,NS,D,D,A,1,1,0,1,0,0,1,0,0,0,0,0,3,1,0,4,Inicial
+2026-11-12 09:32:55,Ciencias exactas,MICD 2026,Menos de 1 año,Excel / Google Sheets; Python; Power BI / Tableau / Looker,1,2,1,2,1,1,1,2,2,D,NS,NS,B,D,B,C,B,A,B,C,A,0,0,0,0,0,1,0,0,1,1,1,0,0,1,3,4,Inicial
+2026-11-12 09:33:06,Salud,MICD 2026,Ninguna,Excel / Google Sheets,2,1,1,1,1,1,1,1,1,B,C,NS,NS,NS,B,C,D,A,NS,C,A,1,0,0,0,0,1,0,0,1,0,1,0,1,1,2,4,Inicial
+2026-11-12 09:33:14,Ingeniería,MICD 2026,1 a 3 años,Python,4,2,1,2,2,2,2,3,2,B,A,C,C,A,B,D,C,NS,D,NS,A,1,1,1,1,1,1,1,1,0,0,0,0,4,4,0,8,Intermedio
+2026-11-12 09:33:48,Ingeniería,MICD 2026,Ninguna,Excel / Google Sheets; Python; Power BI / Tableau / Looker,1,1,1,3,1,3,1,1,1,B,NS,NS,D,A,B,NS,C,A,C,A,D,1,0,0,0,1,1,0,1,1,0,0,1,1,3,2,6,Intermedio
+2026-11-12 09:34:04,Ingeniería,MICD 2026,Menos de 1 año,Excel / Google Sheets; Python; SQL; Google Colab / Jupyter,2,1,2,1,1,1,1,1,3,A,B,C,C,NS,B,D,D,C,A,B,C,0,0,1,1,0,1,1,0,0,0,0,0,2,2,0,4,Inicial
+2026-11-12 09:35:29,Otra,MICD 2026,Más de 3 años,Excel / Google Sheets; Python; R / RStudio; Google Colab / Jupyter,1,3,2,4,1,3,1,4,4,B,A,NS,C,A,C,B,B,A,B,C,B,1,1,0,1,1,0,0,0,1,1,1,0,3,1,3,7,Intermedio
+2026-11-12 09:35:50,Informática / Sistemas,MICD 2026,Más de 3 años,Excel / Google Sheets; SQL; Google Colab / Jupyter,3,3,4,4,4,4,2,4,5,B,A,C,C,B,B,D,D,A,D,NS,A,1,1,1,1,0,1,1,0,1,0,0,0,4,2,1,7,Intermedio
+2026-11-12 09:35:54,Ingeniería,MICD 2026,1 a 3 años,Excel / Google Sheets; Google Colab / Jupyter,2,3,4,2,2,1,2,1,3,B,D,B,C,D,B,D,C,B,D,C,A,1,0,0,1,0,1,1,1,0,0,1,0,2,3,1,6,Intermedio
+2026-11-12 09:36:26,Educación,MICD 2026,Ninguna,Python,2,1,1,1,1,1,1,1,1,NS,A,NS,C,A,B,A,D,A,B,A,NS,0,1,0,1,1,1,0,0,1,1,0,0,2,2,2,6,Intermedio
+2026-11-12 09:37:41,Otra,MICD 2026,Ninguna,R / RStudio; Google Colab / Jupyter,1,1,2,1,1,1,1,1,1,NS,NS,C,NS,D,B,C,D,NS,C,D,NS,0,0,1,0,0,1,0,0,0,0,0,0,1,1,0,2,Inicial
+2026-11-12 09:38:01,Informática / Sistemas,MICD 2026,Más de 3 años,Python; Google Colab / Jupyter,5,3,4,3,4,4,2,5,4,B,A,NS,C,A,B,D,C,NS,B,C,D,1,1,0,1,1,1,1,1,0,1,1,1,3,4,3,10,Avanzado
+2026-11-12 09:39:36,Informática / Sistemas,MICD 2026,Más de 3 años,Excel / Google Sheets; Python; R / RStudio; SQL; Google Colab / Jupyter,5,4,3,4,3,3,2,2,4,B,A,C,NS,A,B,D,C,A,B,C,D,1,1,1,0,1,1,1,1,1,1,1,1,3,4,4,11,Avanzado
+2026-11-12 09:40:18,Ciencias exactas,MICD 2026,Ninguna,Excel / Google Sheets; SQL; Power BI / Tableau / Looker,1,1,1,2,2,1,1,1,1,A,C,A,A,A,NS,C,C,NS,B,B,D,0,0,0,0,1,0,0,1,0,1,0,1,0,2,2,4,Inicial
+2026-11-12 09:41:36,Informática / Sistemas,MICD 2026,Menos de 1 año,Python; Google Colab / Jupyter,2,2,2,2,2,2,1,2,3,B,NS,A,C,A,B,NS,C,A,B,B,B,1,0,0,1,1,1,0,1,1,1,0,0,2,3,2,7,Intermedio
+2026-11-12 09:42:09,Informática / Sistemas,MICD 2026,Menos de 1 año,Excel / Google Sheets; Python,3,1,1,2,2,2,1,1,1,C,D,C,C,D,C,D,B,A,C,C,A,0,0,1,1,0,0,1,0,1,0,1,0,2,1,2,5,Intermedio
+2026-11-12 09:43:02,Informática / Sistemas,MICD 2026,Más de 3 años,Excel / Google Sheets; Python; Google Colab / Jupyter,5,3,3,4,4,5,3,4,3,B,A,B,C,A,B,D,C,A,D,C,B,1,1,0,1,1,1,1,1,1,0,1,0,3,4,2,9,Avanzado
+2026-11-12 09:43:22,Educación,MICD 2026,Ninguna,Excel / Google Sheets; Python; SQL; Google Colab / Jupyter,2,1,1,1,1,1,1,1,1,B,A,NS,D,B,B,D,C,A,A,B,B,1,1,0,0,0,1,1,1,1,0,0,0,2,3,1,6,Intermedio
+2026-11-12 09:43:36,Informática / Sistemas,MICD 2026,1 a 3 años,Excel / Google Sheets; SQL; Google Colab / Jupyter,5,3,3,3,3,3,1,2,2,C,A,A,C,A,B,D,C,A,A,B,A,0,1,0,1,1,1,1,1,1,0,0,0,2,4,1,7,Intermedio
+2026-11-12 09:43:55,Informática / Sistemas,MICD 2026,Más de 3 años,Python; Power BI / Tableau / Looker; Google Colab / Jupyter,4,4,5,3,5,4,3,2,3,D,A,D,C,A,B,D,C,A,A,C,D,0,1,0,1,1,1,1,1,1,0,1,1,2,4,3,9,Avanzado
+2026-11-12 09:44:51,Ciencias exactas,MICD 2026,Más de 3 años,Excel / Google Sheets; SQL,2,1,5,3,2,4,2,3,5,B,A,C,C,D,D,NS,C,C,A,B,C,1,1,1,1,0,0,0,1,0,0,0,0,4,1,0,5,Intermedio
+2026-11-12 09:49:11,Ingeniería,MICD 2026,1 a 3 años,Python,3,2,2,3,1,3,1,1,2,C,A,C,NS,A,D,D,C,A,B,D,C,0,1,1,0,1,0,1,1,1,1,0,0,2,3,2,7,Intermedio
+2026-11-12 09:50:07,Ciencias económicas / Administración,MICD 2026,Menos de 1 año,Ninguna,2,1,1,2,1,2,1,1,2,B,A,A,C,A,NS,D,A,B,NS,A,D,1,1,0,1,1,0,1,0,0,0,0,1,3,2,1,6,Intermedio
+2026-11-12 09:51:30,Ingeniería,MICD 2026,Más de 3 años,Excel / Google Sheets; Python; SQL; Power BI / Tableau / Looker,4,2,5,2,2,3,2,2,2,A,A,C,C,A,D,D,C,B,D,B,A,0,1,1,1,1,0,1,1,0,0,0,0,3,3,0,6,Intermedio
+2026-11-12 09:53:14,Informática / Sistemas,MICD 2026,Ninguna,Excel / Google Sheets; Power BI / Tableau / Looker,2,1,1,1,1,1,1,1,1,C,A,C,C,A,D,NS,C,D,A,NS,D,0,1,1,1,1,0,0,1,0,0,0,1,3,2,1,6,Intermedio
+2026-11-12 09:54:42,Ciencias exactas,MICD 2026,1 a 3 años,Excel / Google Sheets; SQL; Power BI / Tableau / Looker,3,1,1,3,3,1,1,3,2,NS,A,A,A,A,B,D,D,C,NS,C,A,0,1,0,0,1,1,1,0,0,0,1,0,1,3,1,5,Intermedio
+2026-11-12 09:55:43,Otra,MICD 2026,Menos de 1 año,Excel / Google Sheets; SQL,1,1,2,3,1,1,1,1,2,B,B,C,C,NS,B,A,C,NS,C,B,D,1,0,1,1,0,1,0,1,0,0,0,1,3,2,1,6,Intermedio
+2026-11-12 09:55:44,Ciencias económicas / Administración,MICD 2026,Ninguna,Excel / Google Sheets; SQL,1,1,1,1,1,1,1,1,1,B,D,A,C,A,B,B,C,C,NS,C,D,1,0,0,1,1,1,0,1,0,0,1,1,2,3,2,7,Intermedio
+2026-11-12 09:58:43,Ciencias económicas / Administración,MICD 2026,1 a 3 años,Excel / Google Sheets; Power BI / Tableau / Looker,4,1,2,1,2,4,1,1,3,D,C,C,NS,A,NS,NS,D,B,C,B,A,0,0,1,0,1,0,0,0,0,0,0,0,1,1,0,2,Inicial
+2026-11-12 09:59:05,Ingeniería,MICD 2026,Ninguna,Ninguna,2,1,1,2,1,1,1,2,1,C,A,C,C,D,D,C,B,A,C,B,C,0,1,1,1,0,0,0,0,1,0,0,0,3,0,1,4,Inicial
+2026-11-12 10:03:17,Educación,MICD 2026,Menos de 1 año,Excel / Google Sheets; Python; SQL,2,1,1,1,1,2,2,1,3,B,NS,NS,C,A,A,D,C,NS,C,A,B,1,0,0,1,1,0,1,1,0,0,0,0,2,3,0,5,Intermedio
+2026-11-12 10:03:26,Salud,MICD 2026,Más de 3 años,Python; SQL,4,2,3,3,3,3,3,4,4,B,A,C,C,A,B,D,D,B,B,C,C,1,1,1,1,1,1,1,0,0,1,1,0,4,3,2,9,Avanzado
+2026-11-12 10:03:49,Informática / Sistemas,MICD 2026,Menos de 1 año,Excel / Google Sheets; SQL; Google Colab / Jupyter,4,2,2,1,1,1,2,2,3,A,A,C,A,A,C,D,C,C,B,C,D,0,1,1,0,1,0,1,1,0,1,1,1,2,3,3,8,Intermedio
+2026-11-12 10:05:16,Informática / Sistemas,MICD 2026,Más de 3 años,Python,3,3,5,3,3,5,4,4,3,B,A,B,C,A,C,C,NS,A,B,C,B,1,1,0,1,1,0,0,0,1,1,1,0,3,1,3,7,Intermedio
+2026-11-12 10:07:59,Otra,MICD 2026,1 a 3 años,SQL; Power BI / Tableau / Looker,4,1,2,2,2,1,2,2,1,D,NS,D,C,A,B,NS,NS,C,NS,C,D,0,0,0,1,1,1,0,0,0,0,1,1,1,2,2,5,Intermedio
+2026-11-12 10:09:10,Salud,MICD 2026,Menos de 1 año,Python; R / RStudio; Power BI / Tableau / Looker,3,1,1,2,1,4,1,2,1,D,B,A,B,A,B,NS,C,A,A,B,D,0,0,0,0,1,1,0,1,1,0,0,1,0,3,2,5,Intermedio
+2026-11-12 10:09:15,Ingeniería,MICD 2026,Ninguna,Excel / Google Sheets; SQL,2,1,1,1,1,1,1,1,1,A,A,B,C,D,B,D,C,B,C,C,NS,0,1,0,1,0,1,1,1,0,0,1,0,2,3,1,6,Intermedio
+2026-11-12 10:10:13,Ciencias exactas,MICD 2026,Menos de 1 año,Excel / Google Sheets,1,1,2,1,1,1,1,1,2,NS,NS,C,C,A,NS,B,B,C,B,A,C,0,0,1,1,1,0,0,0,0,1,0,0,2,1,1,4,Inicial

@@ -32,7 +32,7 @@ def raiz_rel(dest: Path) -> str:
 def pagina(dest, titulo, cuerpo):
     r = raiz_rel(dest)
     nav = f'<a class="t" href="{r}index.html">Visualización de Datos · UNC</a>' + "".join(
-        f'<a href="{r}{h}">{t}</a>' for t, h in [("🎓 Aula virtual", "aula/index.html"), ("Guía del aula", "docs/aula_virtual.html"), ("Programa", "docs/programa.html"), ("Cronograma", "docs/cronograma.html"),
+        f'<a href="{r}{h}">{t}</a>' for t, h in [("🎓 Aula virtual", "aula/index.html"), ("📝 Diagnóstico", "diagnostico/index.html"), ("Guía del aula", "docs/aula_virtual.html"), ("Programa", "docs/programa.html"), ("Cronograma", "docs/cronograma.html"),
         ("Evaluación", "docs/evaluacion.html"), ("Rúbricas", "docs/rubricas.html"), ("Integrador", "docs/proyecto_integrador.html"),
         ("Quizzes", "docs/banco_quizzes.html"), ("Bibliografía", "docs/bibliografia.html")]) + f'<a href="{REPO}">GitHub</a>'
     dest.parent.mkdir(parents=True, exist_ok=True)

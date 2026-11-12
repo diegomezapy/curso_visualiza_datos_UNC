@@ -1,0 +1,138 @@
+---
+title: "Sesión 1 · Del dato a la visualización: resultados del diagnóstico inicial (R → RPubs)"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+library(plotly); library(crosstalk)
+```
+
+> **Objetivo.** Ver, con datos que **ustedes mismos generaron**, cómo se conecta la **captura de datos** con la **visualización de resultados**. Esta es la **vía R → RPubs**; la vía Python → Colab está en `lab00_diagnostico` y el tablero en vivo en el aula.
+
+# 1. El recorrido del dato
+
+```
+Cuestionario web  →  Google Apps Script  →  Hoja de Google Sheets  →  ┬→ Tablero en vivo (Apps Script)
+   (captura)            (valida y guarda)        (fuente única)       ├→ Looker Studio
+                                                                      ├→ R Markdown → RPubs  ← estás acá
+                                                                      └→ Python → Google Colab
+```
+
+Una sola fuente de datos, **varias vías de visualización**. Lo que cambia es la audiencia y la necesidad: un tablero para monitorear, un informe para comunicar, un notebook para explorar.
+
+# 2. Leer los datos
+
+```{r datos}
+dg <- leer_diagnostico()
+d  <- dg$datos
+cat("Fuente:", dg$fuente, "·", nrow(d), "respuestas\n")
+glimpse(d)
+```
+
+Cada fila es una persona y cada columna una variable (**datos ordenados / *tidy***). Las columnas `ok_*` valen 1 si la respuesta fue correcta; `score_*` suman aciertos por área (visualización, Python, R).
+
+# 3. ¿Qué sabemos de R y de Python?
+
+## 3.1 Puntaje por área temática
+
+```{r puntaje-area, fig.height=3.4}
+tema <- c(score_viz = "Visualización (conceptos)", score_py = "Python", score_r = "R")
+d %>% summarise(across(c(score_viz, score_py, score_r), ~ mean(.x, na.rm = TRUE))) %>%
+  pivot_longer(everything(), names_to = "area", values_to = "promedio") %>%
+  mutate(area = factor(tema[area], levels = rev(tema))) %>%
+  ggplot(aes(promedio, area, fill = area)) + geom_col(show.legend = FALSE, width = .6) +
+  geom_text(aes(label = sprintf("%.1f / 4", promedio)), hjust = -.15) +
+  scale_fill_manual(values = c("Visualización (conceptos)" = "#009E73", Python = BASE, R = ENFASIS)) +
+  scale_x_continuous(limits = c(0, 4.6), expand = c(0, 0)) +
+  labs(title = "El grupo llega más fuerte en unas áreas que en otras", x = "Promedio de aciertos (máx. 4)", y = NULL) +
+  theme(panel.grid.major.y = element_blank())
+```
+
+## 3.2 Python vs R: ¿cómo se distribuyen los aciertos?
+
+```{r dist-py-r, fig.height=4}
+d %>% select(score_py, score_r) %>% pivot_longer(everything(), names_to = "lenguaje", values_to = "aciertos") %>%
+  mutate(lenguaje = recode(lenguaje, score_py = "Python", score_r = "R")) %>%
+  count(lenguaje, aciertos) %>% group_by(lenguaje) %>% mutate(p = n / sum(n)) %>% ungroup() %>%
+  ggplot(aes(factor(aciertos), p, fill = lenguaje)) + geom_col(position = position_dodge(.8), width = .75) +
+  scale_fill_manual(values = c(Python = BASE, R = ENFASIS)) + scale_y_continuous(labels = percent) +
+  labs(title = "Más gente se concentra en pocos aciertos en R que en Python", x = "Aciertos (de 4)", y = "% de participantes", fill = NULL)
+```
+
+## 3.2b Niveles del grupo
+
+```{r niveles, fig.height=2.6}
+d %>% count(nivel) %>% mutate(nivel = factor(nivel, levels = c("Inicial", "Intermedio", "Avanzado")), p = n / sum(n)) %>%
+  ggplot(aes("", p, fill = nivel)) + geom_col(width = .5) + coord_flip() +
+  geom_text(aes(label = percent(p, accuracy = 1)), position = position_stack(vjust = .5), color = "white", fontface = "bold") +
+  scale_fill_manual(values = c(Inicial = "#c2410c", Intermedio = BASE, Avanzado = "#1a7f4b")) +
+  labs(title = "Composición del grupo por nivel", x = NULL, y = NULL, fill = NULL) + theme_void() + theme(legend.position = "bottom", plot.title = element_text(face = "bold"))
+```
+
+## 3.3 Autoevaluación: ¿cómo se perciben?
+
+```{r autoeval, fig.height=4.6}
+etq <- c(au_python = "Programar en Python", au_r = "Programar en R", au_datos = "Manipular datos (pandas / dplyr)",
+         au_graf_py = "Graficar con matplotlib / seaborn / plotly", au_graf_r = "Graficar con ggplot2", au_colab = "Usar Google Colab / Jupyter",
+         au_rstudio = "Usar RStudio y R Markdown", au_tablero = "Construir tableros", au_diseno = "Criterios de diseño visual")
+d %>% summarise(across(all_of(names(etq)), ~ mean(.x, na.rm = TRUE))) %>% pivot_longer(everything(), names_to = "id", values_to = "media") %>%
+  mutate(habilidad = etq[id], lenguaje = case_when(id %in% c("au_r", "au_graf_r", "au_rstudio") ~ "R", id %in% c("au_python", "au_graf_py", "au_colab") ~ "Python", TRUE ~ "General")) %>%
+  ggplot(aes(media, reorder(habilidad, media), fill = lenguaje)) + geom_col(width = .7) + geom_text(aes(label = sprintf("%.1f", media)), hjust = -.2, size = 3.5) +
+  scale_fill_manual(values = c(Python = BASE, R = ENFASIS, General = GRIS)) + scale_x_continuous(limits = c(0, 5.4), expand = c(0, 0)) +
+  labs(title = "Autoevaluación promedio (1 = nunca lo hice · 5 = con soltura)", x = NULL, y = NULL, fill = NULL) + theme(panel.grid.major.y = element_blank())
+```
+
+## 3.4 ¿Se calibran bien? Autoevaluación vs resultado
+
+```{r calibracion, fig.height=4}
+d %>% mutate(auto = (au_python + au_r) / 2, aciertos = score_py + score_r) %>%
+  ggplot(aes(auto, aciertos)) + geom_jitter(width = .12, height = .12, color = BASE, alpha = .6, size = 2) +
+  geom_smooth(method = "lm", se = TRUE, color = ENFASIS, fill = ENFASIS, alpha = .15) +
+  labs(title = "Quien se autoevalúa más alto acierta más… pero con mucha dispersión", x = "Autoevaluación media (Python y R)", y = "Aciertos en Python + R (de 8)")
+```
+
+## 3.5 Aciertos por pregunta
+
+```{r por-pregunta, fig.height=4.8}
+d %>% summarise(across(starts_with("ok_"), ~ mean(.x, na.rm = TRUE))) %>% pivot_longer(everything(), names_to = "id", values_to = "p") %>%
+  mutate(id = sub("ok_", "", id), tema = recode(substr(id, 1, 1), V = "Visualización", P = "Python", R = "R")) %>%
+  ggplot(aes(p, reorder(id, p), fill = tema)) + geom_col(width = .7) + geom_text(aes(label = percent(p, accuracy = 1)), hjust = -.15, size = 3.5) +
+  scale_fill_manual(values = c("Visualización" = "#009E73", Python = BASE, R = ENFASIS)) + scale_x_continuous(labels = percent, limits = c(0, 1), expand = c(0, 0)) +
+  labs(title = "De la pregunta más difícil a la más fácil", x = "% de aciertos", y = NULL, fill = NULL) + theme(panel.grid.major.y = element_blank())
+```
+
+# 4. Versión interactiva (sin servidor)
+
+Con **plotly + crosstalk** los filtros funcionan en el navegador, incluso publicados en RPubs:
+
+```{r interactivo, fig.height=4.5}
+sd <- SharedData$new(d %>% mutate(auto_py = au_python, auto_r = au_r))
+bscols(widths = c(3, 9),
+  list(filter_select("area", "Área", sd, ~ area), filter_select("exp", "Experiencia", sd, ~ experiencia)),
+  plot_ly(sd, x = ~ score_py, y = ~ score_r, color = ~ nivel, colors = c(Inicial = "#c2410c", Intermedio = BASE, Avanzado = "#1a7f4b"),
+          type = "scatter", mode = "markers", marker = list(size = 9, opacity = .6), text = ~ paste(area, "·", experiencia), hoverinfo = "text") %>%
+    layout(title = "Aciertos en Python (x) vs R (y)", xaxis = list(title = "Python (0–4)", dtick = 1), yaxis = list(title = "R (0–4)", dtick = 1)))
+```
+
+# 5. Tu turno
+
+1. Respondé con los gráficos: **¿en qué área está la mayor brecha entre Python y R?** ¿Cambia según el área de formación? (agregá un `facet_wrap(~ area)`).
+2. Elegí **una** de las visualizaciones, mejorala aplicando lo visto en clase (título-mensaje, color de énfasis, anotación) y explicá en 5 líneas qué decisión de diseño tomaste.
+3. **Publicá** este documento en RPubs (*Publish → RPubs*) y pegá el enlace en la actividad del aula.
+
+> Los datos son **anónimos**. No incluyas nombres ni datos personales en lo que publiques en RPubs.
+
+# Publicar en RPubs
+
+1. **Knit** → HTML. 2. Botón **Publish → RPubs** (cuenta gratuita en <https://rpubs.com>). 3. Pegá el enlace en el **aula virtual**.

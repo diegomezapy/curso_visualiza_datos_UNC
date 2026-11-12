@@ -32,6 +32,9 @@ for s in c.SESIONES:
         {"t": "Código Python del laboratorio (.py)", "u": f"{cfg['repo']}/blob/main/sesiones/{d}/{LABS[n]}.py", "k": "codigo"},
         {"t": "Materiales en Google Drive", "u": f"https://drive.google.com/drive/folders/{cfg['drive']['sesiones'][str(n)]}", "k": "drive"},
     ]
+    if n == 1:
+        rec.insert(3, {"t": "Python · Lab 0 en Colab: resultados del diagnóstico", "u": f"{cfg['colab']}/sesiones/01_principios/lab00_diagnostico.ipynb", "k": "colab"})
+        rec.insert(5, {"t": "R · 00_diagnostico.Rmd: resultados del diagnóstico (RPubs)", "u": f"{cfg['repo']}/blob/main/r/00_diagnostico.Rmd", "k": "rmd"})
     if n == 5: rec.append({"t": "App Dash de ejemplo (app_dash.py)", "u": f"{cfg['repo']}/blob/main/sesiones/{d}/app_dash.py", "k": "codigo"})
     if n == 6: rec.append({"t": "R · Plantilla de informe parametrizado", "u": f"{cfg['repo']}/blob/main/r/plantilla_reporte_sucursal.Rmd", "k": "rmd"})
     s2 = {k: v for k, v in s.items() if k != "lecturas"}

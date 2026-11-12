@@ -44,5 +44,14 @@
     "docentes": [
       "docente@demo.local"
     ]
+  },
+  "diagnostico": {
+    "endpoint": "",
+    "tablero_url": "",
+    "looker_url": "",
+    "looker_embed": ""
+  },
+  "agenda": {
+    "endpoint": ""
   }
 }
