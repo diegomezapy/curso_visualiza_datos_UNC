@@ -1,7 +1,7 @@
 /* Capa de acceso a datos del aula. Dos implementaciones con la MISMA interfaz:
    - Firebase (Auth + Firestore): producción. Se activa si config.firebase.apiKey está definido.
    - Demo: todo en localStorage del navegador, solo para probar la interfaz (NO es seguro ni compartido).
-   Colecciones Firestore: usuarios/{uid} · progreso/{uid} · calificaciones/{uid} · cedulas/{cedula} · docentes/{email} */
+   Colecciones Firestore: usuarios/{uid} · progreso/{uid} · calificaciones/{uid} · clases/{id} · cedulas/{cedula} · docentes/{email} */
 
 const ERR = {
   "auth/email-already-in-use": "Ese correo ya tiene una cuenta. Ingresá o recuperá tu contraseña.",
@@ -74,6 +74,8 @@ async function crearFirebase(cfg) {
       return Object.values(m);
     },
     guardarCalificaciones: (uid, oficial) => fb.setDoc(fb.doc(db, "calificaciones", uid), { oficial, actualizado: fb.serverTimestamp() }),
+    async listarClases() { return (await fb.getDocs(fb.collection(db, "clases"))).docs.map(d => ({ id: d.id, ...d.data(), actualizado: undefined })); },
+    guardarClase: (c) => { const { id, ...r } = c; return fb.setDoc(fb.doc(db, "clases", id), { ...r, actualizado: fb.serverTimestamp() }); },
   };
 }
 
@@ -82,7 +84,7 @@ async function hash(s) { const b = await crypto.subtle.digest("SHA-256", new Tex
 function crearDemo(cfg) {
   const K = "cvd_demo_db", KS = "cvd_demo_sesion";
   const rd = () => { try { return JSON.parse(localStorage.getItem(K)) || {}; } catch { return {}; } };
-  const db0 = () => Object.assign({ cuentas: {}, usuarios: {}, progreso: {}, calificaciones: {}, cedulas: {} }, rd());
+  const db0 = () => Object.assign({ cuentas: {}, usuarios: {}, progreso: {}, calificaciones: {}, cedulas: {}, clases: {} }, rd());
   const wr = d => { try { localStorage.setItem(K, JSON.stringify(d)); } catch {} };
   const listeners = [];
   const sesion = () => { try { return localStorage.getItem(KS); } catch { return null; } };
@@ -129,6 +131,8 @@ function crearDemo(cfg) {
     async esDocente(u) { const ok = !!u && (cfg.demo?.docentes || []).includes(u.email); this.diag.motivo = ok ? "ok" : "no_figura_en_docentes"; return ok; },
     async listarAlumnos() { const d = db0(); return Object.entries(d.usuarios).map(([u, perfil]) => ({ uid: u, perfil, progreso: d.progreso[u] || {}, oficial: d.calificaciones[u] || {} })); },
     async guardarCalificaciones(u, o) { const d = db0(); d.calificaciones[u] = o; wr(d); },
+    async listarClases() { return Object.entries(db0().clases).map(([id, c]) => ({ id, ...c })); },
+    async guardarClase(c) { const d = db0(), { id, ...r } = c; d.clases[id] = r; wr(d); },
   };
 }
 

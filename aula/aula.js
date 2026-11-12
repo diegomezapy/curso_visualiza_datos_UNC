@@ -60,7 +60,7 @@ const bar = (p, cls = "") => `<div class="bar ${cls}" role="progressbar" aria-va
 /* ---------- navegación ---------- */
 function navHtml(ruta) {
   const it = (h, t, extra = "") => `<a href="#${h}" ${ruta === h ? 'aria-current="page"' : ""}><span>${t}</span>${extra}</a>`;
-  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
+  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/clases", "🎥 Clases grabadas") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
   D.sesiones.forEach(s => { const p = progSes(s); h += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`, `<span class="dot">${p.pct >= 1 ? "✅" : Math.round(p.pct * 100) + "%"}</span>`); });
   h += `<div class="grp">Cuenta</div>` + it("/perfil", "👤 Mi perfil") + (ES_DOC ? it("/docente", "🧑‍🏫 Panel docente") : "");
   $("#nav").innerHTML = h;
@@ -146,6 +146,7 @@ function vSesion(n) {
   <h1>${esc(s.titulo)}</h1><p class="sub">${esc(s.resumen)}${C.fechas?.[n] ? " · <b>" + esc(C.fechas[n]) + "</b>" : ""}</p>
   ${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} completado</span>
   <h2>🎯 Objetivos</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.objetivos.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>
+  <p><a class="btn sm" href="#/clases/s${n}">🎥 Ver clases grabadas de esta sesión</a></p>
   <h2>🧰 Materiales de la sesión</h2><div class="card"><ul class="res">${s.recursos.map(r => `<li><span class="ico">${ico[r.k] || "🔗"}</span>${r.u ? `<a href="${esc(r.u)}" target="${r.k === "guia" ? "_self" : "_blank"}" rel="noopener">${esc(r.t)}</a>` : esc(r.t)}</li>`).join("")}</ul>
    <p class="muted" style="margin:.5rem 0 0">🐍 <b>Python</b> en Colab (<i>Entorno de ejecución → Ejecutar todas</i>) · 📊 <b>R</b> en RStudio: abrí el .Rmd, presioná <i>Knit</i> y publicá con <i>Publish → RPubs</i>. Datasets en <a href="#/recursos">Recursos</a>; guía en <a href="../materiales/pdf/00_guia_inicio.pdf" target="_blank">Guía de inicio (PDF)</a>.</p></div>
   ${videosHtml(s)}${lecturasHtml(s)}
@@ -430,6 +431,69 @@ function bindDocente() {
   });
 }
 
+/* ---------- clases grabadas ---------- */
+let CLASES = [], CL_FILTRO = "todas", CL_EDIT = null;
+// Acepta YouTube, Google Drive o cualquier https (se abre en pestaña nueva). Devuelve {tipo, id, embed(inicio)}.
+function parseVideo(u) {
+  let x; try { x = new URL(String(u).trim()); } catch { return null; }
+  if (x.protocol !== "https:") return null;
+  const h = x.hostname.replace(/^www\./, "");
+  let id = null;
+  if (h === "youtu.be") id = x.pathname.slice(1);
+  else if (h === "youtube.com" || h === "m.youtube.com" || h === "youtube-nocookie.com") id = x.searchParams.get("v") || (x.pathname.match(/^\/(?:embed|live|shorts)\/([\w-]{11})/) || [])[1];
+  if (id && /^[\w-]{11}$/.test(id)) return { tipo: "yt", id, embed: t => `https://www.youtube-nocookie.com/embed/${id}?rel=0${t ? `&start=${t}&autoplay=1` : ""}` };
+  if (h === "drive.google.com") { const m = x.pathname.match(/\/file\/d\/([\w-]+)/) || (x.searchParams.get("id") ? [0, x.searchParams.get("id")] : null); if (m) return { tipo: "drive", id: m[1], embed: () => `https://drive.google.com/file/d/${m[1]}/preview` }; }
+  return { tipo: "ext", id: null, url: x.href };
+}
+const hms = t => t.split(":").reverse().reduce((a, v, i) => a + (+v || 0) * 60 ** i, 0);
+function capitulos(txt) { return String(txt || "").split("\n").map(l => l.trim().match(/^((?:\d{1,2}:)?\d{1,2}:\d{2})\s+(.+)$/)).filter(Boolean).map(m => ({ t: m[1], s: hms(m[1]), n: m[2] })); }
+async function vClases() {
+  try { CLASES = await B.listarClases(); } catch (e) { return `<h1>🎥 Clases grabadas</h1><div class="card note">No se pudieron leer las clases: ${esc(msgError(e))}</div>`; }
+  CLASES = CLASES.filter(c => ES_DOC || c.visible !== false).sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
+  const lista = CLASES.filter(c => CL_FILTRO === "todas" || String(c.sesion) === CL_FILTRO.slice(1));
+  const chips = [["todas", "Todas"], ...D.sesiones.map(s => ["s" + s.n, "Sesión " + s.n])];
+  const vistas = CLASES.filter(c => S.done["rec_" + c.id]).length;
+  const form = ES_DOC ? `<details class="card" id="clform" ${CL_EDIT ? "open" : ""}><summary><b>${CL_EDIT ? "✏️ Editar clase" : "➕ Cargar una clase grabada"}</b> <span class="muted">(solo docentes)</span></summary>
+   <p class="muted">Subí la grabación a Google Drive (carpeta con acceso solo para el grupo) o a YouTube como <b>no listado</b>, y pegá acá el enlace. El aula no almacena el video.</p>
+   <form id="clf" class="form-grid">
+    <div><label for="cl_t">Título</label><input id="cl_t" type="text" required maxlength="150" value="${esc(CL_EDIT?.titulo || "")}"></div>
+    <div><label for="cl_u">Enlace del video (https)</label><input id="cl_u" type="url" required placeholder="https://drive.google.com/file/d/…/view  ·  https://youtu.be/…" value="${esc(CL_EDIT?.url || "")}"></div>
+    <div><label for="cl_s">Sesión</label><select id="cl_s">${D.sesiones.map(s => `<option value="${s.n}" ${+CL_EDIT?.sesion === s.n ? "selected" : ""}>${s.n}. ${esc(s.corto)}</option>`).join("")}</select></div>
+    <div><label for="cl_f">Fecha de la clase</label><input id="cl_f" type="date" required value="${esc(CL_EDIT?.fecha || new Date().toISOString().slice(0, 10))}"></div>
+    <div style="grid-column:1/-1"><label for="cl_n">Notas / resumen (opcional)</label><textarea id="cl_n" rows="2" maxlength="600">${esc(CL_EDIT?.notas || "")}</textarea></div>
+    <div style="grid-column:1/-1"><label for="cl_c">Capítulos (opcional; uno por línea: <code>12:40 Color y daltonismo</code>)</label><textarea id="cl_c" rows="3" maxlength="1500">${esc(CL_EDIT?.capitulos || "")}</textarea></div>
+    <label class="chk" style="grid-column:1/-1;margin-top:0"><input id="cl_v" type="checkbox" ${CL_EDIT && CL_EDIT.visible === false ? "" : "checked"}> Visible para los estudiantes</label>
+    <div style="grid-column:1/-1" class="row"><button class="btn" type="submit">${CL_EDIT ? "Guardar cambios" : "Publicar clase"}</button>${CL_EDIT ? '<button class="btn sm" type="button" id="cl_x">Cancelar</button>' : ""}</div>
+   </form></details>` : "";
+  const card = c => { const v = parseVideo(c.url) || {}, caps = capitulos(c.capitulos), visto = !!S.done["rec_" + c.id];
+    const player = v.tipo === "ext" ? `<div class="vbox" style="display:grid;place-items:center"><a class="btn" target="_blank" rel="noopener" href="${esc(v.url)}">▶ Abrir grabación</a></div>`
+      : `<div class="vbox" id="cb_${esc(c.id)}"><button class="vthumb ${v.tipo === "drive" ? "pl" : ""}" data-cplay="${esc(c.id)}" aria-label="Reproducir: ${esc(c.titulo)}" ${v.tipo === "yt" ? `style="background-image:url(https://i.ytimg.com/vi/${v.id}/hqdefault.jpg)"` : ""}><span>▶</span></button></div>`;
+    return `<div class="vcard">${player}<div class="vinfo"><div class="row" style="justify-content:space-between"><span class="tag">Sesión ${esc(c.sesion)} · ${esc(c.fecha)}</span>${c.visible === false ? '<span class="tag warn">Oculta</span>' : ""}</div>
+     <b>${esc(c.titulo)}</b>${c.notas ? `<div class="muted">${esc(c.notas)}</div>` : ""}
+     ${caps.length ? `<div class="chips">${caps.map(k => v.tipo === "yt" ? `<a href="#" data-cseek="${esc(c.id)}" data-s="${k.s}">${esc(k.t)} ${esc(k.n)}</a>` : `<span class="chip" style="font-size:.75rem">${esc(k.t)} ${esc(k.n)}</span>`).join("")}</div>` : ""}
+     <div class="row" style="margin-top:.5rem;justify-content:space-between"><label class="chk2"><input type="checkbox" data-cvis="${esc(c.id)}" ${visto ? "checked" : ""}> Ya la vi</label>
+     <span><a class="btn sm" href="#/sesion/${esc(c.sesion)}">Ir a la sesión</a>${ES_DOC ? ` <button class="btn sm" data-cedit="${esc(c.id)}">Editar</button> <button class="btn sm" data-chide="${esc(c.id)}">${c.visible === false ? "Mostrar" : "Ocultar"}</button>` : ""}</span></div></div></div>`; };
+  return `<h1>🎥 Clases grabadas</h1><p class="sub">Si faltaste o querés repasar: mirá la clase y marcá <i>Ya la vi</i>. ${CLASES.length ? `Viste <b>${vistas}</b> de <b>${CLASES.length}</b>.` : ""}</p>${demoBanner()}
+  ${form}<div class="chips2" style="margin:.8rem 0">${chips.map(([k, t]) => `<a class="chip ${CL_FILTRO === k ? "on" : ""}" href="#/clases/${k}">${t}</a>`).join("")}</div>
+  ${lista.length ? `<div class="vgrid">${lista.map(card).join("")}</div>` : `<div class="card muted">Todavía no hay clases grabadas${CL_FILTRO !== "todas" ? " para esta sesión" : ""}.${ES_DOC ? " Cargá la primera con el formulario de arriba." : " El docente las publicará acá."}</div>`}
+  <p class="muted">Las grabaciones son material del curso: no las descargues ni compartas fuera del grupo.</p>`;
+}
+function bindClases() {
+  const por = id => CLASES.find(c => c.id === id);
+  const play = (id, t) => { const c = por(id), v = c && parseVideo(c.url); if (!v || v.tipo === "ext") return;
+    $("#cb_" + id).innerHTML = `<iframe src="${v.embed(t)}" title="${esc(c.titulo)}" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`; };
+  $$("[data-cplay]").forEach(b => b.addEventListener("click", () => play(b.dataset.cplay)));
+  $$("[data-cseek]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); play(a.dataset.cseek, a.dataset.s); }));
+  $$("[data-cvis]").forEach(c => c.addEventListener("change", () => { const k = "rec_" + c.dataset.cvis; if (c.checked) S.done[k] = true; else delete S.done[k]; persist(); }));
+  $$("[data-cedit]").forEach(b => b.addEventListener("click", () => { CL_EDIT = por(b.dataset.cedit); render().then(() => $("#clform")?.scrollIntoView()); }));
+  $$("[data-chide]").forEach(b => b.addEventListener("click", async () => { const c = por(b.dataset.chide); try { await B.guardarClase({ ...c, visible: c.visible === false }); aviso("Listo ✔"); render(); } catch (e) { aviso(msgError(e), "bad"); } }));
+  $("#cl_x")?.addEventListener("click", () => { CL_EDIT = null; render(); });
+  $("#clf")?.addEventListener("submit", async e => { e.preventDefault();
+    const url = $("#cl_u").value.trim(), v = parseVideo(url); if (!v) return aviso("El enlace debe empezar con https://", "bad");
+    const c = { id: CL_EDIT?.id || "c" + Date.now().toString(36), titulo: $("#cl_t").value.trim(), url, sesion: +$("#cl_s").value, fecha: $("#cl_f").value, notas: $("#cl_n").value.trim(), capitulos: $("#cl_c").value.trim(), visible: $("#cl_v").checked };
+    try { await B.guardarClase(c); aviso(CL_EDIT ? "Clase actualizada ✔" : "Clase publicada ✔"); CL_EDIT = null; render(); } catch (er) { aviso(msgError(er), "bad"); } });
+}
+
 /* ---------- El tutor ---------- */
 function vTutor() {
   const T = D.tutor, ini = T.nombre.split(" ").filter((_, i) => i === 0 || i === 2).map(x => x[0]).join("");
@@ -579,6 +643,7 @@ async function render() {
       case "sesion": html = vSesion(n); crumb = `Módulo ${n}`; bind = bindSesion; break;
       case "quiz": html = vQuiz(n); crumb = `Módulo ${n} › Quiz`; bind = () => bindQuiz(n); break;
       case "notas": await refrescarNotas(); html = vNotas(); crumb = "Mis notas"; break;
+      case "clases": CL_FILTRO = b || "todas"; html = await vClases(); bind = bindClases; crumb = "Clases grabadas"; break;
       case "tutor": html = vTutor(); crumb = "El tutor"; break;
       case "datos": DA_FILTRO = b || "todas"; html = vDatos(); crumb = "Datos abiertos"; break;
       case "calendario": await cargarAgenda(); html = b ? vEvento(decodeURIComponent(b)) : vCalendario(); crumb = "Calendario"; bind = () => bindCalendario(b ? decodeURIComponent(b) : ""); break;

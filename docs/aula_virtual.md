@@ -28,3 +28,13 @@
 ## Limitaciones y recomendaciones
 - **Integridad de los quizzes:** se corrigen en el navegador y sus respuestas están en el código de la página. Para evaluación formal, aplicarlos en sesión sincrónica o con Google Forms.
 - **Privacidad de Drive:** si la carpeta raíz permite “cualquiera con el enlace puede *editar*”, cualquiera puede borrar o ver entregas. Compartir como **Lector** y recibir entregas por **Google Form**. No guardar calificaciones ni datos personales en un Drive compartido.
+
+## Clases grabadas
+
+Menú **🎥 Clases grabadas** (`#/clases`). El aula **no aloja videos**: el docente sube la grabación a Google Drive (carpeta con acceso solo para el grupo) o a YouTube como *no listado* y carga el enlace desde esa misma pantalla (formulario visible solo para docentes).
+
+- Acepta enlaces de YouTube (reproductor incrustado, capítulos clicables), de Drive (`/file/d/…`, vista previa incrustada) y cualquier otro `https` (botón "Abrir grabación").
+- Capítulos: una línea por capítulo, `12:40 Título`.
+- Cada alumno marca "Ya la vi"; se guarda en su progreso (`rec_<id>`).
+- "Ocultar" es solo de interfaz: la regla de Firestore deja leer la colección a cualquier usuario con sesión. El control real de acceso es el del video en Drive/YouTube.
+- **Hay que volver a publicar las reglas** (`firebase/firestore.rules`) en Firebase → Firestore → Reglas para habilitar la colección `clases`.

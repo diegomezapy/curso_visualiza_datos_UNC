@@ -2,6 +2,7 @@ rules_version = '2';
 // Reglas de seguridad del aula virtual (Visualización de Datos · FACET-UNC)
 // - Cada estudiante lee/escribe solo SU perfil y SU progreso.
 // - Las calificaciones oficiales solo las escribe un docente (correo verificado y registrado en /docentes/{correo}).
+// - Las clases grabadas (/clases) las lee cualquier usuario con sesión y las escribe solo un docente.
 // - Un docente puede leer todos los perfiles, progresos y calificaciones.
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -45,6 +46,16 @@ service cloud.firestore {
     match /calificaciones/{uid} {
       allow read: if own(uid) || docente();
       allow write: if docente();
+    }
+
+    // Clases grabadas: las leen los usuarios con sesión; solo el docente las crea o edita.
+    // "visible:false" oculta la clase en la interfaz (no es secreto: el control real de acceso es el del video en Drive/YouTube).
+    match /clases/{id} {
+      allow read: if signed();
+      allow create, update: if docente() && request.resource.data.keys().hasAll(['titulo', 'url', 'sesion', 'fecha'])
+        && request.resource.data.titulo is string && request.resource.data.titulo.size() <= 150
+        && request.resource.data.url is string && request.resource.data.url.matches('^https://.*');
+      allow delete: if false;
     }
 
     // Lista de docentes: se administra solo desde la consola de Firebase.
