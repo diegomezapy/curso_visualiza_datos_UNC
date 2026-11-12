@@ -1,0 +1,28 @@
+# Glosario del curso de Visualización de Datos
+
+- **Atributo preatentivo:** Propiedad visual (color, tamaño, orientación, posición) que se detecta casi instantáneamente sin búsqueda serial.
+- **Data-ink ratio:** Proporción de la tinta de un gráfico que representa datos (Tufte). Se busca maximizarla eliminando ruido.
+- **Chartjunk:** Elementos decorativos que no aportan información (sombras, 3D, fondos recargados).
+- **Gestalt:** Principios de percepción (proximidad, similitud, cierre, continuidad) que explican cómo agrupamos elementos.
+- **Overplotting:** Superposición de puntos que oculta la densidad; se mitiga con transparencia, jitter, hexbin o densidad.
+- **ECDF:** Función de distribución empírica acumulada; muestra la proporción de observaciones ≤ x sin depender de bins.
+- **Small multiples:** Serie de gráficos pequeños con la misma estructura y escala para comparar subgrupos.
+- **Paleta divergente:** Escala de color con punto neutro central y dos tonos opuestos (p. ej. RdBu).
+- **Paleta secuencial:** Escala ordenada de claro a oscuro para magnitudes de una variable continua (p. ej. viridis).
+- **Okabe-Ito:** Paleta cualitativa de 8 colores diseñada para ser distinguible por personas con daltonismo.
+- **Eje truncado:** Eje que no empieza en cero. En barras distorsiona la comparación porque la longitud codifica el valor.
+- **Cherry-picking:** Seleccionar datos o periodos que favorecen una conclusión ignorando el resto.
+- **KPI:** Indicador clave de desempeño: métrica con definición, unidad, periodo y meta o comparación.
+- **Storytelling con datos:** Estructurar la comunicación como narrativa: contexto, conflicto, resolución.
+- **Cuadro de mando (dashboard):** Vista consolidada e interactiva de KPIs y gráficos para monitorear y decidir.
+- **Drill-down:** Interacción que permite pasar de una vista agregada a un detalle más fino.
+- **Reporte reproducible:** Informe generado por código a partir de datos y parámetros, sin pasos manuales.
+- **PCA:** Análisis de componentes principales: proyección lineal que maximiza la varianza explicada.
+- **t-SNE:** Reducción de dimensión no lineal que preserva vecindades locales; no interpretar distancias globales.
+- **Coordenadas paralelas:** Gráfico multivariado donde cada variable es un eje vertical y cada observación una línea.
+- **Coropleta:** Mapa donde las áreas se colorean según una variable; usar tasas y no conteos absolutos.
+- **MAUP:** Problema de la unidad de área modificable: el patrón depende de cómo se delimitan las áreas.
+- **Descomposición de series:** Separación de una serie en tendencia, estacionalidad y residuo.
+- **Centralidad:** Medida de importancia de un nodo en una red (grado, intermediación, cercanía, vector propio).
+- **Hairball:** Visualización de red tan densa que resulta ilegible.
+- **Índice base 100:** Normalización que fija el primer valor de una serie en 100 para comparar variaciones relativas.
