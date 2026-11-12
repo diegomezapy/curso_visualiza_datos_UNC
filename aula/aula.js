@@ -60,7 +60,7 @@ const bar = (p, cls = "") => `<div class="bar ${cls}" role="progressbar" aria-va
 /* ---------- navegación ---------- */
 function navHtml(ruta) {
   const it = (h, t, extra = "") => `<a href="#${h}" ${ruta === h ? 'aria-current="page"' : ""}><span>${t}</span>${extra}</a>`;
-  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
+  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/datos", "🗺️ Datos abiertos") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
   D.sesiones.forEach(s => { const p = progSes(s); h += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`, `<span class="dot">${p.pct >= 1 ? "✅" : Math.round(p.pct * 100) + "%"}</span>`); });
   h += `<div class="grp">Cuenta</div>` + it("/perfil", "👤 Mi perfil") + (ES_DOC ? it("/docente", "🧑‍🏫 Panel docente") : "");
   $("#nav").innerHTML = h;
@@ -165,6 +165,7 @@ function vSesion(n) {
       <p class="muted" id="ap_${a.id}" style="margin:.4rem 0 0">${ap == null ? "Completá los niveles para ver tu autoestimación." : `Autoestimación: <b>${fmt(ap * a.pts)}/${a.pts}</b> pts (${fmt(ap * 100, 0)}%) — referencial; la nota oficial la asigna el docente.`}</p></div></details>` : ""}
     </div></div></div>`; }).join("")}
   ${rutaDatosHtml(s)}
+  ${(s.practicas_reales || []).length ? `<h2>🗺️ Práctica con datos reales</h2><div class="card">${s.practicas_reales.map(p => `<div class="row" style="justify-content:space-between;padding:.35rem 0;border-bottom:1px solid var(--bd)"><span><b>${esc(p.nombre)}</b><br><span class="muted">${esc(p.desc)}</span></span><span class="row"><a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.colab)}">🐍 Colab</a>${p.rmd ? `<a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.rmd)}">📊 R → RPubs</a>` : ""}</span></div>`).join("")}<p class="muted" style="margin:.5rem 0 0">Fuentes, estado y cuidados en <a href="#/datos">Datos abiertos</a>. Citá siempre la fuente y no publiques datos personales.</p></div>` : ""}
   ${s.quiz ? `<h2>🧠 Quiz de teoría</h2><div class="card"><div class="row" style="justify-content:space-between"><div><b>${esc(D.quizzes[n].titulo)}</b><div class="muted">5 preguntas · retroalimentación inmediata · reintentos ilimitados (cuenta tu mejor resultado)</div>
     ${q ? `<div class="muted">Mejor: <b>${q.mejor}%</b> · Intentos: ${q.intentos.length}</div>` : ""}</div><a class="btn" href="#/quiz/${n}">${q ? "Reintentar" : "Comenzar quiz"}</a></div></div>` : ""}
   ${s.extra?.length ? `<h2>💡 Para profundizar</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.extra.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
@@ -429,6 +430,36 @@ function bindDocente() {
   });
 }
 
+/* ---------- datos abiertos reales ---------- */
+let DA_FILTRO = "todas";
+const ESTADO_CLS = { documentado: "ok", verificar: "warn", incierto: "bad" };
+function vDatos() {
+  const A = D.abiertos, fs = A.fuentes.filter(f => DA_FILTRO === "todas" || (DA_FILTRO === "personales" ? f.sensible : DA_FILTRO.startsWith("s") ? f.sesiones.includes(+DA_FILTRO.slice(1)) : f.estado === DA_FILTRO));
+  const chips = [["todas", "Todas"], ["documentado", "✅ Documentadas"], ["verificar", "🔎 Verificar"], ["incierto", "⚠️ Inciertas"], ["personales", "🔒 Datos personales"], ...D.sesiones.map(s => ["s" + s.n, "Sesión " + s.n])];
+  const prac = id => A.practicas.find(p => p.id === id);
+  return `<h1>🗺️ Datos abiertos reales</h1><p class="sub">Las prácticas usan datos reales de Paraguay y fuentes globales: compras públicas, encuestas de hogares, nómina estatal, imágenes satelitales, comercio exterior…</p>
+  <div class="card note"><b>Leé esto primero.</b> El catálogo se armó con búsquedas y <b>no se pudo abrir ninguna fuente ni inspeccionar filas</b> en el entorno de desarrollo. Cada fuente tiene un <b>estado</b>; los nombres de columnas se toman del <b>diccionario oficial</b> (o se detectan automáticamente). Todas las prácticas funcionan <b>sin conexión con datos sintéticos rotulados</b> y pasan a datos reales al pegar la URL.
+   El docente debe correr antes <a target="_blank" rel="noopener" href="${esc(prac("pr00_verificar_fuentes").colab)}">pr00 · Verificar fuentes</a> en Colab.</div>
+  <div class="chips2" style="margin:.8rem 0">${chips.map(([k, t]) => `<a class="chip ${DA_FILTRO === k ? "on" : ""}" href="#/datos/${k}">${t}</a>`).join("")}</div>
+  <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(340px,1fr))">${fs.map(f => { const pr = prac(f.practica), ic = A.estados[f.estado];
+   return `<div class="card" style="margin:0"><div class="row" style="justify-content:space-between"><span class="tag ${ESTADO_CLS[f.estado]}">${ic[0]} ${ic[1]}</span>${f.sensible ? '<span class="tag bad">🔒 datos personales</span>' : ""}</div>
+    <h3 style="margin:.5rem 0 .1rem">${esc(f.nombre)}</h3><div class="muted">${esc(f.inst)}</div>
+    <p style="margin:.5rem 0">${esc(f.contiene)}</p>
+    <div class="muted" style="font-size:.82rem">${esc(f.tipo)} · ${esc(f.formato)}</div>
+    <details style="margin:.5rem 0"><summary>Ideas y cuidados</summary><ul style="margin:.3rem 0;padding-left:1.1rem">${f.ideas.map(i => `<li>${esc(i)}</li>`).join("")}</ul><p class="muted" style="margin:.3rem 0 0">⚠ ${esc(f.aviso)}</p></details>
+    <div class="row"><a target="_blank" rel="noopener" href="${esc(f.url)}">Portal ↗</a><a target="_blank" rel="noopener" href="${esc(f.doc)}">Documentación ↗</a></div>
+    <div class="row" style="margin-top:.5rem"><span class="tag">Sesiones ${f.sesiones.join(", ")}</span>${pr ? `<a class="btn sec sm" target="_blank" rel="noopener" href="${esc(pr.colab)}">🐍 ${esc(f.titulo_practica.length > 30 ? "Práctica en Colab" : f.titulo_practica)}</a>${pr.rmd ? `<a class="btn sec sm" target="_blank" rel="noopener" href="${esc(pr.rmd)}">📊 R → RPubs</a>` : ""}` : ""}</div></div>`; }).join("")}</div>
+  <h2>Ruta de prácticas por sesión</h2><div class="card tw"><table><thead><tr><th>Sesión</th><th>Práctica</th><th>Qué se aprende</th><th>Abrir</th></tr></thead><tbody>${A.practicas.map(p => `<tr><td>${p.sesiones.join(", ")}</td><td><b>${esc(p.nombre)}</b>${p.rol === "docente" ? ' <span class="tag warn">docente</span>' : ""}</td><td>${esc(p.desc)}</td><td><a target="_blank" rel="noopener" href="${esc(p.colab)}">🐍 Colab</a>${p.rmd ? ` · <a target="_blank" rel="noopener" href="${esc(p.rmd)}">📊 R</a>` : ""}</td></tr>`).join("")}</tbody></table></div>
+  <h2>Reglas de oro con datos reales</h2><div class="card"><ol style="margin:0;padding-left:1.2rem">
+   <li><b>Citá</b> la fuente, la URL y la <b>fecha de descarga</b>; completá la <i>ficha del dataset</i> (práctica 1).</li>
+   <li><b>Oficial no es sinónimo de limpio:</b> perfilá, buscá nulos, duplicados y cambios de definición.</li>
+   <li><b>Datos personales:</b> solo agregados; descartá nombres y documentos al cargar; suprimí grupos pequeños. <b>Lo que publicás en RPubs es público.</b></li>
+   <li><b>Encuestas:</b> usá el factor de expansión. <b>Mapas:</b> tasas o densidades, no conteos.</li>
+   <li><b>Licencias:</b> verificá las condiciones de uso de cada fuente.</li>
+   <li>Si una fuente cae o cambia, el código usa datos <b>sintéticos</b> rotulados: nunca los presentes como reales.</li></ol>
+   <p class="muted" style="margin:.6rem 0 0">Guía completa y lista de verificación del docente: <a target="_blank" rel="noopener" href="../docs/datos_abiertos_reales.html">datos_abiertos_reales</a>.</p></div>`;
+}
+
 /* ---------- calendario y agenda ---------- */
 const TIPO_EV = { clase: ["🎓", "Clase", "#0072B2"], tutoria: ["💬", "Tutoría", "#009E73"], entrega: ["📤", "Entrega", "#D55E00"], evaluacion: ["📝", "Evaluación", "#CC79A7"], otro: ["📌", "Otro", "#8C8C8C"] };
 let AGENDA = null, AGENDA_ERR = "", calMes = new Date(), calFiltro = "todos", calEjemplo = false;
@@ -527,6 +558,7 @@ async function render() {
       case "sesion": html = vSesion(n); crumb = `Módulo ${n}`; bind = bindSesion; break;
       case "quiz": html = vQuiz(n); crumb = `Módulo ${n} › Quiz`; bind = () => bindQuiz(n); break;
       case "notas": await refrescarNotas(); html = vNotas(); crumb = "Mis notas"; break;
+      case "datos": DA_FILTRO = b || "todas"; html = vDatos(); crumb = "Datos abiertos"; break;
       case "calendario": await cargarAgenda(); html = b ? vEvento(decodeURIComponent(b)) : vCalendario(); crumb = "Calendario"; bind = () => bindCalendario(b ? decodeURIComponent(b) : ""); break;
       case "recursos": html = vRecursos(); crumb = "Recursos"; bind = bindRecursos; break;
       case "perfil": html = vPerfil(); crumb = "Mi perfil"; bind = bindPerfil; break;

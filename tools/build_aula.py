@@ -20,6 +20,9 @@ RMD = {1: "01_percepcion", 2: "02_eleccion_graficos", 3: "03_color_diseno_etica"
 FICHA = {1: "ficha_01_percepcion", 2: "ficha_02_eleccion", 3: "ficha_03_color_etica", 4: "ficha_04_kpis_storytelling",
          5: "ficha_05_dashboards", 6: "ficha_06_reporting", 7: "ficha_07_complejas", 8: "ficha_08_redes"}
 import recursos as rc
+sys.path.insert(0, str(RAIZ / "datos_reales"))
+import catalogo as cat
+R_OK = {"pr01_explorador", "pr02_dncp", "pr03_banco_mundial"}
 sesiones = []
 for s in c.SESIONES:
     n, d = s["n"], SES_DIR[s["n"]]
@@ -37,14 +40,17 @@ for s in c.SESIONES:
         rec.insert(5, {"t": "R · 00_diagnostico.Rmd: resultados del diagnóstico (RPubs)", "u": f"{cfg['repo']}/blob/main/r/00_diagnostico.Rmd", "k": "rmd"})
     if n == 5: rec.append({"t": "App Dash de ejemplo (app_dash.py)", "u": f"{cfg['repo']}/blob/main/sesiones/{d}/app_dash.py", "k": "codigo"})
     if n == 6: rec.append({"t": "R · Plantilla de informe parametrizado", "u": f"{cfg['repo']}/blob/main/r/plantilla_reporte_sucursal.Rmd", "k": "rmd"})
+    prs = [{"id": pid, "nombre": nm, "desc": ds, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS if n in ses and rol != "docente"]
     s2 = {k: v for k, v in s.items() if k != "lecturas"}
-    sesiones.append({**s2, "corto": CORTO[n], "recursos": rec, "videos": rc.VIDEOS.get(n, []), "lecturas": rc.LECTURAS.get(n, []), "quiz": n in c.QUIZZES})
+    sesiones.append({**s2, "corto": CORTO[n], "practicas_reales": prs, "recursos": rec, "videos": rc.VIDEOS.get(n, []), "lecturas": rc.LECTURAS.get(n, []), "quiz": n in c.QUIZZES})
 
 data = {
     "config": cfg,
     "sesiones": sesiones,
     "quizzes": {str(k): {"titulo": v[0], "preguntas": v[1]} for k, v in c.QUIZZES.items()},
     "rubricas": {k: {"titulo": v[0], "criterios": [{"n": a, "w": b} for a, b in v[1]]} for k, v in c.RUBRICAS.items()},
+    "abiertos": {"fuentes": cat.FUENTES, "estados": {k: list(v) for k, v in cat.ESTADOS.items()},
+                 "practicas": [{"id": pid, "nombre": nm, "desc": ds, "sesiones": ses, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS]},
     "glosario": [{"t": a, "d": b} for a, b in c.GLOSARIO],
     "materiales": [("00_guia_inicio", "Guía de inicio: Colab, RStudio y RPubs"), ("elegir_grafico", "Hoja de ruta: elegir el gráfico"), ("checklist_calidad_etica", "Checklist de calidad visual y ética"), ("rubricas", "Rúbricas de evaluación"), ("evaluacion", "Cómo se evalúa el curso")],
     "datasets": [("ventas_retail.csv", "Ventas diarias 2024-25 (5 sucursales × 4 categorías)"), ("notas_estudiantes.csv", "Horas de estudio, asistencia y notas"),

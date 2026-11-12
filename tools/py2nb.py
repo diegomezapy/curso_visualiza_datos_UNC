@@ -11,7 +11,7 @@ if "google.colab" in sys.modules:
     if not os.path.isdir("curso_visualiza_datos_UNC"):
         !git clone -q https://github.com/diegomezapy/curso_visualiza_datos_UNC.git
     %cd curso_visualiza_datos_UNC"""
-for py in sorted(RAIZ.glob("sesiones/*/lab*.py")):
+for py in sorted(list(RAIZ.glob("sesiones/*/lab*.py")) + list(RAIZ.glob("practicas_reales/pr*.py"))):
     nb, cell = nbf.v4.new_notebook(), None
     nb.cells.append(nbf.v4.new_code_cell(SETUP))
     bloques = re.split(r"^# %%", py.read_text(encoding="utf-8"), flags=re.M)

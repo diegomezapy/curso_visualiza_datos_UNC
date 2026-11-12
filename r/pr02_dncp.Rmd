@@ -1,0 +1,91 @@
+---
+title: "Práctica 2 · Contrataciones públicas (DNCP, estándar OCDS) (R)"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+if (file.exists("abiertos.R")) source("abiertos.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/abiertos.R")
+ej <- function(f) ruta_datos(file.path("ejemplos_abiertos", f))
+aviso <- function(msg) cat("\n", strrep("!", 60), "\n", msg, "\n", strrep("!", 60), "\n", sep = "")
+```
+
+> **Pregunta guía:** ¿quién compra qué, a quién y cuánto? Fuente: <https://www.contrataciones.gov.py/datos> · API: <https://contrataciones.gov.py/datos/api/v3/doc/>. Versión R de `practicas_reales/pr02_dncp`.
+
+# 1. Cargar los datos
+
+Pegá la URL o ruta de un **JSON OCDS** (descarga masiva). Vacío = **datos sintéticos** con la misma estructura (entidades y proveedores ficticios).
+
+```{r carga}
+ORIGEN_JSON <- ""
+bruto <- if (nzchar(ORIGEN_JSON)) tryCatch(fromJSON(ORIGEN_JSON, simplifyVector = FALSE), error = function(e) { aviso(paste("No se pudo leer:", conditionMessage(e), "→ DATOS SINTÉTICOS")); fromJSON(ej("ocds_ejemplo.json"), simplifyVector = FALSE) }) else { aviso("USANDO DATOS SINTÉTICOS (estructura OCDS, entidades ficticias)"); fromJSON(ej("ocds_ejemplo.json"), simplifyVector = FALSE) }
+procesos <- ocds_a_tabla(bruto); adj <- ocds_adjudicaciones(bruto)
+cat(nrow(procesos), "procesos ·", nrow(adj), "adjudicaciones\n"); head(procesos)
+```
+
+# 2. Limpiar antes de sumar
+
+```{r limpiar}
+count(procesos, estado)
+vigentes <- filter(procesos, !estado %in% c("cancelled", "unsuccessful"))
+cat("No cancelados/desiertos:", nrow(vigentes), "de", nrow(procesos), "\n")
+```
+
+# 3. KPIs
+
+```{r kpis}
+tibble(KPI = c("Procesos", "Tasa de cancelación/desierto", "Monto adjudicado (miles de millones de Gs.)", "% contratación directa", "Mediana de oferentes"),
+       valor = c(nrow(procesos), 1 - nrow(vigentes) / nrow(procesos), sum(adj$monto, na.rm = TRUE) / 1e9, mean(grepl("Directa", procesos$metodo, ignore.case = TRUE)), median(procesos$n_oferentes, na.rm = TRUE))) %>% mutate(valor = round(valor, 3))
+```
+
+# 4. ¿Dónde se concentra el gasto?
+
+```{r compradores, fig.height=4}
+adj %>% group_by(comprador) %>% summarise(monto = sum(monto, na.rm = TRUE) / 1e9) %>% slice_max(monto, n = 10) %>%
+  ggplot(aes(monto, reorder(comprador, monto), fill = monto == max(monto))) + geom_col(show.legend = FALSE) + scale_fill_manual(values = c(`FALSE` = GRIS_CLARO, `TRUE` = ENFASIS)) +
+  labs(title = "Una entidad concentra la mayor parte del gasto", x = "Monto adjudicado (miles de millones de Gs.)", y = NULL) + theme(panel.grid.major.y = element_blank())
+```
+
+# 5. Mezcla de métodos por trimestre
+
+```{r metodos, fig.height=4}
+procesos %>% filter(!is.na(fecha)) %>% mutate(trim = paste0(year(fecha), "-T", quarter(fecha))) %>% count(trim, metodo) %>% group_by(trim) %>% mutate(p = n / sum(n)) %>%
+  ggplot(aes(trim, p, fill = metodo)) + geom_col(width = .85) + scale_y_continuous(labels = scales::percent) + labs(title = "Mezcla de métodos de contratación", x = NULL, y = NULL, fill = NULL) + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+# 6. Concentración de proveedores (HHI por comprador)
+
+HHI = Σ (cuota del proveedor)². Cerca de 1: depende de pocos proveedores.
+
+```{r hhi, fig.height=4}
+adj %>% group_by(comprador, proveedor) %>% summarise(m = sum(monto, na.rm = TRUE), .groups = "drop_last") %>% mutate(s = m / sum(m)) %>% summarise(HHI = sum(s^2), n_prov = n(), .groups = "drop") %>%
+  ggplot(aes(n_prov, HHI, label = comprador)) + geom_point(color = BASE, size = 3) + ggrepel::geom_text_repel(size = 3) + labs(title = "¿Qué entidades dependen de pocos proveedores?", x = "N.º de proveedores distintos", y = "HHI")
+```
+
+# 7. Red comprador–proveedor
+
+```{r red, fig.height=6}
+library(igraph)
+e <- adj %>% group_by(comprador, proveedor) %>% summarise(w = sum(monto, na.rm = TRUE), .groups = "drop") %>% filter(w >= quantile(w, .6))
+g <- graph_from_data_frame(e %>% mutate(comprador = paste0("C:", comprador), proveedor = paste0("P:", proveedor)), directed = FALSE)
+set.seed(7); plot(g, layout = layout_with_fr(g), vertex.size = 3 + 2.5 * degree(g), vertex.color = ifelse(startsWith(V(g)$name, "C:"), ENFASIS, BASE), vertex.frame.color = "white",
+  vertex.label = ifelse(startsWith(V(g)$name, "C:"), sub("C:", "", V(g)$name), NA), vertex.label.cex = .6, vertex.label.color = "black", edge.color = GRIS_CLARO, edge.width = .5 + 3 * E(g)$w / max(E(g)$w))
+```
+
+# Tu turno
+
+Elegí **una entidad**: ¿qué método usa más? ¿depende de pocos proveedores? Documentá **qué procesos excluiste y por qué**. Con datos reales completá la ficha del dataset (práctica 1).
+
+# Publicar en RPubs
+
+1. **Knit** → HTML. 2. **Publish → RPubs** (cuenta gratuita en <https://rpubs.com>). 3. Pegá el enlace en el **aula virtual**. Recordá que RPubs es **público**: no publiques datos personales y citá siempre la fuente.

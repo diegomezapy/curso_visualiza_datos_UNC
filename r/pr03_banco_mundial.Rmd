@@ -1,0 +1,71 @@
+---
+title: "Práctica 3 · Paraguay en la región: comercio exterior y economía (Banco Mundial) (R)"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+if (file.exists("abiertos.R")) source("abiertos.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/abiertos.R")
+ej <- function(f) ruta_datos(file.path("ejemplos_abiertos", f))
+aviso <- function(msg) cat("\n", strrep("!", 60), "\n", msg, "\n", strrep("!", 60), "\n", sep = "")
+```
+
+> API **pública y sin clave**. Doc: <https://datahelpdesk.worldbank.org/knowledgebase/articles/898581>. Versión R de `practicas_reales/pr03_banco_mundial`.
+
+# 1. Descargar indicadores
+
+```{r datos}
+IND <- c("NE.EXP.GNFS.ZS" = "Exportaciones (% del PIB)", "NE.IMP.GNFS.ZS" = "Importaciones (% del PIB)", "NY.GDP.PCAP.CD" = "PIB per cápita (US$)", "NY.GDP.MKTP.KD.ZG" = "Crecimiento del PIB (%)")
+PAISES <- c("PRY", "ARG", "BRA", "URY", "BOL"); SINTETICO <- FALSE
+df <- tryCatch(bind_rows(lapply(names(IND), banco_mundial, paises = PAISES)), error = function(e) {
+  aviso(paste0("SIN ACCESO A LA API (", conditionMessage(e), ").\nSE USAN DATOS SINTÉTICOS: SOLO PARA PROBAR EL CÓDIGO, NO SON CIFRAS REALES.")); SINTETICO <<- TRUE; set.seed(3)
+  nom <- c(PRY = "Paraguay", ARG = "Argentina", BRA = "Brasil", URY = "Uruguay", BOL = "Bolivia")
+  expand_grid(codigo = names(IND), iso3 = PAISES, anio = 2000:2024) %>% mutate(pais = nom[iso3], indicador = IND[codigo], valor = 30 + 8 * sin((anio - 2000) / 4 + match(iso3, PAISES)) + rnorm(n(), 0, 2)) })
+cat(nrow(df), "filas · sintético =", SINTETICO, "\n"); head(df)
+```
+
+# 2. Calidad: último año con dato
+
+```{r calidad}
+df %>% filter(!is.na(valor)) %>% group_by(codigo) %>% summarise(ultimo_anio = max(anio))
+```
+
+# 3. Serie comparada con énfasis
+
+```{r serie, fig.height=4.2}
+serie <- function(cod, titulo = IND[[cod]]) df %>% filter(codigo == cod, !is.na(valor)) %>% mutate(pry = iso3 == "PRY") %>%
+  ggplot(aes(anio, valor, group = iso3, color = pry, linewidth = pry)) + geom_line() + scale_color_manual(values = c(`FALSE` = GRIS_CLARO, `TRUE` = ENFASIS), guide = "none") + scale_linewidth_manual(values = c(`FALSE` = .7, `TRUE` = 1.6), guide = "none") +
+  geom_text(data = . %>% group_by(iso3) %>% slice_max(anio, n = 1), aes(label = pais), hjust = -.1, size = 3) + scale_x_continuous(expand = expansion(mult = c(.02, .22))) + labs(title = titulo, x = NULL, y = NULL)
+serie("NE.EXP.GNFS.ZS", "Exportaciones de bienes y servicios (% del PIB)") + labs(caption = paste("Fuente: Banco Mundial (WDI).", if (SINTETICO) "DATOS SINTÉTICOS" else ""))
+```
+
+# 4. Small multiples
+
+```{r multiples, fig.height=6.5, fig.width=10}
+wrap_plots(lapply(names(IND), serie), ncol = 2)
+```
+
+# 5. Balanza comercial de Paraguay
+
+```{r saldo, fig.height=3.6}
+df %>% filter(iso3 == "PRY", codigo %in% c("NE.EXP.GNFS.ZS", "NE.IMP.GNFS.ZS")) %>% select(anio, codigo, valor) %>% pivot_wider(names_from = codigo, values_from = valor) %>% drop_na() %>% mutate(saldo = NE.EXP.GNFS.ZS - NE.IMP.GNFS.ZS) %>%
+  ggplot(aes(anio, saldo, fill = saldo >= 0)) + geom_col(show.legend = FALSE) + geom_hline(yintercept = 0) + scale_fill_manual(values = c(`TRUE` = "#009E73", `FALSE` = ENFASIS)) + labs(title = "Paraguay: saldo comercial de bienes y servicios (% del PIB)", x = NULL, y = NULL)
+```
+
+# Tu turno
+
+Elegí **otro indicador** (códigos en <https://api.worldbank.org/v2/indicator?format=json>), respondé una pregunta con un gráfico y un **título-mensaje**, citá fuente y último año con dato, y explicá cómo trataste los NA.
+
+# Publicar en RPubs
+
+1. **Knit** → HTML. 2. **Publish → RPubs** (cuenta gratuita en <https://rpubs.com>). 3. Pegá el enlace en el **aula virtual**. Recordá que RPubs es **público**: no publiques datos personales y citá siempre la fuente.

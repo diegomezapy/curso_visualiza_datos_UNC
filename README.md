@@ -29,7 +29,7 @@ Universidad Nacional de Concepción · Facultad de Ciencias Exactas y Tecnológi
 
 🌐 **Sitio web:** https://diegomezapy.github.io/curso_visualiza_datos_UNC/
 
-Documentos: [diagnóstico, agenda y asistencia](docs/appsscript_diagnostico_agenda.md) · [foros](docs/foros.md) · [aula virtual (guía)](docs/aula_virtual.md) · [activar cuentas (Firebase)](docs/configurar_firebase.md) · [programa](docs/programa.md) · [cronograma](docs/cronograma.md) · [evaluación](docs/evaluacion.md) · [rúbricas](docs/rubricas.md) · [proyecto integrador](docs/proyecto_integrador.md) · [banco de quizzes](docs/banco_quizzes.md) · [bibliografía y recursos](docs/bibliografia.md)
+Documentos: [datos abiertos reales](docs/datos_abiertos_reales.md) · [diagnóstico, agenda y asistencia](docs/appsscript_diagnostico_agenda.md) · [foros](docs/foros.md) · [aula virtual (guía)](docs/aula_virtual.md) · [activar cuentas (Firebase)](docs/configurar_firebase.md) · [programa](docs/programa.md) · [cronograma](docs/cronograma.md) · [evaluación](docs/evaluacion.md) · [rúbricas](docs/rubricas.md) · [proyecto integrador](docs/proyecto_integrador.md) · [banco de quizzes](docs/banco_quizzes.md) · [bibliografía y recursos](docs/bibliografia.md)
 
 ## Evaluación (sugerida en el programa)
 **Teoría 30 %** (quizzes y lecturas guiadas) · **Práctica 50 %** (laboratorios y mini-proyectos) · **Integrador 20 %** (informe técnico + presentación). Detalle en [docs/evaluacion.md](docs/evaluacion.md).
@@ -48,7 +48,9 @@ Los laboratorios están escritos en formato *percent* (`# %%`): se ejecutan como
 
 ## Estructura
 ```
-datos/        datasets (sintéticos y exportados de Python) + scripts generadores
+datos/        datasets (sintéticos y exportados de Python) + ejemplos sintéticos de fuentes abiertas
+datos_reales/ catálogo curado de datos abiertos reales (Paraguay y globales)
+practicas_reales/ prácticas con datos reales (Python/Colab; R en r/pr0*.Rmd)
 r/            pista R: 8 documentos R Markdown para RStudio → RPubs
 materiales/   fichas de estudio y hojas de referencia (PDF) + su contenido
 src/cvd/      estilo (paleta accesible Okabe-Ito) y cargadores de datos

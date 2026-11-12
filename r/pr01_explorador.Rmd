@@ -1,0 +1,75 @@
+---
+title: "Práctica 1 · Explorador de datasets: el primer vistazo a cualquier tabla (R)"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 4.5, dpi = 110)
+if (file.exists("estilo.R")) source("estilo.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/estilo.R")
+if (file.exists("abiertos.R")) source("abiertos.R") else source("https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/r/abiertos.R")
+ej <- function(f) ruta_datos(file.path("ejemplos_abiertos", f))
+aviso <- function(msg) cat("\n", strrep("!", 60), "\n", msg, "\n", strrep("!", 60), "\n", sep = "")
+```
+
+> Funciona con **cualquier CSV** (datos.gov.py, BCP, MEF…): **perfila** columnas, evalúa la **calidad** y propone **gráficos según el tipo de dato** (matriz de decisión de la sesión 2). Versión R de `practicas_reales/pr01_explorador`.
+
+# 1. Elegí tu dataset
+
+Pegá la **URL de descarga** de un CSV (o una ruta). Vacío = dataset de ejemplo **sintético**.
+
+```{r datos}
+ORIGEN <- ""
+df <- if (nzchar(ORIGEN)) tryCatch(read_csv(ORIGEN, show_col_types = FALSE), error = function(e) { aviso(paste("No se pudo leer:", conditionMessage(e), "→ se usa el ejemplo SINTÉTICO")); read_csv(ej("ephc_demo.csv"), show_col_types = FALSE) }) else { aviso("Sin ORIGEN: usando dataset SINTÉTICO de ejemplo (ephc_demo.csv)"); read_csv(ej("ephc_demo.csv"), show_col_types = FALSE) }
+glimpse(df)
+```
+
+# 2. Calidad
+
+```{r calidad}
+str(calidad(df))
+```
+
+# 3. Perfil de columnas y gráfico sugerido
+
+```{r perfil}
+perfil <- perfilar(df); perfil
+```
+
+# 4. Primer vistazo (gráficos automáticos)
+
+Son un **punto de partida**: elegí uno y mejoralo (título-mensaje, color de énfasis, anotación).
+
+```{r vistazo, fig.height=3.2}
+for (i in seq_len(nrow(perfil))) {
+  c <- perfil$columna[i]; t <- perfil$tipo[i]
+  if (t == "numérica") print(ggplot(df, aes(.data[[c]])) + geom_histogram(bins = 30, fill = BASE, color = "white") + labs(title = paste(c, ": distribución"), x = NULL, y = NULL))
+  if (t == "categórica") print(df %>% count(.data[[c]]) %>% slice_max(n, n = 10) %>% ggplot(aes(n, reorder(as.character(.data[[c]]), n))) + geom_col(fill = BASE) + labs(title = paste(c, ": top 10"), x = NULL, y = NULL))
+}
+```
+
+# 5. Ficha del dataset (obligatoria en los mini-proyectos)
+
+```
+Nombre / fuente / institución:            URL y fecha de descarga:
+Licencia o condiciones de uso:            Período y cobertura:
+Unidad de análisis (qué es una fila):     Variables clave y significado:
+Problemas de calidad (nulos, duplicados, codificación):
+¿Contiene datos personales? ¿Cómo los tratás?:       Limitaciones para interpretar:
+```
+
+# Tu turno
+
+Elegí **una pregunta** que el dataset pueda responder, un gráfico de la matriz de decisión y escribí el **título-mensaje**. Publicalo en RPubs.
+
+# Publicar en RPubs
+
+1. **Knit** → HTML. 2. **Publish → RPubs** (cuenta gratuita en <https://rpubs.com>). 3. Pegá el enlace en el **aula virtual**. Recordá que RPubs es **público**: no publiques datos personales y citá siempre la fuente.

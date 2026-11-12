@@ -189,7 +189,7 @@ SESIONES = [
   resumen="Coordenadas paralelas, PCA y t-SNE; descomposición y heatmap de series; mapas de burbujas y coropletas.",
   objetivos=["Visualizar datos multivariados interpretando sus límites.", "Explorar series temporales y datos geográficos evitando lecturas erróneas."],
   lecturas=[("Wilke (2019) caps. 13-16", "https://clauswilke.com/dataviz/"), ("How to Use t-SNE Effectively (Distill)", "https://distill.pub/2016/misread-tsne/")],
-  actividades=[dict(id="s7_mp3", titulo="Mini-proyecto 3: 3 vistas complementarias sobre un dataset real · RPubs + Colab", pts=10, rubrica="R2", entrega=True, ent=["rpubs", "colab"]),
+  actividades=[dict(id="s7_mp3", titulo="Mini-proyecto 3: 3 vistas complementarias sobre un dataset REAL del catálogo de Datos abiertos (con ficha del dataset) · RPubs + Colab", pts=10, rubrica="R2", entrega=True, ent=["rpubs", "colab"]),
                dict(id="s7_av", titulo="Hito: avance del integrador (prototipo con ≥ 2 vistas) · RPubs", pts=0, rubrica=None, entrega=True, ent=["rpubs"])],
   extra=["Probar distintas perplejidades en t-SNE"]),
  dict(n=8, titulo="Redes (opcional) y presentación del integrador", unidad="U4",

@@ -2,7 +2,7 @@
 **Producto:** un **tablero o reporte** (interactivo o automatizado) sobre un **dataset real** + **informe técnico** (6-10 páginas) + **presentación** de 10 min.
 
 ## Requisitos
-1. **Dataset real** con ≥ 5 000 filas y ≥ 6 variables, incluyendo tiempo y/o geografía (sugerencias en [bibliografía](bibliografia.md#fuentes-de-datos)).
+1. **Dataset real** con ≥ 5 000 filas y ≥ 6 variables, incluyendo tiempo y/o geografía, **tomado del [catálogo de datos abiertos del curso](datos_abiertos_reales.md)** (DNCP, EPHC, MapBiomas, Banco Mundial, etc.) o aprobado por el docente. Incluir la **ficha del dataset** (fuente, fecha de descarga, licencia, limitaciones y tratamiento de datos personales).
 2. **Pregunta de decisión** y audiencia definidas.
 3. Al menos: 1 vista de KPIs, 1 de tendencia/serie, 1 de comparación y 1 de estructura compleja (mapa, multivariable, red o similar).
 4. **Reproducibilidad:** repositorio con README, datos (o script de descarga), código y `requirements.txt`.

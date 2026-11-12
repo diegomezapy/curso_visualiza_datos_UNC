@@ -1,0 +1,3001 @@
+departamento,area,sexo,edad,anios_estudio,ingreso_laboral_gs,fex
+San Pedro,Rural,Mujer,53,5.8,2461000.0,104.4
+Central,Urbana,Mujer,24,14.5,3031000.0,324.7
+Central,Rural,Mujer,59,10.7,1605000.0,134.0
+Canindeyú,Rural,Hombre,35,10.8,2622000.0,114.6
+Itapúa,Urbana,Mujer,41,5.8,1593000.0,391.1
+San Pedro,Urbana,Mujer,23,8.9,871000.0,483.7
+Concepción,Rural,Mujer,40,8.8,1727000.0,130.6
+Concepción,Urbana,Mujer,38,11.3,1714000.0,508.5
+Canindeyú,Urbana,Mujer,34,11.7,6825000.0,423.7
+Alto Paraná,Urbana,Mujer,15,10.1,1185000.0,324.4
+Concepción,Rural,Hombre,48,3.7,470000.0,146.8
+Itapúa,Urbana,Hombre,19,11.9,2867000.0,344.8
+Asunción,Rural,Hombre,32,6.2,769000.0,102.3
+Alto Paraná,Urbana,Hombre,42,5.1,1433000.0,440.9
+Itapúa,Urbana,Mujer,29,10.2,1710000.0,480.9
+Canindeyú,Rural,Hombre,23,4.2,376000.0,131.4
+Central,Rural,Hombre,47,11.8,901000.0,102.7
+Central,Urbana,Mujer,15,5.9,4259000.0,495.1
+Canindeyú,Urbana,Hombre,37,8.3,4514000.0,360.6
+Concepción,Urbana,Mujer,33,12.2,4383000.0,492.3
+San Pedro,Rural,Hombre,39,4.7,761000.0,155.3
+Alto Paraná,Rural,Mujer,26,13.1,1101000.0,93.7
+Central,Rural,Hombre,26,7.5,2842000.0,129.0
+Itapúa,Urbana,Mujer,50,11.0,2401000.0,506.4
+Concepción,Rural,Mujer,58,9.0,2155000.0,125.2
+Canindeyú,Urbana,Hombre,24,18.0,2629000.0,427.8
+San Pedro,Urbana,Hombre,46,12.5,6183000.0,398.8
+Concepción,Urbana,Mujer,45,12.8,1908000.0,469.9
+Concepción,Urbana,Hombre,56,11.7,5248000.0,482.2
+Concepción,Urbana,Mujer,65,10.3,3066000.0,475.0
+Concepción,Urbana,Mujer,39,16.6,1432000.0,430.9
+San Pedro,Urbana,Hombre,38,13.4,11094000.0,454.2
+Asunción,Rural,Hombre,29,7.0,745000.0,122.7
+Itapúa,Rural,Hombre,49,4.2,1110000.0,93.5
+San Pedro,Rural,Hombre,44,8.4,1168000.0,130.2
+Central,Urbana,Mujer,34,11.5,2775000.0,430.6
+Alto Paraná,Urbana,Hombre,26,6.3,2029000.0,444.6
+Canindeyú,Rural,Hombre,29,3.9,831000.0,126.4
+Central,Urbana,Hombre,15,5.9,5119000.0,371.8
+Caaguazú,Urbana,Hombre,15,13.3,5120000.0,339.6
+Central,Urbana,Hombre,30,10.1,5938000.0,389.8
+San Pedro,Urbana,Hombre,25,6.5,1698000.0,483.8
+Concepción,Urbana,Mujer,43,8.2,1892000.0,357.8
+Canindeyú,Rural,Mujer,40,8.5,1721000.0,151.5
+Canindeyú,Urbana,Mujer,26,7.4,4129000.0,384.4
+Canindeyú,Rural,Mujer,33,4.4,735000.0,131.4
+Canindeyú,Rural,Mujer,28,6.9,390000.0,154.2
+Itapúa,Rural,Mujer,54,8.3,513000.0,150.6
+Concepción,Urbana,Hombre,43,7.9,1310000.0,328.7
+Concepción,Urbana,Hombre,37,5.0,2486000.0,503.2
+Caaguazú,Rural,Hombre,53,10.6,562000.0,126.0
+Caaguazú,Urbana,Hombre,60,10.7,2507000.0,373.4
+Asunción,Urbana,Hombre,52,12.5,6851000.0,420.8
+Asunción,Rural,Hombre,41,7.0,1680000.0,121.4
+San Pedro,Rural,Mujer,40,6.6,2877000.0,104.2
+Alto Paraná,Rural,Hombre,30,8.6,1609000.0,149.3
+Itapúa,Urbana,Mujer,37,11.8,2935000.0,401.5
+Concepción,Rural,Mujer,37,8.8,1773000.0,104.1
+Caaguazú,Rural,Mujer,30,10.3,1754000.0,105.8
+Concepción,Rural,Hombre,38,5.1,1394000.0,91.3
+Itapúa,Urbana,Mujer,39,10.1,4855000.0,438.2
+Asunción,Urbana,Mujer,51,8.9,2237000.0,516.2
+Central,Rural,Hombre,36,5.8,1169000.0,157.5
+Concepción,Urbana,Hombre,51,2.4,4659000.0,398.2
+San Pedro,Urbana,Hombre,53,4.9,2595000.0,322.4
+Alto Paraná,Rural,Mujer,15,9.7,3148000.0,151.5
+Asunción,Rural,Hombre,41,3.7,1455000.0,111.3
+Canindeyú,Rural,Hombre,28,4.7,2186000.0,130.3
+Central,Urbana,Hombre,29,12.1,4120000.0,484.2
+Alto Paraná,Rural,Hombre,15,2.7,500000.0,126.7
+Alto Paraná,Rural,Hombre,58,13.6,3526000.0,130.7
+Central,Urbana,Hombre,41,16.0,7893000.0,449.0
+Canindeyú,Rural,Hombre,38,0.4,357000.0,159.3
+Alto Paraná,Rural,Hombre,44,11.0,1389000.0,144.8
+Asunción,Rural,Hombre,47,10.3,3412000.0,159.3
+Central,Urbana,Hombre,36,13.9,8862000.0,340.7
+Canindeyú,Urbana,Hombre,18,6.0,2882000.0,341.6
+Itapúa,Urbana,Mujer,30,9.9,2000000.0,441.3
+Concepción,Urbana,Hombre,15,11.9,2510000.0,518.2
+Alto Paraná,Rural,Mujer,15,6.8,660000.0,138.7
+Canindeyú,Urbana,Mujer,29,12.0,1744000.0,492.8
+Canindeyú,Rural,Hombre,49,7.6,1279000.0,101.4
+Caaguazú,Rural,Mujer,18,11.3,1591000.0,158.1
+Canindeyú,Urbana,Mujer,26,5.6,1382000.0,426.6
+Itapúa,Rural,Hombre,38,10.2,1691000.0,114.3
+Canindeyú,Urbana,Hombre,53,13.7,2648000.0,434.9
+Concepción,Urbana,Hombre,48,15.9,2713000.0,382.8
+Canindeyú,Urbana,Hombre,45,4.4,1986000.0,440.0
+Canindeyú,Rural,Hombre,36,1.2,860000.0,150.5
+Caaguazú,Rural,Mujer,27,5.0,508000.0,100.8
+Concepción,Urbana,Hombre,47,13.2,2823000.0,328.0
+Asunción,Urbana,Hombre,78,8.7,2224000.0,474.1
+Asunción,Urbana,Mujer,26,16.5,5818000.0,421.4
+Caaguazú,Urbana,Hombre,48,7.4,1402000.0,470.9
+Itapúa,Rural,Mujer,42,9.2,2091000.0,93.6
+Caaguazú,Urbana,Hombre,15,11.8,3298000.0,474.5
+Canindeyú,Rural,Hombre,29,10.8,3680000.0,124.6
+Asunción,Urbana,Mujer,18,12.0,5377000.0,397.6
+Alto Paraná,Rural,Mujer,45,5.3,1257000.0,102.3
+Alto Paraná,Urbana,Mujer,15,3.3,1800000.0,466.1
+Asunción,Urbana,Mujer,46,10.6,1581000.0,504.2
+Central,Rural,Hombre,29,13.7,7090000.0,137.1
+San Pedro,Urbana,Mujer,33,9.2,4331000.0,491.3
+Central,Rural,Hombre,61,7.1,705000.0,157.6
+Asunción,Urbana,Hombre,71,13.8,6279000.0,453.8
+San Pedro,Rural,Hombre,22,4.2,843000.0,114.0
+Itapúa,Rural,Hombre,15,8.0,3961000.0,93.7
+Concepción,Urbana,Hombre,36,13.6,1716000.0,384.1
+Central,Rural,Mujer,58,5.5,1050000.0,130.5
+Canindeyú,Rural,Hombre,25,9.5,1109000.0,103.4
+San Pedro,Urbana,Mujer,46,11.4,3696000.0,354.2
+Caaguazú,Rural,Hombre,30,7.2,779000.0,98.2
+Alto Paraná,Rural,Mujer,15,10.5,3253000.0,111.5
+Concepción,Rural,Hombre,42,0.0,657000.0,136.5
+San Pedro,Rural,Mujer,15,7.0,1515000.0,105.2
+Caaguazú,Urbana,Hombre,20,14.9,11354000.0,442.1
+Caaguazú,Urbana,Hombre,40,14.3,7597000.0,340.1
+Concepción,Urbana,Mujer,23,11.5,5296000.0,323.2
+Asunción,Rural,Mujer,40,10.7,1572000.0,98.0
+Asunción,Urbana,Hombre,36,15.5,4029000.0,398.6
+Alto Paraná,Rural,Hombre,42,4.8,1953000.0,136.2
+Alto Paraná,Rural,Mujer,38,11.4,4387000.0,118.9
+Asunción,Rural,Mujer,72,7.1,2107000.0,123.6
+Concepción,Rural,Mujer,56,9.8,1204000.0,153.3
+Canindeyú,Rural,Hombre,41,5.3,988000.0,123.7
+San Pedro,Rural,Hombre,46,9.2,5049000.0,152.4
+Central,Urbana,Mujer,39,5.2,693000.0,344.9
+Central,Rural,Mujer,32,4.1,458000.0,122.0
+Canindeyú,Rural,Hombre,40,8.3,3094000.0,135.0
+Itapúa,Urbana,Hombre,43,18.0,5102000.0,512.8
+Asunción,Urbana,Hombre,28,11.8,3251000.0,470.0
+San Pedro,Urbana,Hombre,26,15.2,6488000.0,415.9
+Itapúa,Urbana,Mujer,45,12.6,1422000.0,381.2
+Asunción,Rural,Mujer,27,7.9,2939000.0,112.1
+Caaguazú,Rural,Mujer,24,8.9,893000.0,127.4
+Caaguazú,Urbana,Hombre,21,8.2,2266000.0,455.9
+Asunción,Urbana,Mujer,41,3.7,1233000.0,386.6
+Canindeyú,Urbana,Mujer,30,16.7,2506000.0,408.7
+Central,Rural,Mujer,27,3.8,2620000.0,138.9
+Itapúa,Rural,Mujer,53,12.0,3704000.0,95.8
+Caaguazú,Urbana,Hombre,15,9.8,1704000.0,351.3
+San Pedro,Rural,Hombre,15,6.1,1585000.0,91.1
+Central,Urbana,Mujer,44,7.3,5194000.0,441.1
+San Pedro,Rural,Hombre,33,4.4,911000.0,154.1
+Asunción,Urbana,Mujer,38,7.1,870000.0,388.2
+Central,Rural,Hombre,49,9.7,1703000.0,143.7
+Caaguazú,Urbana,Hombre,20,12.8,2210000.0,332.7
+Concepción,Rural,Mujer,38,3.7,469000.0,137.9
+Asunción,Rural,Hombre,39,11.8,2418000.0,130.3
+Concepción,Urbana,Hombre,20,10.7,3304000.0,386.5
+Itapúa,Rural,Hombre,21,7.1,606000.0,153.1
+San Pedro,Urbana,Hombre,36,6.9,1991000.0,347.9
+Central,Urbana,Mujer,49,12.7,1721000.0,404.2
+Caaguazú,Urbana,Hombre,51,13.7,3740000.0,321.8
+Itapúa,Rural,Mujer,40,10.2,905000.0,100.3
+Caaguazú,Rural,Hombre,40,2.0,1773000.0,140.3
+Canindeyú,Urbana,Mujer,33,13.7,4702000.0,466.3
+Caaguazú,Urbana,Mujer,17,16.4,6319000.0,348.9
+Alto Paraná,Urbana,Hombre,24,10.7,2497000.0,479.7
+Caaguazú,Urbana,Hombre,15,14.6,7324000.0,374.2
+Itapúa,Rural,Hombre,53,2.8,2668000.0,139.7
+Canindeyú,Rural,Hombre,38,6.3,2720000.0,95.1
+Alto Paraná,Rural,Mujer,16,8.2,2579000.0,112.7
+Caaguazú,Rural,Hombre,48,12.5,1677000.0,120.4
+Itapúa,Rural,Hombre,36,7.2,1549000.0,119.4
+Caaguazú,Rural,Mujer,40,4.3,2173000.0,94.1
+Itapúa,Rural,Hombre,57,2.8,813000.0,138.1
+San Pedro,Rural,Mujer,53,5.6,799000.0,113.8
+Canindeyú,Rural,Mujer,22,9.1,773000.0,116.2
+Alto Paraná,Rural,Hombre,46,10.7,3588000.0,101.8
+Concepción,Urbana,Hombre,54,9.4,12194000.0,322.3
+Central,Rural,Mujer,60,3.7,686000.0,96.7
+Canindeyú,Urbana,Hombre,26,18.0,7463000.0,481.9
+Itapúa,Rural,Mujer,42,10.1,2960000.0,158.0
+Caaguazú,Rural,Mujer,15,7.0,1741000.0,115.0
+Caaguazú,Urbana,Hombre,46,10.8,3753000.0,435.4
+Central,Urbana,Mujer,24,13.6,5822000.0,459.9
+Asunción,Urbana,Mujer,20,7.8,2356000.0,467.6
+Concepción,Rural,Hombre,46,6.5,1037000.0,114.8
+Asunción,Urbana,Mujer,17,9.6,1223000.0,348.6
+Alto Paraná,Urbana,Hombre,68,6.4,2204000.0,419.3
+Asunción,Urbana,Mujer,44,7.1,1186000.0,409.8
+Canindeyú,Rural,Hombre,51,6.5,1620000.0,124.1
+Caaguazú,Rural,Hombre,20,8.9,1944000.0,91.8
+Central,Rural,Mujer,35,5.3,2168000.0,151.0
+Concepción,Rural,Hombre,80,7.7,604000.0,141.2
+Canindeyú,Rural,Mujer,24,9.1,1797000.0,118.3
+Itapúa,Rural,Hombre,46,10.5,4675000.0,93.1
+Central,Urbana,Hombre,58,12.6,8594000.0,446.0
+Central,Rural,Mujer,56,9.9,1110000.0,106.9
+Concepción,Urbana,Hombre,56,12.3,3065000.0,388.3
+San Pedro,Urbana,Mujer,39,11.1,2613000.0,469.3
+Canindeyú,Rural,Hombre,32,6.6,1660000.0,96.8
+Caaguazú,Urbana,Hombre,19,7.0,2356000.0,493.5
+San Pedro,Urbana,Hombre,60,13.2,5727000.0,395.6
+Concepción,Urbana,Hombre,58,9.2,2694000.0,329.5
+Caaguazú,Rural,Mujer,28,4.1,495000.0,116.1
+Caaguazú,Rural,Mujer,24,8.3,2071000.0,159.4
+Asunción,Rural,Mujer,36,7.4,601000.0,145.5
+Caaguazú,Rural,Hombre,41,13.7,1767000.0,130.0
+Itapúa,Rural,Mujer,30,6.8,960000.0,107.5
+Asunción,Urbana,Mujer,52,14.0,9302000.0,322.0
+Itapúa,Rural,Hombre,27,10.3,1536000.0,102.1
+Asunción,Rural,Hombre,42,5.1,929000.0,150.4
+Canindeyú,Rural,Mujer,25,10.4,2353000.0,102.9
+Central,Rural,Mujer,30,4.5,865000.0,148.4
+Caaguazú,Urbana,Hombre,27,9.7,1954000.0,472.4
+Itapúa,Rural,Hombre,55,5.7,1132000.0,124.0
+Central,Rural,Mujer,15,8.0,2442000.0,124.0
+Asunción,Urbana,Mujer,49,5.9,923000.0,450.3
+San Pedro,Urbana,Mujer,46,16.9,3739000.0,502.3
+Central,Urbana,Mujer,39,12.6,2399000.0,466.8
+Asunción,Rural,Mujer,39,0.6,469000.0,104.9
+Alto Paraná,Urbana,Hombre,46,12.9,4361000.0,342.6
+Canindeyú,Urbana,Hombre,57,15.4,8541000.0,439.5
+Canindeyú,Rural,Mujer,64,6.9,1841000.0,131.4
+Itapúa,Rural,Hombre,15,7.4,1346000.0,124.1
+Central,Urbana,Mujer,20,10.9,1854000.0,407.4
+Concepción,Urbana,Mujer,49,8.2,4470000.0,405.0
+Itapúa,Rural,Mujer,45,9.2,1972000.0,107.5
+San Pedro,Urbana,Hombre,41,7.4,5006000.0,492.0
+Central,Rural,Mujer,39,5.5,999000.0,113.7
+Caaguazú,Urbana,Hombre,44,9.8,4453000.0,335.1
+Itapúa,Urbana,Mujer,24,17.0,3590000.0,432.7
+Canindeyú,Urbana,Mujer,48,11.2,13752000.0,478.0
+San Pedro,Urbana,Hombre,42,11.6,2426000.0,454.2
+Alto Paraná,Rural,Mujer,46,3.5,1170000.0,94.9
+Alto Paraná,Rural,Hombre,25,6.4,651000.0,136.4
+Central,Urbana,Hombre,55,9.0,4774000.0,448.3
+Itapúa,Urbana,Mujer,58,7.1,3008000.0,396.2
+Central,Rural,Mujer,26,10.2,838000.0,101.8
+Central,Rural,Hombre,58,5.1,1522000.0,128.4
+Concepción,Urbana,Mujer,38,14.3,2677000.0,470.7
+Central,Rural,Hombre,47,8.7,1123000.0,140.3
+Central,Rural,Mujer,39,2.4,1478000.0,109.0
+Concepción,Urbana,Mujer,43,7.1,1813000.0,376.0
+Asunción,Urbana,Mujer,28,10.1,5362000.0,385.7
+Concepción,Rural,Mujer,34,6.6,1322000.0,120.4
+Asunción,Rural,Hombre,32,7.5,2119000.0,99.6
+Asunción,Rural,Hombre,49,6.3,887000.0,140.6
+Canindeyú,Rural,Mujer,31,11.6,2020000.0,96.6
+Caaguazú,Urbana,Mujer,17,10.0,5870000.0,342.9
+Alto Paraná,Urbana,Hombre,23,9.7,3410000.0,482.0
+Itapúa,Rural,Mujer,45,12.4,871000.0,153.9
+Central,Urbana,Hombre,43,17.4,6546000.0,345.2
+Canindeyú,Urbana,Hombre,15,13.9,3089000.0,402.3
+Asunción,Urbana,Mujer,35,12.5,2917000.0,487.0
+Concepción,Rural,Hombre,15,11.5,1625000.0,105.3
+Concepción,Urbana,Hombre,47,12.2,2774000.0,350.3
+Asunción,Rural,Hombre,68,4.1,1136000.0,157.1
+Caaguazú,Urbana,Hombre,55,13.6,3305000.0,400.5
+Concepción,Urbana,Mujer,50,12.9,4693000.0,488.2
+Itapúa,Urbana,Hombre,36,10.3,2144000.0,357.9
+Asunción,Urbana,Hombre,15,9.9,3849000.0,478.0
+Central,Urbana,Hombre,54,6.7,2123000.0,368.4
+Concepción,Urbana,Mujer,45,14.2,4706000.0,456.2
+Central,Urbana,Mujer,30,4.6,2474000.0,460.3
+Caaguazú,Rural,Hombre,15,4.2,1972000.0,98.1
+Alto Paraná,Rural,Hombre,16,0.6,2160000.0,145.9
+San Pedro,Urbana,Hombre,29,12.8,2847000.0,353.4
+Canindeyú,Rural,Hombre,37,12.9,870000.0,111.6
+Asunción,Rural,Hombre,27,8.2,3989000.0,109.2
+Central,Rural,Hombre,27,9.7,2472000.0,154.9
+Caaguazú,Rural,Hombre,32,3.6,564000.0,151.8
+Alto Paraná,Urbana,Mujer,48,17.4,4326000.0,482.3
+Alto Paraná,Rural,Mujer,41,7.5,799000.0,119.5
+San Pedro,Rural,Mujer,25,10.9,3170000.0,132.4
+Asunción,Rural,Mujer,29,14.9,1872000.0,156.9
+San Pedro,Rural,Hombre,34,3.4,1984000.0,140.4
+Asunción,Rural,Mujer,47,3.4,1231000.0,149.5
+Alto Paraná,Rural,Mujer,27,14.6,1364000.0,98.5
+Alto Paraná,Rural,Mujer,80,7.0,1237000.0,97.3
+San Pedro,Urbana,Mujer,27,11.6,6899000.0,466.0
+San Pedro,Rural,Mujer,17,5.1,1493000.0,92.8
+Concepción,Rural,Mujer,31,9.5,792000.0,118.1
+Canindeyú,Urbana,Mujer,36,7.3,6626000.0,372.0
+Concepción,Urbana,Hombre,51,14.8,5285000.0,502.2
+Caaguazú,Urbana,Hombre,42,11.8,1624000.0,369.4
+Caaguazú,Urbana,Hombre,39,9.3,5778000.0,407.5
+Alto Paraná,Urbana,Mujer,20,11.3,1869000.0,335.8
+Canindeyú,Urbana,Hombre,24,11.0,1415000.0,365.3
+Caaguazú,Urbana,Hombre,45,14.3,3509000.0,401.3
+Asunción,Rural,Hombre,57,6.7,831000.0,103.9
+Canindeyú,Urbana,Mujer,15,12.6,8853000.0,417.7
+Central,Rural,Hombre,28,9.7,1997000.0,120.3
+Alto Paraná,Rural,Hombre,41,9.7,1654000.0,132.5
+Asunción,Urbana,Hombre,37,10.4,2367000.0,507.9
+Asunción,Urbana,Hombre,25,10.6,2468000.0,453.0
+Central,Rural,Mujer,38,3.1,2577000.0,138.3
+Caaguazú,Urbana,Hombre,15,10.6,3110000.0,422.6
+Caaguazú,Rural,Mujer,26,5.8,2069000.0,132.0
+San Pedro,Rural,Mujer,75,9.1,629000.0,129.7
+Canindeyú,Urbana,Hombre,15,10.1,2646000.0,435.8
+Canindeyú,Rural,Mujer,25,2.4,408000.0,113.2
+Itapúa,Rural,Mujer,45,4.3,524000.0,144.2
+Central,Rural,Mujer,54,2.0,822000.0,145.3
+Canindeyú,Rural,Mujer,71,7.1,5408000.0,116.1
+Caaguazú,Urbana,Mujer,61,11.3,5116000.0,407.4
+Concepción,Rural,Hombre,55,7.9,1400000.0,156.2
+Central,Rural,Hombre,19,3.2,2800000.0,103.1
+Asunción,Urbana,Hombre,68,9.9,4803000.0,332.9
+Alto Paraná,Rural,Hombre,49,10.2,2833000.0,122.2
+Asunción,Rural,Mujer,21,2.6,1093000.0,94.2
+Canindeyú,Urbana,Mujer,26,11.9,10208000.0,442.1
+Central,Rural,Mujer,60,8.3,478000.0,144.4
+Alto Paraná,Rural,Mujer,34,5.0,768000.0,126.6
+Concepción,Urbana,Mujer,42,12.3,2891000.0,452.7
+Alto Paraná,Rural,Hombre,15,10.8,1999000.0,146.2
+Alto Paraná,Rural,Mujer,25,0.3,389000.0,149.5
+Alto Paraná,Rural,Mujer,49,4.8,321000.0,141.3
+Itapúa,Rural,Mujer,33,9.8,2386000.0,149.9
+Asunción,Rural,Mujer,15,11.3,2704000.0,132.3
+Central,Urbana,Mujer,17,5.7,1171000.0,362.5
+Itapúa,Rural,Mujer,31,8.8,1104000.0,138.6
+Itapúa,Urbana,Mujer,22,10.3,891000.0,373.3
+Asunción,Urbana,Hombre,26,12.7,2263000.0,498.6
+Alto Paraná,Urbana,Hombre,36,11.5,2622000.0,348.6
+Central,Urbana,Mujer,37,11.9,2949000.0,374.6
+Central,Rural,Mujer,59,9.1,969000.0,109.2
+Canindeyú,Rural,Mujer,56,8.7,1592000.0,154.3
+Itapúa,Urbana,Mujer,53,15.5,5836000.0,430.0
+San Pedro,Rural,Hombre,23,7.4,1222000.0,98.3
+Caaguazú,Rural,Hombre,43,6.5,1436000.0,128.4
+Itapúa,Rural,Mujer,27,9.0,533000.0,102.8
+Canindeyú,Urbana,Mujer,65,17.4,2774000.0,385.5
+Asunción,Urbana,Mujer,23,10.0,4322000.0,376.6
+Central,Urbana,Hombre,34,13.9,2401000.0,395.3
+Alto Paraná,Urbana,Mujer,47,12.4,2409000.0,358.8
+Alto Paraná,Urbana,Mujer,34,12.9,2452000.0,471.6
+Asunción,Urbana,Mujer,16,6.8,1807000.0,428.0
+Alto Paraná,Urbana,Hombre,26,10.0,2980000.0,519.2
+Canindeyú,Urbana,Hombre,67,13.6,1993000.0,349.8
+Concepción,Urbana,Mujer,44,11.7,4707000.0,322.6
+Asunción,Rural,Mujer,43,14.2,3539000.0,92.0
+Central,Rural,Hombre,52,6.8,1194000.0,112.2
+San Pedro,Urbana,Hombre,47,7.1,2888000.0,384.0
+Alto Paraná,Urbana,Hombre,15,13.0,3881000.0,368.5
+Central,Rural,Hombre,42,3.8,1504000.0,98.3
+San Pedro,Rural,Mujer,15,9.6,1214000.0,159.4
+Central,Urbana,Hombre,59,11.7,11231000.0,393.5
+Asunción,Rural,Mujer,48,4.9,1793000.0,92.2
+Asunción,Rural,Hombre,29,8.0,1086000.0,125.5
+Canindeyú,Rural,Hombre,34,4.3,566000.0,106.8
+Central,Rural,Hombre,15,12.6,4326000.0,97.0
+Itapúa,Rural,Hombre,15,3.7,869000.0,154.9
+Concepción,Urbana,Hombre,35,12.1,1586000.0,338.5
+San Pedro,Rural,Hombre,57,6.5,2579000.0,90.6
+Central,Urbana,Mujer,15,10.3,1269000.0,462.1
+Alto Paraná,Rural,Mujer,41,3.1,692000.0,146.6
+Concepción,Urbana,Mujer,37,10.3,1449000.0,417.2
+Asunción,Urbana,Mujer,40,9.7,2511000.0,384.4
+Concepción,Urbana,Hombre,49,13.1,4734000.0,411.0
+Caaguazú,Rural,Hombre,51,10.8,1627000.0,148.0
+Caaguazú,Urbana,Mujer,42,11.1,1802000.0,337.6
+Caaguazú,Urbana,Hombre,36,6.1,2679000.0,376.0
+Itapúa,Rural,Mujer,47,3.5,1388000.0,115.1
+Concepción,Rural,Mujer,34,3.4,1764000.0,137.8
+Concepción,Urbana,Mujer,51,12.2,3378000.0,327.4
+Alto Paraná,Rural,Hombre,43,8.8,573000.0,144.2
+Asunción,Rural,Hombre,15,5.1,1774000.0,135.7
+San Pedro,Rural,Mujer,31,8.0,1607000.0,135.3
+Canindeyú,Urbana,Hombre,59,9.5,3088000.0,440.4
+Concepción,Rural,Hombre,37,7.8,953000.0,106.8
+Central,Urbana,Mujer,39,10.7,2165000.0,485.9
+Caaguazú,Rural,Hombre,23,9.8,3027000.0,95.9
+Canindeyú,Rural,Mujer,37,7.8,1571000.0,102.1
+Canindeyú,Urbana,Hombre,43,11.6,2850000.0,366.1
+Caaguazú,Rural,Mujer,34,2.8,451000.0,99.1
+Asunción,Rural,Hombre,52,4.7,2075000.0,100.5
+Concepción,Urbana,Mujer,25,10.2,1525000.0,431.8
+Caaguazú,Urbana,Hombre,46,6.0,4296000.0,516.7
+Concepción,Urbana,Mujer,44,11.8,2345000.0,362.7
+Asunción,Urbana,Mujer,34,18.0,3547000.0,324.6
+Concepción,Urbana,Hombre,28,11.2,5248000.0,337.8
+San Pedro,Rural,Mujer,33,8.5,1204000.0,154.5
+San Pedro,Urbana,Hombre,43,14.1,3311000.0,489.3
+Asunción,Rural,Hombre,45,10.3,2820000.0,145.7
+Canindeyú,Rural,Hombre,76,11.9,1601000.0,136.3
+Alto Paraná,Rural,Hombre,37,9.3,506000.0,122.9
+Alto Paraná,Rural,Mujer,55,7.3,1815000.0,100.8
+San Pedro,Rural,Hombre,37,7.8,1647000.0,90.6
+Itapúa,Urbana,Hombre,65,10.5,1890000.0,410.9
+Itapúa,Urbana,Mujer,44,9.7,1400000.0,394.4
+Asunción,Rural,Mujer,30,13.7,895000.0,91.6
+Asunción,Urbana,Hombre,43,12.3,3466000.0,360.6
+Asunción,Urbana,Mujer,63,12.3,3676000.0,423.9
+Itapúa,Urbana,Mujer,31,9.8,5840000.0,502.2
+Itapúa,Rural,Mujer,39,11.9,2858000.0,92.6
+Concepción,Urbana,Mujer,62,12.5,11997000.0,421.5
+Concepción,Rural,Hombre,36,3.3,701000.0,147.5
+Asunción,Urbana,Hombre,16,16.1,6724000.0,369.2
+San Pedro,Urbana,Mujer,26,7.5,4047000.0,453.6
+Caaguazú,Rural,Hombre,30,1.9,658000.0,115.0
+San Pedro,Rural,Hombre,33,7.5,1512000.0,142.5
+Alto Paraná,Rural,Mujer,48,7.3,1560000.0,153.6
+Concepción,Rural,Mujer,29,8.2,1423000.0,153.6
+Asunción,Rural,Mujer,36,6.6,302000.0,118.9
+Central,Rural,Hombre,20,8.9,1774000.0,118.2
+San Pedro,Urbana,Mujer,33,13.1,1247000.0,460.4
+Alto Paraná,Rural,Hombre,49,12.9,1589000.0,108.8
+Asunción,Rural,Mujer,66,13.9,2324000.0,117.6
+Canindeyú,Rural,Mujer,15,2.1,605000.0,143.2
+Concepción,Urbana,Mujer,15,7.3,4105000.0,325.1
+Caaguazú,Rural,Mujer,47,12.9,1512000.0,95.6
+Central,Rural,Mujer,28,5.6,1899000.0,109.8
+San Pedro,Urbana,Hombre,15,15.8,4619000.0,353.2
+San Pedro,Rural,Mujer,24,8.0,1369000.0,106.9
+Itapúa,Urbana,Mujer,52,10.9,2137000.0,345.1
+Alto Paraná,Urbana,Mujer,44,10.3,6441000.0,370.4
+Itapúa,Rural,Hombre,38,8.5,1911000.0,147.5
+Caaguazú,Urbana,Mujer,41,12.0,9166000.0,466.3
+Central,Urbana,Mujer,70,9.1,5450000.0,454.5
+Central,Urbana,Mujer,38,13.3,4758000.0,466.5
+Caaguazú,Rural,Hombre,37,4.3,2658000.0,127.6
+Canindeyú,Rural,Mujer,40,4.0,483000.0,136.6
+Concepción,Rural,Hombre,59,6.5,1109000.0,151.7
+Central,Urbana,Hombre,27,12.2,2107000.0,350.5
+Itapúa,Urbana,Mujer,51,17.8,5270000.0,414.0
+Caaguazú,Urbana,Mujer,49,15.7,3904000.0,487.8
+Alto Paraná,Rural,Mujer,35,6.5,581000.0,124.8
+Alto Paraná,Urbana,Hombre,44,9.8,4167000.0,414.6
+Central,Urbana,Hombre,27,9.9,3906000.0,330.6
+San Pedro,Rural,Mujer,53,4.1,1521000.0,146.4
+Asunción,Rural,Hombre,36,3.3,621000.0,109.0
+Concepción,Rural,Mujer,26,7.3,808000.0,109.1
+San Pedro,Rural,Mujer,56,9.7,1473000.0,149.7
+Central,Urbana,Hombre,39,15.4,8791000.0,393.1
+Alto Paraná,Rural,Hombre,32,4.7,2771000.0,152.6
+Asunción,Urbana,Hombre,20,7.9,5673000.0,461.3
+San Pedro,Urbana,Mujer,32,7.8,2603000.0,500.0
+Canindeyú,Rural,Mujer,49,8.8,1933000.0,96.1
+Caaguazú,Rural,Mujer,30,9.9,4697000.0,99.2
+Asunción,Urbana,Mujer,25,5.5,2867000.0,432.7
+Asunción,Rural,Hombre,45,11.3,1193000.0,154.1
+Caaguazú,Urbana,Hombre,34,12.6,4964000.0,504.4
+Concepción,Rural,Hombre,73,6.1,2280000.0,90.5
+San Pedro,Urbana,Mujer,15,14.6,2186000.0,428.9
+San Pedro,Urbana,Mujer,44,11.4,6089000.0,338.2
+Caaguazú,Urbana,Hombre,63,16.9,6801000.0,413.2
+San Pedro,Rural,Hombre,33,10.0,975000.0,152.6
+Central,Urbana,Hombre,15,10.3,2796000.0,493.6
+Canindeyú,Rural,Hombre,32,9.5,1163000.0,111.8
+Concepción,Rural,Hombre,20,9.4,2342000.0,143.1
+Caaguazú,Rural,Mujer,27,6.9,5392000.0,142.6
+Concepción,Urbana,Mujer,41,7.6,2083000.0,408.5
+Canindeyú,Urbana,Hombre,23,11.4,6596000.0,451.1
+Itapúa,Urbana,Mujer,59,12.3,1128000.0,346.6
+Central,Rural,Hombre,54,4.6,792000.0,117.8
+Central,Urbana,Mujer,52,15.3,4769000.0,421.1
+Canindeyú,Rural,Hombre,30,2.9,1501000.0,135.2
+Central,Urbana,Hombre,25,10.3,3638000.0,354.6
+Caaguazú,Urbana,Mujer,24,11.2,2888000.0,439.0
+Asunción,Urbana,Mujer,31,9.9,2416000.0,489.4
+Canindeyú,Rural,Hombre,46,9.3,2311000.0,119.2
+Central,Urbana,Hombre,47,11.9,14733000.0,322.7
+Central,Rural,Mujer,63,7.5,1896000.0,135.2
+Canindeyú,Rural,Mujer,15,2.7,1260000.0,90.5
+Itapúa,Urbana,Hombre,64,8.5,3838000.0,448.0
+Caaguazú,Rural,Mujer,59,9.4,595000.0,119.5
+Central,Urbana,Mujer,30,16.7,3445000.0,506.5
+Itapúa,Urbana,Hombre,40,3.6,7037000.0,359.5
+Concepción,Rural,Hombre,50,6.6,535000.0,93.6
+Alto Paraná,Urbana,Mujer,44,11.4,6392000.0,418.3
+Itapúa,Rural,Mujer,47,7.8,1313000.0,116.6
+Asunción,Rural,Hombre,65,7.4,1371000.0,90.6
+Alto Paraná,Rural,Hombre,36,9.9,5255000.0,136.0
+Caaguazú,Urbana,Mujer,38,8.3,1906000.0,495.2
+San Pedro,Rural,Hombre,15,6.9,1035000.0,90.5
+Itapúa,Rural,Hombre,35,5.9,1845000.0,130.9
+San Pedro,Rural,Hombre,22,4.9,2173000.0,157.7
+Itapúa,Rural,Hombre,15,8.8,2846000.0,114.7
+Canindeyú,Rural,Mujer,65,9.9,2346000.0,145.9
+Alto Paraná,Urbana,Mujer,49,9.4,2155000.0,369.7
+San Pedro,Urbana,Mujer,16,11.5,3100000.0,377.0
+Caaguazú,Urbana,Mujer,28,11.2,2751000.0,382.3
+Central,Urbana,Mujer,48,9.9,2936000.0,378.5
+Alto Paraná,Urbana,Hombre,15,11.0,2713000.0,352.3
+San Pedro,Urbana,Mujer,20,16.5,1972000.0,405.2
+Alto Paraná,Rural,Hombre,38,6.1,1327000.0,133.9
+Canindeyú,Urbana,Mujer,31,9.2,3273000.0,453.6
+Alto Paraná,Rural,Hombre,45,11.2,2911000.0,146.2
+Concepción,Urbana,Mujer,27,15.2,5295000.0,386.8
+Asunción,Urbana,Hombre,79,13.3,9434000.0,511.7
+San Pedro,Urbana,Hombre,23,11.0,4210000.0,491.6
+Canindeyú,Rural,Hombre,17,8.1,1916000.0,124.0
+Itapúa,Rural,Mujer,47,9.4,1201000.0,118.5
+Caaguazú,Rural,Hombre,61,9.5,1839000.0,128.1
+Concepción,Urbana,Mujer,16,10.3,2388000.0,394.5
+Concepción,Urbana,Mujer,29,13.0,626000.0,395.8
+Central,Rural,Mujer,45,9.7,1341000.0,141.3
+Asunción,Urbana,Mujer,58,13.5,5266000.0,416.6
+Itapúa,Urbana,Mujer,41,3.6,1023000.0,436.8
+San Pedro,Urbana,Hombre,49,12.2,2860000.0,427.4
+Alto Paraná,Urbana,Hombre,15,8.7,2389000.0,429.8
+Asunción,Urbana,Hombre,15,9.9,8211000.0,337.5
+Alto Paraná,Rural,Hombre,25,3.4,961000.0,156.0
+Asunción,Rural,Mujer,34,2.4,810000.0,129.0
+Canindeyú,Rural,Hombre,30,7.9,1164000.0,138.9
+Asunción,Rural,Hombre,42,14.2,1901000.0,118.2
+San Pedro,Urbana,Mujer,30,12.3,3079000.0,433.4
+Itapúa,Rural,Mujer,22,11.1,3800000.0,106.0
+Itapúa,Rural,Mujer,48,5.1,1288000.0,105.8
+Concepción,Rural,Mujer,61,10.4,701000.0,127.5
+Canindeyú,Rural,Mujer,42,5.9,1505000.0,130.4
+Caaguazú,Urbana,Mujer,29,13.0,4022000.0,354.2
+Asunción,Rural,Mujer,27,8.1,1453000.0,113.1
+Alto Paraná,Urbana,Mujer,35,9.5,8296000.0,493.7
+Itapúa,Urbana,Hombre,45,13.5,2249000.0,439.2
+San Pedro,Urbana,Hombre,20,11.4,3213000.0,519.1
+Canindeyú,Urbana,Hombre,32,7.0,2612000.0,493.6
+Canindeyú,Rural,Mujer,40,10.0,834000.0,99.6
+Concepción,Rural,Mujer,39,7.4,818000.0,96.2
+Central,Rural,Mujer,30,6.6,759000.0,106.8
+San Pedro,Rural,Mujer,42,7.5,1737000.0,110.8
+Alto Paraná,Rural,Mujer,34,0.0,424000.0,115.7
+Caaguazú,Rural,Hombre,19,7.7,2193000.0,129.6
+Canindeyú,Rural,Mujer,45,3.0,663000.0,132.9
+Canindeyú,Rural,Hombre,48,8.7,1316000.0,104.6
+Alto Paraná,Urbana,Mujer,50,9.3,761000.0,467.1
+Canindeyú,Urbana,Mujer,52,14.0,3856000.0,400.9
+Alto Paraná,Urbana,Mujer,44,8.7,1857000.0,372.7
+Concepción,Rural,Hombre,29,12.8,1134000.0,118.3
+Central,Rural,Hombre,37,9.6,3508000.0,92.1
+Alto Paraná,Rural,Hombre,40,3.1,629000.0,111.2
+San Pedro,Rural,Mujer,35,8.7,963000.0,153.7
+San Pedro,Rural,Mujer,48,12.6,761000.0,101.0
+Caaguazú,Rural,Hombre,19,9.4,905000.0,99.3
+Canindeyú,Urbana,Hombre,49,5.9,2115000.0,471.6
+Asunción,Rural,Mujer,38,6.9,248000.0,144.5
+Asunción,Rural,Hombre,33,9.4,537000.0,136.3
+Asunción,Rural,Hombre,28,10.6,1871000.0,138.9
+Canindeyú,Rural,Mujer,15,6.0,866000.0,126.5
+Concepción,Urbana,Mujer,28,12.3,5473000.0,416.0
+Itapúa,Rural,Hombre,37,9.1,938000.0,137.8
+Concepción,Rural,Hombre,51,10.5,2746000.0,139.0
+Canindeyú,Urbana,Mujer,28,14.9,8876000.0,332.5
+Central,Rural,Hombre,67,8.2,1910000.0,99.6
+Alto Paraná,Urbana,Hombre,30,13.7,8801000.0,498.3
+Canindeyú,Urbana,Mujer,24,8.0,2574000.0,415.6
+Concepción,Rural,Hombre,22,5.7,887000.0,90.8
+Alto Paraná,Rural,Hombre,16,8.1,1063000.0,146.7
+Concepción,Urbana,Mujer,37,7.2,5086000.0,408.2
+Alto Paraná,Urbana,Mujer,33,7.0,4652000.0,388.1
+Alto Paraná,Rural,Hombre,49,6.7,2253000.0,117.5
+Caaguazú,Rural,Mujer,40,9.7,2369000.0,108.7
+Asunción,Urbana,Mujer,40,9.6,4635000.0,348.9
+Canindeyú,Urbana,Hombre,35,16.1,6738000.0,417.4
+San Pedro,Rural,Hombre,31,10.1,2046000.0,148.0
+San Pedro,Rural,Mujer,63,3.2,2244000.0,145.5
+Central,Rural,Hombre,44,6.3,2431000.0,109.1
+Caaguazú,Rural,Mujer,32,7.2,1873000.0,90.3
+Itapúa,Urbana,Hombre,41,6.5,2584000.0,448.0
+San Pedro,Urbana,Mujer,21,11.7,3318000.0,450.9
+Central,Urbana,Hombre,52,9.7,2584000.0,337.8
+Itapúa,Urbana,Mujer,15,8.4,2361000.0,416.1
+Concepción,Rural,Hombre,48,8.9,1102000.0,128.2
+Canindeyú,Rural,Mujer,33,5.0,5581000.0,123.9
+Caaguazú,Rural,Mujer,60,8.9,1753000.0,115.7
+Central,Rural,Hombre,42,10.4,747000.0,90.1
+Concepción,Urbana,Mujer,48,9.9,4659000.0,381.4
+Canindeyú,Urbana,Mujer,16,6.8,1339000.0,517.3
+Asunción,Rural,Mujer,26,8.6,614000.0,115.8
+Itapúa,Rural,Hombre,44,14.1,1052000.0,103.3
+Central,Urbana,Hombre,31,5.1,3934000.0,473.2
+Concepción,Urbana,Mujer,36,10.3,631000.0,433.0
+Concepción,Rural,Hombre,75,6.5,1212000.0,100.7
+Concepción,Urbana,Mujer,19,10.5,705000.0,491.0
+San Pedro,Urbana,Hombre,21,13.4,4029000.0,350.0
+San Pedro,Rural,Mujer,27,6.9,4703000.0,155.1
+Central,Urbana,Hombre,29,13.6,6075000.0,418.3
+Asunción,Rural,Hombre,39,8.7,1957000.0,100.7
+Central,Urbana,Mujer,27,13.1,3607000.0,499.8
+Canindeyú,Rural,Mujer,37,1.5,832000.0,144.3
+San Pedro,Rural,Mujer,25,10.1,1046000.0,131.9
+San Pedro,Rural,Hombre,33,9.1,761000.0,156.4
+Asunción,Rural,Hombre,52,6.5,2822000.0,139.5
+Asunción,Rural,Hombre,30,9.4,1113000.0,154.1
+Alto Paraná,Rural,Hombre,22,10.6,2302000.0,137.8
+Asunción,Rural,Mujer,50,6.0,700000.0,149.6
+Alto Paraná,Rural,Hombre,32,9.7,2607000.0,137.0
+Canindeyú,Rural,Mujer,41,0.0,1116000.0,129.0
+Central,Rural,Mujer,34,10.7,1164000.0,136.7
+Canindeyú,Rural,Mujer,40,6.9,421000.0,148.4
+San Pedro,Rural,Hombre,32,4.3,1179000.0,110.4
+Central,Urbana,Mujer,36,6.4,2143000.0,400.7
+Caaguazú,Urbana,Hombre,40,8.4,1959000.0,508.6
+Concepción,Urbana,Mujer,25,4.6,1322000.0,320.1
+Caaguazú,Urbana,Mujer,75,15.2,5348000.0,404.7
+Central,Urbana,Mujer,23,11.9,1352000.0,464.7
+Alto Paraná,Rural,Mujer,47,2.4,644000.0,155.5
+Canindeyú,Rural,Mujer,40,3.1,2107000.0,138.2
+Caaguazú,Rural,Mujer,32,9.3,2170000.0,95.7
+Alto Paraná,Rural,Hombre,33,13.5,2456000.0,140.5
+San Pedro,Urbana,Mujer,51,13.1,1089000.0,375.5
+Concepción,Rural,Mujer,61,7.0,2453000.0,99.2
+Itapúa,Urbana,Mujer,15,16.1,4770000.0,493.3
+Central,Urbana,Hombre,74,10.7,1906000.0,513.7
+Central,Urbana,Hombre,46,9.7,2446000.0,433.2
+Canindeyú,Rural,Mujer,23,5.2,1042000.0,101.3
+Caaguazú,Rural,Hombre,59,8.4,1349000.0,137.2
+San Pedro,Urbana,Hombre,50,8.6,2448000.0,344.6
+Asunción,Rural,Mujer,29,10.7,2259000.0,138.6
+Alto Paraná,Urbana,Hombre,75,13.4,2387000.0,397.2
+San Pedro,Urbana,Hombre,36,12.8,2021000.0,482.5
+San Pedro,Rural,Hombre,51,11.5,2044000.0,109.4
+Asunción,Rural,Hombre,32,5.5,1373000.0,111.4
+Canindeyú,Urbana,Mujer,23,7.8,2133000.0,439.5
+Asunción,Rural,Mujer,53,3.4,2752000.0,144.4
+Alto Paraná,Rural,Hombre,47,3.9,523000.0,139.1
+Canindeyú,Rural,Hombre,80,6.1,3177000.0,138.0
+Concepción,Rural,Mujer,63,13.5,2151000.0,156.6
+Asunción,Urbana,Mujer,45,18.0,6640000.0,482.1
+San Pedro,Urbana,Hombre,53,3.9,2575000.0,334.3
+San Pedro,Urbana,Mujer,59,7.7,5446000.0,508.9
+Asunción,Urbana,Hombre,45,10.6,2778000.0,486.6
+Itapúa,Urbana,Hombre,46,8.1,1726000.0,370.8
+San Pedro,Urbana,Mujer,21,10.0,5172000.0,416.6
+Alto Paraná,Rural,Hombre,31,7.1,1529000.0,132.8
+Caaguazú,Rural,Mujer,29,4.2,2838000.0,101.1
+Central,Rural,Hombre,48,8.0,1832000.0,98.6
+San Pedro,Urbana,Hombre,22,8.7,2622000.0,384.5
+Alto Paraná,Urbana,Mujer,26,6.8,1461000.0,400.7
+Concepción,Urbana,Mujer,52,10.0,2779000.0,451.1
+Alto Paraná,Rural,Hombre,63,8.1,3795000.0,103.8
+Alto Paraná,Rural,Mujer,27,7.1,910000.0,102.8
+Concepción,Rural,Hombre,35,4.0,856000.0,136.2
+Caaguazú,Rural,Mujer,46,13.4,1264000.0,92.5
+Asunción,Urbana,Mujer,39,11.4,4060000.0,466.9
+Canindeyú,Rural,Mujer,52,9.0,759000.0,92.6
+Asunción,Urbana,Hombre,51,12.2,1742000.0,366.9
+Central,Rural,Mujer,16,5.9,1551000.0,145.8
+Itapúa,Rural,Hombre,16,6.5,2385000.0,128.8
+Central,Urbana,Mujer,46,7.3,1763000.0,438.0
+Asunción,Rural,Hombre,66,6.7,1405000.0,156.9
+San Pedro,Urbana,Hombre,43,15.2,7548000.0,416.5
+Asunción,Urbana,Hombre,15,4.9,2161000.0,478.2
+Concepción,Rural,Mujer,22,8.1,1227000.0,137.8
+Caaguazú,Rural,Mujer,39,9.5,1039000.0,150.2
+Central,Rural,Mujer,43,4.4,1049000.0,91.6
+Caaguazú,Urbana,Hombre,40,13.4,4081000.0,505.1
+Canindeyú,Rural,Hombre,56,7.0,957000.0,159.4
+San Pedro,Urbana,Mujer,39,9.2,4430000.0,483.6
+Caaguazú,Urbana,Mujer,18,9.4,7141000.0,474.4
+Central,Rural,Mujer,47,7.0,527000.0,146.6
+Caaguazú,Urbana,Hombre,15,8.4,2356000.0,493.0
+Caaguazú,Urbana,Hombre,16,10.3,4833000.0,432.1
+Canindeyú,Urbana,Mujer,15,9.9,2425000.0,350.5
+Concepción,Rural,Hombre,15,8.9,1599000.0,112.5
+Canindeyú,Rural,Mujer,80,6.3,1800000.0,103.9
+Concepción,Rural,Mujer,39,6.2,424000.0,94.5
+Central,Rural,Mujer,15,3.1,827000.0,131.3
+San Pedro,Rural,Hombre,54,10.4,2192000.0,126.1
+Canindeyú,Rural,Hombre,33,10.6,2110000.0,132.8
+Itapúa,Rural,Mujer,38,13.4,632000.0,114.2
+San Pedro,Rural,Mujer,56,8.5,1167000.0,103.8
+Alto Paraná,Rural,Hombre,22,8.0,1651000.0,126.4
+Canindeyú,Urbana,Hombre,35,9.7,4990000.0,428.5
+San Pedro,Rural,Mujer,21,7.0,459000.0,116.6
+Asunción,Urbana,Mujer,34,12.4,2000000.0,455.4
+Concepción,Urbana,Mujer,43,7.3,9026000.0,508.4
+Concepción,Urbana,Mujer,34,14.7,10948000.0,366.3
+Itapúa,Urbana,Mujer,34,3.6,1233000.0,435.9
+Central,Urbana,Hombre,34,14.3,8843000.0,346.3
+Asunción,Urbana,Mujer,26,9.4,2147000.0,417.6
+Central,Rural,Hombre,28,11.1,3843000.0,91.7
+Itapúa,Urbana,Mujer,34,11.1,1821000.0,449.7
+Canindeyú,Urbana,Mujer,28,10.9,2406000.0,460.4
+Caaguazú,Rural,Hombre,31,9.7,2735000.0,93.9
+Asunción,Urbana,Hombre,29,10.9,2343000.0,432.2
+Central,Urbana,Hombre,50,13.9,2208000.0,514.7
+San Pedro,Urbana,Hombre,46,15.2,3022000.0,419.5
+Alto Paraná,Rural,Hombre,25,10.7,1397000.0,141.1
+Concepción,Rural,Hombre,50,4.5,866000.0,107.1
+Caaguazú,Urbana,Mujer,51,10.2,3225000.0,343.7
+Alto Paraná,Rural,Hombre,37,2.8,1290000.0,143.9
+Caaguazú,Urbana,Hombre,46,13.7,3226000.0,386.2
+Alto Paraná,Rural,Hombre,17,4.9,1807000.0,111.1
+Concepción,Urbana,Mujer,15,13.3,1647000.0,430.9
+Alto Paraná,Rural,Hombre,34,4.7,2342000.0,97.6
+San Pedro,Rural,Mujer,50,3.5,1928000.0,149.1
+San Pedro,Urbana,Hombre,58,6.4,2808000.0,337.8
+Central,Rural,Mujer,43,2.3,993000.0,117.6
+Caaguazú,Rural,Mujer,25,15.5,851000.0,123.7
+Caaguazú,Rural,Hombre,15,9.4,1693000.0,121.3
+Central,Rural,Hombre,45,6.3,1443000.0,158.7
+San Pedro,Urbana,Hombre,34,13.1,5766000.0,513.8
+Itapúa,Urbana,Hombre,44,14.6,14294000.0,448.4
+Alto Paraná,Urbana,Mujer,38,12.0,1523000.0,502.8
+Itapúa,Urbana,Hombre,29,13.1,2524000.0,420.5
+Caaguazú,Urbana,Mujer,15,10.6,2385000.0,391.9
+Concepción,Rural,Hombre,15,3.7,675000.0,110.3
+San Pedro,Rural,Hombre,32,6.8,1934000.0,113.0
+Canindeyú,Rural,Mujer,20,7.9,905000.0,148.2
+San Pedro,Urbana,Hombre,32,11.2,5028000.0,459.5
+Concepción,Urbana,Hombre,41,5.5,1218000.0,453.9
+Canindeyú,Rural,Hombre,45,6.7,932000.0,149.1
+Itapúa,Urbana,Mujer,15,16.6,9535000.0,423.0
+Concepción,Urbana,Mujer,32,7.7,4873000.0,399.2
+Concepción,Urbana,Mujer,38,9.7,3277000.0,473.0
+Canindeyú,Rural,Hombre,65,18.0,3301000.0,123.1
+Alto Paraná,Rural,Hombre,30,11.0,1696000.0,102.9
+Caaguazú,Rural,Hombre,15,5.8,1653000.0,100.0
+Concepción,Rural,Hombre,15,7.2,1343000.0,155.1
+Itapúa,Urbana,Mujer,58,12.4,2879000.0,449.5
+Itapúa,Urbana,Mujer,15,5.7,2463000.0,440.3
+Alto Paraná,Rural,Mujer,41,2.6,859000.0,124.3
+Itapúa,Rural,Mujer,29,12.6,3561000.0,120.0
+Caaguazú,Rural,Hombre,21,5.8,1002000.0,124.6
+Central,Urbana,Mujer,22,8.8,1530000.0,515.3
+Caaguazú,Rural,Hombre,50,5.0,1540000.0,144.3
+Central,Rural,Hombre,17,4.3,844000.0,134.8
+Itapúa,Rural,Hombre,68,11.0,2804000.0,97.8
+San Pedro,Urbana,Mujer,15,13.4,2825000.0,446.2
+Alto Paraná,Urbana,Hombre,44,7.5,3419000.0,399.3
+San Pedro,Rural,Mujer,43,5.1,1042000.0,133.2
+Central,Urbana,Hombre,27,7.4,2020000.0,455.4
+Itapúa,Rural,Mujer,15,5.2,1619000.0,156.4
+Canindeyú,Urbana,Hombre,56,10.6,1243000.0,330.5
+Concepción,Urbana,Mujer,37,11.5,2973000.0,437.2
+Central,Urbana,Mujer,19,16.8,3746000.0,387.7
+Canindeyú,Rural,Hombre,51,14.5,4064000.0,158.2
+Alto Paraná,Rural,Hombre,21,4.0,1031000.0,137.7
+Caaguazú,Rural,Mujer,39,7.6,2582000.0,146.0
+Itapúa,Rural,Hombre,18,4.4,1422000.0,140.2
+Central,Urbana,Hombre,61,8.5,1440000.0,515.2
+Canindeyú,Urbana,Hombre,23,12.1,3962000.0,507.2
+San Pedro,Urbana,Hombre,69,15.2,2982000.0,481.3
+Caaguazú,Urbana,Hombre,33,13.9,7428000.0,437.4
+Alto Paraná,Urbana,Hombre,26,9.7,2721000.0,483.1
+Caaguazú,Urbana,Mujer,15,7.0,1090000.0,395.5
+Concepción,Rural,Mujer,43,3.6,1643000.0,156.4
+Asunción,Urbana,Mujer,41,13.2,3550000.0,487.4
+Central,Urbana,Mujer,47,9.9,3387000.0,406.7
+Asunción,Rural,Mujer,40,2.6,422000.0,100.5
+Itapúa,Urbana,Hombre,34,13.2,11428000.0,513.7
+Itapúa,Urbana,Hombre,15,9.8,3419000.0,362.1
+San Pedro,Urbana,Mujer,32,6.1,4611000.0,409.6
+Concepción,Rural,Hombre,48,12.8,1344000.0,115.6
+San Pedro,Urbana,Mujer,62,10.8,1858000.0,395.1
+Canindeyú,Urbana,Hombre,48,13.8,1867000.0,386.4
+Caaguazú,Rural,Mujer,45,10.1,3428000.0,90.4
+Alto Paraná,Rural,Hombre,34,13.8,3417000.0,152.6
+Central,Urbana,Hombre,29,11.4,4697000.0,488.5
+Asunción,Urbana,Hombre,15,11.2,1650000.0,415.6
+San Pedro,Urbana,Mujer,50,4.5,5976000.0,452.8
+Caaguazú,Rural,Hombre,46,0.4,1057000.0,128.3
+Alto Paraná,Rural,Hombre,40,8.0,669000.0,90.3
+Alto Paraná,Rural,Hombre,30,8.9,1507000.0,102.7
+Concepción,Urbana,Hombre,49,10.7,2115000.0,396.8
+Concepción,Urbana,Mujer,40,11.4,4369000.0,372.9
+Caaguazú,Rural,Mujer,26,8.9,1408000.0,148.9
+San Pedro,Rural,Hombre,30,3.7,3866000.0,132.3
+Canindeyú,Rural,Hombre,35,8.7,858000.0,133.4
+Itapúa,Urbana,Mujer,34,15.0,4914000.0,437.3
+Alto Paraná,Rural,Hombre,15,7.0,1800000.0,92.5
+Concepción,Rural,Hombre,39,12.5,3033000.0,143.9
+Asunción,Rural,Hombre,29,8.3,2179000.0,159.4
+Caaguazú,Urbana,Mujer,51,12.6,3195000.0,489.0
+Caaguazú,Urbana,Hombre,72,11.3,5688000.0,373.3
+Alto Paraná,Rural,Hombre,15,0.2,1657000.0,113.9
+Central,Rural,Mujer,52,9.1,924000.0,93.1
+Asunción,Urbana,Mujer,28,8.6,5120000.0,445.9
+Alto Paraná,Urbana,Hombre,23,13.8,3736000.0,405.9
+Asunción,Rural,Hombre,23,8.6,658000.0,107.2
+Canindeyú,Urbana,Hombre,39,11.0,2665000.0,373.5
+San Pedro,Urbana,Hombre,43,10.2,1140000.0,433.3
+Central,Urbana,Mujer,76,10.7,2960000.0,326.5
+Asunción,Rural,Mujer,26,12.6,929000.0,94.2
+San Pedro,Urbana,Hombre,21,11.9,5033000.0,389.2
+Caaguazú,Rural,Mujer,15,8.7,1300000.0,105.4
+Central,Urbana,Hombre,22,12.1,3011000.0,367.2
+Asunción,Urbana,Hombre,38,11.0,4083000.0,481.1
+San Pedro,Urbana,Hombre,15,7.5,9135000.0,437.0
+San Pedro,Urbana,Mujer,18,7.9,2141000.0,456.7
+Asunción,Urbana,Hombre,33,17.4,7758000.0,330.3
+San Pedro,Rural,Hombre,18,4.8,1534000.0,146.9
+Concepción,Rural,Mujer,52,4.5,579000.0,119.4
+Itapúa,Urbana,Mujer,34,12.6,2368000.0,467.0
+Caaguazú,Urbana,Mujer,36,8.1,641000.0,346.8
+Asunción,Rural,Hombre,26,8.3,3963000.0,119.2
+San Pedro,Rural,Hombre,22,9.7,899000.0,98.7
+Caaguazú,Urbana,Mujer,59,14.4,6692000.0,398.3
+Caaguazú,Rural,Mujer,30,8.7,2847000.0,98.9
+Canindeyú,Urbana,Mujer,15,16.4,3937000.0,355.2
+Canindeyú,Rural,Mujer,32,6.6,2029000.0,120.0
+Asunción,Urbana,Hombre,42,12.6,5916000.0,501.3
+Asunción,Rural,Mujer,56,4.1,1891000.0,145.9
+Concepción,Urbana,Hombre,57,8.6,1272000.0,494.5
+San Pedro,Urbana,Mujer,51,15.9,2857000.0,512.8
+Itapúa,Urbana,Hombre,44,17.4,3052000.0,458.2
+Central,Rural,Hombre,35,2.2,952000.0,125.4
+Itapúa,Rural,Hombre,24,12.2,2323000.0,102.6
+Central,Urbana,Mujer,63,9.9,1988000.0,426.4
+Itapúa,Rural,Hombre,33,6.7,1974000.0,105.9
+Caaguazú,Rural,Hombre,49,10.0,1449000.0,105.8
+Canindeyú,Urbana,Hombre,52,13.6,2599000.0,462.6
+Central,Rural,Hombre,15,7.2,2656000.0,154.5
+Central,Rural,Mujer,44,0.0,440000.0,91.2
+Asunción,Rural,Mujer,25,8.2,2460000.0,93.0
+Caaguazú,Urbana,Mujer,15,9.4,2510000.0,324.9
+Concepción,Rural,Hombre,22,5.7,678000.0,133.6
+Alto Paraná,Rural,Hombre,39,8.4,1764000.0,103.9
+Alto Paraná,Urbana,Hombre,61,15.8,2095000.0,461.5
+Caaguazú,Rural,Mujer,42,12.0,2417000.0,136.1
+Itapúa,Rural,Mujer,48,5.6,3306000.0,94.5
+Alto Paraná,Rural,Hombre,33,7.9,1420000.0,112.5
+Canindeyú,Urbana,Mujer,31,8.3,2658000.0,384.6
+Caaguazú,Urbana,Hombre,19,11.0,2140000.0,415.9
+Concepción,Rural,Mujer,19,7.3,3962000.0,113.0
+San Pedro,Urbana,Hombre,29,15.1,4991000.0,330.8
+Central,Rural,Hombre,32,10.4,2472000.0,94.6
+Canindeyú,Rural,Mujer,15,7.4,863000.0,144.9
+San Pedro,Urbana,Mujer,22,9.4,3540000.0,511.9
+Itapúa,Urbana,Mujer,17,7.7,1566000.0,350.1
+San Pedro,Urbana,Hombre,58,4.4,1393000.0,369.9
+Canindeyú,Rural,Hombre,32,6.0,826000.0,132.0
+Canindeyú,Urbana,Hombre,54,12.8,6397000.0,401.0
+Asunción,Rural,Hombre,39,4.1,1825000.0,105.2
+Concepción,Urbana,Hombre,19,9.7,1743000.0,499.2
+Asunción,Rural,Hombre,49,12.0,1462000.0,116.8
+Itapúa,Urbana,Mujer,15,9.4,4027000.0,465.3
+Alto Paraná,Rural,Mujer,43,7.5,1872000.0,131.6
+Canindeyú,Urbana,Mujer,38,10.0,1240000.0,504.4
+Itapúa,Rural,Mujer,55,8.1,1738000.0,124.0
+Itapúa,Rural,Hombre,58,13.3,1030000.0,101.6
+Alto Paraná,Urbana,Hombre,15,9.3,12844000.0,365.6
+Alto Paraná,Urbana,Hombre,15,14.4,3661000.0,400.4
+Caaguazú,Rural,Hombre,15,0.4,1008000.0,153.9
+Itapúa,Urbana,Mujer,28,10.1,6257000.0,489.2
+Alto Paraná,Rural,Hombre,27,6.7,706000.0,154.5
+Central,Urbana,Hombre,37,12.1,2843000.0,447.1
+Concepción,Rural,Mujer,52,7.9,959000.0,144.5
+Itapúa,Urbana,Mujer,30,14.3,4386000.0,336.8
+Canindeyú,Urbana,Mujer,35,13.1,1468000.0,439.7
+Caaguazú,Urbana,Mujer,15,12.2,3272000.0,401.5
+Canindeyú,Urbana,Hombre,52,9.9,4466000.0,441.7
+Asunción,Rural,Mujer,37,9.2,834000.0,101.0
+Alto Paraná,Urbana,Hombre,36,13.5,7032000.0,470.6
+Canindeyú,Urbana,Hombre,51,12.3,3081000.0,483.2
+Canindeyú,Urbana,Hombre,35,11.9,2646000.0,398.6
+Asunción,Rural,Mujer,51,9.2,1564000.0,131.9
+Concepción,Urbana,Hombre,37,11.1,2366000.0,500.8
+Central,Rural,Hombre,59,7.1,393000.0,119.9
+Itapúa,Urbana,Hombre,21,8.0,4954000.0,368.2
+Asunción,Urbana,Mujer,47,6.7,1908000.0,338.8
+Alto Paraná,Rural,Hombre,20,4.4,1071000.0,125.8
+Canindeyú,Urbana,Mujer,38,15.8,3308000.0,510.0
+Central,Urbana,Mujer,27,9.8,1833000.0,464.0
+Concepción,Urbana,Hombre,35,8.3,4268000.0,338.0
+Alto Paraná,Urbana,Mujer,29,11.9,4887000.0,429.9
+Central,Rural,Hombre,47,11.6,1134000.0,105.6
+Asunción,Rural,Hombre,56,6.9,1789000.0,125.1
+Itapúa,Urbana,Hombre,56,11.5,5079000.0,516.9
+Itapúa,Rural,Mujer,57,6.2,696000.0,121.2
+San Pedro,Rural,Hombre,26,4.9,2066000.0,150.6
+San Pedro,Rural,Hombre,36,10.7,1218000.0,152.0
+Canindeyú,Rural,Mujer,15,7.6,2577000.0,115.1
+Alto Paraná,Urbana,Mujer,30,9.9,2417000.0,403.1
+Central,Rural,Mujer,15,10.2,1231000.0,108.6
+Canindeyú,Urbana,Mujer,37,12.9,2631000.0,511.9
+San Pedro,Urbana,Hombre,39,18.0,5155000.0,504.9
+Caaguazú,Urbana,Mujer,30,8.8,2040000.0,336.7
+San Pedro,Urbana,Mujer,44,7.1,1041000.0,338.1
+Canindeyú,Rural,Hombre,38,8.2,4791000.0,106.9
+Alto Paraná,Rural,Hombre,29,4.3,1231000.0,131.3
+Asunción,Rural,Mujer,15,13.7,1697000.0,142.2
+San Pedro,Urbana,Hombre,36,12.8,1737000.0,507.8
+Alto Paraná,Urbana,Mujer,43,13.3,1539000.0,509.1
+Canindeyú,Rural,Mujer,25,9.1,941000.0,124.7
+Itapúa,Rural,Mujer,53,6.7,2101000.0,106.2
+Caaguazú,Rural,Hombre,15,7.8,1016000.0,97.7
+Central,Urbana,Mujer,45,9.2,3789000.0,502.5
+San Pedro,Rural,Mujer,41,10.8,1493000.0,130.1
+Asunción,Rural,Hombre,17,5.0,3575000.0,144.8
+Central,Urbana,Mujer,49,4.2,2627000.0,471.0
+Itapúa,Rural,Hombre,55,8.9,1199000.0,94.7
+Central,Urbana,Mujer,72,13.0,3334000.0,467.6
+Canindeyú,Rural,Mujer,34,0.0,264000.0,144.7
+San Pedro,Rural,Hombre,38,6.8,2332000.0,138.0
+Concepción,Rural,Hombre,15,1.4,843000.0,148.2
+San Pedro,Urbana,Mujer,30,10.8,1194000.0,370.9
+Concepción,Rural,Mujer,43,5.2,930000.0,116.4
+Canindeyú,Urbana,Hombre,42,12.6,1501000.0,457.9
+Itapúa,Urbana,Mujer,15,12.5,2469000.0,326.1
+Caaguazú,Urbana,Hombre,15,14.4,4737000.0,360.6
+Concepción,Rural,Mujer,76,6.6,1338000.0,141.4
+Alto Paraná,Urbana,Hombre,52,11.5,2331000.0,337.1
+Itapúa,Urbana,Hombre,39,8.4,3504000.0,470.9
+Concepción,Rural,Hombre,42,8.1,2067000.0,111.8
+Alto Paraná,Urbana,Hombre,22,10.1,2991000.0,344.5
+Alto Paraná,Rural,Mujer,44,9.1,3082000.0,148.3
+Asunción,Rural,Mujer,15,8.9,1866000.0,100.8
+Itapúa,Urbana,Hombre,19,9.9,3808000.0,464.9
+Concepción,Rural,Mujer,48,5.3,1704000.0,159.6
+Central,Urbana,Hombre,28,14.0,19943000.0,497.2
+Itapúa,Urbana,Mujer,62,9.5,5412000.0,470.8
+Itapúa,Rural,Hombre,15,6.2,1212000.0,138.3
+Asunción,Urbana,Mujer,28,7.6,932000.0,351.8
+Asunción,Rural,Mujer,16,4.1,1893000.0,123.3
+Asunción,Rural,Mujer,56,8.6,1167000.0,123.6
+Canindeyú,Rural,Hombre,44,7.6,2692000.0,98.5
+San Pedro,Urbana,Mujer,59,9.3,799000.0,500.7
+Alto Paraná,Urbana,Mujer,15,11.0,2787000.0,324.5
+Caaguazú,Urbana,Mujer,37,13.7,2281000.0,440.9
+Itapúa,Rural,Hombre,30,8.2,881000.0,94.9
+Asunción,Rural,Hombre,28,10.7,5037000.0,140.0
+San Pedro,Rural,Hombre,52,11.2,1394000.0,91.4
+Itapúa,Rural,Mujer,26,4.2,1452000.0,107.8
+Central,Rural,Hombre,42,6.4,1550000.0,136.4
+San Pedro,Urbana,Hombre,48,11.3,3366000.0,354.1
+Itapúa,Urbana,Hombre,57,17.0,4528000.0,350.9
+Asunción,Rural,Mujer,15,8.7,945000.0,100.3
+Canindeyú,Rural,Mujer,27,8.9,681000.0,132.6
+Concepción,Rural,Hombre,27,2.8,605000.0,156.4
+San Pedro,Urbana,Hombre,33,7.7,4304000.0,411.9
+San Pedro,Rural,Hombre,41,6.9,2887000.0,137.2
+Itapúa,Rural,Mujer,32,1.6,693000.0,149.6
+Canindeyú,Rural,Mujer,53,11.4,1263000.0,106.4
+Asunción,Rural,Hombre,56,11.1,1629000.0,148.9
+San Pedro,Urbana,Mujer,19,8.0,2145000.0,375.1
+Central,Urbana,Mujer,38,9.8,2493000.0,383.2
+Caaguazú,Rural,Hombre,58,8.4,1804000.0,106.2
+Asunción,Urbana,Mujer,15,10.4,4556000.0,419.4
+Canindeyú,Rural,Hombre,15,5.1,3711000.0,102.9
+Alto Paraná,Rural,Hombre,17,6.2,735000.0,146.3
+Concepción,Urbana,Mujer,37,12.2,4090000.0,507.1
+Itapúa,Urbana,Hombre,15,12.6,9388000.0,365.3
+Central,Rural,Hombre,22,6.1,1118000.0,150.9
+Caaguazú,Urbana,Hombre,46,5.7,824000.0,320.4
+Asunción,Rural,Hombre,30,7.7,1094000.0,156.9
+Canindeyú,Rural,Mujer,26,9.7,770000.0,134.7
+San Pedro,Rural,Mujer,53,15.1,1954000.0,104.4
+Itapúa,Urbana,Hombre,15,13.3,2278000.0,344.3
+Caaguazú,Urbana,Hombre,31,12.3,2328000.0,431.5
+Itapúa,Urbana,Mujer,51,10.2,2290000.0,390.2
+Alto Paraná,Rural,Mujer,23,5.2,688000.0,145.4
+Central,Urbana,Hombre,56,7.8,1903000.0,489.7
+Central,Urbana,Mujer,15,6.9,4258000.0,456.6
+Canindeyú,Urbana,Mujer,50,12.6,2139000.0,322.8
+San Pedro,Rural,Hombre,24,9.9,1277000.0,120.7
+Alto Paraná,Urbana,Hombre,40,10.2,1383000.0,518.2
+Asunción,Urbana,Mujer,56,10.3,1175000.0,517.1
+Central,Rural,Mujer,52,8.6,916000.0,97.2
+Concepción,Rural,Hombre,30,5.2,988000.0,105.0
+Central,Rural,Mujer,39,5.2,880000.0,115.9
+Central,Urbana,Hombre,36,12.3,3223000.0,399.0
+Caaguazú,Rural,Hombre,16,10.7,1641000.0,154.0
+Concepción,Rural,Mujer,61,4.2,952000.0,157.3
+San Pedro,Rural,Mujer,15,9.8,1295000.0,144.2
+Central,Rural,Hombre,34,9.1,2790000.0,93.9
+Alto Paraná,Urbana,Hombre,49,8.4,2388000.0,423.8
+Itapúa,Rural,Mujer,24,2.2,618000.0,122.2
+San Pedro,Urbana,Mujer,39,16.6,9289000.0,515.8
+San Pedro,Rural,Hombre,29,6.0,1017000.0,96.2
+Central,Rural,Hombre,34,5.7,897000.0,115.5
+Concepción,Rural,Hombre,37,9.5,1291000.0,110.9
+Canindeyú,Urbana,Hombre,51,18.0,11299000.0,325.9
+San Pedro,Rural,Mujer,66,8.3,625000.0,109.8
+Central,Rural,Hombre,15,11.9,4771000.0,101.4
+Itapúa,Rural,Hombre,41,4.7,1895000.0,132.6
+Itapúa,Urbana,Mujer,53,17.3,1207000.0,383.8
+Central,Rural,Mujer,27,1.5,1548000.0,150.2
+Concepción,Rural,Mujer,56,7.4,1452000.0,90.5
+Canindeyú,Rural,Mujer,15,6.7,653000.0,120.6
+Central,Urbana,Hombre,55,9.5,2486000.0,471.4
+Concepción,Urbana,Hombre,34,11.7,2780000.0,516.5
+Concepción,Urbana,Mujer,30,18.0,4607000.0,375.3
+Concepción,Rural,Hombre,34,7.3,1693000.0,150.6
+Concepción,Urbana,Hombre,55,11.7,5793000.0,451.3
+Canindeyú,Rural,Hombre,29,4.5,1223000.0,117.2
+Alto Paraná,Rural,Hombre,15,9.3,728000.0,135.7
+Concepción,Rural,Hombre,15,7.9,1498000.0,103.2
+Itapúa,Urbana,Mujer,24,9.7,1855000.0,331.4
+Caaguazú,Rural,Hombre,29,1.3,893000.0,142.5
+Central,Urbana,Hombre,19,12.5,3322000.0,365.3
+Asunción,Urbana,Hombre,43,12.8,5458000.0,341.8
+Alto Paraná,Urbana,Hombre,24,6.0,2016000.0,447.6
+Asunción,Rural,Hombre,37,6.6,928000.0,102.1
+Itapúa,Rural,Mujer,23,0.6,1039000.0,131.8
+Caaguazú,Rural,Hombre,33,11.8,1388000.0,115.1
+Itapúa,Urbana,Mujer,30,13.3,956000.0,350.5
+Concepción,Rural,Mujer,37,5.4,810000.0,141.1
+Central,Urbana,Hombre,36,5.9,2880000.0,353.7
+Caaguazú,Rural,Mujer,50,10.2,1676000.0,146.3
+Concepción,Urbana,Hombre,31,11.5,7436000.0,514.8
+San Pedro,Rural,Hombre,43,11.2,4572000.0,126.5
+Caaguazú,Rural,Hombre,35,7.7,2227000.0,156.9
+San Pedro,Urbana,Hombre,46,10.2,2262000.0,486.5
+Central,Rural,Mujer,49,7.5,643000.0,135.6
+Alto Paraná,Urbana,Mujer,63,10.8,2113000.0,323.0
+Caaguazú,Rural,Mujer,35,4.9,529000.0,99.8
+Asunción,Urbana,Hombre,46,8.8,1245000.0,342.3
+Asunción,Urbana,Hombre,29,11.3,3726000.0,472.8
+Itapúa,Rural,Hombre,15,9.3,1663000.0,154.4
+Asunción,Urbana,Mujer,35,11.9,1727000.0,349.5
+Central,Rural,Mujer,44,8.8,645000.0,136.8
+Caaguazú,Urbana,Hombre,57,6.1,1519000.0,491.1
+Caaguazú,Rural,Mujer,38,4.2,1829000.0,122.3
+Caaguazú,Urbana,Hombre,39,10.9,1881000.0,517.3
+Itapúa,Rural,Hombre,22,6.1,906000.0,130.9
+Alto Paraná,Rural,Hombre,65,5.8,1435000.0,144.3
+Asunción,Rural,Hombre,21,11.5,977000.0,152.3
+San Pedro,Urbana,Hombre,36,10.5,2759000.0,467.8
+Central,Urbana,Hombre,48,13.9,3133000.0,335.4
+Concepción,Rural,Hombre,29,8.2,804000.0,117.7
+Concepción,Rural,Hombre,46,7.4,1424000.0,130.3
+San Pedro,Rural,Hombre,15,12.0,2072000.0,109.5
+San Pedro,Rural,Mujer,32,10.0,1484000.0,105.3
+Canindeyú,Urbana,Hombre,47,11.7,2080000.0,482.8
+Canindeyú,Rural,Hombre,15,7.5,875000.0,101.3
+Asunción,Rural,Mujer,15,13.3,2107000.0,103.5
+Central,Rural,Mujer,41,3.9,1056000.0,110.6
+Caaguazú,Urbana,Mujer,15,12.5,3456000.0,321.3
+San Pedro,Urbana,Mujer,24,11.7,3485000.0,502.4
+Itapúa,Rural,Hombre,53,6.6,998000.0,126.4
+Canindeyú,Rural,Hombre,15,13.3,1446000.0,146.7
+Itapúa,Rural,Hombre,52,8.5,1696000.0,130.8
+Canindeyú,Urbana,Hombre,37,11.1,3619000.0,448.2
+Caaguazú,Rural,Mujer,35,7.5,1434000.0,119.9
+Caaguazú,Urbana,Mujer,15,12.2,11241000.0,323.1
+Canindeyú,Urbana,Mujer,45,10.6,1842000.0,396.0
+Central,Urbana,Mujer,15,9.3,2231000.0,361.9
+Alto Paraná,Rural,Hombre,28,9.2,1142000.0,99.1
+Alto Paraná,Urbana,Mujer,59,13.3,6082000.0,439.9
+Asunción,Urbana,Hombre,15,9.1,2752000.0,476.4
+Caaguazú,Urbana,Mujer,23,9.3,3619000.0,383.0
+Concepción,Urbana,Mujer,15,11.1,3062000.0,458.5
+Concepción,Rural,Hombre,15,5.7,1143000.0,106.0
+Central,Rural,Hombre,32,10.3,3724000.0,109.1
+Alto Paraná,Rural,Mujer,44,2.9,1375000.0,149.4
+Alto Paraná,Rural,Mujer,30,3.8,634000.0,137.3
+Central,Urbana,Hombre,27,15.8,6086000.0,500.7
+Alto Paraná,Urbana,Mujer,35,12.0,6618000.0,341.2
+Itapúa,Urbana,Mujer,51,9.1,1121000.0,341.7
+Asunción,Rural,Mujer,19,5.0,1825000.0,144.6
+Concepción,Urbana,Mujer,55,12.7,3987000.0,475.7
+Asunción,Urbana,Mujer,16,12.5,1932000.0,506.9
+Itapúa,Urbana,Mujer,24,16.4,2217000.0,507.1
+Asunción,Rural,Hombre,52,6.8,1046000.0,109.9
+Asunción,Urbana,Mujer,37,9.2,2576000.0,339.3
+Asunción,Urbana,Hombre,38,9.5,1976000.0,515.6
+San Pedro,Urbana,Hombre,15,10.5,4643000.0,454.3
+Central,Urbana,Hombre,44,7.4,3338000.0,342.7
+Concepción,Urbana,Hombre,55,15.6,3829000.0,329.9
+Caaguazú,Urbana,Mujer,32,11.9,3413000.0,500.9
+Canindeyú,Rural,Hombre,52,1.9,675000.0,142.3
+Itapúa,Rural,Mujer,33,11.8,1373000.0,97.9
+Itapúa,Rural,Mujer,15,6.3,2261000.0,129.9
+Asunción,Rural,Mujer,33,4.8,2734000.0,137.8
+Concepción,Rural,Mujer,43,6.3,902000.0,92.0
+Concepción,Urbana,Mujer,44,9.0,4083000.0,445.5
+Canindeyú,Rural,Mujer,37,9.6,1753000.0,159.2
+Canindeyú,Rural,Mujer,33,7.0,1840000.0,141.3
+Itapúa,Rural,Hombre,53,5.9,3090000.0,135.5
+Canindeyú,Urbana,Mujer,49,18.0,4957000.0,511.2
+San Pedro,Rural,Mujer,21,7.8,1989000.0,148.6
+Alto Paraná,Urbana,Mujer,22,12.4,3383000.0,332.1
+Caaguazú,Rural,Hombre,44,4.9,989000.0,158.0
+Alto Paraná,Urbana,Hombre,15,11.6,2532000.0,466.6
+Central,Rural,Mujer,28,9.7,1451000.0,134.9
+San Pedro,Urbana,Mujer,28,7.6,1683000.0,495.8
+Concepción,Urbana,Mujer,20,11.6,4945000.0,463.2
+Caaguazú,Rural,Hombre,62,6.3,967000.0,104.0
+Asunción,Rural,Mujer,39,1.3,1095000.0,92.4
+Caaguazú,Rural,Mujer,23,9.3,837000.0,117.5
+Canindeyú,Rural,Hombre,15,4.3,1195000.0,91.7
+Alto Paraná,Urbana,Mujer,20,8.6,4191000.0,384.2
+Itapúa,Rural,Hombre,43,13.9,2686000.0,104.5
+Canindeyú,Rural,Hombre,28,11.9,1830000.0,143.1
+Alto Paraná,Rural,Mujer,32,8.1,1210000.0,117.4
+Caaguazú,Urbana,Hombre,33,11.1,3688000.0,325.2
+Itapúa,Urbana,Mujer,15,9.3,2501000.0,333.8
+Caaguazú,Urbana,Hombre,43,7.4,3593000.0,504.2
+Itapúa,Urbana,Hombre,45,9.7,5799000.0,489.7
+Itapúa,Urbana,Hombre,47,14.7,4896000.0,498.0
+San Pedro,Rural,Mujer,22,7.2,1485000.0,143.1
+Central,Rural,Hombre,28,4.8,2370000.0,143.4
+San Pedro,Urbana,Mujer,43,14.9,2310000.0,361.9
+Caaguazú,Rural,Hombre,44,2.5,1035000.0,149.0
+Asunción,Rural,Hombre,34,8.6,1319000.0,102.5
+Asunción,Rural,Mujer,46,3.7,224000.0,137.3
+Canindeyú,Rural,Mujer,24,9.1,1152000.0,107.9
+Alto Paraná,Rural,Mujer,24,4.1,1515000.0,112.6
+Concepción,Urbana,Hombre,26,10.9,1886000.0,461.7
+Asunción,Rural,Mujer,40,7.4,489000.0,122.7
+San Pedro,Rural,Hombre,15,4.9,718000.0,97.8
+Asunción,Rural,Mujer,15,3.4,1752000.0,131.1
+Asunción,Urbana,Mujer,37,15.9,4031000.0,411.6
+Concepción,Rural,Hombre,28,0.3,1670000.0,101.7
+Asunción,Urbana,Mujer,15,9.3,4248000.0,519.8
+Concepción,Urbana,Mujer,26,9.1,3940000.0,494.5
+Concepción,Rural,Hombre,32,8.8,1816000.0,146.8
+Central,Urbana,Mujer,47,13.8,1825000.0,361.9
+Alto Paraná,Rural,Mujer,31,7.0,1546000.0,126.2
+Central,Urbana,Mujer,39,9.1,1855000.0,512.3
+San Pedro,Urbana,Hombre,31,6.0,3112000.0,454.1
+Alto Paraná,Urbana,Mujer,40,8.5,2111000.0,320.4
+Canindeyú,Urbana,Hombre,35,13.6,3431000.0,335.0
+Asunción,Rural,Mujer,16,7.7,1890000.0,155.3
+Canindeyú,Rural,Mujer,23,10.0,2377000.0,103.0
+Alto Paraná,Rural,Hombre,27,6.0,1250000.0,115.2
+Canindeyú,Rural,Mujer,15,8.8,686000.0,99.7
+Asunción,Rural,Mujer,41,11.8,2261000.0,148.0
+Alto Paraná,Urbana,Hombre,36,7.9,2165000.0,481.4
+Alto Paraná,Rural,Hombre,17,13.5,3659000.0,133.7
+Canindeyú,Urbana,Mujer,46,13.8,2237000.0,512.9
+Central,Rural,Hombre,31,7.9,946000.0,131.0
+Alto Paraná,Rural,Hombre,49,10.7,1218000.0,116.4
+Canindeyú,Urbana,Mujer,30,11.0,2413000.0,337.3
+Central,Urbana,Hombre,59,14.6,2194000.0,331.7
+Central,Urbana,Mujer,23,16.1,1170000.0,511.1
+Caaguazú,Rural,Mujer,47,7.8,431000.0,107.9
+Alto Paraná,Urbana,Hombre,57,9.4,2510000.0,427.6
+Canindeyú,Rural,Mujer,36,7.9,1097000.0,120.5
+San Pedro,Urbana,Mujer,22,6.0,2262000.0,499.6
+Concepción,Urbana,Mujer,36,15.1,11359000.0,335.0
+San Pedro,Urbana,Hombre,34,13.6,4524000.0,482.2
+Itapúa,Urbana,Hombre,19,7.1,2888000.0,364.6
+San Pedro,Urbana,Hombre,53,5.1,919000.0,457.7
+San Pedro,Urbana,Hombre,17,13.2,4397000.0,483.8
+Itapúa,Urbana,Mujer,37,9.9,1140000.0,440.6
+San Pedro,Rural,Hombre,48,9.9,2565000.0,159.4
+Alto Paraná,Urbana,Hombre,49,5.2,2623000.0,375.9
+San Pedro,Urbana,Mujer,42,10.5,3191000.0,458.6
+Central,Urbana,Mujer,53,11.6,2645000.0,478.4
+Caaguazú,Urbana,Hombre,16,9.9,2213000.0,450.0
+San Pedro,Rural,Hombre,17,9.3,1523000.0,159.3
+San Pedro,Urbana,Mujer,43,9.1,4791000.0,376.1
+Caaguazú,Rural,Hombre,38,9.4,1529000.0,138.2
+Asunción,Urbana,Mujer,35,4.2,4537000.0,341.9
+Central,Rural,Hombre,25,4.4,1075000.0,136.0
+Alto Paraná,Rural,Mujer,23,9.0,1152000.0,147.8
+Canindeyú,Rural,Mujer,51,6.3,1400000.0,154.8
+Canindeyú,Rural,Mujer,42,4.9,2017000.0,147.4
+Canindeyú,Urbana,Mujer,63,14.2,2032000.0,434.4
+Itapúa,Urbana,Hombre,25,16.3,7861000.0,453.3
+Asunción,Urbana,Hombre,40,13.4,6384000.0,456.5
+Caaguazú,Rural,Hombre,49,6.9,901000.0,101.5
+Itapúa,Rural,Hombre,37,11.2,1381000.0,96.0
+Canindeyú,Urbana,Hombre,22,11.7,5127000.0,361.3
+Canindeyú,Rural,Hombre,15,3.7,1037000.0,122.7
+Canindeyú,Urbana,Hombre,44,10.4,4544000.0,421.1
+Itapúa,Rural,Hombre,30,10.2,1658000.0,145.5
+Itapúa,Rural,Mujer,24,8.2,1935000.0,119.9
+Concepción,Urbana,Hombre,41,9.2,2543000.0,365.5
+Concepción,Rural,Mujer,25,10.4,1949000.0,98.2
+Central,Rural,Hombre,52,10.6,1352000.0,91.5
+Itapúa,Urbana,Mujer,24,14.4,2764000.0,393.4
+Alto Paraná,Rural,Mujer,36,9.3,1071000.0,116.8
+Caaguazú,Rural,Hombre,42,7.3,1540000.0,130.1
+Caaguazú,Rural,Hombre,49,11.4,1309000.0,157.6
+Alto Paraná,Rural,Hombre,63,11.6,1598000.0,93.4
+Alto Paraná,Urbana,Mujer,19,10.2,1531000.0,486.9
+Concepción,Rural,Hombre,15,4.1,710000.0,123.1
+Itapúa,Urbana,Mujer,43,10.4,2899000.0,450.9
+Alto Paraná,Urbana,Mujer,33,11.2,1879000.0,362.4
+Central,Rural,Hombre,27,6.2,781000.0,94.1
+Alto Paraná,Urbana,Mujer,22,13.5,2136000.0,454.6
+Asunción,Rural,Hombre,50,6.3,1870000.0,155.6
+Central,Urbana,Mujer,53,9.5,2010000.0,377.2
+Caaguazú,Urbana,Hombre,53,9.0,1215000.0,323.4
+Concepción,Rural,Hombre,40,7.8,1253000.0,115.1
+Itapúa,Rural,Hombre,65,7.1,2551000.0,150.1
+Concepción,Urbana,Mujer,31,6.2,5369000.0,408.4
+Central,Urbana,Hombre,59,15.6,3838000.0,398.9
+Alto Paraná,Urbana,Mujer,15,9.1,2508000.0,441.2
+Canindeyú,Urbana,Mujer,29,11.3,2911000.0,469.6
+Alto Paraná,Rural,Hombre,30,8.0,3266000.0,143.6
+Asunción,Rural,Hombre,15,10.2,1101000.0,147.0
+San Pedro,Rural,Hombre,64,4.6,1213000.0,135.6
+Concepción,Rural,Hombre,42,7.4,859000.0,107.3
+Concepción,Urbana,Hombre,39,17.9,3029000.0,421.5
+Itapúa,Rural,Mujer,39,6.2,417000.0,124.8
+Itapúa,Urbana,Mujer,42,6.3,763000.0,465.0
+Canindeyú,Urbana,Mujer,61,14.3,2724000.0,405.8
+Caaguazú,Urbana,Hombre,59,10.9,2817000.0,464.3
+Concepción,Urbana,Mujer,32,13.5,1262000.0,388.8
+Canindeyú,Urbana,Hombre,37,13.6,5777000.0,508.3
+Asunción,Rural,Hombre,36,6.7,1678000.0,93.9
+Asunción,Urbana,Hombre,44,7.1,4877000.0,388.2
+Canindeyú,Rural,Mujer,35,13.7,1744000.0,140.3
+Concepción,Rural,Mujer,41,10.9,916000.0,94.1
+Alto Paraná,Rural,Hombre,50,6.3,1499000.0,121.7
+Central,Rural,Hombre,51,9.3,1404000.0,137.6
+Asunción,Rural,Mujer,42,10.8,1226000.0,105.9
+Itapúa,Urbana,Hombre,33,12.7,4889000.0,464.1
+Central,Urbana,Hombre,35,13.5,7641000.0,464.8
+Central,Urbana,Mujer,37,14.2,3372000.0,405.5
+Itapúa,Urbana,Mujer,46,12.6,1630000.0,464.9
+Central,Rural,Mujer,38,8.3,1512000.0,115.1
+Caaguazú,Urbana,Mujer,56,13.8,5296000.0,330.4
+Itapúa,Rural,Hombre,34,8.5,3443000.0,137.1
+Itapúa,Rural,Mujer,22,6.1,711000.0,158.9
+Asunción,Urbana,Mujer,48,11.9,3416000.0,351.1
+Itapúa,Rural,Hombre,15,7.9,658000.0,130.9
+Concepción,Rural,Mujer,49,5.0,2515000.0,90.3
+Central,Rural,Mujer,34,9.7,601000.0,90.5
+San Pedro,Rural,Hombre,28,7.3,779000.0,154.6
+Canindeyú,Urbana,Mujer,26,8.8,2027000.0,337.6
+Asunción,Rural,Mujer,15,3.5,1711000.0,146.3
+Itapúa,Urbana,Mujer,15,12.1,1516000.0,398.9
+Caaguazú,Urbana,Hombre,30,6.6,1536000.0,324.9
+Alto Paraná,Rural,Hombre,44,6.7,1559000.0,144.5
+Central,Urbana,Hombre,23,11.1,2876000.0,369.9
+San Pedro,Urbana,Hombre,50,11.1,1091000.0,403.7
+Caaguazú,Rural,Mujer,20,5.7,1841000.0,134.6
+San Pedro,Rural,Hombre,43,0.0,2186000.0,125.0
+Alto Paraná,Rural,Hombre,32,4.0,2767000.0,96.7
+Alto Paraná,Rural,Hombre,24,3.5,1417000.0,154.5
+San Pedro,Rural,Hombre,17,10.9,4510000.0,139.3
+Central,Urbana,Hombre,52,15.4,3537000.0,341.8
+Central,Urbana,Hombre,33,16.3,3467000.0,420.2
+San Pedro,Urbana,Hombre,15,9.1,8366000.0,424.2
+Concepción,Urbana,Mujer,28,6.1,3017000.0,340.2
+San Pedro,Urbana,Mujer,17,10.9,4470000.0,321.5
+Central,Rural,Mujer,29,5.1,2447000.0,101.8
+Canindeyú,Urbana,Hombre,56,11.7,3666000.0,443.0
+Alto Paraná,Urbana,Hombre,48,18.0,5547000.0,489.6
+Central,Rural,Hombre,43,5.3,2476000.0,132.7
+Caaguazú,Rural,Hombre,30,11.3,3058000.0,122.7
+Alto Paraná,Urbana,Mujer,49,9.1,3365000.0,419.5
+Caaguazú,Rural,Mujer,47,10.9,2019000.0,157.1
+San Pedro,Rural,Mujer,50,7.3,674000.0,136.6
+Asunción,Urbana,Hombre,17,11.6,4486000.0,447.5
+San Pedro,Urbana,Hombre,42,13.3,3648000.0,450.2
+San Pedro,Rural,Hombre,54,11.3,2827000.0,144.4
+Itapúa,Rural,Hombre,16,7.3,1621000.0,104.6
+Itapúa,Rural,Mujer,37,12.7,1284000.0,136.4
+Canindeyú,Urbana,Mujer,28,8.3,2413000.0,341.8
+Asunción,Urbana,Mujer,27,14.0,5067000.0,501.1
+Asunción,Rural,Hombre,29,1.0,851000.0,125.1
+Asunción,Urbana,Hombre,25,7.6,3983000.0,475.4
+Alto Paraná,Rural,Hombre,25,3.2,333000.0,153.9
+Itapúa,Rural,Hombre,36,2.3,1528000.0,117.4
+Caaguazú,Rural,Hombre,43,8.2,2321000.0,159.5
+Asunción,Rural,Mujer,29,6.7,1059000.0,100.9
+Central,Urbana,Mujer,36,6.8,929000.0,355.7
+Caaguazú,Urbana,Hombre,15,12.1,5957000.0,408.0
+Canindeyú,Urbana,Hombre,52,5.9,1537000.0,483.1
+Concepción,Rural,Hombre,35,11.6,4634000.0,158.5
+Alto Paraná,Urbana,Hombre,26,7.9,12230000.0,450.1
+Canindeyú,Urbana,Hombre,15,10.5,3759000.0,369.8
+Asunción,Rural,Mujer,44,9.7,1907000.0,96.0
+San Pedro,Rural,Hombre,19,6.4,1535000.0,107.4
+Central,Rural,Hombre,52,3.4,676000.0,102.5
+Caaguazú,Rural,Hombre,20,4.2,1324000.0,146.7
+Concepción,Rural,Mujer,15,6.3,561000.0,154.1
+Asunción,Urbana,Mujer,49,13.2,1340000.0,368.9
+Canindeyú,Rural,Mujer,37,7.4,2300000.0,115.8
+San Pedro,Urbana,Hombre,15,8.3,4878000.0,371.0
+Canindeyú,Urbana,Mujer,62,4.8,957000.0,367.5
+Asunción,Rural,Hombre,20,4.3,890000.0,135.0
+Concepción,Urbana,Mujer,15,14.3,2815000.0,492.6
+Alto Paraná,Urbana,Mujer,68,17.5,1943000.0,410.2
+San Pedro,Urbana,Hombre,20,13.6,5319000.0,462.5
+Central,Urbana,Mujer,15,12.6,774000.0,353.4
+Itapúa,Rural,Mujer,34,8.1,634000.0,94.0
+Alto Paraná,Rural,Hombre,38,4.4,1613000.0,134.8
+Central,Rural,Mujer,24,8.6,911000.0,96.8
+Central,Urbana,Hombre,46,11.0,5801000.0,425.4
+Itapúa,Rural,Hombre,37,6.0,807000.0,140.3
+Asunción,Rural,Hombre,65,10.4,1288000.0,138.0
+Itapúa,Urbana,Mujer,38,6.7,4623000.0,377.0
+Asunción,Rural,Hombre,24,13.3,1686000.0,102.6
+Asunción,Urbana,Mujer,48,7.7,2201000.0,408.1
+Itapúa,Urbana,Hombre,38,12.2,916000.0,428.0
+Central,Urbana,Hombre,36,15.6,8064000.0,461.3
+Itapúa,Rural,Mujer,32,6.1,1804000.0,114.0
+Canindeyú,Rural,Mujer,58,8.2,2040000.0,94.8
+San Pedro,Rural,Mujer,49,4.3,1076000.0,127.1
+Alto Paraná,Urbana,Mujer,36,11.4,13266000.0,438.6
+Itapúa,Urbana,Hombre,36,11.7,5198000.0,338.3
+Asunción,Rural,Mujer,20,11.9,1242000.0,113.8
+Itapúa,Rural,Hombre,15,2.6,1275000.0,110.3
+Asunción,Rural,Mujer,22,3.1,1318000.0,153.2
+Concepción,Urbana,Mujer,33,6.0,727000.0,479.3
+Caaguazú,Rural,Hombre,26,0.0,811000.0,138.8
+Canindeyú,Rural,Hombre,34,6.0,218000.0,146.9
+Central,Rural,Mujer,59,9.9,1695000.0,130.0
+Alto Paraná,Urbana,Mujer,15,9.6,1382000.0,503.4
+San Pedro,Rural,Hombre,21,8.4,3011000.0,159.4
+San Pedro,Rural,Mujer,28,4.0,856000.0,141.6
+Canindeyú,Rural,Hombre,27,8.9,4683000.0,149.6
+Asunción,Rural,Mujer,38,7.5,2130000.0,134.3
+Concepción,Urbana,Hombre,39,12.0,2742000.0,476.0
+San Pedro,Rural,Mujer,38,8.4,2565000.0,116.2
+Caaguazú,Rural,Mujer,32,6.6,553000.0,117.0
+Alto Paraná,Rural,Mujer,65,3.5,507000.0,95.7
+Canindeyú,Urbana,Hombre,18,6.1,2083000.0,502.0
+Canindeyú,Rural,Hombre,15,7.5,2104000.0,116.0
+Central,Urbana,Hombre,48,5.6,1029000.0,451.8
+Itapúa,Rural,Hombre,35,5.5,1681000.0,90.4
+Alto Paraná,Urbana,Mujer,22,16.3,3795000.0,412.6
+Asunción,Rural,Hombre,38,12.4,3392000.0,137.3
+Caaguazú,Urbana,Hombre,35,12.5,8329000.0,439.0
+Alto Paraná,Rural,Mujer,19,5.9,1417000.0,137.1
+Concepción,Rural,Hombre,31,3.4,1153000.0,129.3
+Alto Paraná,Rural,Hombre,44,9.3,1410000.0,134.8
+San Pedro,Rural,Hombre,28,3.9,568000.0,131.8
+Asunción,Rural,Mujer,64,8.1,1037000.0,103.8
+Alto Paraná,Rural,Hombre,15,7.5,2042000.0,116.9
+Canindeyú,Rural,Hombre,20,9.5,1265000.0,107.0
+Itapúa,Urbana,Mujer,52,7.7,3411000.0,326.1
+Central,Urbana,Mujer,44,9.7,1788000.0,518.1
+Caaguazú,Urbana,Hombre,26,8.0,1539000.0,468.2
+Itapúa,Rural,Hombre,50,12.4,1733000.0,143.9
+Canindeyú,Urbana,Mujer,21,12.5,2978000.0,493.9
+Alto Paraná,Rural,Mujer,48,9.5,1671000.0,91.0
+Asunción,Urbana,Mujer,29,12.8,3783000.0,497.8
+Concepción,Rural,Hombre,19,7.6,2449000.0,111.1
+Canindeyú,Rural,Hombre,15,12.2,4477000.0,145.4
+Alto Paraná,Rural,Mujer,40,10.4,4530000.0,122.9
+Asunción,Rural,Hombre,20,7.7,741000.0,157.6
+Itapúa,Urbana,Hombre,72,16.3,9660000.0,419.2
+Central,Urbana,Mujer,48,7.1,5969000.0,360.5
+San Pedro,Rural,Hombre,30,8.8,2249000.0,133.0
+Itapúa,Urbana,Mujer,24,11.9,3984000.0,501.6
+Itapúa,Rural,Mujer,64,8.3,510000.0,96.2
+Central,Rural,Hombre,55,6.7,1064000.0,153.4
+Concepción,Urbana,Hombre,44,15.2,1239000.0,369.5
+San Pedro,Rural,Mujer,20,4.6,2030000.0,127.2
+Concepción,Rural,Hombre,43,8.0,1782000.0,95.4
+Itapúa,Rural,Mujer,15,7.0,1800000.0,99.0
+San Pedro,Rural,Mujer,28,10.0,2159000.0,137.8
+Alto Paraná,Urbana,Mujer,57,10.5,4410000.0,506.1
+Canindeyú,Urbana,Mujer,22,10.2,4581000.0,445.3
+Concepción,Rural,Mujer,15,9.1,787000.0,92.5
+Canindeyú,Rural,Mujer,19,4.0,427000.0,93.4
+Itapúa,Rural,Hombre,15,9.6,3625000.0,143.5
+Concepción,Urbana,Mujer,31,14.0,3596000.0,410.9
+Concepción,Urbana,Hombre,25,12.4,3585000.0,413.6
+Canindeyú,Rural,Mujer,45,1.8,939000.0,95.4
+Alto Paraná,Rural,Hombre,53,6.3,2072000.0,124.6
+Alto Paraná,Rural,Mujer,15,5.3,990000.0,132.2
+Concepción,Urbana,Hombre,44,8.9,2392000.0,393.8
+Asunción,Rural,Mujer,74,10.4,979000.0,109.6
+Asunción,Urbana,Hombre,30,9.1,5105000.0,381.9
+Concepción,Urbana,Mujer,44,5.0,1812000.0,344.3
+Caaguazú,Rural,Mujer,45,11.5,1237000.0,92.9
+Canindeyú,Urbana,Hombre,28,10.2,7595000.0,357.8
+Caaguazú,Rural,Mujer,15,6.8,1852000.0,131.3
+Itapúa,Rural,Mujer,31,5.3,1052000.0,149.0
+Itapúa,Rural,Hombre,15,0.0,362000.0,96.0
+San Pedro,Rural,Mujer,40,6.0,505000.0,99.2
+Concepción,Rural,Mujer,24,5.0,1353000.0,115.4
+Caaguazú,Urbana,Mujer,42,12.4,4336000.0,358.0
+Caaguazú,Rural,Mujer,28,7.8,636000.0,122.3
+Concepción,Urbana,Hombre,33,9.6,1558000.0,420.2
+Alto Paraná,Rural,Mujer,35,6.5,1338000.0,90.3
+Canindeyú,Rural,Hombre,21,8.2,538000.0,105.5
+Concepción,Urbana,Hombre,27,6.8,2035000.0,409.6
+Central,Rural,Hombre,15,7.2,1780000.0,145.2
+Alto Paraná,Urbana,Hombre,40,9.7,5913000.0,428.6
+Alto Paraná,Rural,Hombre,51,7.4,1683000.0,116.8
+Alto Paraná,Urbana,Hombre,55,15.4,4461000.0,407.2
+Central,Urbana,Mujer,16,17.0,5273000.0,514.2
+Itapúa,Urbana,Hombre,33,11.7,7598000.0,334.0
+Alto Paraná,Urbana,Hombre,48,16.2,10905000.0,476.8
+Concepción,Urbana,Mujer,33,7.4,1623000.0,426.5
+Itapúa,Rural,Hombre,48,5.6,888000.0,111.7
+Caaguazú,Urbana,Mujer,46,11.4,6249000.0,454.1
+Alto Paraná,Rural,Mujer,38,7.7,1810000.0,97.5
+San Pedro,Urbana,Mujer,31,13.3,7494000.0,379.0
+San Pedro,Rural,Hombre,48,8.9,796000.0,141.7
+Canindeyú,Rural,Hombre,28,10.5,2411000.0,153.7
+Itapúa,Rural,Hombre,24,3.3,1078000.0,152.8
+Caaguazú,Rural,Mujer,36,12.4,974000.0,135.9
+Itapúa,Urbana,Mujer,36,13.7,4775000.0,429.1
+Itapúa,Rural,Hombre,23,2.8,428000.0,99.3
+Itapúa,Urbana,Hombre,52,8.5,3293000.0,376.2
+Concepción,Rural,Mujer,15,5.0,507000.0,91.0
+Caaguazú,Rural,Hombre,49,7.3,1204000.0,110.4
+San Pedro,Rural,Mujer,49,4.3,1082000.0,109.3
+Asunción,Urbana,Hombre,47,10.1,1437000.0,455.3
+Concepción,Urbana,Mujer,51,13.6,3206000.0,363.7
+Itapúa,Rural,Hombre,36,5.9,1273000.0,144.5
+Caaguazú,Urbana,Hombre,24,9.8,2178000.0,337.4
+Itapúa,Rural,Mujer,77,1.7,911000.0,141.9
+Canindeyú,Urbana,Hombre,63,16.9,5788000.0,352.1
+Caaguazú,Urbana,Hombre,36,9.9,1521000.0,336.7
+Canindeyú,Urbana,Hombre,34,11.3,1857000.0,358.5
+Alto Paraná,Urbana,Mujer,35,9.0,8800000.0,365.1
+Canindeyú,Urbana,Mujer,37,10.1,6342000.0,464.4
+Itapúa,Urbana,Hombre,72,11.0,5754000.0,435.0
+Concepción,Urbana,Hombre,47,7.0,3405000.0,392.5
+Alto Paraná,Urbana,Mujer,23,14.3,2236000.0,404.9
+Canindeyú,Rural,Mujer,29,6.4,1185000.0,134.9
+Concepción,Rural,Hombre,35,11.2,1049000.0,158.2
+Alto Paraná,Rural,Mujer,18,6.8,1431000.0,143.9
+Asunción,Rural,Mujer,28,12.5,1487000.0,141.8
+Concepción,Rural,Hombre,40,10.3,1020000.0,118.2
+Alto Paraná,Rural,Hombre,26,9.9,3229000.0,117.8
+Canindeyú,Rural,Hombre,15,6.7,1990000.0,137.5
+Caaguazú,Rural,Hombre,58,11.4,3425000.0,128.6
+Itapúa,Rural,Mujer,29,10.8,2494000.0,133.1
+San Pedro,Rural,Mujer,48,12.0,1583000.0,112.1
+Central,Urbana,Mujer,21,9.2,2880000.0,351.1
+San Pedro,Rural,Hombre,48,10.8,971000.0,149.2
+Central,Rural,Mujer,34,10.2,1764000.0,108.5
+Central,Rural,Hombre,29,13.7,2149000.0,101.2
+Itapúa,Rural,Hombre,42,8.0,3425000.0,90.3
+Alto Paraná,Urbana,Hombre,22,7.0,2808000.0,355.8
+Asunción,Urbana,Mujer,52,9.3,2862000.0,519.1
+San Pedro,Rural,Hombre,60,5.9,941000.0,153.0
+Concepción,Urbana,Hombre,28,7.8,7908000.0,396.5
+Itapúa,Rural,Hombre,24,4.1,1459000.0,127.4
+Central,Rural,Hombre,48,8.5,1653000.0,96.2
+San Pedro,Rural,Hombre,59,8.7,2696000.0,95.6
+Asunción,Urbana,Hombre,27,11.5,2918000.0,505.8
+San Pedro,Rural,Hombre,47,8.2,2107000.0,137.4
+Itapúa,Rural,Mujer,53,5.1,1047000.0,117.8
+San Pedro,Urbana,Mujer,21,14.9,1950000.0,475.6
+Alto Paraná,Rural,Mujer,15,3.2,883000.0,153.2
+Central,Rural,Mujer,45,4.9,662000.0,105.1
+Asunción,Urbana,Hombre,59,15.3,4212000.0,384.8
+Central,Urbana,Hombre,19,10.6,12976000.0,402.3
+Itapúa,Rural,Hombre,51,8.7,1340000.0,100.5
+San Pedro,Urbana,Hombre,34,13.5,2920000.0,379.2
+Central,Rural,Hombre,45,4.7,1728000.0,123.4
+Itapúa,Rural,Mujer,56,8.2,1761000.0,131.3
+Asunción,Rural,Hombre,29,13.3,2855000.0,118.5
+Itapúa,Rural,Hombre,15,4.9,1393000.0,104.4
+Asunción,Rural,Hombre,25,5.8,1378000.0,136.1
+Central,Rural,Hombre,26,4.7,589000.0,93.8
+Caaguazú,Urbana,Mujer,47,12.2,2444000.0,428.3
+Caaguazú,Rural,Mujer,25,8.5,1385000.0,108.8
+Concepción,Urbana,Hombre,20,11.6,8535000.0,468.8
+Itapúa,Rural,Hombre,28,8.0,608000.0,109.1
+Central,Rural,Mujer,54,2.5,899000.0,138.3
+Concepción,Rural,Hombre,20,7.4,1142000.0,120.6
+Caaguazú,Rural,Mujer,43,8.2,1661000.0,95.4
+Central,Rural,Mujer,15,3.4,590000.0,106.7
+Caaguazú,Urbana,Mujer,77,6.6,4910000.0,328.6
+Asunción,Urbana,Hombre,15,8.9,6772000.0,426.1
+San Pedro,Rural,Hombre,43,8.7,2785000.0,133.2
+Asunción,Urbana,Mujer,42,13.2,2013000.0,456.2
+San Pedro,Urbana,Mujer,21,6.4,1975000.0,368.8
+Itapúa,Rural,Hombre,26,7.1,1345000.0,105.8
+Caaguazú,Rural,Mujer,36,8.1,4228000.0,97.0
+Asunción,Rural,Hombre,34,8.0,1083000.0,104.6
+Central,Urbana,Mujer,27,14.8,4643000.0,487.2
+Caaguazú,Rural,Hombre,32,4.1,741000.0,115.9
+Alto Paraná,Urbana,Mujer,15,9.1,1623000.0,410.3
+Asunción,Urbana,Mujer,50,9.2,3770000.0,436.2
+Itapúa,Rural,Mujer,39,5.9,1964000.0,103.9
+Canindeyú,Rural,Hombre,57,1.9,1879000.0,110.7
+Caaguazú,Urbana,Mujer,24,15.7,3116000.0,423.5
+Itapúa,Rural,Mujer,26,12.3,1071000.0,132.2
+Central,Urbana,Hombre,33,8.2,3802000.0,483.0
+Asunción,Urbana,Hombre,32,11.9,4570000.0,321.2
+Central,Rural,Hombre,50,7.1,1051000.0,109.7
+Central,Rural,Mujer,45,11.1,4768000.0,103.8
+San Pedro,Rural,Mujer,30,10.4,1729000.0,101.1
+Central,Rural,Mujer,34,9.0,1102000.0,107.9
+Itapúa,Urbana,Mujer,39,15.2,1935000.0,375.5
+Asunción,Urbana,Mujer,56,11.2,3592000.0,373.4
+Canindeyú,Rural,Mujer,35,5.6,1083000.0,93.3
+San Pedro,Rural,Mujer,33,2.7,1629000.0,108.8
+Itapúa,Urbana,Hombre,34,6.3,2202000.0,416.7
+Alto Paraná,Urbana,Mujer,34,11.0,1427000.0,472.1
+Caaguazú,Rural,Mujer,63,5.0,669000.0,138.5
+Itapúa,Rural,Hombre,48,8.5,1452000.0,110.3
+Asunción,Rural,Mujer,27,10.1,2282000.0,129.9
+Asunción,Rural,Mujer,15,3.5,697000.0,143.3
+Alto Paraná,Urbana,Hombre,74,14.3,10745000.0,345.7
+Central,Rural,Hombre,23,3.4,3899000.0,147.9
+Canindeyú,Rural,Mujer,36,8.3,1070000.0,149.3
+Alto Paraná,Urbana,Mujer,34,11.7,3356000.0,487.4
+Concepción,Rural,Hombre,46,5.0,1312000.0,98.6
+Itapúa,Urbana,Hombre,42,14.1,8253000.0,351.4
+Concepción,Urbana,Mujer,30,9.2,1985000.0,467.5
+Caaguazú,Urbana,Hombre,58,14.5,2786000.0,436.9
+Central,Urbana,Mujer,22,14.4,4514000.0,377.7
+Alto Paraná,Rural,Mujer,60,5.5,561000.0,128.4
+Concepción,Rural,Mujer,49,7.4,2503000.0,122.8
+Canindeyú,Rural,Mujer,59,8.5,3973000.0,107.7
+Itapúa,Rural,Hombre,59,6.6,2316000.0,149.9
+Alto Paraná,Urbana,Hombre,41,14.0,1202000.0,355.1
+Asunción,Rural,Hombre,60,4.3,553000.0,117.1
+Itapúa,Rural,Hombre,27,3.6,2217000.0,114.5
+Itapúa,Rural,Hombre,58,8.0,1496000.0,146.2
+Canindeyú,Urbana,Hombre,31,5.3,5680000.0,487.9
+Caaguazú,Urbana,Mujer,48,12.6,3231000.0,391.6
+Itapúa,Urbana,Mujer,51,8.0,1966000.0,432.1
+Itapúa,Urbana,Hombre,45,9.4,4418000.0,365.9
+Alto Paraná,Rural,Mujer,69,7.8,2020000.0,103.6
+San Pedro,Rural,Mujer,47,11.8,705000.0,133.0
+Concepción,Rural,Hombre,15,13.0,1732000.0,147.2
+Canindeyú,Rural,Mujer,15,7.2,1745000.0,134.5
+Itapúa,Urbana,Hombre,24,14.1,2659000.0,452.9
+Asunción,Urbana,Hombre,15,8.9,1600000.0,428.6
+Canindeyú,Rural,Mujer,15,4.3,1174000.0,113.0
+San Pedro,Rural,Hombre,35,12.2,916000.0,154.8
+Asunción,Rural,Mujer,39,6.7,2206000.0,111.9
+Central,Urbana,Hombre,38,13.7,2852000.0,397.8
+Central,Urbana,Mujer,55,11.2,1359000.0,394.6
+Caaguazú,Rural,Hombre,36,7.4,1127000.0,117.5
+Alto Paraná,Rural,Mujer,30,5.1,1276000.0,108.9
+Itapúa,Rural,Mujer,20,10.0,2500000.0,155.4
+San Pedro,Urbana,Mujer,34,5.5,1998000.0,421.0
+Concepción,Urbana,Mujer,32,14.8,2131000.0,324.3
+Concepción,Urbana,Hombre,34,12.5,886000.0,495.9
+San Pedro,Rural,Mujer,28,11.3,1955000.0,147.2
+Itapúa,Urbana,Mujer,19,7.8,1715000.0,334.7
+San Pedro,Urbana,Mujer,46,10.5,2228000.0,503.6
+Concepción,Rural,Hombre,31,9.3,2837000.0,149.2
+Canindeyú,Rural,Mujer,27,9.5,1392000.0,150.2
+Itapúa,Urbana,Mujer,27,7.7,1598000.0,411.0
+Caaguazú,Urbana,Mujer,15,4.4,2039000.0,433.6
+Asunción,Rural,Hombre,22,9.9,2565000.0,151.0
+Central,Rural,Hombre,45,10.0,2437000.0,145.6
+Itapúa,Rural,Mujer,38,12.4,1587000.0,128.4
+Canindeyú,Rural,Hombre,48,10.3,3951000.0,110.8
+Central,Urbana,Mujer,60,9.0,2522000.0,459.4
+Alto Paraná,Urbana,Hombre,15,13.6,4106000.0,430.6
+Asunción,Rural,Hombre,27,2.2,1156000.0,108.1
+Itapúa,Urbana,Mujer,33,15.5,4619000.0,437.7
+Itapúa,Urbana,Hombre,43,5.0,608000.0,514.9
+Central,Rural,Hombre,38,5.4,3190000.0,98.4
+Central,Rural,Hombre,45,3.2,713000.0,114.4
+Alto Paraná,Rural,Mujer,28,7.2,1130000.0,143.2
+San Pedro,Urbana,Hombre,26,12.4,3551000.0,516.1
+Central,Rural,Hombre,57,2.0,2025000.0,133.8
+Canindeyú,Urbana,Mujer,59,12.5,4071000.0,365.9
+Caaguazú,Rural,Mujer,56,2.5,975000.0,133.5
+Canindeyú,Rural,Hombre,68,5.5,1915000.0,128.9
+Canindeyú,Urbana,Mujer,28,14.9,4165000.0,390.7
+Alto Paraná,Rural,Mujer,53,6.7,1151000.0,152.7
+Concepción,Rural,Hombre,34,8.2,1262000.0,134.8
+Canindeyú,Rural,Hombre,33,8.6,930000.0,126.8
+Central,Urbana,Mujer,80,15.8,3175000.0,494.1
+San Pedro,Urbana,Hombre,15,12.3,2977000.0,519.4
+San Pedro,Urbana,Hombre,39,12.8,3578000.0,338.1
+Itapúa,Rural,Hombre,42,6.3,1436000.0,110.2
+San Pedro,Urbana,Mujer,53,5.7,1690000.0,357.6
+Asunción,Urbana,Mujer,52,7.7,2879000.0,360.4
+Central,Urbana,Mujer,19,10.3,1620000.0,419.8
+Itapúa,Urbana,Hombre,45,15.4,6308000.0,495.4
+Caaguazú,Urbana,Hombre,39,9.5,5989000.0,329.7
+Itapúa,Urbana,Mujer,67,4.9,1129000.0,510.0
+Canindeyú,Urbana,Hombre,50,15.8,7854000.0,394.6
+Canindeyú,Rural,Mujer,47,9.4,2043000.0,148.6
+Asunción,Rural,Mujer,33,7.3,875000.0,154.3
+Alto Paraná,Rural,Hombre,47,3.0,354000.0,154.5
+Concepción,Urbana,Mujer,24,6.2,5965000.0,366.2
+Concepción,Rural,Hombre,39,5.1,1357000.0,106.0
+Itapúa,Rural,Hombre,61,9.6,2150000.0,100.6
+Central,Urbana,Hombre,19,11.8,2558000.0,443.3
+Alto Paraná,Rural,Hombre,18,8.4,3180000.0,157.1
+Asunción,Rural,Hombre,24,11.3,4447000.0,147.7
+Canindeyú,Rural,Mujer,38,10.2,1552000.0,118.8
+Central,Urbana,Hombre,26,15.4,3549000.0,387.0
+Alto Paraná,Urbana,Hombre,45,14.1,4214000.0,453.1
+Canindeyú,Rural,Hombre,45,7.4,994000.0,144.4
+San Pedro,Rural,Hombre,36,9.3,659000.0,130.3
+San Pedro,Rural,Mujer,34,9.7,1559000.0,126.1
+San Pedro,Rural,Mujer,24,11.0,1009000.0,110.8
+San Pedro,Rural,Mujer,42,6.1,381000.0,133.1
+Concepción,Rural,Hombre,25,4.4,1181000.0,109.1
+Itapúa,Rural,Mujer,38,13.4,1249000.0,126.9
+Alto Paraná,Rural,Hombre,35,9.6,936000.0,109.3
+Itapúa,Urbana,Hombre,20,7.2,5858000.0,358.1
+Concepción,Rural,Mujer,22,2.1,294000.0,139.2
+Asunción,Urbana,Hombre,80,9.8,1842000.0,428.8
+Central,Rural,Hombre,58,9.2,1242000.0,141.8
+Asunción,Rural,Hombre,47,4.4,909000.0,131.7
+Canindeyú,Rural,Hombre,29,9.8,531000.0,134.3
+Alto Paraná,Urbana,Mujer,45,11.4,2321000.0,365.1
+San Pedro,Urbana,Hombre,50,8.4,3480000.0,421.7
+Itapúa,Urbana,Mujer,40,8.2,4036000.0,343.6
+Central,Rural,Hombre,22,8.8,1306000.0,124.9
+Central,Rural,Mujer,33,4.4,938000.0,101.2
+Canindeyú,Urbana,Mujer,45,8.6,6754000.0,408.7
+Canindeyú,Urbana,Mujer,26,11.4,3866000.0,444.0
+Concepción,Urbana,Hombre,53,9.9,6171000.0,511.2
+Alto Paraná,Rural,Mujer,15,1.1,1197000.0,150.2
+San Pedro,Rural,Mujer,15,10.1,1355000.0,141.7
+Asunción,Urbana,Mujer,48,11.7,3311000.0,432.9
+Caaguazú,Urbana,Mujer,25,15.2,2077000.0,457.3
+Central,Urbana,Hombre,30,9.9,2234000.0,325.7
+Caaguazú,Rural,Mujer,15,6.1,338000.0,149.5
+Canindeyú,Urbana,Hombre,42,4.2,4069000.0,433.9
+Asunción,Urbana,Mujer,46,6.7,2316000.0,437.4
+Asunción,Urbana,Mujer,71,12.2,4722000.0,485.6
+Concepción,Rural,Hombre,15,2.4,1532000.0,145.2
+Concepción,Rural,Mujer,27,3.8,567000.0,93.3
+Asunción,Urbana,Mujer,68,13.2,6374000.0,372.2
+Alto Paraná,Rural,Hombre,38,7.6,1518000.0,122.1
+Asunción,Rural,Mujer,38,9.6,2255000.0,133.8
+Concepción,Rural,Hombre,46,8.0,1334000.0,156.7
+Asunción,Rural,Hombre,30,9.0,1911000.0,94.8
+Alto Paraná,Urbana,Hombre,37,12.8,3471000.0,429.1
+Canindeyú,Urbana,Mujer,34,12.3,4502000.0,507.2
+Concepción,Urbana,Mujer,59,11.8,4104000.0,488.6
+Asunción,Rural,Hombre,34,5.9,2878000.0,123.0
+Itapúa,Urbana,Mujer,42,9.8,2521000.0,322.4
+Alto Paraná,Rural,Hombre,38,10.4,2862000.0,127.4
+Asunción,Rural,Mujer,30,9.9,3534000.0,123.8
+Itapúa,Rural,Mujer,24,7.7,1336000.0,145.8
+San Pedro,Urbana,Mujer,40,7.8,846000.0,369.1
+San Pedro,Rural,Hombre,40,7.0,1423000.0,97.0
+Central,Rural,Hombre,42,6.8,1702000.0,97.6
+Concepción,Rural,Hombre,55,3.6,1311000.0,118.3
+Canindeyú,Urbana,Mujer,32,10.9,4818000.0,355.9
+Caaguazú,Rural,Mujer,43,0.0,782000.0,148.3
+Itapúa,Urbana,Hombre,41,9.5,3739000.0,454.3
+Concepción,Urbana,Mujer,23,4.0,1344000.0,509.7
+Canindeyú,Urbana,Mujer,63,11.6,1729000.0,380.0
+Canindeyú,Rural,Hombre,53,5.4,848000.0,142.9
+Asunción,Rural,Hombre,24,3.5,607000.0,107.9
+Central,Rural,Hombre,37,8.8,3897000.0,96.2
+Itapúa,Urbana,Mujer,16,14.0,2989000.0,350.6
+Canindeyú,Urbana,Mujer,35,6.1,860000.0,338.4
+Alto Paraná,Rural,Mujer,33,8.0,6128000.0,106.8
+Itapúa,Rural,Mujer,49,4.5,1985000.0,120.6
+Central,Urbana,Mujer,15,6.7,1022000.0,451.3
+San Pedro,Rural,Hombre,20,5.3,706000.0,99.3
+Caaguazú,Urbana,Mujer,20,8.1,3172000.0,352.0
+Asunción,Rural,Mujer,17,10.8,1842000.0,147.3
+San Pedro,Urbana,Hombre,28,12.6,5239000.0,326.3
+Itapúa,Rural,Mujer,44,2.4,911000.0,124.5
+Concepción,Rural,Hombre,49,7.8,3035000.0,107.2
+Concepción,Rural,Hombre,25,8.6,5050000.0,134.8
+Itapúa,Rural,Mujer,40,1.0,706000.0,126.5
+Itapúa,Urbana,Hombre,38,7.4,10541000.0,445.2
+Itapúa,Rural,Hombre,18,12.6,1472000.0,100.9
+Itapúa,Rural,Hombre,55,3.5,563000.0,139.3
+Canindeyú,Urbana,Hombre,15,6.4,2251000.0,516.4
+Canindeyú,Rural,Hombre,58,4.4,1672000.0,154.3
+Caaguazú,Rural,Mujer,15,8.0,2508000.0,144.3
+Canindeyú,Urbana,Mujer,47,12.8,3087000.0,495.8
+Central,Rural,Mujer,21,3.2,1250000.0,117.0
+Asunción,Urbana,Mujer,34,12.7,14282000.0,480.3
+Caaguazú,Urbana,Hombre,33,7.0,2806000.0,338.5
+Alto Paraná,Rural,Mujer,29,7.3,1411000.0,94.8
+Canindeyú,Urbana,Mujer,48,12.8,2583000.0,444.3
+Asunción,Rural,Hombre,45,3.3,985000.0,126.6
+Alto Paraná,Urbana,Mujer,59,3.4,4642000.0,359.1
+Asunción,Rural,Mujer,24,2.9,1198000.0,110.4
+Itapúa,Rural,Mujer,15,8.4,1156000.0,112.6
+Central,Urbana,Hombre,54,7.8,1139000.0,353.6
+Central,Rural,Mujer,36,11.9,673000.0,123.2
+Concepción,Rural,Hombre,36,9.4,1507000.0,90.3
+San Pedro,Urbana,Mujer,55,15.5,1265000.0,421.7
+Caaguazú,Urbana,Hombre,41,14.6,11687000.0,346.1
+Concepción,Urbana,Mujer,22,8.4,4297000.0,446.2
+Alto Paraná,Urbana,Hombre,49,12.0,9103000.0,333.0
+Itapúa,Rural,Hombre,54,5.8,2548000.0,105.9
+Asunción,Rural,Mujer,17,10.5,3012000.0,113.4
+Itapúa,Urbana,Mujer,36,12.0,2534000.0,395.8
+Alto Paraná,Rural,Hombre,20,4.4,500000.0,152.0
+Central,Urbana,Hombre,60,10.2,3881000.0,428.5
+Itapúa,Rural,Mujer,63,10.7,623000.0,127.8
+Itapúa,Rural,Hombre,50,0.0,1482000.0,109.1
+Alto Paraná,Urbana,Mujer,44,13.4,4249000.0,402.6
+Canindeyú,Rural,Hombre,41,11.1,1823000.0,154.3
+Central,Urbana,Mujer,19,10.3,4481000.0,365.1
+Concepción,Rural,Mujer,43,13.0,1177000.0,136.5
+Canindeyú,Rural,Hombre,56,8.0,1168000.0,118.2
+Central,Urbana,Mujer,48,9.0,2077000.0,498.9
+Central,Rural,Hombre,45,12.9,781000.0,117.7
+Central,Urbana,Hombre,35,16.1,12679000.0,467.3
+Asunción,Rural,Hombre,17,9.2,2740000.0,145.5
+Concepción,Rural,Mujer,40,9.5,488000.0,154.0
+Caaguazú,Urbana,Hombre,80,9.0,1534000.0,330.0
+Central,Rural,Hombre,20,5.3,1660000.0,150.0
+Asunción,Rural,Hombre,23,4.1,1321000.0,127.8
+Asunción,Rural,Mujer,18,12.2,2004000.0,112.9
+Central,Rural,Hombre,33,6.0,2993000.0,107.9
+Caaguazú,Rural,Hombre,61,11.6,1926000.0,120.7
+Central,Urbana,Mujer,40,11.9,2988000.0,334.8
+Concepción,Urbana,Mujer,60,16.9,3805000.0,477.8
+San Pedro,Rural,Hombre,35,12.7,1936000.0,151.7
+Concepción,Rural,Mujer,33,6.5,1004000.0,120.4
+Asunción,Urbana,Hombre,67,7.6,6042000.0,322.0
+San Pedro,Urbana,Hombre,59,10.8,2057000.0,472.9
+San Pedro,Urbana,Hombre,20,11.6,3089000.0,495.0
+Canindeyú,Rural,Hombre,52,5.7,2537000.0,155.8
+Itapúa,Urbana,Mujer,28,14.4,5841000.0,394.4
+Central,Rural,Mujer,19,7.8,4108000.0,148.2
+Itapúa,Rural,Hombre,44,4.4,1145000.0,113.0
+Caaguazú,Rural,Hombre,18,6.5,816000.0,127.3
+Asunción,Urbana,Mujer,44,5.3,1690000.0,427.3
+Canindeyú,Urbana,Hombre,54,12.6,5625000.0,387.8
+Itapúa,Rural,Mujer,27,0.0,881000.0,131.6
+Itapúa,Rural,Mujer,52,9.3,1001000.0,107.6
+Caaguazú,Urbana,Hombre,21,11.7,1696000.0,476.9
+San Pedro,Urbana,Mujer,43,10.3,6200000.0,459.3
+Canindeyú,Rural,Hombre,41,3.5,3785000.0,107.7
+Central,Urbana,Hombre,41,6.2,1151000.0,471.2
+Asunción,Urbana,Hombre,36,18.0,7728000.0,475.6
+Itapúa,Urbana,Mujer,49,5.8,1896000.0,433.1
+Caaguazú,Rural,Hombre,44,4.3,1065000.0,131.8
+Central,Rural,Mujer,23,7.8,1001000.0,154.6
+San Pedro,Urbana,Mujer,50,12.6,1671000.0,426.1
+Canindeyú,Urbana,Mujer,61,14.0,3789000.0,380.1
+Canindeyú,Rural,Mujer,21,11.0,1987000.0,143.3
+Canindeyú,Rural,Hombre,15,9.4,1601000.0,119.1
+Caaguazú,Rural,Hombre,49,10.5,2851000.0,134.3
+Alto Paraná,Rural,Hombre,55,5.5,2737000.0,128.5
+San Pedro,Rural,Mujer,21,13.5,2267000.0,96.4
+Central,Urbana,Hombre,68,13.3,6134000.0,496.2
+Alto Paraná,Urbana,Mujer,27,12.3,5759000.0,466.4
+Canindeyú,Urbana,Mujer,60,10.8,2000000.0,474.0
+Itapúa,Rural,Hombre,55,6.2,1050000.0,139.8
+Alto Paraná,Urbana,Mujer,59,10.1,2835000.0,374.2
+Concepción,Rural,Mujer,38,8.4,1321000.0,153.5
+Concepción,Urbana,Hombre,64,12.7,3248000.0,345.7
+Central,Urbana,Mujer,28,17.8,3241000.0,373.4
+Caaguazú,Urbana,Hombre,52,10.6,2101000.0,373.7
+Canindeyú,Rural,Mujer,50,8.9,588000.0,131.7
+Concepción,Rural,Mujer,39,7.5,1480000.0,126.2
+Itapúa,Urbana,Hombre,43,15.4,6094000.0,323.7
+Caaguazú,Rural,Mujer,30,10.4,3555000.0,124.4
+Itapúa,Rural,Mujer,57,5.7,2293000.0,120.9
+San Pedro,Rural,Hombre,22,3.5,1135000.0,122.9
+Canindeyú,Urbana,Mujer,42,12.3,5668000.0,421.7
+Concepción,Rural,Mujer,15,8.3,2427000.0,107.0
+Concepción,Rural,Hombre,55,7.5,2000000.0,91.0
+Central,Urbana,Hombre,33,7.5,3275000.0,442.1
+Asunción,Urbana,Hombre,39,14.5,7196000.0,403.1
+Caaguazú,Rural,Hombre,33,9.4,1912000.0,151.0
+Itapúa,Rural,Hombre,41,6.3,451000.0,115.6
+Alto Paraná,Urbana,Mujer,34,6.6,3700000.0,376.8
+Asunción,Rural,Mujer,60,14.6,717000.0,105.7
+San Pedro,Rural,Hombre,53,10.9,1973000.0,143.9
+Canindeyú,Urbana,Hombre,24,13.4,2454000.0,452.4
+Caaguazú,Rural,Mujer,15,6.8,738000.0,99.2
+Alto Paraná,Urbana,Mujer,60,8.9,2700000.0,357.3
+Alto Paraná,Urbana,Mujer,40,9.2,1349000.0,449.8
+Canindeyú,Rural,Hombre,29,13.6,3563000.0,118.9
+Asunción,Urbana,Mujer,48,7.4,1552000.0,379.3
+San Pedro,Rural,Hombre,15,3.9,918000.0,124.7
+Central,Rural,Hombre,28,7.2,800000.0,97.2
+Itapúa,Urbana,Mujer,48,17.0,7501000.0,357.1
+Caaguazú,Urbana,Mujer,23,5.2,4406000.0,442.1
+Caaguazú,Rural,Hombre,15,10.0,2796000.0,152.2
+Asunción,Urbana,Hombre,30,6.3,4397000.0,434.2
+Asunción,Rural,Hombre,35,7.9,1335000.0,113.7
+San Pedro,Rural,Hombre,35,8.9,1529000.0,115.4
+Concepción,Urbana,Hombre,55,11.3,940000.0,392.5
+San Pedro,Urbana,Mujer,45,9.3,2718000.0,429.9
+Alto Paraná,Urbana,Hombre,32,7.8,2858000.0,406.3
+Central,Urbana,Mujer,44,6.5,1382000.0,487.2
+Itapúa,Urbana,Hombre,43,12.0,10314000.0,360.6
+Alto Paraná,Urbana,Hombre,59,12.8,3208000.0,410.8
+Concepción,Urbana,Hombre,49,7.0,1598000.0,379.6
+Itapúa,Rural,Hombre,73,10.6,2225000.0,98.7
+Itapúa,Rural,Hombre,46,11.2,2125000.0,146.1
+Alto Paraná,Urbana,Hombre,33,9.1,2911000.0,438.3
+Caaguazú,Urbana,Hombre,34,11.8,3144000.0,435.1
+Canindeyú,Urbana,Hombre,16,13.0,1665000.0,434.3
+Canindeyú,Urbana,Hombre,23,9.4,9012000.0,504.7
+Alto Paraná,Urbana,Hombre,39,16.3,1224000.0,360.6
+San Pedro,Rural,Mujer,53,2.8,818000.0,125.1
+Concepción,Urbana,Hombre,26,4.4,847000.0,473.7
+Asunción,Rural,Hombre,22,12.5,2622000.0,125.3
+Itapúa,Rural,Hombre,47,5.4,2290000.0,111.5
+Alto Paraná,Urbana,Hombre,22,13.6,2881000.0,499.1
+Canindeyú,Urbana,Hombre,71,7.9,2354000.0,499.1
+Concepción,Rural,Mujer,60,6.8,1247000.0,141.4
+Alto Paraná,Urbana,Hombre,44,11.6,3071000.0,334.4
+Caaguazú,Rural,Mujer,35,8.1,1881000.0,99.9
+San Pedro,Rural,Mujer,37,15.5,2464000.0,105.6
+Central,Urbana,Mujer,44,8.7,2157000.0,384.9
+Itapúa,Rural,Mujer,30,4.0,544000.0,122.7
+Itapúa,Rural,Hombre,29,9.1,3174000.0,132.1
+Asunción,Urbana,Hombre,20,12.2,4516000.0,502.9
+Alto Paraná,Urbana,Mujer,57,10.7,3957000.0,399.3
+Central,Rural,Hombre,25,7.6,1510000.0,129.6
+Alto Paraná,Rural,Mujer,37,12.5,1557000.0,118.4
+Itapúa,Urbana,Mujer,67,18.0,4298000.0,410.0
+Itapúa,Urbana,Mujer,38,11.7,7370000.0,514.3
+Concepción,Rural,Mujer,23,7.5,1115000.0,133.8
+Canindeyú,Rural,Hombre,45,11.1,2015000.0,110.7
+Concepción,Rural,Hombre,20,10.2,2160000.0,119.3
+Alto Paraná,Urbana,Mujer,38,9.6,1908000.0,337.2
+San Pedro,Urbana,Hombre,39,14.2,12268000.0,431.6
+Alto Paraná,Rural,Hombre,25,10.0,573000.0,141.8
+Caaguazú,Rural,Hombre,40,14.4,3238000.0,119.1
+Central,Rural,Mujer,34,6.7,1333000.0,121.2
+Concepción,Rural,Hombre,37,4.2,934000.0,155.5
+San Pedro,Urbana,Hombre,30,6.4,1393000.0,470.6
+Canindeyú,Urbana,Mujer,33,7.5,3870000.0,357.4
+Canindeyú,Urbana,Mujer,22,12.1,3651000.0,492.0
+Itapúa,Rural,Mujer,80,4.3,873000.0,152.6
+Itapúa,Rural,Mujer,80,10.6,1604000.0,120.2
+Itapúa,Urbana,Hombre,36,14.3,9436000.0,395.9
+Asunción,Rural,Mujer,46,7.9,1018000.0,123.5
+Itapúa,Urbana,Mujer,34,8.2,1865000.0,484.4
+Caaguazú,Rural,Hombre,18,9.6,2532000.0,120.8
+Asunción,Urbana,Mujer,32,13.2,2461000.0,437.2
+Asunción,Urbana,Hombre,80,4.2,1250000.0,397.2
+Asunción,Rural,Mujer,39,12.2,2117000.0,125.6
+Alto Paraná,Rural,Mujer,15,3.4,567000.0,159.0
+Asunción,Urbana,Hombre,39,13.1,3612000.0,324.4
+Asunción,Rural,Mujer,35,4.9,1229000.0,112.8
+Asunción,Rural,Mujer,66,5.7,1027000.0,155.2
+Alto Paraná,Rural,Mujer,39,4.8,1046000.0,100.3
+San Pedro,Rural,Hombre,23,4.2,996000.0,125.8
+Asunción,Urbana,Mujer,20,8.6,2065000.0,327.6
+Alto Paraná,Urbana,Mujer,18,11.0,6533000.0,516.2
+Canindeyú,Urbana,Mujer,42,14.1,18689000.0,337.8
+Itapúa,Urbana,Hombre,15,12.1,1817000.0,506.2
+Itapúa,Rural,Mujer,21,9.3,2148000.0,134.2
+Asunción,Urbana,Mujer,35,7.0,2154000.0,390.7
+Concepción,Rural,Mujer,58,4.3,1200000.0,110.0
+Concepción,Urbana,Hombre,41,9.1,1478000.0,512.2
+Itapúa,Rural,Hombre,32,11.0,2669000.0,156.2
+Asunción,Rural,Mujer,37,8.4,1100000.0,141.4
+Itapúa,Urbana,Mujer,51,10.5,4394000.0,380.0
+Alto Paraná,Rural,Hombre,43,4.7,1749000.0,92.4
+Caaguazú,Urbana,Hombre,54,13.4,9070000.0,375.7
+Itapúa,Urbana,Mujer,53,3.0,2590000.0,498.4
+San Pedro,Urbana,Mujer,34,8.3,4185000.0,339.8
+Caaguazú,Rural,Mujer,22,7.6,789000.0,130.7
+Asunción,Urbana,Hombre,37,14.0,4283000.0,380.4
+San Pedro,Rural,Mujer,46,6.8,623000.0,144.6
+Caaguazú,Rural,Mujer,34,4.7,1843000.0,109.3
+Central,Urbana,Mujer,18,4.2,1994000.0,384.5
+Asunción,Rural,Hombre,37,6.6,1246000.0,120.0
+Alto Paraná,Rural,Hombre,33,6.1,644000.0,144.6
+Alto Paraná,Urbana,Hombre,37,15.5,2519000.0,506.3
+Concepción,Rural,Hombre,40,5.7,597000.0,114.3
+Concepción,Rural,Mujer,56,6.5,1272000.0,100.4
+Central,Rural,Mujer,18,8.6,1182000.0,154.8
+Itapúa,Urbana,Mujer,15,9.8,2211000.0,450.4
+Canindeyú,Rural,Mujer,50,11.8,717000.0,112.1
+Canindeyú,Urbana,Hombre,39,11.2,3747000.0,462.8
+Alto Paraná,Rural,Hombre,24,7.1,1783000.0,104.8
+Central,Urbana,Hombre,20,4.9,5343000.0,493.2
+Caaguazú,Rural,Mujer,23,2.1,452000.0,106.6
+Concepción,Rural,Mujer,55,8.6,1458000.0,157.8
+Asunción,Rural,Hombre,30,7.8,2341000.0,154.6
+Itapúa,Rural,Mujer,32,4.3,620000.0,139.1
+Canindeyú,Urbana,Hombre,15,7.3,3524000.0,338.0
+Canindeyú,Urbana,Hombre,32,9.6,1828000.0,471.9
+San Pedro,Rural,Hombre,40,10.8,5523000.0,121.1
+Canindeyú,Rural,Mujer,55,3.9,1193000.0,117.6
+Itapúa,Rural,Mujer,40,5.8,1145000.0,110.7
+Central,Rural,Hombre,19,1.0,1458000.0,153.7
+Itapúa,Urbana,Mujer,15,12.9,2720000.0,431.0
+Asunción,Urbana,Mujer,34,5.5,559000.0,410.3
+Alto Paraná,Rural,Hombre,51,7.4,1419000.0,143.2
+San Pedro,Rural,Mujer,18,5.8,1154000.0,127.7
+Canindeyú,Rural,Mujer,40,13.1,3073000.0,115.5
+Alto Paraná,Urbana,Mujer,17,6.9,2447000.0,426.0
+Caaguazú,Rural,Mujer,72,4.7,626000.0,158.9
+Itapúa,Rural,Mujer,26,8.7,636000.0,99.7
+Central,Urbana,Mujer,16,13.8,2832000.0,358.3
+San Pedro,Urbana,Hombre,40,10.0,2055000.0,511.7
+Caaguazú,Urbana,Mujer,15,13.3,2023000.0,506.0
+Itapúa,Rural,Mujer,15,8.6,1139000.0,105.7
+Asunción,Urbana,Hombre,36,11.1,6303000.0,399.1
+Itapúa,Urbana,Hombre,56,8.5,5880000.0,323.2
+Itapúa,Urbana,Hombre,29,14.9,5159000.0,425.6
+Itapúa,Urbana,Hombre,27,8.6,3472000.0,395.1
+San Pedro,Urbana,Hombre,15,11.9,10885000.0,408.8
+Alto Paraná,Urbana,Mujer,50,7.4,1774000.0,483.9
+Concepción,Rural,Mujer,33,12.8,3212000.0,138.1
+Canindeyú,Urbana,Mujer,24,15.7,3997000.0,429.1
+Central,Rural,Mujer,56,8.5,1707000.0,91.6
+Canindeyú,Rural,Mujer,15,5.0,778000.0,110.4
+Canindeyú,Urbana,Hombre,58,15.8,2999000.0,431.6
+Itapúa,Urbana,Mujer,21,7.6,2249000.0,405.3
+Alto Paraná,Urbana,Hombre,54,13.0,1730000.0,370.8
+Caaguazú,Urbana,Hombre,21,12.5,5235000.0,510.4
+San Pedro,Rural,Mujer,20,8.3,1522000.0,156.7
+San Pedro,Rural,Mujer,44,8.8,1527000.0,127.9
+Caaguazú,Urbana,Hombre,36,15.2,1916000.0,408.7
+Itapúa,Rural,Hombre,49,0.2,1932000.0,98.5
+Caaguazú,Urbana,Hombre,26,5.0,2857000.0,322.1
+San Pedro,Urbana,Hombre,31,9.7,2573000.0,461.1
+Central,Urbana,Mujer,42,7.5,2155000.0,433.1
+Alto Paraná,Urbana,Mujer,15,10.8,5041000.0,503.2
+Central,Urbana,Mujer,28,8.4,2235000.0,436.0
+Alto Paraná,Urbana,Hombre,26,8.3,10995000.0,505.7
+Asunción,Rural,Hombre,34,11.5,1775000.0,110.0
+San Pedro,Rural,Hombre,29,5.8,654000.0,150.0
+Caaguazú,Rural,Hombre,28,5.0,1094000.0,92.3
+Central,Rural,Hombre,37,11.0,1764000.0,118.9
+Caaguazú,Urbana,Hombre,15,8.1,1685000.0,447.7
+Alto Paraná,Urbana,Hombre,26,9.8,870000.0,386.5
+Central,Urbana,Hombre,27,13.8,3809000.0,448.8
+Alto Paraná,Rural,Hombre,39,12.5,1809000.0,147.6
+San Pedro,Rural,Mujer,25,8.5,2728000.0,107.5
+San Pedro,Rural,Hombre,24,5.9,1265000.0,137.5
+Caaguazú,Urbana,Mujer,15,12.7,4762000.0,473.1
+Caaguazú,Urbana,Mujer,38,9.2,2249000.0,323.3
+Caaguazú,Rural,Hombre,17,10.7,4318000.0,116.2
+San Pedro,Rural,Mujer,49,12.4,1170000.0,93.9
+Caaguazú,Rural,Mujer,42,8.8,1659000.0,112.2
+Canindeyú,Rural,Mujer,15,10.0,1621000.0,101.8
+Caaguazú,Rural,Hombre,30,8.5,1489000.0,120.4
+Alto Paraná,Rural,Hombre,54,5.0,1377000.0,150.0
+Alto Paraná,Urbana,Hombre,31,9.2,4315000.0,519.7
+Caaguazú,Rural,Hombre,47,5.8,783000.0,106.9
+Alto Paraná,Urbana,Mujer,27,11.1,2540000.0,333.9
+Central,Urbana,Mujer,42,7.3,3939000.0,440.9
+Asunción,Urbana,Mujer,15,5.9,4249000.0,443.1
+Concepción,Rural,Mujer,45,13.4,889000.0,121.6
+Itapúa,Rural,Hombre,15,6.9,2399000.0,90.4
+Concepción,Urbana,Mujer,20,16.4,3390000.0,413.7
+Central,Rural,Mujer,31,11.8,1826000.0,140.1
+Central,Urbana,Mujer,51,8.4,1499000.0,514.3
+Central,Urbana,Mujer,21,16.7,13437000.0,486.3
+Canindeyú,Rural,Mujer,42,2.9,467000.0,151.4
+Central,Urbana,Hombre,29,9.9,3140000.0,322.4
+Canindeyú,Urbana,Mujer,66,12.3,2253000.0,411.9
+Itapúa,Rural,Mujer,15,4.8,1426000.0,146.8
+Concepción,Rural,Hombre,71,2.7,1263000.0,94.5
+Itapúa,Urbana,Mujer,34,10.0,2906000.0,466.3
+Itapúa,Urbana,Mujer,43,9.7,3418000.0,453.3
+Alto Paraná,Urbana,Mujer,37,14.5,1996000.0,451.5
+Asunción,Rural,Hombre,27,4.8,2812000.0,97.1
+Central,Urbana,Mujer,35,17.9,9918000.0,500.0
+Itapúa,Rural,Hombre,28,2.6,1267000.0,113.4
+Canindeyú,Urbana,Mujer,53,12.9,3670000.0,473.9
+San Pedro,Urbana,Mujer,55,13.4,3196000.0,445.7
+Canindeyú,Rural,Hombre,28,10.3,1026000.0,137.5
+Asunción,Urbana,Hombre,46,9.3,4228000.0,399.2
+Itapúa,Urbana,Mujer,46,9.5,3128000.0,475.1
+Alto Paraná,Urbana,Mujer,27,10.5,3468000.0,468.4
+Canindeyú,Urbana,Hombre,59,14.7,3341000.0,326.6
+Asunción,Rural,Hombre,41,3.4,1083000.0,113.5
+Central,Rural,Mujer,25,6.8,702000.0,147.5
+Alto Paraná,Urbana,Hombre,40,15.9,3663000.0,438.7
+Itapúa,Rural,Mujer,15,7.0,1072000.0,111.7
+Alto Paraná,Rural,Mujer,26,9.3,2302000.0,93.1
+San Pedro,Urbana,Mujer,63,9.4,1452000.0,509.1
+Central,Urbana,Hombre,34,11.1,2730000.0,422.1
+Caaguazú,Rural,Mujer,37,12.5,3094000.0,116.5
+Asunción,Urbana,Mujer,29,10.4,873000.0,411.6
+Concepción,Urbana,Mujer,21,10.2,4060000.0,493.6
+Alto Paraná,Rural,Mujer,23,12.3,2557000.0,140.3
+Asunción,Rural,Mujer,76,4.6,832000.0,159.0
+Asunción,Urbana,Hombre,29,12.1,6176000.0,436.4
+San Pedro,Urbana,Mujer,34,10.0,3831000.0,481.1
+Canindeyú,Rural,Mujer,26,1.0,453000.0,118.8
+Itapúa,Rural,Hombre,24,5.6,2299000.0,134.0
+Canindeyú,Rural,Hombre,29,5.1,677000.0,136.5
+Itapúa,Rural,Mujer,49,5.3,1266000.0,158.0
+Caaguazú,Urbana,Hombre,15,4.7,906000.0,419.5
+Concepción,Urbana,Hombre,24,9.2,2804000.0,427.6
+Alto Paraná,Rural,Mujer,54,7.9,1346000.0,121.4
+Caaguazú,Urbana,Mujer,19,12.9,5391000.0,463.6
+Caaguazú,Urbana,Mujer,57,11.2,3915000.0,501.8
+San Pedro,Rural,Mujer,29,3.4,986000.0,135.9
+Caaguazú,Urbana,Hombre,15,10.2,2898000.0,407.0
+Concepción,Rural,Hombre,45,5.4,1189000.0,113.9
+San Pedro,Urbana,Hombre,15,9.3,4359000.0,417.8
+Itapúa,Urbana,Hombre,36,12.6,8117000.0,337.9
+Caaguazú,Urbana,Hombre,42,12.4,2445000.0,389.6
+Caaguazú,Rural,Hombre,40,6.0,967000.0,100.6
+Itapúa,Urbana,Mujer,29,8.0,2664000.0,387.4
+Canindeyú,Urbana,Mujer,54,4.7,1189000.0,351.5
+Caaguazú,Urbana,Hombre,23,11.5,1467000.0,481.6
+Canindeyú,Urbana,Hombre,56,10.4,2573000.0,361.8
+Itapúa,Urbana,Hombre,22,9.3,2846000.0,431.4
+San Pedro,Rural,Mujer,35,9.6,3239000.0,92.3
+Itapúa,Rural,Mujer,22,9.9,1521000.0,126.5
+San Pedro,Rural,Mujer,18,9.9,2365000.0,145.7
+Caaguazú,Rural,Mujer,22,8.7,1528000.0,105.7
+Concepción,Urbana,Mujer,15,6.0,1296000.0,412.9
+Central,Rural,Hombre,33,7.2,2387000.0,99.9
+Central,Urbana,Hombre,15,17.1,3368000.0,336.8
+Concepción,Urbana,Hombre,40,12.4,7523000.0,348.9
+Central,Urbana,Mujer,59,11.5,2980000.0,505.6
+Caaguazú,Urbana,Hombre,32,7.2,2407000.0,342.7
+Concepción,Rural,Mujer,55,12.3,3261000.0,155.8
+Itapúa,Rural,Mujer,20,7.7,948000.0,141.6
+Canindeyú,Urbana,Mujer,33,11.5,3807000.0,391.0
+Alto Paraná,Urbana,Hombre,28,8.2,3163000.0,321.1
+Central,Rural,Mujer,42,7.0,727000.0,138.8
+Central,Urbana,Mujer,67,9.2,1306000.0,483.2
+Itapúa,Rural,Mujer,31,5.0,898000.0,117.9
+Canindeyú,Rural,Hombre,22,4.9,1329000.0,102.0
+Canindeyú,Urbana,Mujer,53,9.1,1927000.0,395.1
+Itapúa,Urbana,Mujer,66,14.3,3199000.0,334.4
+Concepción,Rural,Mujer,41,5.5,636000.0,94.2
+Alto Paraná,Rural,Mujer,55,13.0,1563000.0,97.1
+Canindeyú,Rural,Hombre,49,7.0,1438000.0,126.8
+San Pedro,Rural,Mujer,47,8.8,1322000.0,143.1
+Itapúa,Rural,Mujer,15,11.3,432000.0,143.7
+Itapúa,Urbana,Mujer,61,12.2,2752000.0,338.3
+Canindeyú,Rural,Hombre,74,10.9,1461000.0,140.6
+Asunción,Urbana,Hombre,22,8.6,3381000.0,504.8
+Central,Rural,Mujer,27,9.7,781000.0,96.4
+Alto Paraná,Rural,Hombre,37,9.0,1157000.0,155.2
+Asunción,Urbana,Mujer,33,9.1,3387000.0,468.7
+Concepción,Urbana,Mujer,38,18.0,6168000.0,501.4
+Caaguazú,Urbana,Mujer,45,9.8,1105000.0,482.1
+Caaguazú,Rural,Hombre,34,11.0,1222000.0,158.4
+San Pedro,Rural,Hombre,53,10.1,2605000.0,154.6
+Canindeyú,Rural,Mujer,21,8.8,2477000.0,108.5
+San Pedro,Urbana,Hombre,47,8.5,10771000.0,411.4
+San Pedro,Rural,Mujer,48,5.4,767000.0,130.8
+Caaguazú,Rural,Hombre,44,7.1,2458000.0,150.8
+San Pedro,Urbana,Mujer,46,7.0,1616000.0,336.1
+Concepción,Rural,Mujer,42,5.0,1883000.0,94.8
+Itapúa,Urbana,Hombre,27,8.2,3419000.0,399.5
+Caaguazú,Rural,Hombre,31,3.8,1810000.0,141.4
+Concepción,Rural,Hombre,15,8.0,1318000.0,104.9
+San Pedro,Rural,Hombre,61,4.7,540000.0,148.5
+Itapúa,Rural,Mujer,15,9.9,2589000.0,114.8
+Central,Rural,Hombre,43,10.5,1049000.0,130.4
+Canindeyú,Rural,Hombre,25,1.3,812000.0,117.9
+Concepción,Urbana,Hombre,46,18.0,1847000.0,455.6
+Caaguazú,Urbana,Hombre,29,12.7,2783000.0,336.9
+Alto Paraná,Urbana,Mujer,74,15.6,7241000.0,493.5
+Alto Paraná,Urbana,Hombre,46,13.4,2543000.0,352.1
+Asunción,Urbana,Mujer,44,10.1,2158000.0,414.6
+Asunción,Urbana,Hombre,29,8.7,1568000.0,425.0
+Caaguazú,Urbana,Hombre,26,7.9,2374000.0,377.6
+Alto Paraná,Urbana,Mujer,21,8.5,2522000.0,376.7
+Asunción,Rural,Hombre,48,12.1,1469000.0,121.7
+San Pedro,Urbana,Hombre,20,9.9,2381000.0,454.9
+Itapúa,Urbana,Mujer,43,12.7,1469000.0,351.0
+San Pedro,Rural,Hombre,27,3.8,1565000.0,113.6
+San Pedro,Urbana,Hombre,39,9.2,3058000.0,381.8
+Central,Rural,Hombre,20,10.3,1343000.0,99.2
+Canindeyú,Rural,Hombre,36,12.9,2238000.0,107.2
+Concepción,Rural,Hombre,17,12.5,3031000.0,151.3
+Central,Rural,Hombre,36,6.3,738000.0,156.6
+Alto Paraná,Urbana,Mujer,28,12.8,6148000.0,333.9
+Itapúa,Urbana,Mujer,23,6.0,944000.0,380.9
+Caaguazú,Rural,Hombre,28,10.4,954000.0,100.3
+San Pedro,Urbana,Mujer,42,10.2,3035000.0,514.9
+Central,Rural,Mujer,15,8.2,1612000.0,100.1
+Itapúa,Urbana,Mujer,27,4.0,431000.0,340.0
+Central,Rural,Mujer,15,7.1,611000.0,139.8
+Asunción,Urbana,Hombre,61,9.9,7113000.0,401.0
+Alto Paraná,Rural,Mujer,53,6.1,964000.0,110.1
+Concepción,Urbana,Hombre,45,14.0,5455000.0,370.2
+Central,Urbana,Mujer,42,15.8,6701000.0,401.1
+Canindeyú,Urbana,Mujer,33,8.7,1336000.0,473.0
+Canindeyú,Urbana,Hombre,55,10.4,3985000.0,356.3
+Central,Rural,Mujer,30,7.6,944000.0,149.1
+San Pedro,Urbana,Mujer,27,11.1,3372000.0,389.3
+Concepción,Urbana,Hombre,26,11.5,1676000.0,326.5
+Canindeyú,Rural,Hombre,54,3.1,2862000.0,123.5
+Asunción,Rural,Hombre,38,6.6,2706000.0,148.1
+Caaguazú,Rural,Hombre,49,10.3,1298000.0,133.4
+Asunción,Rural,Hombre,44,3.6,678000.0,93.9
+Alto Paraná,Rural,Hombre,70,11.1,2144000.0,98.6
+Concepción,Rural,Hombre,15,7.0,1013000.0,117.7
+Itapúa,Rural,Mujer,24,6.1,1123000.0,90.2
+Caaguazú,Rural,Hombre,27,5.8,1195000.0,139.2
+San Pedro,Rural,Mujer,43,8.4,1621000.0,95.6
+Concepción,Rural,Mujer,40,7.0,1175000.0,119.3
+Canindeyú,Urbana,Hombre,37,7.9,1697000.0,333.4
+Alto Paraná,Urbana,Hombre,38,9.6,5315000.0,360.1
+San Pedro,Urbana,Hombre,31,13.4,3658000.0,453.2
+Caaguazú,Rural,Mujer,43,10.0,784000.0,115.8
+Concepción,Rural,Mujer,43,2.8,1299000.0,159.3
+Itapúa,Urbana,Mujer,63,9.9,5340000.0,322.0
+Alto Paraná,Rural,Mujer,44,9.2,2141000.0,123.3
+Canindeyú,Rural,Mujer,45,6.4,1531000.0,105.4
+Caaguazú,Rural,Mujer,25,4.6,268000.0,143.0
+Itapúa,Urbana,Mujer,40,18.0,5741000.0,358.1
+Central,Urbana,Mujer,23,5.9,4772000.0,330.9
+Asunción,Urbana,Hombre,48,7.3,1549000.0,354.3
+Itapúa,Urbana,Mujer,61,18.0,7502000.0,341.8
+San Pedro,Urbana,Hombre,48,9.7,4247000.0,456.4
+Central,Urbana,Hombre,43,9.8,3647000.0,414.2
+Canindeyú,Rural,Hombre,25,9.1,3378000.0,107.1
+Itapúa,Urbana,Hombre,33,9.5,6321000.0,446.1
+Central,Urbana,Mujer,48,10.7,3218000.0,486.0
+Itapúa,Urbana,Mujer,44,9.1,2374000.0,329.8
+Canindeyú,Rural,Mujer,19,9.4,4227000.0,93.7
+Alto Paraná,Rural,Hombre,25,7.4,1333000.0,143.7
+Caaguazú,Urbana,Mujer,15,13.0,1997000.0,322.5
+Asunción,Urbana,Hombre,42,13.9,4135000.0,376.3
+Concepción,Rural,Hombre,45,10.3,3415000.0,152.5
+San Pedro,Rural,Hombre,18,5.0,1291000.0,107.6
+Concepción,Rural,Hombre,41,5.6,1221000.0,141.7
+San Pedro,Rural,Mujer,23,7.7,1371000.0,137.1
+Canindeyú,Rural,Hombre,24,6.5,1969000.0,152.5
+Concepción,Rural,Mujer,58,11.3,1042000.0,155.1
+Caaguazú,Rural,Mujer,47,7.4,2390000.0,157.7
+San Pedro,Rural,Hombre,17,10.2,941000.0,105.8
+Itapúa,Rural,Mujer,26,6.8,900000.0,105.8
+Caaguazú,Urbana,Mujer,45,11.3,3905000.0,509.8
+Asunción,Rural,Hombre,55,8.2,2899000.0,90.4
+Concepción,Rural,Mujer,29,2.5,923000.0,147.4
+Asunción,Urbana,Mujer,38,14.7,16089000.0,389.9
+Central,Rural,Mujer,42,5.7,720000.0,142.2
+Central,Urbana,Hombre,28,8.6,8167000.0,454.8
+Caaguazú,Urbana,Mujer,23,7.5,3044000.0,481.2
+Central,Urbana,Hombre,36,9.2,1997000.0,434.4
+Itapúa,Rural,Hombre,19,4.5,415000.0,99.5
+Alto Paraná,Urbana,Hombre,63,8.0,3043000.0,456.5
+Caaguazú,Urbana,Hombre,39,13.6,1928000.0,507.5
+Asunción,Rural,Mujer,17,5.9,528000.0,111.3
+Itapúa,Rural,Mujer,17,7.3,1420000.0,139.8
+Asunción,Rural,Mujer,42,6.8,1103000.0,132.9
+Asunción,Rural,Hombre,45,12.0,3173000.0,102.9
+Central,Urbana,Hombre,15,11.4,1446000.0,337.6
+Itapúa,Urbana,Hombre,30,14.0,5139000.0,325.6
+Itapúa,Urbana,Hombre,40,6.2,8244000.0,431.1
+Alto Paraná,Rural,Hombre,50,5.6,1174000.0,142.1
+Asunción,Urbana,Mujer,51,10.8,1075000.0,427.6
+Alto Paraná,Rural,Hombre,35,7.9,1576000.0,147.0
+Itapúa,Rural,Hombre,15,5.2,1748000.0,101.0
+Asunción,Rural,Mujer,29,2.9,1865000.0,145.8
+Caaguazú,Rural,Hombre,37,9.2,1176000.0,154.9
+Central,Rural,Hombre,27,6.9,2166000.0,123.8
+Caaguazú,Urbana,Hombre,43,16.2,5043000.0,413.2
+Canindeyú,Urbana,Mujer,33,16.7,7856000.0,463.4
+Alto Paraná,Rural,Mujer,15,9.2,1120000.0,96.4
+Central,Rural,Hombre,15,8.2,573000.0,96.0
+Concepción,Rural,Hombre,20,10.0,1457000.0,112.6
+Itapúa,Rural,Mujer,22,5.7,1526000.0,155.4
+Central,Rural,Mujer,42,5.6,697000.0,113.9
+Alto Paraná,Rural,Hombre,44,5.9,717000.0,108.6
+Caaguazú,Rural,Hombre,51,7.8,1015000.0,122.6
+San Pedro,Rural,Hombre,20,8.1,1423000.0,128.4
+Itapúa,Rural,Mujer,51,9.3,1001000.0,134.3
+Itapúa,Rural,Hombre,34,9.4,1251000.0,127.2
+Asunción,Urbana,Hombre,18,5.1,1410000.0,357.0
+Itapúa,Rural,Mujer,48,7.0,1407000.0,90.2
+Itapúa,Rural,Hombre,49,10.9,2210000.0,112.8
+Alto Paraná,Urbana,Mujer,55,6.8,2917000.0,502.4
+Canindeyú,Urbana,Hombre,20,7.4,9396000.0,337.2
+Asunción,Urbana,Hombre,16,10.4,1331000.0,517.8
+Central,Urbana,Mujer,54,7.0,2128000.0,458.1
+Caaguazú,Rural,Hombre,19,3.5,661000.0,159.9
+Asunción,Rural,Mujer,36,4.1,1326000.0,113.6
+Alto Paraná,Urbana,Mujer,62,11.2,3174000.0,480.4
+Central,Urbana,Hombre,27,10.4,6620000.0,478.1
+Caaguazú,Urbana,Hombre,29,12.9,7414000.0,385.4
+Asunción,Urbana,Hombre,33,6.3,3697000.0,358.5
+Asunción,Rural,Hombre,44,6.7,2570000.0,144.6
+Asunción,Urbana,Mujer,57,5.1,1645000.0,495.7
+Itapúa,Urbana,Mujer,25,11.0,1422000.0,519.7
+San Pedro,Rural,Hombre,35,4.9,2836000.0,100.4
+Alto Paraná,Rural,Hombre,45,7.6,911000.0,113.8
+Central,Rural,Mujer,46,11.4,4167000.0,159.8
+Canindeyú,Rural,Mujer,39,12.2,1906000.0,114.3
+San Pedro,Rural,Mujer,32,1.7,578000.0,129.7
+Concepción,Rural,Mujer,49,4.8,943000.0,127.3
+Central,Rural,Hombre,37,8.5,1385000.0,143.4
+Central,Rural,Hombre,26,4.7,876000.0,145.5
+Central,Urbana,Hombre,30,13.2,4526000.0,393.1
+Caaguazú,Rural,Hombre,22,7.8,1515000.0,153.5
+Itapúa,Rural,Mujer,15,8.6,2692000.0,106.4
+Central,Rural,Hombre,26,7.3,1610000.0,108.5
+Itapúa,Urbana,Mujer,33,16.3,2393000.0,451.8
+Itapúa,Rural,Hombre,45,11.3,1448000.0,92.9
+Caaguazú,Rural,Mujer,18,7.2,722000.0,147.7
+Central,Urbana,Hombre,57,11.5,6371000.0,467.7
+Alto Paraná,Urbana,Mujer,15,7.8,3199000.0,357.3
+Itapúa,Urbana,Mujer,22,9.0,1455000.0,423.6
+Central,Rural,Hombre,36,7.7,1102000.0,130.4
+Asunción,Rural,Hombre,53,7.5,1045000.0,143.4
+Itapúa,Urbana,Mujer,16,7.0,1446000.0,490.7
+Asunción,Rural,Mujer,43,6.0,3212000.0,93.3
+San Pedro,Rural,Mujer,74,5.0,729000.0,125.7
+San Pedro,Urbana,Hombre,40,10.0,2147000.0,436.0
+Concepción,Rural,Mujer,24,3.5,484000.0,129.3
+Itapúa,Urbana,Mujer,31,15.9,1719000.0,511.0
+Concepción,Urbana,Mujer,42,4.0,1996000.0,480.2
+San Pedro,Rural,Mujer,15,9.2,342000.0,105.4
+Concepción,Urbana,Mujer,25,14.9,4699000.0,419.3
+Canindeyú,Urbana,Hombre,33,18.0,2844000.0,401.0
+Concepción,Rural,Mujer,24,7.4,4610000.0,130.3
+Alto Paraná,Urbana,Mujer,43,8.6,2396000.0,432.3
+Itapúa,Rural,Hombre,46,8.4,1285000.0,157.4
+Asunción,Rural,Hombre,47,11.1,1725000.0,96.7
+Itapúa,Rural,Mujer,65,6.7,538000.0,102.3
+Itapúa,Rural,Hombre,44,8.1,2016000.0,150.8
+Itapúa,Rural,Mujer,35,8.0,899000.0,101.6
+Alto Paraná,Rural,Mujer,28,5.5,1069000.0,113.9
+Alto Paraná,Urbana,Hombre,35,16.4,7675000.0,406.6
+Itapúa,Rural,Hombre,28,7.3,2273000.0,158.0
+Alto Paraná,Rural,Hombre,51,12.3,2494000.0,141.8
+Asunción,Rural,Mujer,72,9.5,2384000.0,108.4
+Central,Rural,Mujer,34,8.1,1096000.0,108.8
+Caaguazú,Rural,Hombre,54,2.7,1531000.0,90.3
+Alto Paraná,Rural,Hombre,40,7.5,942000.0,157.7
+Central,Urbana,Hombre,22,6.4,923000.0,404.1
+Concepción,Urbana,Hombre,54,11.8,2176000.0,399.6
+Alto Paraná,Urbana,Mujer,38,15.2,4171000.0,407.1
+San Pedro,Urbana,Mujer,33,14.1,8611000.0,510.6
+Asunción,Urbana,Mujer,30,7.7,3251000.0,410.9
+Asunción,Urbana,Hombre,17,16.9,5017000.0,503.8
+San Pedro,Urbana,Mujer,39,4.1,903000.0,334.4
+Caaguazú,Urbana,Mujer,48,9.5,2551000.0,465.5
+Concepción,Rural,Hombre,38,6.3,3124000.0,118.3
+Canindeyú,Rural,Mujer,17,11.1,860000.0,112.4
+Caaguazú,Urbana,Mujer,16,5.2,856000.0,342.3
+Concepción,Rural,Hombre,80,10.0,3645000.0,90.4
+Central,Rural,Hombre,31,7.4,1132000.0,143.5
+Canindeyú,Rural,Mujer,32,11.0,1070000.0,128.9
+Asunción,Urbana,Hombre,53,13.2,3884000.0,395.9
+Itapúa,Rural,Mujer,39,7.5,923000.0,104.4
+Central,Rural,Mujer,46,4.4,547000.0,101.9
+Canindeyú,Urbana,Hombre,15,10.9,3154000.0,425.9
+Asunción,Rural,Mujer,43,10.9,1796000.0,146.2
+San Pedro,Urbana,Mujer,56,7.2,1539000.0,480.6
+Central,Rural,Hombre,54,5.5,1272000.0,154.5
+Central,Urbana,Hombre,15,11.1,12470000.0,405.3
+Concepción,Urbana,Mujer,51,18.0,2240000.0,447.6
+Asunción,Urbana,Hombre,38,4.6,3020000.0,457.8
+Itapúa,Urbana,Hombre,46,12.8,2449000.0,451.6
+Alto Paraná,Urbana,Hombre,41,11.5,3987000.0,366.1
+Asunción,Urbana,Hombre,45,16.7,3736000.0,511.5
+Alto Paraná,Rural,Mujer,53,10.3,1540000.0,110.4
+Asunción,Rural,Hombre,45,8.4,1246000.0,90.4
+Concepción,Rural,Mujer,17,8.1,711000.0,116.4
+San Pedro,Urbana,Mujer,56,12.2,5965000.0,369.2
+Asunción,Rural,Hombre,41,5.6,3393000.0,131.2
+Canindeyú,Urbana,Hombre,15,13.4,2187000.0,331.9
+Canindeyú,Rural,Mujer,45,8.5,1070000.0,103.2
+Concepción,Urbana,Hombre,59,6.5,2890000.0,353.5
+Canindeyú,Urbana,Mujer,39,10.0,1367000.0,389.9
+Asunción,Urbana,Hombre,30,16.3,4029000.0,413.0
+San Pedro,Rural,Mujer,39,8.7,2228000.0,124.8
+Caaguazú,Rural,Mujer,36,10.1,1922000.0,139.7
+San Pedro,Rural,Hombre,34,10.5,1278000.0,140.8
+Concepción,Rural,Hombre,68,8.2,1736000.0,91.2
+Asunción,Rural,Mujer,31,6.1,1028000.0,132.6
+Concepción,Rural,Mujer,74,6.5,910000.0,126.5
+San Pedro,Urbana,Hombre,19,11.9,3708000.0,515.9
+Alto Paraná,Urbana,Hombre,19,11.6,9372000.0,404.6
+San Pedro,Rural,Hombre,56,9.6,1070000.0,101.5
+Canindeyú,Urbana,Mujer,27,14.8,4366000.0,454.7
+Itapúa,Rural,Mujer,63,8.9,1872000.0,146.3
+Alto Paraná,Urbana,Hombre,30,15.0,5952000.0,437.5
+Central,Urbana,Mujer,37,7.5,2983000.0,376.6
+Canindeyú,Urbana,Hombre,32,16.8,3697000.0,483.7
+San Pedro,Urbana,Hombre,65,11.0,3392000.0,396.5
+Itapúa,Urbana,Mujer,58,11.9,3154000.0,509.9
+San Pedro,Urbana,Hombre,41,13.5,5243000.0,322.0
+Itapúa,Rural,Hombre,32,11.3,3039000.0,108.7
+Central,Rural,Mujer,15,8.6,2273000.0,121.5
+Caaguazú,Rural,Mujer,42,8.1,2040000.0,110.8
+Itapúa,Rural,Hombre,23,7.1,1028000.0,150.3
+Caaguazú,Rural,Hombre,39,12.8,995000.0,112.3
+San Pedro,Rural,Mujer,62,6.9,990000.0,153.1
+Canindeyú,Urbana,Hombre,61,11.2,2075000.0,442.7
+Alto Paraná,Rural,Hombre,30,3.4,980000.0,156.3
+Canindeyú,Rural,Mujer,44,7.1,1955000.0,147.1
+Alto Paraná,Rural,Hombre,28,11.7,4554000.0,119.8
+Alto Paraná,Urbana,Hombre,20,10.3,2987000.0,507.1
+Alto Paraná,Urbana,Mujer,21,11.9,3588000.0,483.3
+Alto Paraná,Rural,Mujer,51,7.1,2729000.0,120.5
+Canindeyú,Rural,Hombre,27,7.2,2301000.0,99.1
+Concepción,Rural,Hombre,42,8.3,2636000.0,142.1
+Concepción,Rural,Mujer,45,3.9,518000.0,111.2
+Central,Urbana,Hombre,55,11.9,2142000.0,334.8
+Itapúa,Rural,Mujer,55,14.3,538000.0,131.3
+Alto Paraná,Urbana,Hombre,27,9.8,2710000.0,474.2
+Central,Rural,Mujer,63,6.0,1181000.0,133.3
+Concepción,Rural,Hombre,15,1.2,1246000.0,102.3
+Itapúa,Rural,Mujer,31,0.5,2044000.0,93.1
+Canindeyú,Rural,Hombre,25,5.5,914000.0,133.1
+Itapúa,Urbana,Hombre,29,13.0,6901000.0,510.8
+Central,Urbana,Mujer,29,7.7,2336000.0,497.4
+Alto Paraná,Rural,Mujer,44,4.1,1210000.0,156.7
+Concepción,Rural,Hombre,40,7.5,1198000.0,119.7
+Asunción,Rural,Hombre,22,12.5,930000.0,127.4
+San Pedro,Urbana,Mujer,80,8.9,1805000.0,453.9
+Alto Paraná,Urbana,Hombre,48,6.7,12206000.0,466.2
+Concepción,Rural,Hombre,54,8.7,1200000.0,148.3
+Concepción,Rural,Mujer,25,5.7,2720000.0,104.2
+Central,Urbana,Hombre,35,14.2,5891000.0,494.1
+Canindeyú,Urbana,Mujer,38,13.6,1308000.0,483.3
+Asunción,Rural,Mujer,35,6.2,1531000.0,118.9
+Itapúa,Urbana,Hombre,51,15.6,2866000.0,396.7
+Concepción,Urbana,Hombre,51,17.1,3247000.0,374.4
+San Pedro,Rural,Mujer,55,8.9,2337000.0,106.4
+Itapúa,Urbana,Mujer,32,5.2,1933000.0,407.3
+Itapúa,Urbana,Mujer,50,6.7,1390000.0,386.6
+Central,Rural,Hombre,19,9.1,968000.0,105.3
+Itapúa,Urbana,Mujer,27,16.7,7641000.0,369.5
+Concepción,Urbana,Hombre,27,10.2,2161000.0,330.1
+Asunción,Urbana,Hombre,61,10.2,2604000.0,420.6
+Canindeyú,Rural,Hombre,52,10.9,5014000.0,121.0
+Canindeyú,Urbana,Mujer,35,14.9,4011000.0,372.6
+Concepción,Urbana,Hombre,52,13.3,3110000.0,363.0
+Concepción,Rural,Hombre,43,9.4,1482000.0,90.0
+Asunción,Urbana,Hombre,20,11.2,1618000.0,430.8
+Concepción,Rural,Mujer,16,2.4,921000.0,133.9
+San Pedro,Urbana,Hombre,31,10.2,2547000.0,376.0
+Canindeyú,Rural,Mujer,18,10.8,1680000.0,109.0
+Caaguazú,Rural,Hombre,47,13.6,1062000.0,114.8
+Asunción,Urbana,Hombre,71,6.8,3021000.0,440.7
+Asunción,Rural,Hombre,32,3.7,304000.0,139.1
+Alto Paraná,Urbana,Hombre,30,13.8,2420000.0,430.0
+Canindeyú,Rural,Mujer,19,7.9,2282000.0,122.5
+San Pedro,Urbana,Mujer,54,8.1,1498000.0,352.2
+Central,Rural,Hombre,16,13.8,3583000.0,133.2
+Central,Urbana,Mujer,33,7.8,1173000.0,403.6
+Caaguazú,Rural,Hombre,56,8.9,605000.0,91.1
+San Pedro,Rural,Hombre,37,9.5,982000.0,105.6
+Alto Paraná,Rural,Hombre,19,11.8,1510000.0,145.2
+San Pedro,Rural,Mujer,42,5.5,984000.0,119.8
+Canindeyú,Urbana,Hombre,33,10.8,2496000.0,460.8
+Caaguazú,Rural,Hombre,41,8.1,1758000.0,149.0
+San Pedro,Urbana,Hombre,31,6.5,2472000.0,402.6
+Canindeyú,Urbana,Mujer,28,10.6,1231000.0,430.1
+Concepción,Urbana,Mujer,49,10.5,5511000.0,402.5
+Concepción,Urbana,Mujer,24,14.9,8249000.0,390.9
+Asunción,Rural,Mujer,41,9.9,1794000.0,154.3
+Caaguazú,Urbana,Hombre,26,10.1,1929000.0,519.8
+San Pedro,Urbana,Hombre,44,9.8,2852000.0,346.9
+Alto Paraná,Rural,Hombre,45,6.9,933000.0,107.5
+Alto Paraná,Urbana,Mujer,36,6.8,1391000.0,360.4
+Asunción,Urbana,Hombre,41,9.3,4894000.0,424.9
+Caaguazú,Urbana,Hombre,36,14.6,3691000.0,349.0
+Itapúa,Rural,Hombre,36,9.1,1713000.0,122.8
+Itapúa,Urbana,Mujer,25,13.0,4994000.0,486.6
+Alto Paraná,Urbana,Hombre,38,8.1,2341000.0,431.6
+Itapúa,Rural,Mujer,60,9.3,1676000.0,108.3
+Canindeyú,Rural,Hombre,34,7.6,2789000.0,93.6
+Itapúa,Rural,Hombre,15,6.7,1366000.0,128.8
+Canindeyú,Urbana,Hombre,57,11.9,6104000.0,432.2
+Itapúa,Urbana,Hombre,15,10.7,5096000.0,498.2
+San Pedro,Rural,Mujer,43,5.4,3289000.0,136.4
+Caaguazú,Rural,Mujer,15,14.1,1411000.0,158.5
+Alto Paraná,Urbana,Hombre,42,9.9,3096000.0,334.8
+Concepción,Urbana,Hombre,79,12.5,1372000.0,472.5
+Alto Paraná,Urbana,Mujer,43,4.0,1623000.0,477.5
+Central,Rural,Hombre,53,13.3,3789000.0,150.3
+Concepción,Urbana,Mujer,36,10.0,3288000.0,475.7
+Canindeyú,Rural,Hombre,41,2.5,1311000.0,135.3
+Asunción,Urbana,Mujer,34,7.9,3152000.0,394.7
+Canindeyú,Rural,Mujer,56,6.6,1530000.0,150.0
+San Pedro,Urbana,Mujer,51,11.5,6320000.0,358.8
+Caaguazú,Urbana,Mujer,40,10.4,1589000.0,513.9
+Asunción,Urbana,Hombre,27,9.7,4012000.0,422.2
+Canindeyú,Rural,Mujer,15,7.2,1564000.0,93.3
+Asunción,Rural,Hombre,41,13.4,1480000.0,107.6
+Central,Rural,Hombre,44,8.3,2209000.0,155.8
+Caaguazú,Urbana,Mujer,15,7.8,1244000.0,418.7
+Canindeyú,Rural,Mujer,39,3.4,442000.0,126.1
+Asunción,Rural,Hombre,21,10.1,421000.0,112.5
+Itapúa,Urbana,Mujer,15,9.8,1959000.0,467.1
+Canindeyú,Rural,Mujer,15,7.8,1424000.0,106.9
+Asunción,Rural,Hombre,35,7.5,2295000.0,105.0
+Caaguazú,Rural,Mujer,52,8.1,657000.0,125.0
+Itapúa,Rural,Mujer,60,9.4,3520000.0,105.7
+Asunción,Rural,Hombre,15,11.9,872000.0,137.9
+Concepción,Urbana,Mujer,51,15.1,18308000.0,327.2
+Caaguazú,Urbana,Hombre,39,13.1,3434000.0,423.0
+San Pedro,Rural,Mujer,30,7.7,445000.0,120.5
+Alto Paraná,Rural,Mujer,48,11.1,2618000.0,123.2
+Canindeyú,Rural,Mujer,28,8.4,679000.0,153.6
+San Pedro,Urbana,Hombre,31,12.5,13005000.0,415.2
+San Pedro,Rural,Mujer,38,5.4,873000.0,150.0
+Alto Paraná,Urbana,Mujer,38,11.4,1675000.0,457.5
+Caaguazú,Urbana,Hombre,28,10.7,1121000.0,412.9
+Central,Rural,Mujer,30,17.4,3232000.0,136.0
+Concepción,Rural,Mujer,36,5.4,994000.0,135.0
+Canindeyú,Urbana,Hombre,54,8.8,749000.0,324.7
+Caaguazú,Urbana,Mujer,15,3.7,2141000.0,352.7
+Canindeyú,Urbana,Hombre,28,12.1,729000.0,471.2
+Alto Paraná,Rural,Mujer,49,6.5,788000.0,153.1
+Canindeyú,Urbana,Hombre,45,13.0,3291000.0,519.3
+San Pedro,Urbana,Hombre,25,11.1,4274000.0,495.9
+Caaguazú,Urbana,Mujer,45,13.7,4338000.0,470.4
+Canindeyú,Urbana,Mujer,20,4.8,3282000.0,517.1
+Alto Paraná,Rural,Mujer,40,8.4,1822000.0,143.2
+Alto Paraná,Rural,Mujer,57,10.7,5007000.0,91.3
+Alto Paraná,Rural,Mujer,15,6.1,876000.0,118.1
+Alto Paraná,Urbana,Hombre,42,12.4,3257000.0,336.9
+Canindeyú,Rural,Hombre,47,8.3,2020000.0,149.7
+Asunción,Rural,Hombre,18,9.4,1987000.0,92.3
+Alto Paraná,Urbana,Hombre,43,9.3,5653000.0,331.7
+Asunción,Rural,Hombre,41,7.5,2026000.0,91.6
+Concepción,Rural,Hombre,38,0.6,1132000.0,117.1
+Central,Urbana,Mujer,39,8.0,2252000.0,494.4
+Asunción,Urbana,Mujer,27,14.0,2443000.0,431.6
+Asunción,Urbana,Hombre,33,7.9,3088000.0,445.8
+Asunción,Urbana,Hombre,42,17.9,13506000.0,463.2
+San Pedro,Urbana,Mujer,56,11.7,2393000.0,349.2
+Asunción,Urbana,Mujer,49,9.6,4752000.0,511.6
+Caaguazú,Urbana,Hombre,55,14.4,7879000.0,487.2
+Itapúa,Urbana,Mujer,47,8.9,938000.0,405.7
+Itapúa,Rural,Hombre,43,6.1,1260000.0,113.4
+Central,Urbana,Mujer,45,12.3,1575000.0,508.2
+Caaguazú,Rural,Mujer,62,4.9,2699000.0,131.0
+Caaguazú,Urbana,Mujer,22,7.6,4672000.0,325.0
+Concepción,Urbana,Hombre,38,11.4,11577000.0,348.0
+Canindeyú,Urbana,Mujer,52,14.9,5931000.0,369.4
+Central,Urbana,Hombre,60,9.6,5231000.0,360.4
+Alto Paraná,Urbana,Mujer,57,9.4,4225000.0,432.3
+Caaguazú,Urbana,Mujer,35,9.7,1590000.0,430.0
+Alto Paraná,Rural,Hombre,38,11.1,1638000.0,92.6
+Asunción,Urbana,Hombre,55,12.7,4515000.0,459.0
+San Pedro,Rural,Mujer,56,7.0,920000.0,130.4
+Itapúa,Urbana,Mujer,33,14.4,1019000.0,455.6
+Central,Urbana,Mujer,37,13.6,3814000.0,499.3
+Concepción,Urbana,Hombre,53,7.0,4250000.0,449.7
+Asunción,Urbana,Hombre,54,12.0,4074000.0,423.9
+Alto Paraná,Urbana,Mujer,44,11.1,11269000.0,338.9
+San Pedro,Rural,Hombre,39,2.2,1598000.0,158.0
+Alto Paraná,Urbana,Hombre,58,6.5,4029000.0,410.2
+Alto Paraná,Rural,Mujer,51,15.2,3894000.0,159.9
+Alto Paraná,Urbana,Hombre,15,12.3,9365000.0,375.1
+Concepción,Urbana,Hombre,19,13.0,2464000.0,409.7
+Canindeyú,Urbana,Hombre,26,12.2,4790000.0,429.5
+Central,Urbana,Mujer,25,13.0,2513000.0,381.3
+Caaguazú,Rural,Hombre,16,7.1,643000.0,158.9
+Concepción,Urbana,Mujer,47,12.9,3439000.0,370.5
+Caaguazú,Urbana,Hombre,30,10.2,5233000.0,391.4
+Caaguazú,Rural,Mujer,37,7.3,3946000.0,100.6
+Concepción,Urbana,Mujer,39,11.6,3490000.0,507.6
+Central,Rural,Mujer,63,9.9,1683000.0,107.5
+Caaguazú,Urbana,Mujer,28,8.5,3079000.0,333.7
+Concepción,Rural,Mujer,22,0.2,828000.0,94.6
+Caaguazú,Rural,Mujer,32,8.4,765000.0,110.9
+Central,Urbana,Mujer,15,13.6,5423000.0,443.2
+San Pedro,Rural,Hombre,15,5.9,1463000.0,112.6
+Concepción,Rural,Hombre,25,4.4,1292000.0,124.0
+Central,Rural,Mujer,57,8.4,915000.0,115.5
+San Pedro,Urbana,Hombre,61,6.1,7108000.0,397.8
+Concepción,Rural,Mujer,40,9.2,1307000.0,111.8
+San Pedro,Rural,Hombre,36,13.2,2540000.0,159.8
+Asunción,Urbana,Hombre,24,7.9,1659000.0,481.8
+San Pedro,Urbana,Mujer,34,9.1,1261000.0,368.3
+Concepción,Urbana,Mujer,42,11.3,2473000.0,446.7
+Alto Paraná,Rural,Hombre,53,6.2,3603000.0,133.2
+Central,Rural,Mujer,59,3.4,220000.0,120.0
+Central,Urbana,Hombre,35,4.9,2152000.0,399.0
+Itapúa,Rural,Hombre,25,7.0,1108000.0,133.6
+Asunción,Urbana,Hombre,23,15.7,2838000.0,398.5
+Central,Rural,Hombre,17,12.1,1825000.0,131.7
+Alto Paraná,Rural,Hombre,41,9.2,2018000.0,108.9
+Concepción,Rural,Mujer,35,0.8,810000.0,137.8
+Central,Rural,Mujer,33,0.5,1176000.0,147.1
+Caaguazú,Urbana,Hombre,44,12.3,4860000.0,510.7
+Concepción,Urbana,Mujer,15,8.3,4736000.0,394.1
+Canindeyú,Rural,Mujer,31,6.2,549000.0,115.1
+Asunción,Urbana,Mujer,40,12.0,10985000.0,376.8
+Alto Paraná,Rural,Hombre,23,10.7,2634000.0,110.2
+San Pedro,Urbana,Mujer,15,8.9,1206000.0,485.0
+San Pedro,Rural,Hombre,37,9.7,3660000.0,130.4
+San Pedro,Rural,Hombre,37,2.0,1727000.0,145.0
+Central,Urbana,Hombre,27,11.6,2522000.0,407.2
+San Pedro,Rural,Hombre,71,8.7,1311000.0,123.4
+Itapúa,Urbana,Mujer,15,10.7,1216000.0,349.8
+Itapúa,Urbana,Hombre,15,12.4,3780000.0,453.6
+San Pedro,Rural,Hombre,20,4.7,1549000.0,106.6
+San Pedro,Urbana,Hombre,59,11.8,2296000.0,325.7
+Canindeyú,Urbana,Mujer,15,8.7,1792000.0,363.3
+Central,Rural,Hombre,24,4.2,511000.0,139.1
+Asunción,Rural,Hombre,22,2.7,703000.0,131.5
+Concepción,Rural,Hombre,52,9.1,456000.0,97.4
+Alto Paraná,Urbana,Mujer,25,10.4,3993000.0,436.5
+Itapúa,Rural,Hombre,38,6.9,1186000.0,107.9
+Central,Urbana,Hombre,61,6.6,2108000.0,518.3
+Asunción,Rural,Mujer,31,8.4,1249000.0,108.6
+Alto Paraná,Urbana,Hombre,15,13.3,3065000.0,395.1
+Caaguazú,Urbana,Mujer,37,12.1,3455000.0,472.6
+Asunción,Rural,Mujer,61,10.7,1498000.0,131.7
+Concepción,Rural,Mujer,34,7.1,598000.0,94.9
+Central,Rural,Mujer,47,5.6,832000.0,117.3
+Itapúa,Urbana,Hombre,48,10.7,6800000.0,325.3
+Canindeyú,Urbana,Hombre,40,14.4,6320000.0,378.7
+Concepción,Rural,Hombre,60,7.0,954000.0,133.9
+Asunción,Urbana,Mujer,22,2.5,3319000.0,483.8
+San Pedro,Urbana,Mujer,33,12.4,786000.0,417.3
+Asunción,Urbana,Mujer,26,10.6,2148000.0,456.4
+San Pedro,Rural,Mujer,30,7.8,1571000.0,158.5
+Itapúa,Urbana,Mujer,69,14.7,5997000.0,375.5
+Itapúa,Urbana,Mujer,40,10.3,5336000.0,488.8
+Canindeyú,Rural,Mujer,62,5.4,757000.0,93.2
+Canindeyú,Rural,Mujer,34,3.9,839000.0,131.3
+Itapúa,Rural,Hombre,50,10.0,3264000.0,93.6
+Canindeyú,Rural,Mujer,24,13.5,1372000.0,154.0
+Canindeyú,Rural,Hombre,17,7.7,703000.0,139.6
+Asunción,Urbana,Hombre,19,4.9,5800000.0,338.9
+San Pedro,Urbana,Hombre,60,13.2,2048000.0,381.5
+Asunción,Rural,Mujer,18,5.5,1031000.0,111.7
+Alto Paraná,Urbana,Mujer,15,11.4,2028000.0,445.5
+Asunción,Urbana,Mujer,19,5.1,1635000.0,339.8
+Concepción,Rural,Hombre,78,7.6,534000.0,94.4
+Caaguazú,Urbana,Hombre,50,6.7,4798000.0,452.4
+Alto Paraná,Urbana,Mujer,15,17.3,4732000.0,457.5
+Central,Rural,Hombre,59,2.8,590000.0,136.9
+Asunción,Urbana,Mujer,26,12.0,3370000.0,490.2
+Alto Paraná,Rural,Mujer,22,8.7,1407000.0,115.0
+Itapúa,Rural,Hombre,15,7.0,1066000.0,157.7
+Asunción,Urbana,Hombre,44,10.6,2085000.0,330.5
+Central,Urbana,Mujer,19,11.8,2899000.0,408.1
+Itapúa,Rural,Mujer,80,9.5,497000.0,93.7
+Asunción,Urbana,Mujer,36,15.8,2497000.0,451.5
+San Pedro,Rural,Hombre,23,10.5,1765000.0,108.1
+Central,Rural,Hombre,46,5.3,1450000.0,152.6
+San Pedro,Urbana,Hombre,30,10.9,3113000.0,320.6
+Asunción,Rural,Mujer,35,10.2,2542000.0,142.6
+Alto Paraná,Rural,Mujer,33,4.3,1908000.0,135.9
+Alto Paraná,Rural,Mujer,47,5.8,947000.0,100.3
+San Pedro,Urbana,Mujer,44,12.5,3559000.0,332.4
+San Pedro,Urbana,Hombre,38,16.3,4568000.0,408.8
+Caaguazú,Urbana,Mujer,15,12.7,1616000.0,458.0
+Caaguazú,Rural,Mujer,48,1.8,680000.0,102.0
+Asunción,Urbana,Mujer,45,7.0,958000.0,405.8
+Canindeyú,Urbana,Mujer,15,13.3,3985000.0,464.3
+Alto Paraná,Urbana,Mujer,24,6.6,5018000.0,457.3
+Asunción,Urbana,Mujer,24,10.6,3814000.0,432.0
+Canindeyú,Urbana,Hombre,32,5.0,2064000.0,456.0
+Central,Rural,Mujer,46,7.2,558000.0,106.8
+San Pedro,Urbana,Hombre,45,6.0,3653000.0,410.4
+Itapúa,Urbana,Hombre,23,12.9,1449000.0,464.0
+Asunción,Urbana,Hombre,31,8.5,3640000.0,377.5
+Canindeyú,Urbana,Hombre,36,11.0,3127000.0,491.0
+Central,Urbana,Mujer,44,17.7,2891000.0,495.9
+Alto Paraná,Urbana,Mujer,60,15.8,3900000.0,377.7
+Alto Paraná,Urbana,Hombre,73,8.8,2828000.0,485.2
+Itapúa,Rural,Mujer,46,9.4,1234000.0,157.3
+Central,Rural,Mujer,38,10.9,994000.0,104.1
+Central,Rural,Hombre,19,7.7,1621000.0,113.7
+Asunción,Rural,Mujer,58,4.6,418000.0,138.2
+Canindeyú,Rural,Hombre,32,6.8,2241000.0,124.1
+San Pedro,Rural,Mujer,54,10.4,1137000.0,116.2
+Caaguazú,Urbana,Mujer,56,13.4,3021000.0,514.5
+Concepción,Urbana,Mujer,15,10.9,1005000.0,453.4
+San Pedro,Rural,Hombre,29,8.9,1895000.0,122.4
+Alto Paraná,Urbana,Mujer,37,15.3,3127000.0,399.1
+Itapúa,Urbana,Hombre,40,1.5,4349000.0,439.2
+Caaguazú,Urbana,Mujer,35,13.2,3199000.0,445.0
+Canindeyú,Rural,Hombre,42,7.9,1435000.0,132.5
+Asunción,Urbana,Hombre,15,4.4,1623000.0,410.6
+Canindeyú,Urbana,Hombre,43,17.6,3328000.0,334.8
+Itapúa,Rural,Hombre,41,9.8,1896000.0,137.0
+Caaguazú,Urbana,Hombre,31,12.2,3131000.0,477.7
+Concepción,Urbana,Hombre,34,11.2,2033000.0,472.2
+San Pedro,Rural,Hombre,15,6.2,2271000.0,135.0
+Asunción,Urbana,Mujer,57,13.5,2556000.0,390.9
+Canindeyú,Urbana,Hombre,46,10.6,14841000.0,337.6
+San Pedro,Urbana,Mujer,37,6.4,4053000.0,444.9
+Canindeyú,Urbana,Hombre,34,14.1,4264000.0,424.0
+Asunción,Rural,Hombre,69,9.3,3276000.0,129.3
+Asunción,Urbana,Mujer,50,5.8,1194000.0,493.0
+Asunción,Rural,Mujer,41,9.9,1215000.0,124.3
+Concepción,Urbana,Mujer,33,10.5,1713000.0,395.7
+Asunción,Rural,Mujer,35,1.7,612000.0,147.2
+Caaguazú,Urbana,Hombre,38,9.9,5062000.0,494.8
+Itapúa,Rural,Mujer,19,8.9,866000.0,141.7
+Concepción,Rural,Hombre,32,9.2,1422000.0,129.1
+Alto Paraná,Rural,Hombre,45,14.5,3019000.0,112.2
+San Pedro,Urbana,Mujer,34,11.0,481000.0,456.3
+Central,Urbana,Hombre,36,7.1,2037000.0,510.9
+Canindeyú,Rural,Hombre,42,3.1,1047000.0,96.3
+Asunción,Urbana,Mujer,19,9.3,4596000.0,479.8
+Caaguazú,Urbana,Hombre,53,11.5,4939000.0,380.9
+Alto Paraná,Rural,Mujer,24,1.8,531000.0,105.5
+San Pedro,Urbana,Mujer,54,12.7,7786000.0,423.3
+Caaguazú,Urbana,Mujer,35,8.5,4334000.0,480.0
+Concepción,Rural,Hombre,41,6.8,1330000.0,122.9
+Caaguazú,Urbana,Hombre,23,9.3,1525000.0,374.2
+Asunción,Rural,Hombre,23,4.2,626000.0,144.9
+Central,Rural,Hombre,58,4.1,1583000.0,99.4
+Itapúa,Rural,Hombre,35,7.7,552000.0,142.8
+San Pedro,Urbana,Hombre,23,8.8,6251000.0,396.2
+Concepción,Rural,Hombre,33,8.9,701000.0,91.9
+Alto Paraná,Urbana,Hombre,31,11.3,2810000.0,497.0
+Asunción,Rural,Hombre,36,9.1,1082000.0,99.7
+Alto Paraná,Urbana,Hombre,44,5.9,1794000.0,489.6
+Alto Paraná,Rural,Mujer,30,3.2,553000.0,154.7
+Asunción,Urbana,Mujer,62,12.8,1701000.0,502.4
+Itapúa,Urbana,Mujer,50,8.9,3982000.0,479.1
+Itapúa,Rural,Hombre,15,12.2,945000.0,93.1
+Concepción,Rural,Mujer,22,5.8,2446000.0,117.3
+Central,Rural,Mujer,15,5.3,629000.0,95.7
+Caaguazú,Rural,Hombre,26,4.6,1083000.0,101.1
+Concepción,Urbana,Mujer,24,12.7,5791000.0,384.8
+Concepción,Rural,Mujer,57,4.1,1989000.0,96.8
+Alto Paraná,Rural,Mujer,43,2.1,1749000.0,108.7
+Canindeyú,Urbana,Hombre,64,6.5,2151000.0,439.9
+Asunción,Rural,Mujer,28,11.6,3415000.0,104.0
+San Pedro,Urbana,Hombre,15,16.9,3870000.0,497.2
+San Pedro,Urbana,Hombre,38,11.0,1286000.0,480.3
+Caaguazú,Urbana,Hombre,61,6.8,2559000.0,457.2
+Asunción,Urbana,Hombre,20,8.5,1270000.0,495.4
+Alto Paraná,Urbana,Mujer,18,11.6,4423000.0,404.3
+San Pedro,Rural,Hombre,47,9.5,1929000.0,145.8
+Concepción,Urbana,Mujer,32,12.8,2636000.0,468.3
+Itapúa,Urbana,Mujer,43,11.0,1135000.0,512.7
+Asunción,Urbana,Mujer,15,11.4,3630000.0,505.3
+Asunción,Urbana,Hombre,31,12.7,3273000.0,346.3
+Caaguazú,Rural,Mujer,45,8.7,293000.0,141.0
+Asunción,Rural,Mujer,46,2.7,523000.0,150.8
+Asunción,Rural,Hombre,44,8.1,1995000.0,125.0
+Alto Paraná,Rural,Hombre,50,10.5,2575000.0,110.2
+San Pedro,Urbana,Hombre,29,14.4,1994000.0,406.7
+San Pedro,Rural,Hombre,21,11.1,5521000.0,127.8
+Concepción,Rural,Hombre,15,8.1,545000.0,136.4
+Itapúa,Rural,Hombre,24,12.1,1267000.0,124.2
+Canindeyú,Urbana,Mujer,37,7.9,1127000.0,474.0
+Alto Paraná,Urbana,Hombre,38,7.7,4991000.0,473.0
+Alto Paraná,Urbana,Mujer,36,13.8,2759000.0,437.7
+Itapúa,Urbana,Hombre,33,12.7,2844000.0,468.8
+Concepción,Rural,Mujer,15,8.3,978000.0,124.5
+Caaguazú,Urbana,Mujer,63,12.4,2733000.0,514.4
+Asunción,Urbana,Hombre,49,11.4,2014000.0,500.3
+Caaguazú,Rural,Hombre,40,10.3,966000.0,102.7
+Concepción,Rural,Mujer,32,4.7,350000.0,104.9
+Caaguazú,Rural,Hombre,34,6.6,796000.0,155.3
+Canindeyú,Urbana,Mujer,55,7.7,4136000.0,488.1
+Caaguazú,Rural,Hombre,23,11.5,4371000.0,116.8
+Canindeyú,Urbana,Mujer,39,11.0,3376000.0,487.6
+Asunción,Urbana,Hombre,32,12.6,1043000.0,382.8
+Caaguazú,Rural,Hombre,15,8.4,1401000.0,113.3
+Asunción,Urbana,Mujer,23,12.1,1270000.0,400.5
+San Pedro,Urbana,Hombre,19,11.1,3174000.0,474.4
+Concepción,Rural,Mujer,40,7.2,1089000.0,112.6
+Alto Paraná,Urbana,Mujer,38,10.4,5414000.0,385.9
+Itapúa,Rural,Hombre,15,8.7,833000.0,127.4
+Alto Paraná,Urbana,Mujer,37,17.3,4994000.0,404.1
+Itapúa,Rural,Mujer,26,10.5,2572000.0,98.5
+Central,Urbana,Mujer,37,9.4,2788000.0,484.2
+Concepción,Urbana,Hombre,33,8.7,3292000.0,463.4
+Alto Paraná,Rural,Hombre,58,6.0,381000.0,152.3
+San Pedro,Rural,Hombre,49,10.3,1616000.0,153.9
+Itapúa,Urbana,Mujer,41,11.3,6709000.0,375.5
+Asunción,Rural,Mujer,26,2.4,417000.0,127.4
+Concepción,Rural,Hombre,73,10.0,1089000.0,103.4
+Asunción,Rural,Mujer,51,2.4,637000.0,149.3
+Caaguazú,Rural,Mujer,39,13.5,2059000.0,159.8
+Concepción,Rural,Mujer,40,6.2,728000.0,129.0
+Concepción,Rural,Mujer,41,4.9,1384000.0,134.8
+Asunción,Urbana,Mujer,55,5.9,1463000.0,501.1
+Caaguazú,Urbana,Hombre,53,15.0,3244000.0,333.5
+Canindeyú,Rural,Hombre,48,14.4,2296000.0,132.9
+Concepción,Rural,Mujer,65,7.0,1108000.0,99.1
+Central,Urbana,Hombre,37,11.0,3429000.0,429.5
+San Pedro,Rural,Hombre,20,8.7,1782000.0,105.9
+Central,Rural,Hombre,35,4.0,3979000.0,122.0
+Alto Paraná,Rural,Mujer,34,8.5,1121000.0,146.3
+Asunción,Urbana,Hombre,27,17.3,3237000.0,342.0
+Caaguazú,Urbana,Mujer,15,11.5,7221000.0,333.9
+Itapúa,Rural,Mujer,53,9.3,689000.0,99.3
+Canindeyú,Rural,Hombre,54,4.8,2189000.0,110.1
+Itapúa,Urbana,Mujer,20,5.1,2331000.0,339.2
+Concepción,Rural,Mujer,45,3.2,2060000.0,112.8
+Concepción,Rural,Hombre,30,9.5,2798000.0,140.0
+Alto Paraná,Urbana,Mujer,31,17.6,6673000.0,386.6
+Itapúa,Urbana,Hombre,71,12.2,4526000.0,502.2
+Caaguazú,Urbana,Mujer,70,7.7,1447000.0,405.5
+Concepción,Urbana,Hombre,37,9.2,928000.0,363.7
+Central,Rural,Mujer,32,8.5,933000.0,129.5
+Itapúa,Urbana,Hombre,40,11.7,2584000.0,506.0
+Alto Paraná,Rural,Mujer,53,6.5,2113000.0,128.4
+San Pedro,Urbana,Hombre,17,12.2,2206000.0,373.7
+San Pedro,Rural,Mujer,40,8.7,1487000.0,105.5
+Canindeyú,Urbana,Mujer,53,7.4,892000.0,499.4
+Canindeyú,Rural,Hombre,39,9.4,2208000.0,136.4
+Alto Paraná,Urbana,Mujer,42,9.6,3516000.0,395.5
+Canindeyú,Rural,Hombre,15,7.6,1049000.0,144.0
+Alto Paraná,Rural,Hombre,52,6.5,1981000.0,147.9
+Asunción,Urbana,Mujer,24,13.0,1835000.0,446.0
+Itapúa,Rural,Hombre,15,3.4,1115000.0,142.4
+Canindeyú,Urbana,Mujer,15,8.8,1692000.0,403.6
+Concepción,Urbana,Hombre,31,8.4,2721000.0,372.4
+Canindeyú,Rural,Mujer,41,6.9,897000.0,138.4
+Central,Urbana,Hombre,32,7.0,1676000.0,376.3
+Concepción,Urbana,Mujer,64,15.0,6198000.0,470.3
+San Pedro,Urbana,Mujer,27,13.5,4363000.0,415.8
+Alto Paraná,Rural,Hombre,15,9.5,2695000.0,104.8
+Caaguazú,Urbana,Hombre,15,11.4,2716000.0,333.1
+San Pedro,Urbana,Mujer,61,18.0,4322000.0,340.0
+Alto Paraná,Urbana,Hombre,36,12.8,1988000.0,477.3
+San Pedro,Urbana,Hombre,35,8.4,1796000.0,354.1
+Asunción,Rural,Hombre,46,5.9,2091000.0,120.9
+San Pedro,Urbana,Hombre,27,5.2,1438000.0,403.9
+Canindeyú,Urbana,Hombre,41,9.9,1240000.0,400.0
+Central,Urbana,Mujer,17,13.6,2115000.0,429.5
+San Pedro,Rural,Hombre,15,11.8,1273000.0,137.7
+Alto Paraná,Rural,Mujer,30,2.8,464000.0,102.3
+Itapúa,Urbana,Mujer,68,15.5,3370000.0,489.1
+Concepción,Rural,Mujer,33,4.8,1100000.0,98.2
+Concepción,Rural,Hombre,53,6.5,829000.0,145.2
+Alto Paraná,Urbana,Hombre,15,9.6,3462000.0,499.1
+Caaguazú,Rural,Hombre,33,9.0,1856000.0,135.3
+Central,Rural,Mujer,60,14.7,5490000.0,97.9
+San Pedro,Urbana,Hombre,47,15.5,3190000.0,462.8
+Central,Urbana,Hombre,15,16.8,6264000.0,369.2
+Central,Rural,Mujer,15,7.4,1374000.0,136.3
+Caaguazú,Urbana,Hombre,24,14.3,4312000.0,379.1
+Caaguazú,Urbana,Hombre,15,10.0,7462000.0,472.9
+Canindeyú,Rural,Mujer,45,2.1,642000.0,93.8
+Canindeyú,Urbana,Hombre,34,11.6,4247000.0,374.2
+Central,Rural,Mujer,52,8.1,1230000.0,121.0
+San Pedro,Urbana,Hombre,39,1.0,3312000.0,426.1
+Itapúa,Urbana,Mujer,21,11.5,3122000.0,498.9
+Asunción,Rural,Mujer,32,8.7,542000.0,104.1
+Alto Paraná,Urbana,Mujer,20,3.7,2333000.0,477.6
+Concepción,Rural,Mujer,49,6.8,1131000.0,124.6
+Alto Paraná,Rural,Mujer,33,5.9,1029000.0,158.0
+Asunción,Urbana,Hombre,15,14.1,2360000.0,449.4
+Asunción,Urbana,Hombre,18,3.6,3662000.0,459.9
+Alto Paraná,Rural,Hombre,27,9.6,2305000.0,99.6
+Canindeyú,Rural,Hombre,23,7.3,603000.0,135.7
+Alto Paraná,Rural,Mujer,58,10.4,2165000.0,120.9
+Alto Paraná,Rural,Mujer,25,9.4,2126000.0,109.9
+Itapúa,Rural,Hombre,28,3.1,1636000.0,155.2
+Caaguazú,Rural,Hombre,63,0.5,684000.0,94.5
+Central,Rural,Mujer,50,0.0,480000.0,151.4
+Canindeyú,Urbana,Mujer,48,12.1,5713000.0,466.8
+Concepción,Urbana,Hombre,50,3.7,1624000.0,451.3
+Itapúa,Urbana,Mujer,21,13.0,3441000.0,469.1
+Asunción,Urbana,Hombre,31,14.7,1083000.0,488.0
+Asunción,Rural,Mujer,15,7.2,871000.0,91.2
+Alto Paraná,Urbana,Hombre,44,16.8,5745000.0,349.5
+Canindeyú,Urbana,Mujer,44,10.5,3051000.0,339.5
+Caaguazú,Urbana,Hombre,26,18.0,2554000.0,457.4
+Canindeyú,Urbana,Hombre,39,11.3,6467000.0,349.3
+Concepción,Urbana,Mujer,48,5.3,1693000.0,414.4
+Asunción,Rural,Hombre,32,5.3,716000.0,121.7
+Concepción,Urbana,Mujer,44,4.2,2005000.0,502.5
+Alto Paraná,Rural,Hombre,18,4.9,1912000.0,91.2
+Caaguazú,Urbana,Mujer,18,18.0,3370000.0,454.3
+Concepción,Urbana,Hombre,48,5.5,1022000.0,396.5
+San Pedro,Urbana,Mujer,15,11.4,3485000.0,460.9
+Central,Urbana,Mujer,49,9.7,3338000.0,480.0
+Caaguazú,Rural,Hombre,44,10.1,2294000.0,117.7
+Itapúa,Urbana,Hombre,52,8.6,4190000.0,365.5
+Alto Paraná,Rural,Hombre,33,7.9,3344000.0,103.3
+San Pedro,Urbana,Hombre,52,12.4,1651000.0,421.7
+Alto Paraná,Rural,Mujer,60,4.4,1182000.0,124.8
+Alto Paraná,Urbana,Hombre,57,12.4,7169000.0,343.4
+Caaguazú,Urbana,Mujer,52,7.7,5670000.0,426.8
+Concepción,Rural,Mujer,22,7.5,915000.0,158.8
+Alto Paraná,Urbana,Mujer,21,10.1,1166000.0,391.6
+San Pedro,Rural,Mujer,48,11.4,1858000.0,90.4
+Concepción,Urbana,Mujer,15,13.4,2403000.0,509.5
+Concepción,Rural,Hombre,26,7.4,1917000.0,113.7
+Concepción,Urbana,Hombre,20,8.8,6798000.0,343.1
+Caaguazú,Rural,Hombre,18,7.6,1152000.0,102.8
+Concepción,Rural,Mujer,50,9.2,1027000.0,130.9
+Itapúa,Urbana,Mujer,56,6.3,946000.0,495.1
+Itapúa,Rural,Hombre,26,4.8,926000.0,111.6
+Central,Rural,Mujer,41,7.4,1998000.0,115.8
+Central,Rural,Mujer,46,8.0,686000.0,93.8
+Caaguazú,Urbana,Mujer,26,12.6,3460000.0,430.8
+Alto Paraná,Rural,Mujer,33,7.8,1404000.0,144.1
+Alto Paraná,Rural,Mujer,15,6.9,712000.0,132.8
+Itapúa,Urbana,Mujer,15,9.4,6030000.0,423.0
+Itapúa,Urbana,Hombre,25,12.7,1696000.0,388.7
+Central,Urbana,Hombre,24,7.5,2883000.0,353.5
+Central,Rural,Hombre,36,7.8,1555000.0,107.7
+Asunción,Urbana,Mujer,45,12.8,4204000.0,502.0
+Concepción,Urbana,Mujer,72,7.8,4564000.0,422.3
+Asunción,Urbana,Hombre,15,9.1,16292000.0,384.2
+Concepción,Urbana,Hombre,15,18.0,9853000.0,414.1
+Concepción,Urbana,Mujer,50,15.7,3411000.0,347.6
+Canindeyú,Urbana,Mujer,15,13.6,2251000.0,396.8
+Alto Paraná,Urbana,Mujer,53,16.0,8459000.0,471.1
+San Pedro,Rural,Hombre,33,7.0,2361000.0,147.2
+Asunción,Rural,Mujer,48,12.6,873000.0,149.4
+Central,Rural,Hombre,51,6.8,459000.0,96.2
+Asunción,Urbana,Hombre,37,13.2,3531000.0,404.1
+Canindeyú,Rural,Mujer,15,6.5,486000.0,116.4
+Alto Paraná,Rural,Mujer,35,3.6,2974000.0,119.0
+Asunción,Urbana,Hombre,15,10.8,18570000.0,467.6
+Itapúa,Rural,Mujer,33,10.1,1964000.0,138.1
+Itapúa,Rural,Mujer,70,6.1,1657000.0,101.0
+Canindeyú,Urbana,Hombre,21,12.8,5014000.0,346.5
+Itapúa,Rural,Mujer,22,0.0,1196000.0,91.3
+Caaguazú,Rural,Hombre,15,5.7,509000.0,102.9
+San Pedro,Urbana,Mujer,42,10.4,5173000.0,393.2
+Caaguazú,Urbana,Mujer,33,6.5,3347000.0,519.6
+Alto Paraná,Rural,Mujer,50,11.4,1260000.0,143.4
+Asunción,Urbana,Hombre,23,13.2,7248000.0,481.0
+Itapúa,Urbana,Mujer,15,12.8,3773000.0,447.5
+Itapúa,Rural,Hombre,45,4.7,1214000.0,135.2
+Caaguazú,Rural,Mujer,30,16.7,2671000.0,107.1
+Concepción,Rural,Hombre,32,6.2,1416000.0,157.0
+San Pedro,Urbana,Hombre,60,10.8,1990000.0,324.6
+Alto Paraná,Urbana,Hombre,48,13.3,3335000.0,327.0
+Asunción,Urbana,Hombre,50,10.4,3179000.0,430.4
+Itapúa,Rural,Hombre,15,9.9,939000.0,107.8
+Central,Rural,Mujer,60,11.1,919000.0,126.1
+Asunción,Urbana,Hombre,15,10.1,5119000.0,331.7
+Asunción,Urbana,Hombre,63,5.8,2988000.0,481.6
+Concepción,Urbana,Hombre,18,9.6,2724000.0,395.9
+Canindeyú,Urbana,Hombre,31,11.8,2600000.0,513.5
+Itapúa,Urbana,Hombre,15,14.1,24902000.0,349.9
+Alto Paraná,Rural,Mujer,34,6.8,1779000.0,142.1
+San Pedro,Urbana,Mujer,15,12.0,9488000.0,349.3
+Concepción,Urbana,Hombre,34,14.5,4268000.0,485.8
+Concepción,Rural,Hombre,36,14.2,2312000.0,103.0
+San Pedro,Rural,Hombre,62,11.8,2302000.0,146.6
+Alto Paraná,Rural,Hombre,63,7.8,1220000.0,94.0
+San Pedro,Rural,Hombre,37,14.0,2743000.0,136.9
+San Pedro,Rural,Hombre,39,7.7,1164000.0,155.8
+Central,Rural,Mujer,35,3.9,617000.0,109.8
+Asunción,Urbana,Hombre,55,9.0,2185000.0,408.4
+Asunción,Rural,Hombre,43,11.6,1598000.0,109.2
+Concepción,Rural,Mujer,25,7.3,903000.0,112.7
+San Pedro,Rural,Mujer,51,6.2,1051000.0,146.8
+San Pedro,Rural,Hombre,41,7.3,2888000.0,105.4
+Central,Rural,Hombre,26,7.7,2285000.0,110.5
+Caaguazú,Urbana,Hombre,24,6.5,4564000.0,447.0
+Canindeyú,Urbana,Hombre,36,14.0,3156000.0,355.8
+Itapúa,Rural,Mujer,28,7.2,2067000.0,139.2
+Caaguazú,Rural,Mujer,26,5.0,3124000.0,135.0
+Concepción,Urbana,Hombre,43,7.5,3043000.0,328.3
+Asunción,Urbana,Mujer,46,11.8,6871000.0,394.7
+Alto Paraná,Urbana,Hombre,37,10.5,3715000.0,385.2
+Alto Paraná,Urbana,Hombre,75,10.6,1641000.0,493.6
+Canindeyú,Rural,Hombre,53,13.8,3344000.0,155.4
+Caaguazú,Urbana,Hombre,41,13.5,4275000.0,354.8
+San Pedro,Rural,Hombre,22,0.0,893000.0,145.2
+Caaguazú,Rural,Mujer,24,7.4,1199000.0,137.4
+Alto Paraná,Urbana,Hombre,60,8.3,1880000.0,384.8
+San Pedro,Rural,Mujer,37,4.4,883000.0,107.5
+Asunción,Rural,Mujer,45,6.0,1072000.0,101.3
+Canindeyú,Rural,Mujer,60,8.1,3547000.0,98.3
+Central,Rural,Mujer,22,5.6,375000.0,137.8
+Asunción,Urbana,Mujer,31,14.8,2476000.0,504.1
+Caaguazú,Rural,Hombre,28,7.7,2043000.0,100.8
+Canindeyú,Rural,Mujer,27,13.1,3012000.0,106.7
+Alto Paraná,Rural,Hombre,15,9.7,3205000.0,139.4
+San Pedro,Urbana,Mujer,28,5.4,2081000.0,487.0
+Itapúa,Rural,Hombre,27,8.0,1645000.0,118.8
+Concepción,Rural,Hombre,27,6.5,501000.0,142.6
+Asunción,Urbana,Mujer,24,8.9,1453000.0,494.3
+Asunción,Urbana,Mujer,61,9.4,5340000.0,449.6
+Caaguazú,Urbana,Hombre,42,12.0,4118000.0,328.7
+Asunción,Urbana,Hombre,19,8.9,3713000.0,421.6
+San Pedro,Urbana,Hombre,45,4.4,2902000.0,352.8
+Concepción,Rural,Mujer,35,3.5,1870000.0,127.1
+San Pedro,Rural,Mujer,15,6.8,1224000.0,149.9
+Caaguazú,Rural,Hombre,53,8.2,983000.0,117.0
+Concepción,Urbana,Hombre,45,13.9,4990000.0,422.4
+Alto Paraná,Rural,Hombre,36,9.8,1310000.0,151.3
+Central,Urbana,Hombre,46,9.8,1814000.0,401.1
+Itapúa,Urbana,Mujer,60,11.9,4946000.0,343.8
+Itapúa,Rural,Mujer,78,4.6,608000.0,145.9
+Concepción,Urbana,Hombre,28,9.4,1914000.0,355.8
+Caaguazú,Rural,Mujer,64,11.1,1891000.0,158.3
+Caaguazú,Rural,Mujer,43,4.1,1810000.0,104.5
+Concepción,Rural,Hombre,40,13.2,4042000.0,141.6
+Caaguazú,Rural,Mujer,34,7.7,712000.0,98.0
+Concepción,Rural,Hombre,61,6.7,1679000.0,122.1
+Canindeyú,Rural,Hombre,25,3.1,1409000.0,126.8
+Canindeyú,Urbana,Hombre,50,11.8,3388000.0,427.1
+Concepción,Urbana,Hombre,53,10.2,2476000.0,369.5
+Itapúa,Rural,Mujer,41,7.7,516000.0,153.6
+San Pedro,Urbana,Hombre,28,12.1,11245000.0,511.8
+Asunción,Rural,Hombre,67,8.5,790000.0,95.0
+Concepción,Rural,Mujer,29,11.1,6107000.0,138.8
+Alto Paraná,Rural,Mujer,50,4.5,401000.0,141.4
+Concepción,Urbana,Hombre,38,12.4,2629000.0,339.0
+San Pedro,Rural,Mujer,25,4.1,3365000.0,92.5
+San Pedro,Rural,Mujer,58,4.0,528000.0,109.0
+Asunción,Rural,Hombre,32,8.0,2282000.0,134.2
+Central,Rural,Hombre,15,8.9,1395000.0,100.6
+Canindeyú,Urbana,Mujer,43,15.7,4278000.0,326.0
+Caaguazú,Urbana,Hombre,16,1.9,1633000.0,385.5
+Alto Paraná,Urbana,Mujer,27,6.1,1680000.0,348.6
+San Pedro,Urbana,Hombre,44,15.1,2720000.0,446.4
+Central,Rural,Hombre,39,7.5,978000.0,106.9
+Central,Urbana,Mujer,22,14.0,4268000.0,479.8
+Caaguazú,Urbana,Hombre,54,9.1,3126000.0,441.6
+Concepción,Urbana,Mujer,45,13.6,3231000.0,446.4
+Concepción,Rural,Hombre,15,11.7,2320000.0,110.7
+Concepción,Urbana,Mujer,18,3.6,1279000.0,392.6
+Itapúa,Rural,Hombre,70,3.1,910000.0,117.2
+Concepción,Urbana,Hombre,23,9.2,2106000.0,451.0
+Asunción,Urbana,Hombre,50,13.5,7144000.0,420.6
+San Pedro,Rural,Mujer,38,8.9,1611000.0,123.4
+Caaguazú,Rural,Mujer,54,10.9,737000.0,104.0
+Canindeyú,Rural,Mujer,20,6.9,1287000.0,120.2
+Asunción,Rural,Mujer,41,6.8,2032000.0,118.7
+Central,Rural,Mujer,30,7.8,1059000.0,91.1
+Alto Paraná,Urbana,Mujer,37,10.8,2484000.0,346.6
+Canindeyú,Rural,Hombre,44,5.5,557000.0,115.9
+Asunción,Rural,Mujer,44,5.8,1393000.0,93.9
+Central,Urbana,Hombre,25,11.8,5619000.0,403.6
+Caaguazú,Rural,Mujer,30,5.1,2125000.0,120.0
+Alto Paraná,Rural,Hombre,15,11.6,1580000.0,141.4
+Caaguazú,Rural,Mujer,41,9.9,1131000.0,117.1
+Asunción,Urbana,Mujer,44,7.6,797000.0,389.2
+Canindeyú,Rural,Hombre,29,4.6,654000.0,122.1
+Alto Paraná,Urbana,Mujer,40,18.0,8758000.0,412.3
+Asunción,Urbana,Hombre,67,6.3,6918000.0,506.2
+Asunción,Urbana,Hombre,15,12.3,2570000.0,453.2
+Alto Paraná,Rural,Hombre,58,9.3,1382000.0,129.7
+San Pedro,Rural,Hombre,18,8.5,2304000.0,98.2
+Caaguazú,Rural,Mujer,64,11.9,1666000.0,153.8
+Itapúa,Urbana,Hombre,31,3.9,1123000.0,361.9
+Alto Paraná,Rural,Hombre,44,4.1,3592000.0,110.9
+San Pedro,Urbana,Mujer,69,7.9,3433000.0,448.3
+San Pedro,Urbana,Mujer,25,14.3,5916000.0,430.2
+Concepción,Rural,Hombre,56,7.5,2532000.0,131.0
+Alto Paraná,Rural,Hombre,35,4.1,3603000.0,152.2
+Central,Urbana,Mujer,55,7.7,1513000.0,481.4
+Alto Paraná,Rural,Mujer,46,8.7,1720000.0,128.0
+Canindeyú,Rural,Mujer,34,7.3,2082000.0,115.3
+Concepción,Urbana,Hombre,15,12.7,3406000.0,417.1
+Alto Paraná,Urbana,Hombre,44,15.8,4369000.0,413.7
+Itapúa,Urbana,Hombre,42,8.3,4315000.0,382.7
+San Pedro,Urbana,Hombre,46,9.8,2156000.0,347.4
+Canindeyú,Urbana,Mujer,39,12.2,2816000.0,476.6
+Canindeyú,Urbana,Mujer,28,10.1,980000.0,383.1
+Caaguazú,Rural,Hombre,26,5.4,2464000.0,129.0
+Alto Paraná,Urbana,Mujer,16,7.7,1850000.0,371.8
+Alto Paraná,Rural,Hombre,16,4.6,876000.0,116.8
+Concepción,Rural,Hombre,46,7.5,1606000.0,141.6
+Central,Rural,Hombre,36,3.9,600000.0,91.5
+Canindeyú,Urbana,Hombre,15,3.5,1878000.0,436.9
+Caaguazú,Urbana,Hombre,45,18.0,10240000.0,440.9
+Concepción,Urbana,Hombre,23,9.7,3962000.0,510.5
+Canindeyú,Urbana,Hombre,44,10.7,5390000.0,508.9
+Canindeyú,Rural,Mujer,42,11.1,3284000.0,123.3
+Asunción,Rural,Mujer,54,5.5,657000.0,134.7
+Canindeyú,Rural,Mujer,50,5.1,1537000.0,101.2
+Alto Paraná,Urbana,Mujer,30,13.4,4371000.0,454.0
+Central,Urbana,Hombre,27,9.0,7770000.0,342.9
+Caaguazú,Urbana,Hombre,27,14.5,1212000.0,332.0
+Concepción,Urbana,Hombre,61,14.2,4409000.0,407.8
+Caaguazú,Rural,Mujer,16,5.7,941000.0,158.1
+Asunción,Urbana,Hombre,30,9.2,2294000.0,359.3
+Concepción,Urbana,Hombre,46,5.5,1971000.0,383.8
+Central,Urbana,Hombre,16,6.9,3200000.0,515.8
+Concepción,Urbana,Mujer,21,14.1,4708000.0,332.3
+Asunción,Urbana,Mujer,15,8.1,1329000.0,496.7
+Asunción,Rural,Hombre,42,9.6,3424000.0,136.3
+Concepción,Urbana,Mujer,15,13.3,16586000.0,399.5
+Alto Paraná,Urbana,Hombre,15,9.1,3158000.0,343.8
+Central,Rural,Hombre,52,10.6,3666000.0,95.6
+Alto Paraná,Urbana,Mujer,15,10.6,1821000.0,440.5
+Itapúa,Urbana,Mujer,26,15.1,2752000.0,481.9
+Concepción,Rural,Hombre,36,5.3,1409000.0,129.5
+Asunción,Rural,Mujer,26,6.4,3265000.0,117.7
+Central,Rural,Hombre,29,6.4,1262000.0,157.9
+Caaguazú,Urbana,Hombre,44,10.6,3240000.0,365.9
+Caaguazú,Rural,Mujer,19,5.1,716000.0,112.7
+San Pedro,Rural,Mujer,45,8.9,802000.0,139.5
+Canindeyú,Urbana,Hombre,42,13.2,4215000.0,444.3
+Caaguazú,Rural,Hombre,24,10.3,3864000.0,134.5
+Alto Paraná,Rural,Hombre,48,9.3,2517000.0,141.4
+Caaguazú,Rural,Hombre,24,6.7,1482000.0,120.1
+San Pedro,Urbana,Hombre,33,7.7,2278000.0,513.4
+Asunción,Rural,Hombre,28,9.5,2856000.0,96.0
+Alto Paraná,Urbana,Hombre,24,9.8,1101000.0,487.5
+San Pedro,Rural,Hombre,38,4.5,1059000.0,134.8
+Canindeyú,Rural,Hombre,15,5.9,1372000.0,131.4
+Concepción,Rural,Mujer,24,8.2,3893000.0,143.5
+Alto Paraná,Rural,Mujer,29,10.6,1089000.0,109.4
+Concepción,Rural,Hombre,46,8.9,2865000.0,92.5
+Central,Urbana,Hombre,42,11.5,5079000.0,441.2
+Caaguazú,Urbana,Hombre,30,8.5,1028000.0,506.0
+Canindeyú,Rural,Mujer,61,9.6,1228000.0,108.5
+Canindeyú,Rural,Hombre,15,5.7,1557000.0,106.9
+Itapúa,Urbana,Mujer,34,13.7,1203000.0,506.7
+Caaguazú,Rural,Hombre,37,7.8,1496000.0,105.1
+Caaguazú,Urbana,Hombre,16,10.3,3224000.0,322.2
+Concepción,Rural,Hombre,15,7.4,555000.0,152.2
+San Pedro,Urbana,Mujer,39,4.9,3025000.0,340.8
+Itapúa,Urbana,Hombre,27,18.0,3362000.0,501.8
+Asunción,Rural,Mujer,51,8.5,4242000.0,159.9
+San Pedro,Urbana,Hombre,27,13.2,1587000.0,455.8
+Alto Paraná,Rural,Hombre,29,3.6,1420000.0,139.1
+Asunción,Rural,Hombre,57,9.4,1767000.0,113.0
+Alto Paraná,Rural,Mujer,17,7.7,869000.0,104.8
+Itapúa,Urbana,Mujer,37,11.3,3315000.0,360.9
+Central,Urbana,Hombre,52,18.0,1688000.0,509.9
+Asunción,Rural,Hombre,36,14.9,4676000.0,144.6
+Concepción,Urbana,Hombre,28,12.7,3120000.0,451.6
+San Pedro,Urbana,Mujer,51,10.8,1556000.0,424.2
+Asunción,Rural,Hombre,15,4.7,1071000.0,146.0
+Central,Rural,Mujer,33,11.6,891000.0,159.6
+San Pedro,Urbana,Hombre,22,11.4,2362000.0,394.9
+Asunción,Urbana,Hombre,38,9.0,2003000.0,505.1
+Alto Paraná,Urbana,Mujer,30,14.4,1203000.0,469.7
+San Pedro,Rural,Mujer,26,4.4,1178000.0,123.9
+Caaguazú,Urbana,Hombre,48,12.0,10749000.0,366.5
+San Pedro,Urbana,Hombre,37,11.7,3703000.0,477.8
+Itapúa,Urbana,Hombre,42,12.7,1225000.0,373.7
+Canindeyú,Urbana,Hombre,48,16.2,6786000.0,507.7
+San Pedro,Rural,Mujer,15,7.7,1341000.0,119.1
+Canindeyú,Rural,Mujer,30,11.0,1988000.0,114.9
+San Pedro,Rural,Hombre,32,4.7,4694000.0,145.7
+San Pedro,Rural,Mujer,48,5.4,1074000.0,104.2
+Caaguazú,Rural,Mujer,15,0.0,888000.0,140.7
+Caaguazú,Rural,Mujer,43,9.5,1899000.0,113.2
+Canindeyú,Urbana,Mujer,55,8.4,6339000.0,518.3
+Concepción,Urbana,Mujer,28,14.2,2917000.0,475.7
+Central,Urbana,Hombre,46,12.7,4357000.0,485.0
+Caaguazú,Urbana,Hombre,33,17.9,11910000.0,347.6
+Asunción,Rural,Hombre,45,7.1,771000.0,103.5
+Asunción,Rural,Hombre,52,10.4,677000.0,116.1
+Caaguazú,Rural,Hombre,43,9.1,3712000.0,131.8
+Itapúa,Rural,Mujer,64,7.0,2526000.0,112.9
+Asunción,Rural,Mujer,24,11.9,1525000.0,105.5
+Caaguazú,Rural,Mujer,51,8.0,1261000.0,92.4
+Alto Paraná,Rural,Hombre,73,5.5,803000.0,138.7
+Itapúa,Rural,Mujer,32,7.9,851000.0,107.5
+Itapúa,Rural,Mujer,32,1.6,417000.0,143.2
+San Pedro,Urbana,Hombre,31,12.7,4483000.0,498.5
+Caaguazú,Rural,Mujer,21,13.8,6851000.0,144.6
+Canindeyú,Rural,Mujer,15,6.5,314000.0,122.1
+Itapúa,Urbana,Mujer,69,12.0,2784000.0,342.9
