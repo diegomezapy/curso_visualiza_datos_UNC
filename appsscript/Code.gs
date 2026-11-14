@@ -81,7 +81,7 @@ function validar_(p, codigoClase) {
   if (!codigoClase) return 'servidor_sin_codigo';
   if (!p || typeof p !== 'object') return 'formato';
   if (p.codigo !== codigoClase) return 'codigo';
-  if (!/^P-[A-Z0-9]{5}$/.test(p.pid || '')) return 'pid';
+  if (!/^P-[A-Z0-9]{10}$/.test(p.pid || '')) return 'pid';
   if (AREAS.indexOf(p.area) < 0) return 'area';
   if (EXPERIENCIA.indexOf(p.experiencia) < 0) return 'experiencia';
   if (!Array.isArray(p.herramientas) || p.herramientas.some(function (h) { return HERRAMIENTAS.indexOf(h) < 0; })) return 'herramientas';
@@ -124,8 +124,9 @@ function construirFila_(p, ahora) {
 /* ---------- lectura: tablero y API ---------- */
 function doGet(e) {
   const p = (e && e.parameter) || {}, a = p.action || '', pg = p.page || '';
+  if (a === 'estado') return estadoPublico_(p);
   if (a === 'datos') return json_(datos_());
-  if (a === 'agenda') return json_(agendaPublica_());
+  if (a === 'agenda') return json_(typeof agendaPublica_ === 'function' ? agendaPublica_() : { eventos: [], nota: 'Agenda no configurada.' });
   if (pg === 'asistencia' || pg === 'mini') {
     const t = HtmlService.createTemplateFromFile(pg === 'asistencia' ? 'Asistencia' : 'MiniEval');
     t.e = p.e || ''; t.u = p.u || ''; t.t = p.t || '';
@@ -137,6 +138,17 @@ function doGet(e) {
     .setTitle('Tablero · Diagnóstico inicial')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+/** Confirmación sin CORS del envío. Solo revela si existe un código aleatorio de 10 caracteres. */
+function estadoPublico_(p) {
+  if (!/^P-[A-Z0-9]{10}$/.test(p.pid || '') || !/^cvdEstado_[A-Za-z0-9_]{6,64}$/.test(p.callback || ''))
+    return json_({ ok: false, error: 'formato' });
+  const sh = hoja_(), n = sh.getLastRow();
+  const pids = n > 1 ? sh.getRange(2, COLUMNAS.indexOf('pid') + 1, n - 1, 1).getValues() : [];
+  const registrado = pids.some(function (r) { return r[0] === p.pid; });
+  return ContentService.createTextOutput(p.callback + '(' + JSON.stringify({ registrado: registrado }) + ');')
+    .setMimeType(ContentService.MimeType.JAVASCRIPT);
 }
 
 /** Datos anonimizados (sin pid ni comentario). También lo invoca el tablero con google.script.run. */

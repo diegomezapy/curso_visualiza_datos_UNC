@@ -19,7 +19,7 @@ Mientras `aula/config.json` tenga `"firebase": {}`, el aula funciona en **modo d
 1. En Firestore: **Iniciar colección** `docentes` → ID del documento = **correo del docente, en minúsculas** → agregar un campo cualquiera (`activo` = true).
 2. El docente debe crear su cuenta en el aula y **verificar su correo**; entonces aparece el menú **Panel docente**.
    (Un docente sin perfil de estudiante no necesita completar datos personales.)
-3. Para mostrar las hojas externas en el panel, agregar al mismo documento un mapa `planillas` con los campos opcionales `diagnostico`, `agenda` y `entregas`. Cada valor debe ser la URL privada de una hoja de Google Sheets (`https://docs.google.com/spreadsheets/d/.../edit`). `agenda` corresponde a las pestañas **Asistencia** y **MiniEval** del libro de Apps Script. No poner estos enlaces en `aula/config.json`, porque ese archivo se publica en GitHub Pages. Conceder acceso al docente directamente en Google Sheets.
+3. Para mostrar y descargar en Excel las hojas externas en el panel, agregar al mismo documento un mapa `planillas` con los campos opcionales `diagnostico`, `agenda` y `entregas`. Cada valor debe ser la URL privada de una hoja de Google Sheets (`https://docs.google.com/spreadsheets/d/.../edit`). `agenda` corresponde a las pestañas **Asistencia** y **MiniEval** del libro de Apps Script. No poner estos enlaces en `aula/config.json`, porque ese archivo se publica en GitHub Pages. Conceder acceso al docente directamente en Google Sheets.
 
 ## 5. Conectar el sitio
 1. **Configuración del proyecto → Tus apps → Web (`</>`)** → registrar app → copiar `firebaseConfig`.
@@ -51,7 +51,7 @@ Las reglas de `firebase/firestore.rules` deben estar publicadas **antes** de act
 - Si un estudiante pierde acceso a su correo, el docente puede eliminar/restablecer su cuenta desde **Authentication** en la consola.
 
 ## Cuidado de los datos personales
-- Los datos de cédula, fecha de nacimiento y sexo son **sensibles**: usar solo para fines del curso, exportar el CSV únicamente si es necesario y no compartirlo en carpetas públicas de Drive.
+- Los datos de cédula, fecha de nacimiento y sexo son **sensibles**: usar solo para fines del curso, exportar CSV o Excel únicamente si es necesario y no compartirlos en carpetas públicas de Drive.
 - El formulario incluye una cláusula de consentimiento; ajústela al texto que exija la institución (`CONSENT` en `aula/aula.js`).
 - Para eliminar a un estudiante: borrar su cuenta en Authentication y sus documentos en `usuarios`, `progreso`, `calificaciones` y `cedulas/{su cédula}`.
 

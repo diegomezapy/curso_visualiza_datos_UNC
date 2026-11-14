@@ -48,6 +48,7 @@ async function perfil(page, correo, cedula, nombre) {
   assert.equal(await page.locator('#csvRespuestas').isEnabled(), true);
   assert.equal(await page.locator('#csvAuto').isEnabled(), true);
   assert.equal(await page.locator('a:has-text("Diagnóstico inicial")').count(), 1);
+  assert.match(await page.locator('a:has-text("⬇ Excel")').getAttribute('href'), /\/export\?format=xlsx$/);
   assert.equal(await page.locator('a:has-text("Evaluaciones formales y reportes en Moodle")').count(), 1);
   await page.screenshot({ path: '/tmp/aula_planillas_docente.png', fullPage: true });
   for (const [boton, muestra] of [['csvRegistro', 'alumna@ejemplo.test'], ['csvRespuestas', 'detalle'], ['csvAuto', 'Logrado']]) {
@@ -56,6 +57,13 @@ async function perfil(page, correo, cedula, nombre) {
     const descarga = await evento;
     const texto = fs.readFileSync(await descarga.path(), 'utf8');
     assert.ok(texto.includes(muestra), `${boton} no contiene ${muestra}`);
+  }
+  for (const boton of ['xlsxRegistro', 'xlsxRespuestas', 'xlsxAuto', 'xlsxNotas']) {
+    const evento = page.waitForEvent('download');
+    await page.locator('#' + boton).click();
+    const descarga = await evento;
+    assert.match(descarga.suggestedFilename(), /\.xlsx$/);
+    assert.equal(fs.readFileSync(await descarga.path()).subarray(0, 2).toString(), 'PK');
   }
   await page.locator('#logout').click();
   await page.waitForSelector('#lf');

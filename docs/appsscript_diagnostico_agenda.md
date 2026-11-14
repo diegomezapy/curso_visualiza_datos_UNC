@@ -31,7 +31,7 @@ Hoja "Agenda" + "Estudiantes" ─→ activador (cada minuto) ─→ correos de a
 "diagnostico": { "endpoint": "URL_DE_LA_APP_WEB", "tablero_url": "URL_DE_LA_APP_WEB", "looker_url": "", "looker_embed": "" },
 "agenda": { "endpoint": "" }
 ```
-   (`agenda.endpoint` vacío usa el mismo de `diagnostico`.) Hacé *commit* + *push* y el sitio se republica.
+   Si publicás también las funciones de agenda en el mismo proyecto, copiá esa URL a `agenda.endpoint`. Si queda vacío, el calendario usa la agenda base del aula. Hacé *commit* + *push* y el sitio se republica.
 7. **Probá:** abrí `/diagnostico/`, respondé con el código de clase y verificá que aparece una fila en *Respuestas* y en el tablero.
 
 > Cada vez que cambies el código del script: **Implementar → Administrar implementaciones → editar → Nueva versión**.
@@ -76,7 +76,8 @@ Pestaña **Estudiantes**: `email`, `nombre`, `activo` (SI/NO). Copiá los correo
 5. Para que se actualice solo: **Recurso → Administrar fuentes de datos → Frecuencia de actualización de datos** (mín. 15 min en la conexión de Hojas).
 
 ## 7. Privacidad
-- El cuestionario es **anónimo** (código aleatorio `P-XXXXX`, sin nombre ni cédula). El comentario libre no se publica en la API ni en Looker.
+- El cuestionario es **anónimo** (código aleatorio de 10 caracteres después de `P-`, sin nombre ni cédula). El comentario libre no se publica en la API ni en Looker.
+- El tablero permite exportar la vista filtrada en CSV y Excel. La hoja privada conserva todas las respuestas y puede descargarse en Excel desde el panel docente; las respuestas enviadas mientras el formulario estuvo en modo práctica no se guardaron y no pueden recuperarse.
 - *Estudiantes*, *Asistencia* y *MiniEval* sí contienen correos y nombres: mantené la hoja **privada** y compartila solo con docentes.
 - No guardes esta hoja dentro de la carpeta de Drive del aula (permite edición a quien tenga el enlace).
 

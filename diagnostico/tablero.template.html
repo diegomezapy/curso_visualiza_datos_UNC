@@ -33,6 +33,7 @@ svg text{fill:var(--mut);font-size:10px}.note{border:1px dashed #9a6700;border-r
   <button id="rf" type="button">↻ Actualizar</button>
   <label class="sw"><input type="checkbox" id="auto"> Auto (30 s)</label>
   <button id="dl" type="button">⬇ CSV</button>
+  <button id="dlx" type="button">⬇ Excel</button>
 </div></header>
 <main>
 <div id="aviso"></div>
@@ -40,6 +41,9 @@ svg text{fill:var(--mut);font-size:10px}.note{border:1px dashed #9a6700;border-r
 <div class="grid" id="grid"></div>
 <p class="muted">Datos anónimos del cuestionario diagnóstico. Los filtros (área, experiencia, nivel) se aplican a todos los gráficos; hacé clic en un nivel para filtrar. Este tablero se alimenta en tiempo real de la hoja de cálculo del curso.</p>
 </main>
+<script>
+/*XLSX_INLINE*/
+</script>
 <script>
 (() => {
 "use strict";
@@ -59,6 +63,8 @@ function procesar(d, ejemplo) {
     META.auto.forEach(([id]) => o[id] = +o[id]); META.preguntas.forEach(p => o["ok_" + p.id] = +o["ok_" + p.id]);
     o.herr = String(o.herramientas || "").split(";").map(s => s.trim()).filter(Boolean); return o; });
   $("#aviso").innerHTML = ejemplo ? '<div class="note"><b>Datos de ejemplo (sintéticos).</b> El tablero se conectará a las respuestas reales cuando el docente configure el endpoint de Apps Script.</div>' : "";
+  $("#dl").textContent = ejemplo ? "⬇ CSV de ejemplo" : "⬇ CSV";
+  $("#dlx").textContent = ejemplo ? "⬇ Excel de ejemplo" : "⬇ Excel";
   $("#act").textContent = "· actualizado " + new Date().toLocaleTimeString("es-PY", { hour: "2-digit", minute: "2-digit" });
   llenarFiltros(); pintar();
 }
@@ -116,8 +122,20 @@ function pintar() {
 
 $("#fa").addEventListener("change", pintar); $("#fe").addEventListener("change", pintar); $("#rf").addEventListener("click", cargar);
 $("#auto").addEventListener("change", e => { clearInterval(timer); if (e.target.checked) timer = setInterval(cargar, 30000); });
-$("#dl").addEventListener("click", () => { const e = v => '"' + String(v ?? "").replace(/"/g, '""') + '"'; const t = [COLS.map(e).join(",")].concat(filtrados().map(d => COLS.map(c => e(d[c])).join(","))).join("\n");
-  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["﻿" + t], { type: "text/csv" })); a.download = "diagnostico_filtrado.csv"; a.click(); });
+const tablaFiltrada = () => ({ encabezados: COLS, filas: filtrados().map(d => COLS.map(c => d[c])) });
+function descargar(nombre, contenido, tipo) {
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([contenido], { type: tipo })); a.download = nombre;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+$("#dl").addEventListener("click", () => { const t = tablaFiltrada();
+  const e = v => { let s = String(v ?? ""); if (/^[\s\uFEFF]*[=+\-@]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; };
+  descargar("diagnostico_filtrado.csv", "\uFEFF" + [t.encabezados, ...t.filas].map(f => f.map(e).join(",")).join("\r\n") + "\r\n", "text/csv;charset=utf-8"); });
+$("#dlx").addEventListener("click", () => { const t = tablaFiltrada();
+  try {
+    const { xlsxPlanilla, XLSX_MIME } = window.CVD_XLSX;
+    descargar("diagnostico_filtrado.xlsx", xlsxPlanilla(t.encabezados, t.filas, "Diagnóstico"), XLSX_MIME);
+  } catch (e) { $("#aviso").innerHTML = '<div class="note">No se pudo preparar el Excel. Actualizá la página e intentá de nuevo.</div>'; }
+});
 cargar();
 })();
 </script>

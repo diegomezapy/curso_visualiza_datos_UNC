@@ -73,7 +73,7 @@ label{display:block;font-weight:600;font-size:.92rem;margin:.8rem 0 .25rem}selec
 (() => {
 const D = window.DIAG, CFG = window.DIAG_CFG || {}, $ = s => document.querySelector(s), esc = s => String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
 const L = "ABCD", TEMAS = D.temas;
-const pid = (() => { const a = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; const r = crypto.getRandomValues(new Uint8Array(5)); return "P-" + [...r].map(x => a[x % a.length]).join(""); })();
+const pid = (() => { const a = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; const r = crypto.getRandomValues(new Uint8Array(10)); return "P-" + [...r].map(x => a[x % a.length]).join(""); })();
 $("#area").innerHTML = '<option value="">Seleccioná…</option>' + D.areas.map(a => `<option>${esc(a)}</option>`).join("");
 $("#exp").innerHTML = '<option value="">Seleccioná…</option>' + D.experiencia.map(a => `<option>${esc(a)}</option>`).join("");
 $("#herr").innerHTML = D.herramientas.map(h => `<label><input type="checkbox" name="herr" value="${esc(h)}"><span>${esc(h)}</span></label>`).join("");
@@ -105,12 +105,32 @@ function puntajes(p) {
   const s = { viz: 0, py: 0, r: 0 }; D.preguntas.forEach(q => { if (p.resp[q.id] === L[q.c]) s[q.tema]++; });
   const t = s.viz + s.py + s.r; return { ...s, total: t, nivel: t <= 4 ? "Inicial" : t <= 8 ? "Intermedio" : "Avanzado" };
 }
+function estadoRemoto(pid) {
+  return new Promise(resolve => {
+    const cb = "cvdEstado_" + crypto.randomUUID().replace(/-/g, ""), s = document.createElement("script");
+    let terminado = false;
+    const finalizar = valor => { if (terminado) return; terminado = true; clearTimeout(t); delete window[cb]; s.remove(); resolve(valor); };
+    const t = setTimeout(() => finalizar(false), 8000);
+    window[cb] = dato => finalizar(dato?.registrado === true);
+    s.onerror = () => finalizar(false);
+    const u = new URL(CFG.endpoint); u.searchParams.set("action", "estado"); u.searchParams.set("pid", pid); u.searchParams.set("callback", cb);
+    s.src = u.href; document.head.appendChild(s);
+  });
+}
 async function enviar(p) {
   const cuerpo = JSON.stringify(p), init = { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: cuerpo };
   try { const r = await fetch(CFG.endpoint, init); const j = await r.json(); return j.ok ? { ok: true } : { ok: false, error: j.error }; }
-  catch (e) { try { await fetch(CFG.endpoint, { ...init, mode: "no-cors" }); return { ok: true, noConfirmado: true }; } catch (e2) { return { ok: false, error: "red" }; } }
+  catch (e) {
+    if (await estadoRemoto(p.pid)) return { ok: true };
+    try { await fetch(CFG.endpoint, { ...init, mode: "no-cors" }); } catch (e2) { return { ok: false, error: "red" }; }
+    for (let i = 0; i < 5; i++) {
+      if (await estadoRemoto(p.pid)) return { ok: true };
+      await new Promise(resolve => setTimeout(resolve, 600));
+    }
+    return { ok: false, error: "sin_confirmar" };
+  }
 }
-const ERR = { codigo: "El código de clase no es correcto. Pedíselo al docente.", servidor_sin_codigo: "El servidor todavía no está configurado (falta el código de clase).", red: "No hay conexión con el servidor. Revisá tu internet e intentá de nuevo.", limite: "Se alcanzó el máximo de respuestas.", formato: "No se pudo procesar el envío." };
+const ERR = { codigo: "El código de clase no es correcto. Pedíselo al docente.", servidor_sin_codigo: "El servidor todavía no está configurado (falta el código de clase).", red: "No hay conexión con el servidor. Revisá tu internet e intentá de nuevo.", sin_confirmar: "No pudimos confirmar el registro. Revisá el código de clase o consultá al docente antes de cerrar esta página.", limite: "Se alcanzó el máximo de respuestas.", formato: "No se pudo procesar el envío." };
 
 $("#f").addEventListener("submit", async e => {
   e.preventDefault(); const p = leer(), f = faltantes(p), m = $("#msg"); m.className = "err";
@@ -128,7 +148,7 @@ $("#f").addEventListener("submit", async e => {
 function mostrar(p, s, estado) {
   $("#f").classList.add("hide"); $("#intro").classList.add("hide"); const r = $("#res"); r.classList.remove("hide");
   const barra = (t, v) => `<div style="margin:.5rem 0"><div class="row" style="justify-content:space-between"><b>${esc(TEMAS[t])}</b><span>${v} / 4</span></div><div class="bar"><i style="width:${v / 4 * 100}%"></i></div></div>`;
-  const nota = { enviado: "✅ Tus respuestas se enviaron al grupo.", noconfirmado: "✅ Enviado (no se pudo confirmar la recepción; si no aparece en el tablero, avisá al docente).", practica: "ℹ️ Modo práctica: no se envió ningún dato." }[estado];
+  const nota = { enviado: "✅ Tus respuestas se enviaron al grupo.", practica: "ℹ️ Modo práctica: no se envió ningún dato." }[estado];
   r.innerHTML = `<div class="card"><h2>Tu resultado</h2><div class="row" style="align-items:flex-end"><div class="big">${s.total}<span class="muted" style="font-size:1.1rem"> / 12</span></div><div><span class="tag">Nivel ${s.nivel}</span></div></div>
    ${barra("viz", s.viz)}${barra("py", s.py)}${barra("r", s.r)}
    <p class="muted">${nota} Tu código de participante: <b>${pid}</b> (guardalo por si necesitás consultarlo).</p>

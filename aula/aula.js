@@ -2,7 +2,8 @@
    Autenticación y datos: Firebase (Auth + Firestore) o modo demo local (ver backend.js). */
 import { crearBackend, msgError } from "./backend.js";
 import { heroHtml, afterRender, initFx } from "./fx.js";
-import { csvPlanilla, planillaRegistros, planillaQuizzes, planillaAutoevaluaciones } from "./planillas.mjs";
+import { csvPlanilla, tablaRegistros, tablaQuizzes, tablaAutoevaluaciones } from "./planillas.mjs";
+import { xlsxPlanilla, XLSX_MIME } from "./xlsx.mjs";
 (async () => {
 "use strict";
 const D = window.CURSO, C = D.config;
@@ -54,7 +55,7 @@ function progSes(s, st = S) {
 const progTotal = (st = S) => { let d = 0, i = 0; D.sesiones.forEach(s => { const p = progSes(s, st); d += p.done; i += p.items; }); return i ? d / i : 0; };
 function descargar(nombre, texto, mime = "application/json") {
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([texto], { type: mime + ";charset=utf-8" })); a.download = nombre;
+  a.href = URL.createObjectURL(new Blob([texto], { type: /^(text\/|application\/json)/.test(mime) ? mime + ";charset=utf-8" : mime })); a.download = nombre;
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
 }
 const bar = (p, cls = "") => `<div class="bar ${cls}" role="progressbar" aria-valuenow="${Math.round(p * 100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.round(p * 100)}%"></i></div>`;
@@ -423,25 +424,37 @@ async function vDocente() {
   const hayAuto = ALUMNOS.some(a => Object.keys(a.progreso.auto || {}).length);
   const links = [["diagnostico", "Diagnóstico inicial"], ["agenda", "Asistencia y mini evaluaciones"], ["entregas", "Otros formularios"]];
   const enlaceSeguro = u => /^https:\/\/docs\.google\.com\/spreadsheets\/d\/[\w-]+(?:\/|$)/.test(u || "");
+  const enlaceExcel = u => {
+    const m = String(u || "").match(/^https:\/\/docs\.google\.com\/spreadsheets\/d\/([\w-]+)(?:\/|$)/);
+    return m ? `https://docs.google.com/spreadsheets/d/${m[1]}/export?format=xlsx` : "";
+  };
   return `<h1>Panel docente</h1><p class="sub">${ALUMNOS.length} estudiante(s) registrados. Las notas que cargues se guardan al instante y el estudiante las ve en su aula.</p>${demoBanner()}
   <h2>Planillas del aula</h2><div class="card"><div class="row">
-    <button type="button" class="btn" id="csvRegistro" ${ALUMNOS.length ? "" : "disabled"}>⬇ Registro de usuarios</button>
-    <button type="button" class="btn" id="csvRespuestas" ${hayQuiz && !ERROR_INTENTOS ? "" : "disabled"}>⬇ Respuestas de quizzes</button>
-    <button type="button" class="btn" id="csvAuto" ${hayAuto ? "" : "disabled"}>⬇ Autoevaluaciones</button>
-    <button type="button" class="btn sec" id="csv" ${ALUMNOS.length ? "" : "disabled"}>⬇ Calificaciones</button></div>
+    <button type="button" class="btn" id="csvRegistro" ${ALUMNOS.length ? "" : "disabled"}>⬇ Registro CSV</button>
+    <button type="button" class="btn sec" id="xlsxRegistro" ${ALUMNOS.length ? "" : "disabled"}>⬇ Registro Excel</button>
+    <button type="button" class="btn" id="csvRespuestas" ${hayQuiz && !ERROR_INTENTOS ? "" : "disabled"}>⬇ Quizzes CSV</button>
+    <button type="button" class="btn sec" id="xlsxRespuestas" ${hayQuiz && !ERROR_INTENTOS ? "" : "disabled"}>⬇ Quizzes Excel</button>
+    <button type="button" class="btn" id="csvAuto" ${hayAuto ? "" : "disabled"}>⬇ Autoevaluaciones CSV</button>
+    <button type="button" class="btn sec" id="xlsxAuto" ${hayAuto ? "" : "disabled"}>⬇ Autoevaluaciones Excel</button>
+    <button type="button" class="btn" id="csv" ${ALUMNOS.length ? "" : "disabled"}>⬇ Calificaciones CSV</button>
+    <button type="button" class="btn sec" id="xlsxNotas" ${ALUMNOS.length ? "" : "disabled"}>⬇ Calificaciones Excel</button></div>
     <p class="muted" style="margin-bottom:0">Los quizzes de práctica nuevos incluyen cada respuesta. Los intentos anteriores conservan solo fecha y puntaje. Las evaluaciones formales y sus respuestas se administran en Moodle.</p>
     ${ERROR_INTENTOS ? `<p class="note">No se pudieron leer los intentos de quizzes: ${esc(ERROR_INTENTOS)}</p>` : ""}
     ${C.moodle_curso ? `<p><a href="${esc(C.moodle_curso)}" target="_blank" rel="noopener noreferrer">Evaluaciones formales y reportes en Moodle ↗</a></p>` : ""}</div>
-  <h2>Hojas externas del curso</h2><div class="card"><ul class="res">${links.map(([clave, titulo]) => `<li>${enlaceSeguro(PLANILLAS[clave]) ? `<a href="${esc(PLANILLAS[clave])}" target="_blank" rel="noopener noreferrer">${titulo} ↗</a>` : `${titulo}: <span class="muted">hoja no configurada</span>`}</li>`).join("")}</ul><p class="muted">Estas hojas se abren con los permisos de tu cuenta de Google. Sus enlaces se guardan en tu documento privado de docente en Firebase.</p></div>
+  <h2>Hojas externas del curso</h2><div class="card"><ul class="res">${links.map(([clave, titulo]) => `<li>${enlaceSeguro(PLANILLAS[clave]) ? `<a href="${esc(PLANILLAS[clave])}" target="_blank" rel="noopener noreferrer">${titulo} ↗</a> · <a href="${esc(enlaceExcel(PLANILLAS[clave]))}" target="_blank" rel="noopener noreferrer">⬇ Excel</a>` : `${titulo}: <span class="muted">hoja no configurada</span>`}</li>`).join("")}</ul><p class="muted">Estas hojas se abren y descargan con los permisos de tu cuenta de Google. Sus enlaces se guardan en tu documento privado de docente en Firebase.</p></div>
   <div class="card"><input type="text" id="dq" placeholder="Buscar por nombre, cédula o correo…" style="max-width:360px" aria-label="Buscar estudiante"></div>
   ${ALUMNOS.length ? `<div class="card tw"><table><thead><tr><th>Estudiante</th><th>Avance</th><th>Teoría/30</th>${GRADED.map(g => `<th title="${esc(g.titulo)}">${g.id.replace("s", "S").replace("_", " ")}<br>/${g.pts}</th>`).join("")}<th>Práct./50</th><th>Integr./20</th><th>Total</th><th>Esc.</th></tr></thead><tbody>${ALUMNOS.map(filaDoc).join("")}</tbody></table>
   <p class="muted">Escala sugerida: 1 (&lt;60) · 2 (60-69) · 3 (70-80) · 4 (81-90) · 5 (≥91). Ajustar al reglamento vigente. Práctica incluye hasta +3 por el ejercicio opcional de redes (tope 50).</p></div>` : `<div class="card muted">Aún no hay estudiantes registrados.</div>`}`;
 }
 function bindDocente() {
   $("#dq")?.addEventListener("input", e => { const q = e.target.value.toLowerCase(); $$("tbody tr").forEach(tr => tr.hidden = !tr.dataset.q.includes(q)); });
-  $("#csvRegistro")?.addEventListener("click", () => descargar("registro_usuarios.csv", planillaRegistros(ALUMNOS), "text/csv"));
-  $("#csvRespuestas")?.addEventListener("click", () => descargar("respuestas_quizzes.csv", planillaQuizzes(ALUMNOS, INTENTOS), "text/csv"));
-  $("#csvAuto")?.addEventListener("click", () => descargar("autoevaluaciones.csv", planillaAutoevaluaciones(ALUMNOS, ACTS, D.rubricas), "text/csv"));
+  const exportar = (csvId, xlsxId, nombre, obtener) => {
+    $(csvId)?.addEventListener("click", () => { const t = obtener(); descargar(nombre + ".csv", csvPlanilla(t.encabezados, t.filas), "text/csv"); });
+    $(xlsxId)?.addEventListener("click", () => { const t = obtener(); descargar(nombre + ".xlsx", xlsxPlanilla(t.encabezados, t.filas), XLSX_MIME); });
+  };
+  exportar("#csvRegistro", "#xlsxRegistro", "registro_usuarios", () => tablaRegistros(ALUMNOS));
+  exportar("#csvRespuestas", "#xlsxRespuestas", "respuestas_quizzes", () => tablaQuizzes(ALUMNOS, INTENTOS));
+  exportar("#csvAuto", "#xlsxAuto", "autoevaluaciones", () => tablaAutoevaluaciones(ALUMNOS, ACTS, D.rubricas));
   $$("input[data-id]").forEach(inp => inp.addEventListener("input", () => {
     const u = inp.dataset.u, id = inp.dataset.id, g = actById(id), a = ALUMNOS.find(x => x.uid === u);
     if (inp.value === "") delete a.oficial[id]; else a.oficial[id] = Math.max(0, Math.min(g.pts, +inp.value));
@@ -450,12 +463,13 @@ function bindDocente() {
     tr.querySelector("[data-c=tt]").innerHTML = `<b>${fmt(c.total)}</b>`; tr.querySelector("[data-c=es]").innerHTML = `<b>${c.escala}</b>`;
     clearTimeout(timers[u]); timers[u] = setTimeout(() => B.guardarCalificaciones(u, a.oficial).then(() => aviso("Nota guardada ✔")).catch(e => aviso(msgError(e), "bad")), 700);
   }));
-  $("#csv")?.addEventListener("click", () => {
+  const tablaNotas = () => {
     const qs = Object.keys(D.quizzes), head = ["apellidos", "nombres", "cedula", "fecha_nacimiento", "sexo", "departamento", "ciudad", "telefono", "email", "cohorte", "avance_%", ...qs.map(n => "quiz" + n + "_%"), "teoria_30", ...GRADED.map(g => g.id), "practica_50", "integrador_20", "total_100", "escala"];
     const rows = ALUMNOS.map(a => { const p = a.perfil, q = a.progreso.quiz || {}, c = calcular(q, a.oficial);
       return [p.apellidos, p.nombres, p.cedula, p.fechaNac, p.sexo, p.departamento, p.ciudad, p.telefono, p.email, p.cohorte, Math.round(progTotal({ done: a.progreso.done || {}, quiz: q }) * 100), ...qs.map(n => q[n]?.mejor ?? ""), fmt(c.teoria, 2), ...GRADED.map(g => a.oficial[g.id] ?? ""), fmt(c.practica, 2), fmt(c.integ, 2), fmt(c.total, 2), c.escala]; });
-    descargar("calificaciones_curso.csv", csvPlanilla(head, rows), "text/csv");
-  });
+    return { encabezados: head, filas: rows };
+  };
+  exportar("#csv", "#xlsxNotas", "calificaciones_curso", tablaNotas);
 }
 
 /* ---------- clases grabadas ---------- */
@@ -576,7 +590,7 @@ function vDatos() {
 /* ---------- calendario y agenda ---------- */
 const TIPO_EV = { clase: ["🎓", "Clase", "#0072B2"], tutoria: ["💬", "Tutoría", "#009E73"], entrega: ["📤", "Entrega", "#D55E00"], evaluacion: ["📝", "Evaluación", "#CC79A7"], otro: ["📌", "Otro", "#8C8C8C"] };
 let AGENDA = null, AGENDA_ERR = "", calMes = new Date(), calFiltro = "todos", calEjemplo = false;
-const agendaUrl = () => (C.agenda?.endpoint || C.diagnostico?.endpoint || "");
+const agendaUrl = () => C.agenda?.endpoint || "";
 function agendaEjemplo() {
   const hoy = new Date(); hoy.setHours(0, 0, 0, 0); const d = n => { const x = new Date(hoy); x.setDate(x.getDate() + n); return x; };
   const f = x => x.toISOString().slice(0, 10), iso = (x, h) => `${f(x)}T${h}:00-03:00`, mk = (id, tipo, titulo, n, a, b, extra = {}) => ({ id, tipo, titulo, fecha: f(d(n)), inicio: a, fin: b, inicio_iso: iso(d(n), a), fin_iso: iso(d(n), b), sesion: null, descripcion: "", asistencia: false, mini: false, ...extra });

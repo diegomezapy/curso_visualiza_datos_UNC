@@ -64,7 +64,7 @@ data = {
                  ("anscombe.csv", "Cuarteto de Anscombe"), ("wine.csv", "Vinos: 13 variables y 3 clases (alta dimensionalidad)"), ("karate_aristas.csv", "Red Zachary Karate Club: aristas (+ karate_nodos.csv)"), ("lesmis_aristas.csv", "Red Les Misérables: aristas con peso")],
 }
 (SITE / "data.js").write_text("window.CURSO=" + json.dumps(data, ensure_ascii=False) + ";", encoding="utf-8")
-for f in ("index.html", "aula.css", "aula.js", "backend.js", "planillas.mjs", "fx.js", "fxbg.js"):
+for f in ("index.html", "aula.css", "aula.js", "backend.js", "planillas.mjs", "xlsx.mjs", "fx.js", "fxbg.js"):
     shutil.copy(RAIZ / "aula" / f, SITE / f)
 
 # Pages conserva archivos en caché; cada importación debe apuntar a la versión del archivo copiado.
@@ -73,7 +73,7 @@ def version(nombre):
 
 modulo = SITE / "aula.js"
 codigo = modulo.read_text(encoding="utf-8")
-for nombre in ("backend.js", "planillas.mjs", "fx.js"):
+for nombre in ("backend.js", "planillas.mjs", "xlsx.mjs", "fx.js"):
     codigo = codigo.replace(f'"./{nombre}"', f'"./{nombre}?v={version(nombre)}"')
 modulo.write_text(codigo, encoding="utf-8")
 

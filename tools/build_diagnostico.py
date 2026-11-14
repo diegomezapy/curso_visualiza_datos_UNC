@@ -3,7 +3,7 @@
  - appsscript/Tablero.html         (tablero para Apps Script)
  - site/diagnostico/*              (cuestionario, tablero y datos de ejemplo para GitHub Pages)
 Uso: python tools/build_diagnostico.py   (después de tools/build_site.py)"""
-import json, shutil, sys
+import hashlib, json, shutil, sys
 from pathlib import Path
 RAIZ = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RAIZ / "diagnostico"))
@@ -39,11 +39,17 @@ DIAG = {"areas": Q.AREAS, "experiencia": Q.EXPERIENCIA, "herramientas": Q.HERRAM
 meta = json.dumps({"auto": Q.AUTO, "temas": Q.TEMAS, "herramientas": Q.HERRAMIENTAS, "areas": Q.AREAS, "experiencia": Q.EXPERIENCIA,
                    "preguntas": [{"id": p[0], "tema": p[1], "q": p[2]} for p in Q.PREGUNTAS]}, ensure_ascii=False)
 tab = (RAIZ / "diagnostico" / "tablero.template.html").read_text(encoding="utf-8")
+generador_xlsx = (RAIZ / "aula" / "xlsx.mjs").read_text(encoding="utf-8")
+generador_xlsx = generador_xlsx.replace("export const XLSX_MIME", "const XLSX_MIME").replace("export function xlsxPlanilla", "function xlsxPlanilla")
+generador_xlsx = generador_xlsx.replace("http://", '${"http:" + String.fromCharCode(47, 47)}')
+tab = tab.replace("/*XLSX_INLINE*/", "(() => {\n" + generador_xlsx + "\nwindow.CVD_XLSX = { xlsxPlanilla, XLSX_MIME };\n})();")
 (RAIZ / "appsscript" / "Tablero.html").write_text(tab.replace("/*META*/null", meta).replace("/*ENDPOINT*/''", "''"), encoding="utf-8")
 
 site = RAIZ / "site" / "diagnostico"; site.mkdir(parents=True, exist_ok=True)
 (site / "tablero.html").write_text(tab.replace("/*META*/null", meta).replace("/*ENDPOINT*/''", json.dumps(ENDPOINT)), encoding="utf-8")
 (site / "preguntas.js").write_text("window.DIAG=" + json.dumps(DIAG, ensure_ascii=False) + ";window.DIAG_CFG=" + json.dumps({"endpoint": ENDPOINT, "tablero_url": dg.get("tablero_url", "")}) + ";", encoding="utf-8")
-shutil.copy(RAIZ / "diagnostico" / "index.html", site / "index.html")
+version = hashlib.sha256((site / "preguntas.js").read_bytes()).hexdigest()[:12]
+index = (RAIZ / "diagnostico" / "index.html").read_text(encoding="utf-8")
+(site / "index.html").write_text(index.replace('src="preguntas.js"', f'src="preguntas.js?v={version}"'), encoding="utf-8")
 shutil.copy(RAIZ / "datos" / "diagnostico_ejemplo.csv", site / "ejemplo.csv")
 print("diagnóstico generado → appsscript/ y", site)
