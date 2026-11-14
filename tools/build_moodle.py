@@ -7,7 +7,10 @@ RAIZ = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RAIZ / "aula"))
 import contenido as c, recursos as rc, agenda as ag
 cfg = json.loads((RAIZ / "aula" / "config.json").read_text(encoding="utf-8"))
-OUT = RAIZ / "moodle"; shutil.rmtree(OUT, ignore_errors=True); (OUT / "paginas").mkdir(parents=True); (OUT / "preguntas").mkdir()
+OUT = RAIZ / "moodle"  # GUIA_MONTAJE.md es manual: no se borra
+for sub in ("paginas", "preguntas"):
+    shutil.rmtree(OUT / sub, ignore_errors=True); (OUT / sub).mkdir(parents=True)
+(OUT / "glosario.xml").unlink(missing_ok=True)
 WEB = "https://diegomezapy.github.io/curso_visualiza_datos_UNC"
 DIR = {1: "01_principios", 2: "02_eleccion_graficos", 3: "03_color_diseno_etica", 4: "04_visual_analytics_kpis", 5: "05_dashboards_interactivos", 6: "06_reporting_automatizado", 7: "07_estructuras_complejas", 8: "08_redes_e_integrador"}
 LAB = {1: "lab01_percepcion", 2: "lab02_eleccion_graficos", 3: "lab03_color_diseno_etica", 4: "lab04_kpis_storytelling", 5: "lab05_dashboards_plotly", 6: "lab06_reportes_automaticos", 7: "lab07_complejas", 8: "lab08_redes"}
