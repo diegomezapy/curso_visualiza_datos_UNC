@@ -7,7 +7,7 @@
 - 8 quizzes autocorregidos (40 preguntas) con retroalimentación; reintentos ilimitados (cuenta el mejor).
 - **Mis notas:** teoría (30), práctica (50), integrador (20), total y escala sugerida 1-5.
 - **Recursos:** carpetas de Drive, datasets, documentos, glosario (25 términos).
-- **Panel docente:** importa reportes de estudiantes, registra notas, calcula la final y exporta CSV.
+- **Panel docente:** consulta registros, respuestas de quizzes y autoevaluaciones; registra notas y descarga cada planilla CSV por separado.
 
 ## Cuentas y acceso
 - **Primer acceso:** el estudiante elige *Crear cuenta*, completa sus datos (nombres y apellidos, cédula, fecha de nacimiento, sexo, nacionalidad, departamento y ciudad, dirección, teléfono, institución, profesión, cohorte) y elige su propia contraseña; recibe un correo de verificación. También puede **ingresar con Google** y completar los datos la primera vez.
@@ -19,7 +19,9 @@
 1. Crea su cuenta y entra. 2. Estudia el módulo, abre el lab en Colab, hace el quiz. 3. Entrega sus trabajos en `ENTREGAS_ESTUDIANTES` (Drive) o por formulario, con el nombre sugerido. 4. Consulta sus notas en *Mis notas* (se actualizan cuando el docente las carga).
 
 ## Flujo del docente
-1. Crea su cuenta (su correo debe estar en la colección `docentes`). 2. **Panel docente** lista a todos los estudiantes con su avance y quizzes. 3. Carga las notas de cada actividad (se guardan al instante). 4. **Exporta la planilla CSV** con datos personales y notas.
+1. Crea su cuenta (su correo debe estar en la colección `docentes`). 2. **Panel docente** lista a los estudiantes con su avance y quizzes. 3. Descarga por separado el registro de usuarios, las respuestas de los quizzes de práctica, las autoevaluaciones y las calificaciones. 4. Abre las hojas externas configuradas para diagnóstico, asistencia, mini evaluaciones y otros formularios. 5. Carga las notas de cada actividad (se guardan al instante). La evaluación formal se administra en Moodle.
+
+Las respuestas por pregunta se conservan desde la activación de esta función. Los intentos anteriores solo guardaron fecha y porcentaje; la exportación los marca como `histórico sin detalle`.
 
 ## Configuración (`aula/config.json`)
 - `firebase`: credenciales web del proyecto (ver guía). `formulario_entregas`: URL de un Google Form con subida de archivos. `fechas`: fecha de cada módulo. IDs de carpetas de Drive.
@@ -28,6 +30,7 @@
 ## Limitaciones y recomendaciones
 - **Integridad de los quizzes:** se corrigen en el navegador y sus respuestas están en el código de la página. Para evaluación formal, aplicarlos en sesión sincrónica o con Google Forms.
 - **Privacidad de Drive:** si la carpeta raíz permite “cualquiera con el enlace puede *editar*”, cualquiera puede borrar o ver entregas. Compartir como **Lector** y recibir entregas por **Google Form**. No guardar calificaciones ni datos personales en un Drive compartido.
+- **Hojas externas:** los enlaces se leen del documento `docentes/{correo}` en Firestore y se muestran solo en el panel docente. Google Sheets conserva su propio control de acceso; el docente debe tener permiso directo a cada hoja.
 
 ## Clases grabadas
 

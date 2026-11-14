@@ -21,6 +21,15 @@ service cloud.firestore {
         && d.email == request.auth.token.email
         && d.consentimiento is map;
     }
+    function respuestaQuizValida(r) {
+      return r is map
+        && r.keys().hasOnly(['pregunta', 'respuesta', 'correcta', 'acierto'])
+        && r.keys().hasAll(['pregunta', 'respuesta', 'correcta', 'acierto'])
+        && r.pregunta is string && r.pregunta.size() <= 500
+        && r.respuesta is string && r.respuesta.size() <= 500
+        && r.correcta is string && r.correcta.size() <= 500
+        && r.acierto is bool;
+    }
 
     match /usuarios/{uid} {
       allow read: if own(uid) || docente();
@@ -41,6 +50,31 @@ service cloud.firestore {
     match /progreso/{uid} {
       allow read: if own(uid) || docente();
       allow write: if own(uid);
+    }
+
+    // Cada intento conserva las respuestas por pregunta sin hacer crecer indefinidamente progreso/{uid}.
+    match /respuestas_quiz/{id} {
+      allow get: if docente() || (signed() && resource.data.uid == request.auth.uid);
+      allow list: if docente();
+      allow create: if signed()
+        && request.resource.data.keys().hasOnly(['id', 'uid', 'sesion', 'quizTitulo', 'fecha', 'pct', 'respuestas'])
+        && request.resource.data.keys().hasAll(['id', 'uid', 'sesion', 'quizTitulo', 'fecha', 'pct', 'respuestas'])
+        && request.resource.data.id == id
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.sesion is int && request.resource.data.sesion >= 1 && request.resource.data.sesion <= 8
+        && request.resource.data.quizTitulo is string && request.resource.data.quizTitulo.size() <= 200
+        && request.resource.data.fecha is string && request.resource.data.fecha.size() <= 40
+        && request.resource.data.pct is int && request.resource.data.pct >= 0 && request.resource.data.pct <= 100
+        && request.resource.data.respuestas is list && request.resource.data.respuestas.size() == 5
+        && respuestaQuizValida(request.resource.data.respuestas[0])
+        && respuestaQuizValida(request.resource.data.respuestas[1])
+        && respuestaQuizValida(request.resource.data.respuestas[2])
+        && respuestaQuizValida(request.resource.data.respuestas[3])
+        && respuestaQuizValida(request.resource.data.respuestas[4]);
+      // Repetir exactamente la misma escritura es idempotente; alterar respuestas guardadas no está permitido.
+      allow update: if signed() && resource.data.uid == request.auth.uid
+        && request.resource.data == resource.data;
+      allow delete: if false;
     }
 
     match /calificaciones/{uid} {

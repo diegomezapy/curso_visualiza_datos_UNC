@@ -64,7 +64,7 @@ data = {
                  ("anscombe.csv", "Cuarteto de Anscombe"), ("wine.csv", "Vinos: 13 variables y 3 clases (alta dimensionalidad)"), ("karate_aristas.csv", "Red Zachary Karate Club: aristas (+ karate_nodos.csv)"), ("lesmis_aristas.csv", "Red Les Misérables: aristas con peso")],
 }
 (SITE / "data.js").write_text("window.CURSO=" + json.dumps(data, ensure_ascii=False) + ";", encoding="utf-8")
-for f in ("index.html", "aula.css", "aula.js", "backend.js", "fx.js", "fxbg.js"):
+for f in ("index.html", "aula.css", "aula.js", "backend.js", "planillas.mjs", "fx.js", "fxbg.js"):
     shutil.copy(RAIZ / "aula" / f, SITE / f)
 shutil.copytree(RAIZ / "aula" / "vendor", SITE / "vendor", dirs_exist_ok=True)
 shutil.copytree(RAIZ / "materiales" / "pdf", SITE.parent / "materiales" / "pdf", dirs_exist_ok=True)

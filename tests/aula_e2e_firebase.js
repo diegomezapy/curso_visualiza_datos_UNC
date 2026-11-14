@@ -27,6 +27,8 @@ await verificar('ana@ejemplo.com');await p.click('#vok');await p.waitForSelector
 // 3 progreso y persistencia tras recargar
 await p.goto(U+'#/sesion/1');await p.check('#chk_s1_ej');await p.waitForTimeout(1200);await p.reload();await p.waitForSelector('#chk_s1_ej');
 console.log('3 sesión y progreso persisten tras recargar:',await p.locator('#chk_s1_ej').isChecked());
+await p.goto(U+'#/quiz/1');for(let i=0;i<5;i++)await p.locator(`input[name=q${i}]`).first().check();await p.click('#send');await p.waitForSelector('#retry');
+console.log('   respuestas del quiz guardadas en Firestore');
 // 4 cédula duplicada desde otro contexto
 const c2=await b.newContext();await c2.addInitScript(()=>{window.__CVD_EMULATOR__={auth:'http://127.0.0.1:9099',fsHost:'127.0.0.1',fsPort:8080};});await c2.route('**/aula/data.js',r=>r.fulfill({contentType:'application/javascript',body:newData}));
 const q=await c2.newPage();q.on('pageerror',e=>errs.push(e.message));
@@ -43,12 +45,17 @@ await p.fill('#lp','Reset9999');await p.click('#lf button[type=submit]');await p
 await p.goto(U+'#/perfil');await p.waitForSelector('#cp');await p.fill('#p0','Reset9999');await p.fill('#p1','Final12345');await p.fill('#p2','Final12345');await p.click('#cp button[type=submit]');console.log('8 cambio de clave →',await toast(p));
 console.log('   token con clave nueva:',!!(await token('ana@ejemplo.com','Final12345')).idToken);
 // docente
-await fsr('POST','docentes?documentId=docente%40demo.local','owner',{fields:{activo:{booleanValue:true}}});
-const d=await b.newContext({viewport:{width:1300,height:900}});await d.addInitScript(()=>{window.__CVD_EMULATOR__={auth:'http://127.0.0.1:9099',fsHost:'127.0.0.1',fsPort:8080};});await d.route('**/aula/data.js',r=>r.fulfill({contentType:'application/javascript',body:newData}));
+await fsr('POST','docentes?documentId=docente%40demo.local','owner',{fields:{activo:{booleanValue:true},planillas:{mapValue:{fields:{diagnostico:{stringValue:'https://docs.google.com/spreadsheets/d/PRUEBA/edit'}}}}}});
+const d=await b.newContext({viewport:{width:1300,height:900},acceptDownloads:true});await d.addInitScript(()=>{window.__CVD_EMULATOR__={auth:'http://127.0.0.1:9099',fsHost:'127.0.0.1',fsPort:8080};});await d.route('**/aula/data.js',r=>r.fulfill({contentType:'application/javascript',body:newData}));
 const t=await d.newPage();t.on('pageerror',e=>errs.push(e.message));
 await t.goto(U+'#/registro');await llenar(t,alumno({nombres:'Prof',apellidos:'Docente',cedula:'1111111',email:'docente@demo.local'}));await t.check('#f_ok');await t.click('#rg button[type=submit]');
 await t.waitForSelector('h1:has-text("Verificá")');await verificar('docente@demo.local');await t.click('#vok');await t.waitForSelector('h1:has-text("Hola")');
 await t.goto(U+'#/docente');await t.waitForSelector('tbody tr');console.log('9 docente ve estudiantes:',await t.locator('tbody tr').count(),'→',(await t.locator('tbody tr').first().innerText()).split('\n')[0]);
+await t.waitForSelector('#csvRespuestas:not([disabled])');
+const descarga=t.waitForEvent('download');await t.click('#csvRespuestas');const csv=fs.readFileSync(await (await descarga).path(),'utf8');
+if(!csv.includes('detalle')||!csv.includes('ana@ejemplo.com'))throw Error('Falta la planilla de respuestas del quiz');
+if(await t.locator('a:has-text("Diagnóstico inicial")').count()!==1)throw Error('Falta el enlace privado del docente');
+console.log('   docente descarga respuestas y abre su hoja privada');
 await t.locator('tr:has-text("Benítez") input[data-id=s1_ej]').fill('4.5');await t.waitForFunction(()=>document.querySelector('#toast').textContent.includes('Nota guardada'),null,{timeout:8000});console.log('10 nota guardada → Nota guardada ✔');
 await t.screenshot({path:'/tmp/aula_docente.png'});
 await p.goto(U+'#/notas');await p.waitForSelector('table');console.log('11 alumno ve su nota:',(await p.locator('tr:has-text("Ejercicio S1")').innerText()).replace(/\s+/g,' ').slice(-12));
@@ -64,8 +71,11 @@ console.log(' alumno se pone nota (califs)    :',await fsr('PATCH','calificacion
 console.log(' alumno cambia su cédula         :',await fsr('PATCH','usuarios/'+ua+'?updateMask.fieldPaths=cedula',A.idToken,{fields:{cedula:{stringValue:'9999999'}}}));
 console.log(' alumno se hace docente          :',await fsr('POST','docentes?documentId=ana%40ejemplo.com',A.idToken,{fields:{x:{booleanValue:true}}}));
 console.log(' alumno lee lista de docentes    :',await fsr('GET','docentes',A.idToken));
+console.log(' alumno lee hoja del docente     :',await fsr('GET','docentes/docente%40demo.local',A.idToken));
+console.log(' alumno lista respuestas de quiz :',await fsr('GET','respuestas_quiz',A.idToken));
 console.log(' anónimo lee usuarios            :',await fsr('GET','usuarios/'+ua,'x'));
 console.log(' docente lee perfil de alumno    :',await fsr('GET','usuarios/'+ua,O.idToken));
+console.log(' docente lista respuestas de quiz:',await fsr('GET','respuestas_quiz',O.idToken));
 console.log(' docente escribe calificaciones  :',await fsr('PATCH','calificaciones/'+ua,O.idToken,{fields:{oficial:{mapValue:{fields:{s1_ej:{integerValue:'4'}}}}}}));
 console.log(' docente lee cédulas (índice)    :',await fsr('GET','cedulas/4567890',O.idToken));
 console.log('errores JS:',errs);

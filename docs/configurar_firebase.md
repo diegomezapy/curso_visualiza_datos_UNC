@@ -19,6 +19,7 @@ Mientras `aula/config.json` tenga `"firebase": {}`, el aula funciona en **modo d
 1. En Firestore: **Iniciar colección** `docentes` → ID del documento = **correo del docente, en minúsculas** → agregar un campo cualquiera (`activo` = true).
 2. El docente debe crear su cuenta en el aula y **verificar su correo**; entonces aparece el menú **Panel docente**.
    (Un docente sin perfil de estudiante no necesita completar datos personales.)
+3. Para mostrar las hojas externas en el panel, agregar al mismo documento un mapa `planillas` con los campos opcionales `diagnostico`, `agenda` y `entregas`. Cada valor debe ser la URL privada de una hoja de Google Sheets (`https://docs.google.com/spreadsheets/d/.../edit`). `agenda` corresponde a las pestañas **Asistencia** y **MiniEval** del libro de Apps Script. No poner estos enlaces en `aula/config.json`, porque ese archivo se publica en GitHub Pages. Conceder acceso al docente directamente en Google Sheets.
 
 ## 5. Conectar el sitio
 1. **Configuración del proyecto → Tus apps → Web (`</>`)** → registrar app → copiar `firebaseConfig`.
@@ -40,6 +41,9 @@ Crear una cuenta de prueba → debe llegar el correo de verificación → ingres
 | `calificaciones/{uid}` | notas oficiales | **solo lee** lo suyo | lee y escribe |
 | `cedulas/{n}` | índice para impedir cédulas duplicadas | nadie lo lee | nadie lo lee |
 | `docentes/{correo}` | lista de docentes | — | solo se edita en la consola |
+| `respuestas_quiz/{id}` | respuestas de cada intento de quiz de práctica | lee las suyas | lee todas |
+
+Las reglas de `firebase/firestore.rules` deben estar publicadas **antes** de activar en Pages una versión que guarda intentos en `respuestas_quiz`. Los intentos previos no tenían respuestas por pregunta y no se pueden reconstruir.
 
 ## Contraseñas y recuperación
 - Cada estudiante elige su contraseña al registrarse (mínimo 8, con letras y números). **No se usa una contraseña inicial común** (p. ej. `123456`): cualquiera que conozca el nombre de un compañero podría entrar a su cuenta y ver su cédula y fecha de nacimiento.

@@ -2,6 +2,7 @@
    Autenticación y datos: Firebase (Auth + Firestore) o modo demo local (ver backend.js). */
 import { crearBackend, msgError } from "./backend.js";
 import { heroHtml, afterRender, initFx } from "./fx.js";
+import { csvPlanilla, planillaRegistros, planillaQuizzes, planillaAutoevaluaciones } from "./planillas.mjs";
 (async () => {
 "use strict";
 const D = window.CURSO, C = D.config;
@@ -196,13 +197,18 @@ function vQuiz(n) {
 function bindQuiz(n) {
   const z = QZ[n], f = $("#qf"); if (!f) return;
   $("#retry")?.addEventListener("click", () => { nuevoQuiz(n); render(); });
-  f.addEventListener("submit", e => {
+  f.addEventListener("submit", async e => {
     e.preventDefault();
     z.preguntas.forEach((_, i) => { const r = f.querySelector(`input[name=q${i}]:checked`); if (r) z.resp[i] = +r.value; });
     if (Object.keys(z.resp).length < z.preguntas.length) { $("#qmsg").textContent = `Faltan ${z.preguntas.length - Object.keys(z.resp).length} pregunta(s) por responder.`; return; }
     const ok = z.preguntas.filter((p, i) => p.ops[z.resp[i]].ok).length, pct = Math.round(ok / z.preguntas.length * 100);
+    const intento = { id: crypto.randomUUID(), sesion: n, quizTitulo: D.quizzes[n].titulo, fecha: new Date().toISOString(), pct,
+      respuestas: z.preguntas.map((p, i) => ({ pregunta: p.q, respuesta: p.ops[z.resp[i]].t, correcta: p.ops.find(o => o.ok).t, acierto: p.ops[z.resp[i]].ok })) };
+    const boton = $("#send"); boton.disabled = true; $("#qmsg").textContent = "Guardando respuestas…";
+    try { await B.guardarIntentoQuiz(USER.uid, intento); }
+    catch (er) { boton.disabled = false; $("#qmsg").textContent = `No se guardaron las respuestas: ${msgError(er)}. Volvé a intentar.`; return; }
     const q = S.quiz[n] || { mejor: 0, intentos: [] };
-    q.intentos.push({ t: new Date().toISOString(), pct }); q.mejor = Math.max(q.mejor, pct); S.quiz[n] = q; persist();
+    q.intentos.push({ id: intento.id, t: intento.fecha, pct }); q.mejor = Math.max(q.mejor, pct); S.quiz[n] = q; persist();
     z.hecho = true; render(); window.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
@@ -390,7 +396,7 @@ function bindPerfil() {
 async function salir() { flush(); await B.salir(); USER = null; PERFIL = null; ES_DOC = false; S = empty(); location.hash = "#/acceso"; render(); }
 
 /* ---------- panel docente ---------- */
-let ALUMNOS = [];
+let ALUMNOS = [], INTENTOS = [], PLANILLAS = {}, ERROR_INTENTOS = "";
 const GRADED = ACTS.filter(a => a.pts);
 const timers = {};
 function chipsEnlaces(enl) {
@@ -408,14 +414,33 @@ function filaDoc(a) {
 async function vDocente() {
   if (!ES_DOC) return `<h1>Acceso restringido</h1><div class="card">Esta sección es solo para docentes. Si sos docente, pedí que agreguen tu correo verificado a la colección <code>docentes</code>.</div>`;
   try { ALUMNOS = await B.listarAlumnos(); } catch (e) { return `<h1>Panel docente</h1><div class="card note">No se pudieron leer los datos: ${esc(msgError(e))}</div>`; }
+  const [rIntentos, rPlanillas] = await Promise.allSettled([B.listarIntentosQuiz(), B.cargarPlanillasDocente(USER.email)]);
+  INTENTOS = rIntentos.status === "fulfilled" ? rIntentos.value : [];
+  ERROR_INTENTOS = rIntentos.status === "rejected" ? msgError(rIntentos.reason) : "";
+  PLANILLAS = rPlanillas.status === "fulfilled" ? rPlanillas.value?.planillas || {} : {};
   ALUMNOS.sort((x, y) => (x.perfil.apellidos || "").localeCompare(y.perfil.apellidos || "", "es"));
+  const hayQuiz = INTENTOS.length || ALUMNOS.some(a => Object.values(a.progreso.quiz || {}).some(q => q.intentos?.length));
+  const hayAuto = ALUMNOS.some(a => Object.keys(a.progreso.auto || {}).length);
+  const links = [["diagnostico", "Diagnóstico inicial"], ["agenda", "Asistencia y mini evaluaciones"], ["entregas", "Otros formularios"]];
+  const enlaceSeguro = u => /^https:\/\/docs\.google\.com\/spreadsheets\/d\/[\w-]+(?:\/|$)/.test(u || "");
   return `<h1>Panel docente</h1><p class="sub">${ALUMNOS.length} estudiante(s) registrados. Las notas que cargues se guardan al instante y el estudiante las ve en su aula.</p>${demoBanner()}
-  <div class="card"><div class="row"><input type="text" id="dq" placeholder="Buscar por nombre, cédula o correo…" style="max-width:360px" aria-label="Buscar estudiante"><button class="btn" id="csv" ${ALUMNOS.length ? "" : "disabled"}>⬇ Exportar planilla (CSV)</button></div></div>
+  <h2>Planillas del aula</h2><div class="card"><div class="row">
+    <button type="button" class="btn" id="csvRegistro" ${ALUMNOS.length ? "" : "disabled"}>⬇ Registro de usuarios</button>
+    <button type="button" class="btn" id="csvRespuestas" ${hayQuiz && !ERROR_INTENTOS ? "" : "disabled"}>⬇ Respuestas de quizzes</button>
+    <button type="button" class="btn" id="csvAuto" ${hayAuto ? "" : "disabled"}>⬇ Autoevaluaciones</button>
+    <button type="button" class="btn sec" id="csv" ${ALUMNOS.length ? "" : "disabled"}>⬇ Calificaciones</button></div>
+    <p class="muted" style="margin-bottom:0">Los quizzes de práctica nuevos incluyen cada respuesta. Los intentos anteriores conservan solo fecha y puntaje. Las evaluaciones formales y sus respuestas se administran en Moodle.</p>
+    ${ERROR_INTENTOS ? `<p class="note">No se pudieron leer los intentos de quizzes: ${esc(ERROR_INTENTOS)}</p>` : ""}</div>
+  <h2>Hojas externas del curso</h2><div class="card"><ul class="res">${links.map(([clave, titulo]) => `<li>${enlaceSeguro(PLANILLAS[clave]) ? `<a href="${esc(PLANILLAS[clave])}" target="_blank" rel="noopener noreferrer">${titulo} ↗</a>` : `${titulo}: <span class="muted">hoja no configurada</span>`}</li>`).join("")}</ul><p class="muted">Estas hojas se abren con los permisos de tu cuenta de Google. Sus enlaces se guardan en tu documento privado de docente en Firebase.</p></div>
+  <div class="card"><input type="text" id="dq" placeholder="Buscar por nombre, cédula o correo…" style="max-width:360px" aria-label="Buscar estudiante"></div>
   ${ALUMNOS.length ? `<div class="card tw"><table><thead><tr><th>Estudiante</th><th>Avance</th><th>Teoría/30</th>${GRADED.map(g => `<th title="${esc(g.titulo)}">${g.id.replace("s", "S").replace("_", " ")}<br>/${g.pts}</th>`).join("")}<th>Práct./50</th><th>Integr./20</th><th>Total</th><th>Esc.</th></tr></thead><tbody>${ALUMNOS.map(filaDoc).join("")}</tbody></table>
   <p class="muted">Escala sugerida: 1 (&lt;60) · 2 (60-69) · 3 (70-80) · 4 (81-90) · 5 (≥91). Ajustar al reglamento vigente. Práctica incluye hasta +3 por el ejercicio opcional de redes (tope 50).</p></div>` : `<div class="card muted">Aún no hay estudiantes registrados.</div>`}`;
 }
 function bindDocente() {
   $("#dq")?.addEventListener("input", e => { const q = e.target.value.toLowerCase(); $$("tbody tr").forEach(tr => tr.hidden = !tr.dataset.q.includes(q)); });
+  $("#csvRegistro")?.addEventListener("click", () => descargar("registro_usuarios.csv", planillaRegistros(ALUMNOS), "text/csv"));
+  $("#csvRespuestas")?.addEventListener("click", () => descargar("respuestas_quizzes.csv", planillaQuizzes(ALUMNOS, INTENTOS), "text/csv"));
+  $("#csvAuto")?.addEventListener("click", () => descargar("autoevaluaciones.csv", planillaAutoevaluaciones(ALUMNOS, ACTS, D.rubricas), "text/csv"));
   $$("input[data-id]").forEach(inp => inp.addEventListener("input", () => {
     const u = inp.dataset.u, id = inp.dataset.id, g = actById(id), a = ALUMNOS.find(x => x.uid === u);
     if (inp.value === "") delete a.oficial[id]; else a.oficial[id] = Math.max(0, Math.min(g.pts, +inp.value));
@@ -428,7 +453,7 @@ function bindDocente() {
     const qs = Object.keys(D.quizzes), head = ["apellidos", "nombres", "cedula", "fecha_nacimiento", "sexo", "departamento", "ciudad", "telefono", "email", "cohorte", "avance_%", ...qs.map(n => "quiz" + n + "_%"), "teoria_30", ...GRADED.map(g => g.id), "practica_50", "integrador_20", "total_100", "escala"];
     const rows = ALUMNOS.map(a => { const p = a.perfil, q = a.progreso.quiz || {}, c = calcular(q, a.oficial);
       return [p.apellidos, p.nombres, p.cedula, p.fechaNac, p.sexo, p.departamento, p.ciudad, p.telefono, p.email, p.cohorte, Math.round(progTotal({ done: a.progreso.done || {}, quiz: q }) * 100), ...qs.map(n => q[n]?.mejor ?? ""), fmt(c.teoria, 2), ...GRADED.map(g => a.oficial[g.id] ?? ""), fmt(c.practica, 2), fmt(c.integ, 2), fmt(c.total, 2), c.escala]; });
-    descargar("calificaciones_curso.csv", "﻿" + [head, ...rows].map(r => r.map(x => `"${String(x ?? "").replace(/"/g, '""')}"`).join(",")).join("\n"), "text/csv");
+    descargar("calificaciones_curso.csv", csvPlanilla(head, rows), "text/csv");
   });
 }
 
