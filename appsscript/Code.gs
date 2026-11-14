@@ -12,13 +12,12 @@ const MAX_FILAS = 3000;          // tope de seguridad
 const ZONA = 'America/Asuncion';
 
 /** Propiedades del script (Configuración del proyecto → Propiedades del script):
- *  CODIGO_CLASE  → código que el docente anuncia en clase (obligatorio)
+ *  (Ya no se usa código de clase: el formulario es abierto. Se protege con validación de cada campo, un campo trampa, pid único y tope de filas.)
  *  SHEET_ID      → ID de la hoja de cálculo (opcional si el script está vinculado a la hoja) */
-const CODIGO_POR_DEFECTO = '';      // (opcional) código de clase si no se define la propiedad CODIGO_CLASE
 const SHEET_ID_POR_DEFECTO = '';   // (opcional) ID de la hoja si el script no está vinculado a ella
 function prop_(k) {
   const v = PropertiesService.getScriptProperties().getProperty(k) || '';
-  return v || (k === 'CODIGO_CLASE' ? CODIGO_POR_DEFECTO : k === 'SHEET_ID' ? SHEET_ID_POR_DEFECTO : '');
+  return v || (k === 'SHEET_ID' ? SHEET_ID_POR_DEFECTO : '');
 }
 
 function hoja_() {
@@ -38,7 +37,6 @@ function configurar() {
   const sh = hoja_();
   prepararLooker();
   Logger.log('Hoja lista: ' + sh.getParent().getUrl());
-  Logger.log('CODIGO_CLASE ' + (prop_('CODIGO_CLASE') ? 'configurado' : 'FALTA: defínalo en Propiedades del script'));
 }
 
 /** Crea la pestaña "Looker": vista anonimizada (sin pid ni comentario) para conectar Looker Studio.
@@ -57,7 +55,7 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   try {
     const p = JSON.parse(e.postData.contents);
-    const err = validar_(p, prop_('CODIGO_CLASE'));
+    const err = validar_(p);
     if (err) return json_({ ok: false, error: err });
     lock.waitLock(20000);
     const sh = hoja_();
@@ -77,10 +75,9 @@ function doPost(e) {
 }
 
 /** Valida el envío. Devuelve '' si es válido o un código de error. (Función pura: probada fuera de Google.) */
-function validar_(p, codigoClase) {
-  if (!codigoClase) return 'servidor_sin_codigo';
+function validar_(p) {
   if (!p || typeof p !== 'object') return 'formato';
-  if (p.codigo !== codigoClase) return 'codigo';
+  if (p.web) return 'formato';   // campo trampa: las personas no lo ven ni lo llenan
   if (!/^P-[A-Z0-9]{10}$/.test(p.pid || '')) return 'pid';
   if (AREAS.indexOf(p.area) < 0) return 'area';
   if (EXPERIENCIA.indexOf(p.experiencia) < 0) return 'experiencia';

@@ -23,7 +23,7 @@ Hoja "Agenda" + "Estudiantes" ─→ activador (cada minuto) ─→ correos de a
 1. **Hoja de cálculo:** usá la hoja creada en tu Drive (*Diagnóstico inicial · Respuestas*) o una nueva. Debe ser **privada** (no la guardes en la carpeta compartida del aula).
 2. En la hoja: **Extensiones → Apps Script**. Creá estos archivos y pegá el contenido de la carpeta [`appsscript/`](https://github.com/diegomezapy/curso_visualiza_datos_UNC/tree/main/appsscript) del repositorio:
    `Code.gs`, `Preguntas.gs`, `Banco.gs`, `Agenda.gs` (tipo *Script*) y `Tablero.html`, `Asistencia.html`, `MiniEval.html` (tipo *HTML*). En **Configuración del proyecto** activá *Mostrar el archivo de manifiesto* y reemplazá `appsscript.json`.
-3. **Configuración del proyecto → Propiedades del script → Agregar:** `CODIGO_CLASE` = el código que anunciarás en clase (sin él, el servidor **rechaza** todos los envíos).
+3. *(Ya no hace falta un código de clase: el formulario es abierto. Si tenías la propiedad `CODIGO_CLASE`, se ignora.)*
 4. Ejecutá **`configurarTodo`** (botón ▶). Google pedirá permisos: hoja de cálculo, enviar correos y activadores. Esto crea las pestañas, un secreto para firmar los enlaces y el activador que corre cada minuto.
 5. **Implementar → Nueva implementación → Aplicación web:** *Ejecutar como:* **Yo** · *Quién tiene acceso:* **Cualquier usuario**. Copiá la **URL** (`https://script.google.com/macros/s/…/exec`).
 6. En el repositorio, `aula/config.json`:
@@ -65,7 +65,7 @@ Pestaña **Estudiantes**: `email`, `nombre`, `activo` (SI/NO). Copiá los correo
 - **Puntualidad:** el activador corre **cada minuto**; el correo llega entre 0 y ~1-2 minutos después de la hora (Google no garantiza segundos exactos).
 - **Tiempo de ejecución:** los activadores tienen un límite diario de ejecución (≈90 min en cuentas personales); revisar cada minuto consume muy poco.
 - **Entregabilidad:** los correos salen de tu cuenta; pueden caer en *spam* las primeras veces. Pedí que agreguen tu dirección a contactos.
-- El endpoint es público: cualquiera con la URL puede **leer** los datos anonimizados y **intentar** enviar; por eso se exige `CODIGO_CLASE` y se valida cada campo. No es un control de acceso fuerte: para evaluación formal usar Google Forms con inicio de sesión.
+- El endpoint es público: cualquiera con la URL puede **leer** los datos anonimizados y **intentar** enviar; por eso se valida cada campo, hay un campo trampa contra bots, el `pid` es único y hay un tope de filas. Sin código de clase, alguien con la dirección podría mandar respuestas falsas: revisá la hoja de vez en cuando. No es un control de acceso fuerte: para evaluación formal usar Google Forms con inicio de sesión.
 
 ## 6. Looker Studio (cuarta vía de visualización)
 `configurarTodo` crea la pestaña **Looker**: una vista **anonimizada** (sin código de participante ni comentarios) de *Respuestas*.

@@ -60,7 +60,8 @@ label{display:block;font-weight:600;font-size:.92rem;margin:.8rem 0 .25rem}selec
 
  <section class="card"><h2>4 · Para cerrar</h2>
    <label for="com">¿Qué esperás aprender en este curso? (opcional, máx. 280 caracteres; no escribas datos personales)</label><textarea id="com" rows="3" maxlength="280"></textarea>
-   <div id="codebox"><label for="cod">Código de clase * <span class="muted" style="font-weight:400">(lo indica el docente)</span></label><input type="text" id="cod" autocomplete="off" style="max-width:260px"></div>
+   <div style="position:absolute;left:-9999px" aria-hidden="true"><label for="web">No completar</label><input type="text" id="web" name="web" tabindex="-1" autocomplete="off"></div>
+   <div id="codebox" class="hide"><label for="cod">Código de clase * <span class="muted" style="font-weight:400">(lo indica el docente)</span></label><input type="text" id="cod" autocomplete="off" style="max-width:260px"></div>
    <div class="row" style="margin-top:1rem"><button class="btn" type="submit" id="send">Enviar y ver mi resultado</button></div>
    <div id="msg" role="status" class="muted"></div>
  </section>
@@ -92,14 +93,14 @@ function leer() {
   const resp = {}, auto = {};
   D.preguntas.forEach(p => { const r = document.querySelector(`input[name=${p.id}]:checked`); resp[p.id] = r ? r.value : null; });
   D.auto.forEach(([id]) => { const r = document.querySelector(`input[name=${id}]:checked`); auto[id] = r ? +r.value : null; });
-  return { codigo: ($("#cod").value || "").trim(), pid, area: $("#area").value, cohorte: ($("#coh").value || "").trim() || "—", experiencia: $("#exp").value,
+  return { web: ($("#web").value || "").trim(), pid, area: $("#area").value, cohorte: ($("#coh").value || "").trim() || "—", experiencia: $("#exp").value,
     herramientas: [...document.querySelectorAll("input[name=herr]:checked")].map(x => x.value), auto, resp, comentario: ($("#com").value || "").trim() };
 }
 function faltantes(p) {
   const f = []; if (!p.area) f.push("el área"); if (!p.experiencia) f.push("la experiencia");
   const a = D.auto.filter(([id]) => !p.auto[id]).length; if (a) f.push(`${a} ítem(s) de autoevaluación`);
   const q = D.preguntas.filter(x => !p.resp[x.id]).length; if (q) f.push(`${q} pregunta(s)`);
-  if (CFG.endpoint && !p.codigo) f.push("el código de clase"); return f;
+  return f;
 }
 function puntajes(p) {
   const s = { viz: 0, py: 0, r: 0 }; D.preguntas.forEach(q => { if (p.resp[q.id] === L[q.c]) s[q.tema]++; });
@@ -130,7 +131,7 @@ async function enviar(p) {
     return { ok: false, error: "sin_confirmar" };
   }
 }
-const ERR = { codigo: "El código de clase no es correcto. Pedíselo al docente.", servidor_sin_codigo: "El servidor todavía no está configurado (falta el código de clase).", red: "No hay conexión con el servidor. Revisá tu internet e intentá de nuevo.", sin_confirmar: "No pudimos confirmar el registro. Revisá el código de clase o consultá al docente antes de cerrar esta página.", limite: "Se alcanzó el máximo de respuestas.", formato: "No se pudo procesar el envío." };
+const ERR = { red: "No hay conexión con el servidor. Revisá tu internet e intentá de nuevo.", sin_confirmar: "No pudimos confirmar el registro. Revisá el código de clase o consultá al docente antes de cerrar esta página.", limite: "Se alcanzó el máximo de respuestas.", formato: "No se pudo procesar el envío." };
 
 /* Copia de seguridad en este navegador: si el envío falla (o se cierra la pestaña), se puede reenviar sin volver a responder. */
 const KCOPIA = "cvd_diag_pendiente";

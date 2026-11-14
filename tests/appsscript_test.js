@@ -7,7 +7,7 @@ const sheet = {
   getRange: (r, c, n, m) => typeof r === 'string' ? ({ setFormula(f) { sheet.formula = f; } }) : ({ getValues: () => filas.slice(r - 1, r - 1 + n).map(f => f.slice(c - 1, c - 1 + m)) }),
   getParent: () => ({ getUrl: () => 'https://sheet' }),
 };
-const props = { CODIGO_CLASE: 'clase-123' };
+const props = {};
 const out = o => ({ _t: o, setMimeType(m) { this.mime = m; return this; } });
 const ctx = {
   PropertiesService: { getScriptProperties: () => ({ getProperty: k => props[k] }) },
@@ -25,7 +25,7 @@ const post = p => JSON.parse(call('doPost', { postData: { contents: typeof p ===
 
 const resp = {}; ctx.CLAVE_IDS.forEach(id => resp[id] = ctx.CLAVE[id].c);          // todas correctas
 const auto = {}; ctx.AUTO_IDS.forEach(id => auto[id] = 3);
-const base = { codigo: 'clase-123', pid: 'P-AB12CD34EF', area: ctx.AREAS[0], cohorte: 'MICD 2026', experiencia: ctx.EXPERIENCIA[1], herramientas: ['Python'], auto, resp, comentario: '' };
+const base = { pid: 'P-AB12CD34EF', area: ctx.AREAS[0], cohorte: 'MICD 2026', experiencia: ctx.EXPERIENCIA[1], herramientas: ['Python'], auto, resp, comentario: '' };
 
 assert.deepStrictEqual(post(base), { ok: true });                         console.log('✔ envío válido se guarda');
 assert.strictEqual(filas.length, 2);                                       console.log('✔ crea encabezado + 1 fila');
@@ -33,7 +33,7 @@ const f = Object.fromEntries(ctx.COLUMNAS.map((c, i) => [c, filas[1][i]]));
 assert.strictEqual(f.score_total, 12); assert.strictEqual(f.nivel, 'Avanzado'); assert.strictEqual(f.score_py, 4);
 console.log('✔ puntaje calculado en el servidor: 12/12 · Avanzado');
 assert.deepStrictEqual(post(base), { ok: true, duplicado: true });         assert.strictEqual(filas.length, 2); console.log('✔ pid repetido no duplica filas');
-assert.strictEqual(post({ ...base, pid: 'P-ZZ99ZZ99ZZ', codigo: 'otro' }).error, 'codigo'); console.log('✔ código de clase incorrecto → rechazado');
+assert.strictEqual(post({ ...base, pid: 'P-ZZ99ZZ99ZZ', web: 'http://spam' }).error, 'formato'); console.log('✔ campo trampa lleno (bot) → rechazado');
 assert.strictEqual(post({ ...base, pid: 'P-ZZ99ZZ99ZZ', area: 'Hackeo' }).error, 'area');   console.log('✔ área no válida → rechazada');
 assert.strictEqual(post({ ...base, pid: 'bad' }).error, 'pid');             console.log('✔ pid mal formado → rechazado');
 assert.strictEqual(post({ ...base, pid: 'P-ZZ99ZZ99ZZ', auto: { ...auto, au_r: 9 } }).error, 'auto'); console.log('✔ autoevaluación fuera de rango → rechazada');
@@ -44,10 +44,10 @@ const sinNs = { ...resp }; ctx.CLAVE_IDS.forEach((id, i) => { sinNs[id] = i < 3 
 post({ ...base, pid: 'P-NS000NS000', resp: sinNs, comentario: '=HYPERLINK("http://x")' });
 const g = Object.fromEntries(ctx.COLUMNAS.map((c, i) => [c, filas[2][i]]));
 assert.strictEqual(g.score_total, 9); assert.ok(String(g.comentario).startsWith("'=")); console.log('✔ "No sé" puntúa 0 y la fórmula en comentarios se neutraliza');
-props.CODIGO_CLASE = ''; assert.strictEqual(post({ ...base, pid: 'P-NOC00NOC00' }).error, 'servidor_sin_codigo'); props.CODIGO_CLASE = 'clase-123'; console.log('✔ sin código configurado el servidor no acepta envíos');
+assert.strictEqual(post({ ...base, pid: 'P-NOC00NOC00' }).ok, true); console.log('✔ el servidor acepta envíos sin código de clase');
 const d = JSON.parse(call('doGet', { parameter: { action: 'datos' } })._t);
-assert.ok(!d.columnas.includes('pid') && !d.columnas.includes('comentario')); assert.strictEqual(d.filas.length, 2); console.log('✔ API de datos: sin pid ni comentario,', d.filas.length, 'filas');
-const csv = call('doGet', { parameter: { action: 'csv' } })._t; assert.ok(csv.split('\n').length === 3 && csv.startsWith('"ts"')); console.log('✔ API CSV');
+assert.ok(!d.columnas.includes('pid') && !d.columnas.includes('comentario')); assert.strictEqual(d.filas.length, 3); console.log('✔ API de datos: sin pid ni comentario,', d.filas.length, 'filas');
+const csv = call('doGet', { parameter: { action: 'csv' } })._t; assert.ok(csv.split('\n').length === 4 && csv.startsWith('"ts"')); console.log('✔ API CSV');
 const estado = call('doGet', { parameter: { action: 'estado', pid: base.pid, callback: 'cvdEstado_abcdef123456' } });
 assert.strictEqual(estado.mime, 'javascript'); assert.ok(estado._t.includes('"registrado":true'));
 assert.strictEqual(call('doGet', { parameter: { action: 'estado', pid: 'P-ZZZZZZZZZZ', callback: 'cvdEstado_abcdef123456' } })._t.includes('"registrado":false'), true);
