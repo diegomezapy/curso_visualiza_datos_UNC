@@ -131,7 +131,7 @@ async function enviar(p) {
     return { ok: false, error: "sin_confirmar" };
   }
 }
-const ERR = { red: "No hay conexión con el servidor. Revisá tu internet e intentá de nuevo.", sin_confirmar: "No pudimos confirmar el registro. Revisá el código de clase o consultá al docente antes de cerrar esta página.", limite: "Se alcanzó el máximo de respuestas.", formato: "No se pudo procesar el envío." };
+const ERR = { red: "No hay conexión con el servidor. Revisá tu internet e intentá de nuevo.", sin_confirmar: "No pudimos confirmar el registro. Consultá al docente antes de cerrar esta página: tus respuestas quedan guardadas en este dispositivo para reenviarlas.", limite: "Se alcanzó el máximo de respuestas.", formato: "No se pudo procesar el envío.", codigo: "El servidor todavía exige un código de clase: es la versión anterior del Apps Script (falta implementar la nueva versión).", servidor_sin_codigo: "El servidor todavía es la versión anterior del Apps Script (falta implementar la nueva versión)." };
 
 /* Copia de seguridad en este navegador: si el envío falla (o se cierra la pestaña), se puede reenviar sin volver a responder. */
 const KCOPIA = "cvd_diag_pendiente";
@@ -159,7 +159,7 @@ $("#f").addEventListener("submit", async e => {
   if (CFG.endpoint) {
     guardarCopia(p);   // copia local hasta que el servidor confirme
     const r = await enviar(p);
-    if (!r.ok) { m.className = "err"; m.textContent = ERR[r.error] || "No se pudo enviar. Intentá de nuevo."; btn.disabled = false; return; }
+    if (!r.ok) { m.className = "err"; m.textContent = ERR[r.error] || ("No se pudo enviar (motivo: " + (r.error || "desconocido") + "). Intentá de nuevo; si sigue igual, avisale al docente con este motivo."); btn.disabled = false; return; }
     borrarCopia();
     estado = r.noConfirmado ? "noconfirmado" : "enviado";
   }
