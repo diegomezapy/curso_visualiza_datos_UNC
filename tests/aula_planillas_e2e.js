@@ -48,6 +48,7 @@ async function perfil(page, correo, cedula, nombre) {
   assert.equal(await page.locator('#csvRespuestas').isEnabled(), true);
   assert.equal(await page.locator('#csvAuto').isEnabled(), true);
   assert.equal(await page.locator('a:has-text("Diagnóstico inicial")').count(), 1);
+  assert.equal(await page.locator('a:has-text("Evaluaciones formales y reportes en Moodle")').count(), 1);
   await page.screenshot({ path: '/tmp/aula_planillas_docente.png', fullPage: true });
   for (const [boton, muestra] of [['csvRegistro', 'alumna@ejemplo.test'], ['csvRespuestas', 'detalle'], ['csvAuto', 'Logrado']]) {
     const evento = page.waitForEvent('download');

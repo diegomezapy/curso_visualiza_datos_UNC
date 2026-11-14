@@ -430,7 +430,8 @@ async function vDocente() {
     <button type="button" class="btn" id="csvAuto" ${hayAuto ? "" : "disabled"}>⬇ Autoevaluaciones</button>
     <button type="button" class="btn sec" id="csv" ${ALUMNOS.length ? "" : "disabled"}>⬇ Calificaciones</button></div>
     <p class="muted" style="margin-bottom:0">Los quizzes de práctica nuevos incluyen cada respuesta. Los intentos anteriores conservan solo fecha y puntaje. Las evaluaciones formales y sus respuestas se administran en Moodle.</p>
-    ${ERROR_INTENTOS ? `<p class="note">No se pudieron leer los intentos de quizzes: ${esc(ERROR_INTENTOS)}</p>` : ""}</div>
+    ${ERROR_INTENTOS ? `<p class="note">No se pudieron leer los intentos de quizzes: ${esc(ERROR_INTENTOS)}</p>` : ""}
+    ${C.moodle_curso ? `<p><a href="${esc(C.moodle_curso)}" target="_blank" rel="noopener noreferrer">Evaluaciones formales y reportes en Moodle ↗</a></p>` : ""}</div>
   <h2>Hojas externas del curso</h2><div class="card"><ul class="res">${links.map(([clave, titulo]) => `<li>${enlaceSeguro(PLANILLAS[clave]) ? `<a href="${esc(PLANILLAS[clave])}" target="_blank" rel="noopener noreferrer">${titulo} ↗</a>` : `${titulo}: <span class="muted">hoja no configurada</span>`}</li>`).join("")}</ul><p class="muted">Estas hojas se abren con los permisos de tu cuenta de Google. Sus enlaces se guardan en tu documento privado de docente en Firebase.</p></div>
   <div class="card"><input type="text" id="dq" placeholder="Buscar por nombre, cédula o correo…" style="max-width:360px" aria-label="Buscar estudiante"></div>
   ${ALUMNOS.length ? `<div class="card tw"><table><thead><tr><th>Estudiante</th><th>Avance</th><th>Teoría/30</th>${GRADED.map(g => `<th title="${esc(g.titulo)}">${g.id.replace("s", "S").replace("_", " ")}<br>/${g.pts}</th>`).join("")}<th>Práct./50</th><th>Integr./20</th><th>Total</th><th>Esc.</th></tr></thead><tbody>${ALUMNOS.map(filaDoc).join("")}</tbody></table>
