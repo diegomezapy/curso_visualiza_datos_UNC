@@ -25,6 +25,9 @@ import tutor as tt
 import agenda as ag
 sys.path.insert(0, str(RAIZ / "datos_reales"))
 import catalogo as cat
+INFO_TXT = ("Tres bloques. Izquierda: procesamiento preatentivo (memoria icónica que procesa atributos antes de la cognición), jerarquía de la Gestalt (conexión y encierro superan a la proximidad) y contraste de accesibilidad WCAG de 3:1. "
+  "Centro: jerarquía de tareas perceptivas, de mayor a menor precisión: posición en escala común, escalas no alineadas, longitud/dirección/ángulo, área, volumen y curvatura, sombreado y saturación. "
+  "Derecha: los tres pilares del mapeo de datos (atributos del dato, codificación visual adecuada y claridad de propósito) y el rediseño de gráficos tradicionales: gráfico circular, barras divididas y mapa de coropletas se reemplazan por puntos agrupados, rectángulos enmarcados y diferencias representadas directamente.")
 R_OK = {"pr01_explorador", "pr02_dncp", "pr03_banco_mundial"}
 sesiones = []
 for s in c.SESIONES:
@@ -44,15 +47,22 @@ for s in c.SESIONES:
     if n == 5: rec.append({"t": "App Dash de ejemplo (app_dash.py)", "u": f"{cfg['repo']}/blob/main/sesiones/{d}/app_dash.py", "k": "codigo"})
     if n == 6: rec.append({"t": "R · Plantilla de informe parametrizado", "u": f"{cfg['repo']}/blob/main/r/plantilla_reporte_sucursal.Rmd", "k": "rmd"})
     prs = [{"id": pid, "nombre": nm, "desc": ds, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS if n in ses and rol != "docente"]
+    qids = ([str(n)] if n in c.QUIZZES else []) + [e["id"] for e in c.QUIZZES_EXTRA if e["sesion"] == n]
+    media = None
+    if n == 1 and (RAIZ / "aula" / "media" / "unidad1" / "slides.json").exists():
+        sl = json.loads((RAIZ / "aula" / "media" / "unidad1" / "slides.json").read_text(encoding="utf-8"))
+        media = {"base": "media/unidad1/diapositivas", "slides": sl, "pdf": "media/unidad1/presentacion.pdf", "pptx": "media/unidad1/presentacion.pptx",
+                 "infografia": {"src": "media/unidad1/infografia.webp", "alt": "Infografía: La ciencia de la percepción gráfica. Jerarquía y principios de diseño visual", "descripcion": INFO_TXT}}
     s2 = {k: v for k, v in s.items() if k != "lecturas"}
-    sesiones.append({**s2, "corto": CORTO[n], "practicas_reales": prs, "recursos": rec, "videos": rc.VIDEOS.get(n, []), "lecturas": rc.LECTURAS.get(n, []), "quiz": n in c.QUIZZES})
+    sesiones.append({**s2, "corto": CORTO[n], "quizIds": qids, "media": media, "practicas_reales": prs, "recursos": rec, "videos": rc.VIDEOS.get(n, []), "lecturas": rc.LECTURAS.get(n, []), "quiz": n in c.QUIZZES})
 
 cfg["fechas"] = {**cfg.get("fechas", {}), **{k: v for k, v in ag.fechas().items() if not cfg.get("fechas", {}).get(k)}}
 data = {
     "config": cfg,
     "agenda_base": {"eventos": ag.eventos(), "nota": "Calendario base cargado desde el aula."},
     "sesiones": sesiones,
-    "quizzes": {str(k): {"titulo": v[0], "preguntas": v[1]} for k, v in c.QUIZZES.items()},
+    "quizzes": {**{str(k): {"titulo": v[0], "preguntas": v[1], "sesion": k, "etiqueta": str(k)} for k, v in c.QUIZZES.items()},
+                **{e["id"]: {"titulo": e["titulo"], "preguntas": e["preguntas"], "sesion": e["sesion"], "etiqueta": e["etiqueta"], "lectura": True} for e in c.QUIZZES_EXTRA}},
     "rubricas": {k: {"titulo": v[0], "criterios": [{"n": a, "w": b} for a, b in v[1]]} for k, v in c.RUBRICAS.items()},
     "abiertos": {"fuentes": cat.FUENTES, "estados": {k: list(v) for k, v in cat.ESTADOS.items()},
                  "practicas": [{"id": pid, "nombre": nm, "desc": ds, "sesiones": ses, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS]},
@@ -84,5 +94,6 @@ for nombre in ("aula.css", "data.js", "fxbg.js", "aula.js"):
 entrada.write_text(html, encoding="utf-8")
 
 shutil.copytree(RAIZ / "aula" / "vendor", SITE / "vendor", dirs_exist_ok=True)
+shutil.copytree(RAIZ / "aula" / "media", SITE / "media", dirs_exist_ok=True, ignore=shutil.ignore_patterns("fuentes"))
 shutil.copytree(RAIZ / "materiales" / "pdf", SITE.parent / "materiales" / "pdf", dirs_exist_ok=True)
 print("aula generada en", SITE)

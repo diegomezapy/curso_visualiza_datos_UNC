@@ -65,12 +65,19 @@ service cloud.firestore {
         && request.resource.data.quizTitulo is string && request.resource.data.quizTitulo.size() <= 200
         && request.resource.data.fecha is string && request.resource.data.fecha.size() <= 40
         && request.resource.data.pct is int && request.resource.data.pct >= 0 && request.resource.data.pct <= 100
-        && request.resource.data.respuestas is list && request.resource.data.respuestas.size() == 5
+        && request.resource.data.respuestas is list
+        && (request.resource.data.respuestas.size() == 5 || request.resource.data.respuestas.size() == 10)
         && respuestaQuizValida(request.resource.data.respuestas[0])
         && respuestaQuizValida(request.resource.data.respuestas[1])
         && respuestaQuizValida(request.resource.data.respuestas[2])
         && respuestaQuizValida(request.resource.data.respuestas[3])
-        && respuestaQuizValida(request.resource.data.respuestas[4]);
+        && respuestaQuizValida(request.resource.data.respuestas[4])
+        && (request.resource.data.respuestas.size() == 5 || (
+          respuestaQuizValida(request.resource.data.respuestas[5])
+          && respuestaQuizValida(request.resource.data.respuestas[6])
+          && respuestaQuizValida(request.resource.data.respuestas[7])
+          && respuestaQuizValida(request.resource.data.respuestas[8])
+          && respuestaQuizValida(request.resource.data.respuestas[9])));
       // Repetir exactamente la misma escritura es idempotente; alterar respuestas guardadas no está permitido.
       allow update: if signed() && resource.data.uid == request.auth.uid
         && request.resource.data == resource.data;

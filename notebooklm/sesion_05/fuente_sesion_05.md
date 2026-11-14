@@ -50,6 +50,7 @@ Resumen: Jerarquía y filtros con propósito; Plotly (HTML interactivo) y Dash (
 ## Actividades evaluadas
 - Mini-proyecto 2: dashboard con filtro de año + heatmap/mapa + insight · RPubs (R) + Colab (Python) (10 pts)
 
+
 ## Lecturas recomendadas (enlaces; subir el texto solo si la licencia lo permite)
 - Plotly para Python · documentación (web, en) · https://plotly.com/python/ · 
 - Dash · documentación (web, en) · https://dash.plotly.com/ · 

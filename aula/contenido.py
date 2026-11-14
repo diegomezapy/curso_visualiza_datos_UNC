@@ -202,6 +202,40 @@ SESIONES = [
   extra=["Ensayar la presentación de 10 min"]),
 ]
 
+# Quizzes adicionales ligados a una sesión (se suman al grupo de quizzes; id numérico > 8 para no chocar con las sesiones).
+QUIZZES_EXTRA = [dict(id="9", sesion=1, etiqueta="1B", titulo="Lectura de la presentación: Ciencia de la percepción gráfica", preguntas=[
+  q("¿Qué es la percepción gráfica según la teoría desarrollada por Cleveland y McGill?",
+    ["La capacidad para memorizar cifras numéricas presentadas en tablas de datos.", "La decodificación visual de información cuantitativa y categórica representada en un gráfico.", "El diseño artístico de diagramas visualmente atractivos para presentaciones ejecutivas.", "El cálculo intuitivo de operaciones matemáticas a partir de colores e imágenes."], 1,
+    "La percepción gráfica es el proceso del sistema visual humano para decodificar e interpretar la información cuantitativa o categórica codificada en un gráfico."),
+  q("Según la jerarquía de Cleveland y McGill, ¿cuál es el atributo geométrico o tarea perceptiva que el ser humano juzga con mayor exactitud?",
+    ["Posición a lo largo de una escala común.", "Área de superficies geométricas.", "Ángulos y pendientes.", "Sombreado y saturación de color."], 0,
+    "Los experimentos demuestran que las evaluaciones de posición a lo largo de una escala común son las más precisas en la extracción de datos cuantitativos."),
+  q("¿Cuál es el ordenamiento correcto de las tareas perceptivas elementales, de mayor a menor precisión?",
+    ["Área > Longitud > Ángulo > Posición a lo largo de una escala común.", "Posición en escala común > Posición en escalas no alineadas > Longitud, dirección y ángulo > Área > Volumen y curvatura > Sombreado y saturación de color.", "Ángulo > Longitud > Posición en escalas no alineadas > Saturación de color > Área.", "Volumen > Sombreado > Área > Ángulo > Longitud > Posición."], 1,
+    "Los juicios de posición encabezan la jerarquía de precisión, seguidos de la longitud y el ángulo, luego el área y el volumen; el sombreado y la saturación de color quedan en el nivel de menor exactitud."),
+  q("¿Cuáles son las tres etapas mediante las cuales el cerebro procesa e interpreta la información en visualizaciones?",
+    ["Filtrado, ordenamiento y agregación.", "Detección, ensamblaje (o conjunción) y estimación.", "Codificación, renderizado y memorización.", "Medición, cálculo y exportación."], 1,
+    "El proceso inicia con la detección de los elementos geométricos codificados, continúa con el ensamblaje o conjunción para discriminar patrones generales y culmina con la estimación de magnitudes relativas entre valores."),
+  q("De acuerdo con los experimentos de Cleveland y McGill, ¿qué factor reduce la precisión perceptiva y cuál no influye de manera significativa?",
+    ["El aumento de la distancia espacial entre los objetos juzgados reduce la precisión, mientras que el nivel de entrenamiento técnico del observador no influye.", "El entrenamiento técnico aumenta la precisión, mientras que la distancia no tiene ningún impacto.", "El tamaño del papel perjudica la precisión, mientras que la distancia la mejora.", "La experiencia profesional elimina el error en la lectura de áreas y ángulos."], 0,
+    "A mayor distancia entre los elementos comparados, mayor es el error en el juicio. Además, la distribución de errores fue similar entre profesionales técnicos, universitarios y estudiantes de secundaria."),
+  q("¿Qué caracteriza a los atributos visuales preatentivos en el diseño de visualizaciones?",
+    ["Exigen un esfuerzo consciente prolongado en la memoria a largo plazo.", "Se procesan automáticamente en la memoria sensorial (icónica) en una fracción de segundo, sin esfuerzo consciente.", "Requieren que el usuario conozca de antemano la fórmula matemática del gráfico.", "Se activan únicamente si se usan más de diez tonos cromáticos distintos."], 1,
+    "Los atributos preatentivos (como forma, color, posición espacial y movimiento) captan la atención de manera inconsciente antes de que inicie la cognición activa."),
+  q("Basándose en la jerarquía perceptiva, ¿por qué alternativa gráfica se recomienda sustituir los gráficos circulares y las barras apiladas o divididas?",
+    ["Por diagramas de superficie 3D.", "Por gráficos de puntos (dot charts) o gráficos de puntos agrupados (grouped dot charts).", "Por gráficos de pastel en formato de elipse.", "Por tablas de texto sin ningún elemento geométrico."], 1,
+    "Los gráficos circulares (basados en ángulo y área) y las barras apiladas (basadas en longitudes no alineadas) deben reemplazarse por gráficos de puntos, ya que permiten juzgar los valores por la posición a lo largo de una escala común."),
+  q("¿Qué inconveniente presentan los mapas estadísticos con sombreado y por qué alternativa se sugiere reemplazarlos?",
+    ["El sombreado ocupa el nivel más bajo de precisión perceptiva; se propone sustituirlos por gráficos de rectángulos enmarcados (framed-rectangle charts).", "Los mapas no admiten la representación de variables cuantitativas continuas.", "El sombreado distorsiona la escala temporal de los datos.", "Requieren ejes cartesianos tridimensionales obligatorios."], 0,
+    "El sombreado es una codificación de baja exactitud y las áreas geográficas distorsionan la magnitud percibida; los rectángulos enmarcados permiten juzgar la posición del rectángulo interno dentro de su marco."),
+  q("Al aplicar las leyes de la Gestalt a la visualización de datos, ¿cuál es la relación de fuerza visual entre los principios de agrupación?",
+    ["La semejanza de color siempre predomina sobre la conexión y el encierro.", "La conexión (líneas) y el encierro (enclosure) suelen ser visualmente más fuertes que la proximidad y la semejanza.", "La proximidad anula en todos los casos a las líneas de conexión.", "Todos los principios Gestalt tienen exactamente la misma intensidad visual."], 1,
+    "La conexión mediante líneas y el encierro dentro de límites visuales generan agrupaciones más potentes que la mera cercanía o la semejanza de color."),
+  q("Según las directrices WCAG para gráficos accesibles, ¿cuál es la relación mínima de contraste de color requerida entre los elementos de una visualización?",
+    ["1,5:1", "2:1", "3:1", "4,5:2"], 2,
+    "Para cumplir las normas WCAG de accesibilidad en gráficos, los elementos visuales deben mantener un contraste de color mínimo de 3:1."),
+])]
+
 RUBRICAS = {
  "R1": ("Gráficos individuales", [("Adecuación del gráfico", 25), ("Integridad y ética", 25), ("Claridad y diseño", 25), ("Accesibilidad", 10), ("Justificación escrita", 15)]),
  "R2": ("Tableros y reportes", [("Responde la pregunta de la audiencia", 20), ("Jerarquía visual y layout", 15), ("KPIs bien definidos", 15), ("Interacción / parametrización", 15), ("Integridad y ética", 15), ("Calidad técnica y reproducibilidad", 10), ("Documentación", 10)]),

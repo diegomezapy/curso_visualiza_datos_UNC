@@ -21,11 +21,13 @@ cdata = lambda t: "<![CDATA[" + t.replace("]]>", "]]]]><![CDATA[>") + "]]>"
 
 def xml_preguntas(sesiones):
     o = ['<?xml version="1.0" encoding="UTF-8"?>', "<quiz>"]
-    for n in sesiones:
-        titulo, preg = c.QUIZZES[n]
-        o.append(f'<question type="category"><category><text>$course$/top/Visualización de datos/Sesión {n}</text></category></question>')
+    grupos = [(f"Sesión {n}", f"S{n}", c.QUIZZES[n][1]) for n in sesiones if n in c.QUIZZES]
+    grupos += [(f"Sesión {e['sesion']} · Lectura de la presentación", f"S{e['sesion']}L", e["preguntas"]) for e in c.QUIZZES_EXTRA if ("L" + str(e["sesion"])) in sesiones or "extras" in sesiones]
+    for cat, pref, preg in grupos:
+        n = pref
+        o.append(f'<question type="category"><category><text>$course$/top/Visualización de datos/{cat}</text></category></question>')
         for i, q in enumerate(preg, 1):
-            o.append(f'<question type="multichoice"><name><text>S{n}-Q{i}</text></name><questiontext format="html"><text>{cdata("<p>" + html.escape(q["q"]) + "</p>")}</text></questiontext>'
+            o.append(f'<question type="multichoice"><name><text>{pref}-Q{i}</text></name><questiontext format="html"><text>{cdata("<p>" + html.escape(q["q"]) + "</p>")}</text></questiontext>'
                      f'<generalfeedback format="html"><text>{cdata("<p>" + html.escape(q["why"]) + "</p>")}</text></generalfeedback><defaultgrade>1</defaultgrade><penalty>0.3333333</penalty><hidden>0</hidden>'
                      '<single>true</single><shuffleanswers>true</shuffleanswers><answernumbering>abc</answernumbering>'
                      '<correctfeedback format="html"><text>Correcto.</text></correctfeedback><partiallycorrectfeedback format="html"><text></text></partiallycorrectfeedback><incorrectfeedback format="html"><text>Revisá la explicación y volvé a intentar.</text></incorrectfeedback>')
@@ -49,6 +51,7 @@ def pagina(s):
 <h4>🧰 Materiales</h4><ul>{''.join(rec)}</ul>
 {f'<h4>🎬 Videos</h4><ul>{vids}</ul>' if vids else ''}
 {f'<h4>📚 Lecturas</h4><ul>{lec}</ul>' if lec else ''}
+{('<h4>📑 Presentación e infografía</h4><ul>' + li(WEB + '/aula/media/unidad1/presentacion.pdf', '📑 Presentación (PDF, 14 diapositivas)') + li(WEB + '/aula/media/unidad1/presentacion.pptx', '⬇ Presentación (PowerPoint)') + li(WEB + '/aula/media/unidad1/infografia.webp', '🗺️ Infografía: la ciencia de la percepción gráfica') + '</ul><p><i>Quiz 1B: evalúa la lectura de la presentación.</i></p>') if n == 1 else ''}
 <h4>✅ Actividades</h4><ul>{acts}</ul>
 <p><i>Python en Colab: Entorno de ejecución → Ejecutar todas. R: abrir el .Rmd en RStudio, Knit y Publish → RPubs.</i></p>"""
 
@@ -56,7 +59,8 @@ def glosario():
     e = "".join(f'<ENTRY><CONCEPT>{escape(a)}</CONCEPT><DEFINITION>{escape(b)}</DEFINITION><FORMAT>1</FORMAT><USEDYNALINK>1</USEDYNALINK><CASESENSITIVE>0</CASESENSITIVE><FULLMATCH>0</FULLMATCH><TEACHERENTRY>1</TEACHERENTRY></ENTRY>' for a, b in c.GLOSARIO)
     return f'<?xml version="1.0" encoding="UTF-8"?><GLOSSARY><INFO><NAME>Glosario de visualización de datos</NAME><INTRO>Términos clave del curso.</INTRO><INTROFORMAT>1</INTROFORMAT><ALLOWDUPLICATEDENTRIES>0</ALLOWDUPLICATEDENTRIES><DISPLAYFORMAT>dictionary</DISPLAYFORMAT><SHOWSPECIAL>1</SHOWSPECIAL><SHOWALPHABET>1</SHOWALPHABET><SHOWALL>1</SHOWALL><ALLOWCOMMENTS>0</ALLOWCOMMENTS><USEDYNALINK>1</USEDYNALINK><DEFAULTAPPROVAL>1</DEFAULTAPPROVAL><GLOBALGLOSSARY>0</GLOBALGLOSSARY><ENTBYPAGE>20</ENTBYPAGE><ENTRIES>{e}</ENTRIES></INFO></GLOSSARY>'
 
-(OUT / "preguntas" / "banco_completo.xml").write_text(xml_preguntas(sorted(c.QUIZZES)), encoding="utf-8")
+(OUT / "preguntas" / "banco_completo.xml").write_text(xml_preguntas(sorted(c.QUIZZES) + ["extras"]), encoding="utf-8")
+(OUT / "preguntas" / "quiz_sesion_1_lectura_ppt.xml").write_text(xml_preguntas(["L1"]), encoding="utf-8")
 for n in sorted(c.QUIZZES): (OUT / "preguntas" / f"quiz_sesion_{n}.xml").write_text(xml_preguntas([n]), encoding="utf-8")
 (OUT / "glosario.xml").write_text(glosario(), encoding="utf-8")
 for s in c.SESIONES: (OUT / "paginas" / f"sesion_{s['n']}.html").write_text(pagina(s), encoding="utf-8")

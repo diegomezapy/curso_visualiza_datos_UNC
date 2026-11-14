@@ -18,7 +18,8 @@
 ## Trabajo asincrónico
 - Lectura: Cairo (2011), capítulos introductorios; Wilke (2019) caps. 1-4 y 26.
 - Ejercicio: rehacer un gráfico de prensa (antes/después + 5 líneas de justificación).
-- Quiz 1 (15 min, en plataforma).
+- Estudiar la **presentación** de la unidad (14 diapositivas) y la **infografía** «La ciencia de la percepción gráfica» (en el aula, sesión 1).
+- Quiz 1 (15 min, en plataforma) y **Quiz 1B** (10 preguntas: evalúa la lectura y el estudio de la presentación).
 
 ## Entrega y evaluación
 Ejercicio S1 (5 pts, rúbrica R1) · Quiz 1 (teoría).

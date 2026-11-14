@@ -52,6 +52,7 @@ Ejercicio S6 (5 pts, R2) · Propuesta del integrador (hito) · Quiz 6.
 - Ejercicio S6: informe parametrizado con alerta de margen + gráfico de contribución · publicar en RPubs (5 pts)
 - Hito: propuesta del proyecto integrador (1 página) · publicar en RPubs (0 pts)
 
+
 ## Lecturas recomendadas (enlaces; subir el texto solo si la licencia lo permite)
 - R Markdown: The Definitive Guide (Xie, Allaire, Grolemund) (libro, en) · https://bookdown.org/yihui/rmarkdown/ · gratuito en línea · parámetros: cap. 15
 - Getting Started with RPubs (web, en) · https://rpubs.com/about/getting-started · 

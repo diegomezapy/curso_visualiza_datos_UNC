@@ -50,6 +50,7 @@ Ejercicio S3 (5 pts, R1) · Quiz 3.
 ## Actividades evaluadas
 - Ejercicio S3: corregir un gráfico 'malo' + 150 palabras sobre su daño potencial · publicar en RPubs (5 pts)
 
+
 ## Lecturas recomendadas (enlaces; subir el texto solo si la licencia lo permite)
 - Google · Trampas de visualización (guía de datos) (web, es) · https://developers.google.com/machine-learning/guides/data-traps/visualization-traps?hl=es-419 · 
 - datos.gob.es · Diseñar visualizaciones de datos con integridad (web, es) · https://datos.gob.es/es/blog/disenar-visualizaciones-de-datos-con-integridad-mas-alla-de-los-graficos-bonitos · 

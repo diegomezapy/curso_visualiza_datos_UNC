@@ -51,6 +51,7 @@ Resumen: Grafos, layouts, centralidad, comunidades y matrices de adyacencia. Pre
 - Integrador: informe técnico (12 pts) · RPubs + notebook reproducible en Colab (12 pts)
 - Integrador: presentación (8 pts) (8 pts)
 
+
 ## Lecturas recomendadas (enlaces; subir el texto solo si la licencia lo permite)
 - NetworkX · documentación (web, en) · https://networkx.org/documentation/stable/ · 
 - igraph para R (web, en) · https://r.igraph.org · 

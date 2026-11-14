@@ -52,6 +52,7 @@ Resumen: Coordenadas paralelas, PCA y t-SNE; descomposición y heatmap de series
 - Mini-proyecto 3: 3 vistas complementarias sobre un dataset REAL del catálogo de Datos abiertos (con ficha del dataset) · RPubs + Colab (10 pts)
 - Hito: avance del integrador (prototipo con ≥ 2 vistas) · RPubs (0 pts)
 
+
 ## Lecturas recomendadas (enlaces; subir el texto solo si la licencia lo permite)
 - Distill · How to Use t-SNE Effectively (artículo, en) · https://distill.pub/2016/misread-tsne/ · 
 - Wilke · caps. 13-16 (series, tendencias, geoespacial, incertidumbre) (libro, en) · https://clauswilke.com/dataviz/ · 

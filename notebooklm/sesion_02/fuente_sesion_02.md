@@ -50,6 +50,7 @@ Ejercicio S2 (5 pts, R1) · Quiz 2.
 ## Actividades evaluadas
 - Ejercicio S2: 5 preguntas de negocio → 5 gráficos justificados · publicar en RPubs (5 pts)
 
+
 ## Lecturas recomendadas (enlaces; subir el texto solo si la licencia lo permite)
 - Wilke · caps. 5-12 (cantidades, distribuciones, proporciones, relaciones) (libro, en) · https://clauswilke.com/dataviz/ · 
 - From Data to Viz · árbol de decisión para elegir el gráfico (web, en) · https://www.data-to-viz.com · 

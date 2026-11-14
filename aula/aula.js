@@ -47,9 +47,10 @@ function autoPct(auto, act) {
   return r.criterios.reduce((s, c, i) => s + ((auto[act.id][i] || 0) / 4) * c.w, 0) / tot;
 }
 function progSes(s, st = S) {
-  const items = s.actividades.length + (s.quiz ? 1 : 0);
+  const qids = s.quizIds || (s.quiz ? [String(s.n)] : []);
+  const items = s.actividades.length + qids.length;
   let done = s.actividades.filter(a => st.done[a.id]).length;
-  if (s.quiz && (st.quiz[s.n]?.mejor ?? -1) >= 60) done++;
+  done += qids.filter(id => (st.quiz[id]?.mejor ?? -1) >= 60).length;
   return { done, items, pct: items ? done / items : 0 };
 }
 const progTotal = (st = S) => { let d = 0, i = 0; D.sesiones.forEach(s => { const p = progSes(s, st); d += p.done; i += p.items; }); return i ? d / i : 0; };
@@ -84,7 +85,7 @@ function vInicio() {
   <p class="sub">${esc(C.curso)} · ${esc(C.programa)} · ${esc(C.semestre)}</p>
   <div class="kpis">
     <div class="card"><div class="muted">Avance del curso</div><div class="big">${Math.round(progTotal() * 100)}%</div>${bar(progTotal())}</div>
-    <div class="card"><div class="muted">Teoría (quizzes) / 30</div><div class="big">${fmt(c.teoria)}</div><div class="muted">mejores 6 quizzes</div></div>
+    <div class="card"><div class="muted">Teoría (quizzes) / 30</div><div class="big">${fmt(c.teoria)}</div><div class="muted">mejores 6 de ${Object.keys(D.quizzes).length} quizzes</div></div>
     <div class="card"><div class="muted">Nota provisoria / 100</div><div class="big">${fmt(c.total)}</div><div class="muted">escala sugerida: ${c.escala}</div></div>
   </div>
   ${sig ? `<h2>Próximo paso</h2><a class="card link" href="#/sesion/${sig.n}"><span class="tag">Módulo ${sig.n}</span><h3>${esc(sig.titulo)}</h3><p class="muted" style="margin:.3rem 0 0">${esc(sig.resumen)}</p></a>` : `<div class="card"><b>¡Completaste todos los módulos!</b> Descargá tu reporte en <a href="#/notas">Mis notas</a>.</div>`}
@@ -139,6 +140,46 @@ function rutaDatosHtml(s) {
   </div>
   ${embed ? `<details style="margin-top:.8rem"><summary><b>Ver el informe de Looker Studio aquí mismo</b></summary><iframe src="${esc(embed)}" style="width:100%;height:600px;border:1px solid var(--bd);border-radius:8px;margin-top:.5rem" loading="lazy" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups"></iframe></details>` : ""}`;
 }
+/* ---------- presentación e infografía (Unidad 1) ---------- */
+function mediaHtml(s) {
+  const m = s.media; if (!m) return "";
+  const sl = m.slides, inf = m.infografia, k = "media_ppt_" + s.n;
+  return `<h2 id="deck">📑 Presentación de la unidad <span class="muted" style="font-weight:400;font-size:.9rem">· ${sl.length} diapositivas</span></h2>
+  <div class="card deck" data-n="${sl.length}" tabindex="0" aria-label="Visor de la presentación. Usá las flechas del teclado para avanzar.">
+   <div class="deck-stage"><button class="deck-nav" id="dprev" aria-label="Diapositiva anterior">‹</button>
+    <img id="dimg" src="${esc(m.base)}/${esc(sl[0].img)}" alt="${esc(sl[0].titulo)}" width="1280" height="720"><button class="deck-nav" id="dnext" aria-label="Diapositiva siguiente">›</button></div>
+   <div class="deck-bar"><b id="dtit">${esc(sl[0].titulo)}</b><span class="muted" id="dcount">1 / ${sl.length}</span></div>
+   <input type="range" id="drange" min="1" max="${sl.length}" value="1" aria-label="Ir a la diapositiva">
+   <div class="row" style="margin-top:.5rem"><button class="btn sec sm" id="dfs" type="button">⛶ Pantalla completa</button><a class="btn sec sm" href="${esc(m.pdf)}" target="_blank" rel="noopener">⬇ PDF</a><a class="btn sec sm" href="${esc(m.pptx)}" download>⬇ PowerPoint</a>
+    <label class="chk2" style="margin-left:auto"><input type="checkbox" data-act="${k}" ${S.done[k] ? "checked" : ""}> Ya estudié la presentación</label></div>
+   <details style="margin-top:.5rem"><summary>Texto de esta diapositiva</summary><div id="dtxt" class="muted"></div></details>
+   <details><summary>Ver todas las diapositivas</summary><div class="deck-thumbs">${sl.map((x, i) => `<button type="button" class="deck-th" data-go="${i + 1}" aria-label="Ir a: ${esc(x.titulo)}"><img src="${esc(m.base)}/${esc(x.img)}" alt="" loading="lazy" width="160" height="90"><span>${x.n}. ${esc(x.titulo)}</span></button>`).join("")}</div></details>
+  </div>
+  <h2>🗺️ Infografía</h2><figure class="card info"><button type="button" class="info-b" id="infb" aria-label="Ampliar la infografía"><img src="${esc(inf.src)}" alt="${esc(inf.alt)}" loading="lazy"></button>
+   <figcaption class="muted">Tocá la imagen para ampliarla. <a href="${esc(inf.src)}" download>⬇ Descargar</a></figcaption>
+   <details><summary>Descripción en texto</summary><p class="muted">${esc(inf.descripcion)}</p></details></figure>`;
+}
+function bindMedia() {
+  const d = $(".deck"); if (!d) return;
+  const m = D.sesiones.find(x => x.media)?.media, sl = m.slides; let i = 1;
+  const ir = n => { i = Math.max(1, Math.min(sl.length, n)); const x = sl[i - 1]; const img = $("#dimg"); img.src = `${m.base}/${x.img}`; img.alt = x.titulo;
+    $("#dtit").textContent = x.titulo; $("#dcount").textContent = `${i} / ${sl.length}`; $("#drange").value = i;
+    $("#dtxt").innerHTML = x.texto.length ? "<ul>" + x.texto.map(t => `<li>${esc(t)}</li>`).join("") + "</ul>" : "Esta diapositiva es solo visual.";
+    [i, i + 1].forEach(k => { if (sl[k]) new Image().src = `${m.base}/${sl[k].img}`; }); };
+  $("#dprev").addEventListener("click", () => ir(i - 1)); $("#dnext").addEventListener("click", () => ir(i + 1));
+  $("#drange").addEventListener("input", e => ir(+e.target.value));
+  $$("[data-go]").forEach(b => b.addEventListener("click", () => { ir(+b.dataset.go); d.scrollIntoView({ behavior: "smooth", block: "start" }); }));
+  d.addEventListener("keydown", e => { if (e.key === "ArrowRight") { ir(i + 1); e.preventDefault(); } else if (e.key === "ArrowLeft") { ir(i - 1); e.preventDefault(); } });
+  $("#dfs").addEventListener("click", () => { const st = $(".deck-stage"); if (document.fullscreenElement) document.exitFullscreen(); else st.requestFullscreen?.(); });
+  ir(1);
+  $("#infb")?.addEventListener("click", () => {
+    const lb = document.createElement("div"); lb.className = "lb"; lb.setAttribute("role", "dialog"); lb.setAttribute("aria-label", "Infografía ampliada");
+    lb.innerHTML = `<button type="button" class="lb-x" aria-label="Cerrar">✕</button><img src="${esc(m.infografia.src)}" alt="${esc(m.infografia.alt)}">`;
+    const cerrar = () => { lb.parentNode?.removeChild(lb); document.removeEventListener("keydown", tecla); }, tecla = e => { if (e.key === "Escape") cerrar(); };
+    lb.addEventListener("click", e => { if (e.target === lb || e.target.classList.contains("lb-x")) cerrar(); });
+    document.addEventListener("keydown", tecla); document.body.appendChild(lb); lb.querySelector(".lb-x").focus();
+  });
+}
 function vSesion(n) {
   const s = D.sesiones.find(x => x.n === n); if (!s) return vInicio();
   const p = progSes(s), prev = D.sesiones.find(x => x.n === n - 1), next = D.sesiones.find(x => x.n === n + 1);
@@ -150,6 +191,7 @@ function vSesion(n) {
   ${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} completado</span>
   <h2>🎯 Objetivos</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.objetivos.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>
   <p><a class="btn sm" href="#/clases/s${n}">🎥 Ver clases grabadas de esta sesión</a></p>
+  ${mediaHtml(s)}
   <h2>🧰 Materiales de la sesión</h2><div class="card"><ul class="res">${s.recursos.map(r => `<li><span class="ico">${ico[r.k] || "🔗"}</span>${r.u ? `<a href="${esc(r.u)}" target="${r.k === "guia" ? "_self" : "_blank"}" rel="noopener">${esc(r.t)}</a>` : esc(r.t)}</li>`).join("")}</ul>
    <p class="muted" style="margin:.5rem 0 0">🐍 <b>Python</b> en Colab (<i>Entorno de ejecución → Ejecutar todas</i>) · 📊 <b>R</b> en RStudio: abrí el .Rmd, presioná <i>Knit</i> y publicá con <i>Publish → RPubs</i>. Datasets en <a href="#/recursos">Recursos</a>; guía en <a href="../materiales/pdf/00_guia_inicio.pdf" target="_blank">Guía de inicio (PDF)</a>.</p></div>
   ${videosHtml(s)}${lecturasHtml(s)}
@@ -170,8 +212,9 @@ function vSesion(n) {
     </div></div></div>`; }).join("")}
   ${rutaDatosHtml(s)}
   ${(s.practicas_reales || []).length ? `<h2>🗺️ Práctica con datos reales</h2><div class="card">${s.practicas_reales.map(p => `<div class="row" style="justify-content:space-between;padding:.35rem 0;border-bottom:1px solid var(--bd)"><span><b>${esc(p.nombre)}</b><br><span class="muted">${esc(p.desc)}</span></span><span class="row"><a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.colab)}">🐍 Colab</a>${p.rmd ? `<a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.rmd)}">📊 R → RPubs</a>` : ""}</span></div>`).join("")}<p class="muted" style="margin:.5rem 0 0">Fuentes, estado y cuidados en <a href="#/datos">Datos abiertos</a>. Citá siempre la fuente y no publiques datos personales.</p></div>` : ""}
-  ${s.quiz ? `<h2>🧠 Quiz de teoría</h2><div class="card"><div class="row" style="justify-content:space-between"><div><b>${esc(D.quizzes[n].titulo)}</b><div class="muted">5 preguntas · retroalimentación inmediata · reintentos ilimitados (cuenta tu mejor resultado)</div>
-    ${q ? `<div class="muted">Mejor: <b>${q.mejor}%</b> · Intentos: ${q.intentos.length}</div>` : ""}</div><a class="btn" href="#/quiz/${n}">${q ? "Reintentar" : "Comenzar quiz"}</a></div></div>` : ""}
+  ${(s.quizIds || []).length ? `<h2>🧠 ${s.quizIds.length > 1 ? "Quizzes" : "Quiz"} de teoría</h2>${s.quizIds.map(id => { const Q = D.quizzes[id], qq = S.quiz[id];
+    return `<div class="card"><div class="row" style="justify-content:space-between"><div><b>${Q.lectura ? `Quiz ${esc(Q.etiqueta)} · ` : ""}${esc(Q.titulo)}</b><div class="muted">${Q.preguntas.length} preguntas · ${Q.lectura ? "evalúa la lectura y el estudio de la presentación · " : ""}retroalimentación inmediata · reintentos ilimitados (cuenta tu mejor resultado)</div>
+    ${qq ? `<div class="muted">Mejor: <b>${qq.mejor}%</b> · Intentos: ${qq.intentos.length}</div>` : ""}</div><a class="btn" href="#/quiz/${id}">${qq ? "Reintentar" : "Comenzar quiz"}</a></div></div>`; }).join("")}` : ""}
   ${s.extra?.length ? `<h2>💡 Para profundizar</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.extra.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
   <div class="row" style="justify-content:space-between;margin-top:1.5rem">${prev ? `<a class="btn sec" href="#/sesion/${prev.n}">← Sesión ${prev.n}</a>` : "<span></span>"}${next ? `<a class="btn sec" href="#/sesion/${next.n}">Sesión ${next.n} →</a>` : ""}</div>`;
 }
@@ -184,7 +227,8 @@ function vQuiz(n) {
   if (!D.quizzes[n]) return vInicio();
   if (!QZ[n]) nuevoQuiz(n);
   const z = QZ[n], total = z.preguntas.length;
-  let html = `<a href="#/sesion/${n}">← Sesión ${n}</a><h1>Quiz · ${esc(D.quizzes[n].titulo)}</h1><p class="sub">Elegí una opción por pregunta. Al enviar verás la corrección y la explicación.</p>`;
+  const ses = D.quizzes[n].sesion || n;
+  let html = `<a href="#/sesion/${ses}">← Sesión ${ses}</a>${D.quizzes[n].lectura ? ` · <a href="#/sesion/${ses}">📑 Volver a la presentación</a>` : ""}<h1>Quiz · ${esc(D.quizzes[n].titulo)}</h1><p class="sub">Elegí una opción por pregunta. Al enviar verás la corrección y la explicación.</p>`;
   if (z.hecho) {
     const ok = z.preguntas.filter((p, i) => p.ops[z.resp[i]]?.ok).length, pct = Math.round(ok / total * 100);
     html += `<div class="card"><div class="big">${pct}%</div><div>${ok} de ${total} correctas · mejor resultado: <b>${S.quiz[n].mejor}%</b> ${pct >= 60 ? '<span class="tag ok">Aprobado</span>' : '<span class="tag bad">Repasá y reintentá</span>'}</div></div>`;
@@ -192,7 +236,7 @@ function vQuiz(n) {
   html += `<form id="qf">${z.preguntas.map((p, i) => `<fieldset class="q"><legend>${i + 1}. ${esc(p.q)}</legend>
     ${p.ops.map((o, j) => { const sel = z.resp[i] === j; const cls = z.hecho ? (o.ok ? "right" : sel ? "wrong" : "") : ""; return `<label class="opt ${cls}" style="font-weight:400;margin:.15rem 0"><input type="radio" name="q${i}" value="${j}" ${sel ? "checked" : ""} ${z.hecho ? "disabled" : ""}><span>${esc(o.t)} ${z.hecho && o.ok ? "✔" : z.hecho && sel ? "✘" : ""}</span></label>`; }).join("")}
     ${z.hecho ? `<div class="why"><b>${p.ops[z.resp[i]]?.ok ? "Correcto." : "Incorrecto."}</b> ${esc(p.why)}</div>` : ""}</fieldset>`).join("")}
-    <div class="row">${z.hecho ? `<button type="button" class="btn" id="retry">Reintentar con orden distinto</button><a class="btn sec" href="#/sesion/${n}">Volver al módulo</a>` : `<button class="btn" type="submit" id="send">Enviar respuestas</button><span class="muted" id="qmsg"></span>`}</div></form>`;
+    <div class="row">${z.hecho ? `<button type="button" class="btn" id="retry">Reintentar con orden distinto</button><a class="btn sec" href="#/sesion/${ses}">Volver al módulo</a>` : `<button class="btn" type="submit" id="send">Enviar respuestas</button><span class="muted" id="qmsg"></span>`}</div></form>`;
   return html;
 }
 function bindQuiz(n) {
@@ -203,7 +247,7 @@ function bindQuiz(n) {
     z.preguntas.forEach((_, i) => { const r = f.querySelector(`input[name=q${i}]:checked`); if (r) z.resp[i] = +r.value; });
     if (Object.keys(z.resp).length < z.preguntas.length) { $("#qmsg").textContent = `Faltan ${z.preguntas.length - Object.keys(z.resp).length} pregunta(s) por responder.`; return; }
     const ok = z.preguntas.filter((p, i) => p.ops[z.resp[i]].ok).length, pct = Math.round(ok / z.preguntas.length * 100);
-    const intento = { id: crypto.randomUUID(), sesion: n, quizTitulo: D.quizzes[n].titulo, fecha: new Date().toISOString(), pct,
+    const intento = { id: crypto.randomUUID(), sesion: D.quizzes[n].sesion || n, quizTitulo: D.quizzes[n].titulo, fecha: new Date().toISOString(), pct,
       respuestas: z.preguntas.map((p, i) => ({ pregunta: p.q, respuesta: p.ops[z.resp[i]].t, correcta: p.ops.find(o => o.ok).t, acierto: p.ops[z.resp[i]].ok })) };
     const boton = $("#send"); boton.disabled = true; $("#qmsg").textContent = "Guardando respuestas…";
     try { await B.guardarIntentoQuiz(USER.uid, intento); }
@@ -217,7 +261,7 @@ function bindQuiz(n) {
 /* ---------- notas del estudiante ---------- */
 function vNotas() {
   const c = calcular(S.quiz, S.oficial), t = teoria(S.quiz);
-  const filaQ = Object.keys(D.quizzes).map(n => { const q = S.quiz[n]; return `<tr><td>Quiz ${n} · ${esc(D.quizzes[n].titulo)}</td><td>${q ? q.mejor + "%" : "–"}</td><td>${q ? q.intentos.length : 0}</td></tr>`; }).join("");
+  const filaQ = Object.keys(D.quizzes).map(n => { const q = S.quiz[n]; return `<tr><td>Quiz ${esc(D.quizzes[n].etiqueta || n)} · ${esc(D.quizzes[n].titulo)}</td><td>${q ? q.mejor + "%" : "–"}</td><td>${q ? q.intentos.length : 0}</td></tr>`; }).join("");
   const filaA = ACTS.filter(a => a.pts).map(a => { const ap = autoPct(S.auto, a), of = S.oficial[a.id]; return `<tr><td>S${a.n} · ${esc(a.titulo)}</td><td>${a.pts}</td><td>${S.done[a.id] ? "✅" : "⬜"}</td><td>${ap == null ? "–" : fmt(ap * a.pts)}</td><td>${of === undefined || of === "" ? '<span class="muted">pendiente</span>' : "<b>" + fmt(+of) + "</b>"}</td></tr>`; }).join("");
   return `<h1>Mis notas y reporte</h1><p class="sub">Calificación estimada con lo que ya tiene nota oficial del docente. Teoría se calcula automáticamente con tus quizzes. Las notas oficiales se actualizan cuando el docente las carga.</p>
   <div class="kpis"><div class="card"><div class="muted">Teoría / 30</div><div class="big">${fmt(c.teoria)}</div></div>
@@ -706,6 +750,7 @@ async function render() {
   $("#side").classList.remove("open"); $("#menu").setAttribute("aria-expanded", "false");
 }
 function bindSesion() {
+  bindMedia();
   $$("[data-play]").forEach(b => b.addEventListener("click", () => {
     const id = b.dataset.play, pl = b.dataset.tipo === "playlist";
     const src = pl ? `https://www.youtube-nocookie.com/embed/videoseries?list=${id}&autoplay=1` : `https://www.youtube-nocookie.com/embed/${id}?rel=0&autoplay=1`;

@@ -3,7 +3,7 @@ Estructura sugerida por el programa: **Teoría 30 % · Práctica 50 % · Integra
 
 | Componente | Peso | Instrumento | Detalle |
 |---|---|---|---|
-| **Teoría** | 30 | Quizzes y lecturas guiadas | 7 quizzes (S1-S7) de 5 preguntas; se promedian los 6 mejores → 30 pts. Banco: [banco_quizzes.md](banco_quizzes.md) |
+| **Teoría** | 30 | Quizzes y lecturas guiadas | 8 quizzes de 5 preguntas (S1-S8) más el **Quiz 1B** de 10 preguntas sobre la lectura de la presentación de la Unidad 1; se promedian los 6 mejores de los 9 → 30 pts. Banco: [banco_quizzes.md](banco_quizzes.md) |
 | **Práctica** | 50 | Laboratorios y mini-proyectos | Ej. S1 (5) + Ej. S2 (5) + Ej. S3 (5) + **MP1** (10) + **MP2** (10) + Ej. S6 (5) + **MP3** (10) |
 | **Integrador** | 20 | Informe técnico + presentación | Informe 12 + presentación 8. Ver [proyecto_integrador.md](proyecto_integrador.md) |
 

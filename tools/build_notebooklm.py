@@ -27,6 +27,12 @@ def fuente_sesion(s):
             f"- **{q['q']}** → {q['o'][q['c']]}. {q['why']}" for q in quiz[1])
     lects = "\n".join(f"- {l['t']} ({l['tipo']}, {l['idioma']}) · {l['u']} · {l.get('nota','')}" for l in rc.LECTURAS.get(n, []))
     acts = "\n".join(f"- {a['titulo']} ({a['pts']} pts)" for a in s["actividades"])
+    ppt = ""
+    sj = RAIZ / "aula" / "media" / "unidad1" / "slides.json"
+    if n == 1 and sj.exists():
+        import json
+        ppt = "\n## Texto de la presentación de la unidad (Ciencia de la percepción gráfica)\n" + "\n".join(
+            f"### Diapositiva {d['n']} · {d['titulo']}\n" + "\n".join(f"- {t}" for t in d["texto"]) for d in json.loads(sj.read_text(encoding="utf-8")))
     return f"""# Sesión {n} · {s['titulo']}
 Curso: Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET–UNC. Unidad {s['unidad']}.
 Resumen: {s['resumen']}
@@ -40,6 +46,7 @@ Resumen: {s['resumen']}
 
 ## Actividades evaluadas
 {acts}
+{ppt}
 
 ## Lecturas recomendadas (enlaces; subir el texto solo si la licencia lo permite)
 {lects}

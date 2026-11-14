@@ -50,6 +50,7 @@ Resumen: Definición de KPIs accionables, small multiples, contribución al camb
 ## Actividades evaluadas
 - Mini-proyecto 1: una página para un gerente (¿dónde actuar el próximo trimestre?) · publicar en RPubs (10 pts)
 
+
 ## Lecturas recomendadas (enlaces; subir el texto solo si la licencia lo permite)
 - storytelling with data · blog y recursos (web, en) · https://www.storytellingwithdata.com · 
 - Few, Information Dashboard Design (libro; consultar en biblioteca) (libro, en) · https://www.perceptualedge.com · sitio del autor
