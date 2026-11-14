@@ -1,6 +1,6 @@
 """Genera site/aula/data.js a partir de aula/contenido.py + aula/config.json y copia el frontend.
 Uso: python tools/build_aula.py  (después de tools/build_site.py)"""
-import json, shutil, sys
+import hashlib, json, shutil, sys
 from pathlib import Path
 RAIZ = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RAIZ / "aula"))
@@ -66,6 +66,23 @@ data = {
 (SITE / "data.js").write_text("window.CURSO=" + json.dumps(data, ensure_ascii=False) + ";", encoding="utf-8")
 for f in ("index.html", "aula.css", "aula.js", "backend.js", "planillas.mjs", "fx.js", "fxbg.js"):
     shutil.copy(RAIZ / "aula" / f, SITE / f)
+
+# Pages conserva archivos en caché; cada importación debe apuntar a la versión del archivo copiado.
+def version(nombre):
+    return hashlib.sha256((SITE / nombre).read_bytes()).hexdigest()[:12]
+
+modulo = SITE / "aula.js"
+codigo = modulo.read_text(encoding="utf-8")
+for nombre in ("backend.js", "planillas.mjs", "fx.js"):
+    codigo = codigo.replace(f'"./{nombre}"', f'"./{nombre}?v={version(nombre)}"')
+modulo.write_text(codigo, encoding="utf-8")
+
+entrada = SITE / "index.html"
+html = entrada.read_text(encoding="utf-8")
+for nombre in ("aula.css", "data.js", "fxbg.js", "aula.js"):
+    html = html.replace(f'"{nombre}"', f'"{nombre}?v={version(nombre)}"')
+entrada.write_text(html, encoding="utf-8")
+
 shutil.copytree(RAIZ / "aula" / "vendor", SITE / "vendor", dirs_exist_ok=True)
 shutil.copytree(RAIZ / "materiales" / "pdf", SITE.parent / "materiales" / "pdf", dirs_exist_ok=True)
 print("aula generada en", SITE)

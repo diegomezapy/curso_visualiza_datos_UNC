@@ -25,7 +25,7 @@ async function perfil(page, correo, cedula, nombre) {
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
-  await page.route('**/aula/data.js', route => route.fulfill({ contentType: 'application/javascript', body: 'window.CURSO=' + JSON.stringify(datos) + ';' }));
+  await page.route('**/aula/data.js*', route => route.fulfill({ contentType: 'application/javascript', body: 'window.CURSO=' + JSON.stringify(datos) + ';' }));
 
   await page.goto('http://localhost:8765/aula/index.html#/registro');
   await perfil(page, 'alumna@ejemplo.test', '4567890', 'Alumna');

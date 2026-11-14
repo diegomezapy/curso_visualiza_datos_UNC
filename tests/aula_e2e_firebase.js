@@ -17,7 +17,7 @@ const campos=o=>({fields:Object.fromEntries(Object.entries(o).map(([k,v])=>[k,ty
 await fetch(`${AUTH}/emulator/v1/projects/${PRJ}/accounts`,{method:'DELETE'});await fetch(`${FS}/emulator/v1/projects/${PRJ}/databases/(default)/documents`,{method:'DELETE'});
 const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:1100,height:900}});
 await ctx.addInitScript(()=>{window.__CVD_EMULATOR__={auth:'http://127.0.0.1:9099',fsHost:'127.0.0.1',fsPort:8080};});
-await ctx.route('**/aula/data.js',r=>r.fulfill({contentType:'application/javascript',body:newData}));
+await ctx.route('**/aula/data.js*',r=>r.fulfill({contentType:'application/javascript',body:newData}));
 const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>m.type()==='error'&&errs.push(m.text()));
 await p.goto(U);await p.waitForSelector('#lf');console.log('modo real: banner demo ausente =',await p.locator('.note').count()===0);
 // 1 registro + verificación
@@ -30,7 +30,7 @@ console.log('3 sesión y progreso persisten tras recargar:',await p.locator('#ch
 await p.goto(U+'#/quiz/1');for(let i=0;i<5;i++)await p.locator(`input[name=q${i}]`).first().check();await p.click('#send');await p.waitForSelector('#retry');
 console.log('   respuestas del quiz guardadas en Firestore');
 // 4 cédula duplicada desde otro contexto
-const c2=await b.newContext();await c2.addInitScript(()=>{window.__CVD_EMULATOR__={auth:'http://127.0.0.1:9099',fsHost:'127.0.0.1',fsPort:8080};});await c2.route('**/aula/data.js',r=>r.fulfill({contentType:'application/javascript',body:newData}));
+const c2=await b.newContext();await c2.addInitScript(()=>{window.__CVD_EMULATOR__={auth:'http://127.0.0.1:9099',fsHost:'127.0.0.1',fsPort:8080};});await c2.route('**/aula/data.js*',r=>r.fulfill({contentType:'application/javascript',body:newData}));
 const q=await c2.newPage();q.on('pageerror',e=>errs.push(e.message));
 await q.goto(U+'#/registro');await llenar(q,alumno({nombres:'Otra',email:'otra@ejemplo.com'}));await q.check('#f_ok');await q.click('#rg button[type=submit]');
 console.log('4 cédula duplicada (reglas) →',await toast(q));
@@ -46,7 +46,7 @@ await p.goto(U+'#/perfil');await p.waitForSelector('#cp');await p.fill('#p0','Re
 console.log('   token con clave nueva:',!!(await token('ana@ejemplo.com','Final12345')).idToken);
 // docente
 await fsr('POST','docentes?documentId=docente%40demo.local','owner',{fields:{activo:{booleanValue:true},planillas:{mapValue:{fields:{diagnostico:{stringValue:'https://docs.google.com/spreadsheets/d/PRUEBA/edit'}}}}}});
-const d=await b.newContext({viewport:{width:1300,height:900},acceptDownloads:true});await d.addInitScript(()=>{window.__CVD_EMULATOR__={auth:'http://127.0.0.1:9099',fsHost:'127.0.0.1',fsPort:8080};});await d.route('**/aula/data.js',r=>r.fulfill({contentType:'application/javascript',body:newData}));
+const d=await b.newContext({viewport:{width:1300,height:900},acceptDownloads:true});await d.addInitScript(()=>{window.__CVD_EMULATOR__={auth:'http://127.0.0.1:9099',fsHost:'127.0.0.1',fsPort:8080};});await d.route('**/aula/data.js*',r=>r.fulfill({contentType:'application/javascript',body:newData}));
 const t=await d.newPage();t.on('pageerror',e=>errs.push(e.message));
 await t.goto(U+'#/registro');await llenar(t,alumno({nombres:'Prof',apellidos:'Docente',cedula:'1111111',email:'docente@demo.local'}));await t.check('#f_ok');await t.click('#rg button[type=submit]');
 await t.waitForSelector('h1:has-text("Verificá")');await verificar('docente@demo.local');await t.click('#vok');await t.waitForSelector('h1:has-text("Hola")');
