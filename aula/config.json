@@ -47,8 +47,8 @@
     ]
   },
   "diagnostico": {
-    "endpoint": "https://script.google.com/macros/s/AKfycbxCELBLFP39jRPmd_w-JURnCwZVKSwZSJqdxnW5uhwNQFidH8DEdrcx82RtAIs3HPCl/exec",
-    "tablero_url": "https://script.google.com/macros/s/AKfycbxCELBLFP39jRPmd_w-JURnCwZVKSwZSJqdxnW5uhwNQFidH8DEdrcx82RtAIs3HPCl/exec",
+    "endpoint": "https://script.google.com/macros/s/AKfycbyhninw7ad61R_w2MLbxBhs2VId77BQ9eySpJVWfrXPgUljg3ATjuWB63yRKyKrwlit/exec",
+    "tablero_url": "https://script.google.com/macros/s/AKfycbyhninw7ad61R_w2MLbxBhs2VId77BQ9eySpJVWfrXPgUljg3ATjuWB63yRKyKrwlit/exec",
     "looker_url": "",
     "looker_embed": ""
   },
