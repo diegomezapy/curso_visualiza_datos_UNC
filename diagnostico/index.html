@@ -132,14 +132,34 @@ async function enviar(p) {
 }
 const ERR = { codigo: "El código de clase no es correcto. Pedíselo al docente.", servidor_sin_codigo: "El servidor todavía no está configurado (falta el código de clase).", red: "No hay conexión con el servidor. Revisá tu internet e intentá de nuevo.", sin_confirmar: "No pudimos confirmar el registro. Revisá el código de clase o consultá al docente antes de cerrar esta página.", limite: "Se alcanzó el máximo de respuestas.", formato: "No se pudo procesar el envío." };
 
+/* Copia de seguridad en este navegador: si el envío falla (o se cierra la pestaña), se puede reenviar sin volver a responder. */
+const KCOPIA = "cvd_diag_pendiente";
+const guardarCopia = p => { try { localStorage.setItem(KCOPIA, JSON.stringify(p)); } catch (e) {} };
+const borrarCopia = () => { try { localStorage.removeItem(KCOPIA); } catch (e) {} };
+(() => {
+  let p = null; try { p = JSON.parse(localStorage.getItem(KCOPIA) || "null"); } catch (e) {}
+  if (!p || !CFG.endpoint || !p.pid) return;
+  const d = document.createElement("div"); d.className = "card"; d.style.borderColor = "var(--warn, #9a6700)";
+  d.innerHTML = '<b>Tenés respuestas guardadas en este dispositivo que no llegaron al servidor.</b><p class="muted" style="margin:.3rem 0">Podés reenviarlas sin volver a responder.</p><button class="btn" type="button" id="reenv">Reenviar mis respuestas</button> <span id="reenvmsg" class="muted"></span>';
+  $("#f").parentNode.insertBefore(d, $("#f"));
+  $("#reenv").addEventListener("click", async () => {
+    $("#reenv").disabled = true; $("#reenvmsg").textContent = "Enviando…";
+    const r = await enviar(p);
+    if (!r.ok) { $("#reenv").disabled = false; $("#reenvmsg").textContent = "No se pudo enviar. Revisá tu conexión e intentá otra vez."; return; }
+    borrarCopia(); d.innerHTML = "✅ Tus respuestas se enviaron al grupo. ¡Gracias!";
+  });
+})();
+
 $("#f").addEventListener("submit", async e => {
   e.preventDefault(); const p = leer(), f = faltantes(p), m = $("#msg"); m.className = "err";
   if (f.length) { m.textContent = "Falta completar: " + f.join(", ") + "."; return; }
   const btn = $("#send"); btn.disabled = true; m.className = "muted"; m.textContent = CFG.endpoint ? "Enviando…" : "";
   let estado = "practica";
   if (CFG.endpoint) {
+    guardarCopia(p);   // copia local hasta que el servidor confirme
     const r = await enviar(p);
     if (!r.ok) { m.className = "err"; m.textContent = ERR[r.error] || "No se pudo enviar. Intentá de nuevo."; btn.disabled = false; return; }
+    borrarCopia();
     estado = r.noConfirmado ? "noconfirmado" : "enviado";
   }
   mostrar(p, puntajes(p), estado);

@@ -2,6 +2,7 @@
    Autenticación y datos: Firebase (Auth + Firestore) o modo demo local (ver backend.js). */
 import { crearBackend, msgError } from "./backend.js";
 import { heroHtml, afterRender, initFx } from "./fx.js";
+import { iniciarVis, cargarVis, aplicarNav, aplicarMain, botonEdicion, rutaOculta } from "./visibilidad.js";
 import { csvPlanilla, tablaRegistros, tablaQuizzes, tablaAutoevaluaciones } from "./planillas.mjs";
 import { xlsxPlanilla, XLSX_MIME } from "./xlsx.mjs";
 (async () => {
@@ -69,6 +70,7 @@ function navHtml(ruta) {
   h += `<div class="grp">Cuenta</div>` + it("/perfil", "👤 Mi perfil") + (ES_DOC ? it("/docente", "🧑‍🏫 Panel docente") : "");
   $("#nav").innerHTML = h;
   $("#user").textContent = PERFIL ? (PERFIL.nombres || "").split(" ")[0] : "Ingresar";
+  aplicarNav();
 }
 
 /* ---------- vistas ---------- */
@@ -155,6 +157,7 @@ function mediaHtml(s) {
    <details style="margin-top:.5rem"><summary>Texto de esta diapositiva</summary><div id="dtxt" class="muted"></div></details>
    <details><summary>Ver todas las diapositivas</summary><div class="deck-thumbs">${sl.map((x, i) => `<button type="button" class="deck-th" data-go="${i + 1}" aria-label="Ir a: ${esc(x.titulo)}"><img src="${esc(m.base)}/${esc(x.img)}" alt="" loading="lazy" width="160" height="90"><span>${x.n}. ${esc(x.titulo)}</span></button>`).join("")}</div></details>
   </div>
+  ${quizzesHtml(s, true)}
   <h2>🗺️ Infografía</h2><figure class="card info"><button type="button" class="info-b" id="infb" aria-label="Ampliar la infografía"><img src="${esc(inf.src)}" alt="${esc(inf.alt)}" loading="lazy"></button>
    <figcaption class="muted">Tocá la imagen para ampliarla. <a href="${esc(inf.src)}" download>⬇ Descargar</a></figcaption>
    <details><summary>Descripción en texto</summary><p class="muted">${esc(inf.descripcion)}</p></details></figure>`;
@@ -180,6 +183,16 @@ function bindMedia() {
     document.addEventListener("keydown", tecla); document.body.appendChild(lb); lb.querySelector(".lb-x").focus();
   });
 }
+function quizCard(id) {
+  const Q = D.quizzes[id], qq = S.quiz[id];
+  return `<div class="card quizcard"><div class="row" style="justify-content:space-between"><div><b>${Q.lectura ? `Quiz ${esc(Q.etiqueta)} · ` : ""}${esc(Q.titulo)}</b><div class="muted">${Q.preguntas.length} preguntas · ${Q.lectura ? "evalúa la lectura y el estudio de la presentación · " : ""}retroalimentación inmediata · reintentos ilimitados (cuenta tu mejor resultado)</div>
+    ${qq ? `<div class="muted">Mejor: <b>${qq.mejor}%</b> · Intentos: ${qq.intentos.length}</div>` : ""}</div><a class="btn" href="#/quiz/${id}">${qq ? "Reintentar" : "Comenzar quiz"}</a></div></div>`;
+}
+// lectura=true: quizzes ligados a un material (van pegados a él); lectura=false: los de teoría, al final de la sesión.
+function quizzesHtml(s, lectura) {
+  const ids = (s.quizIds || []).filter(id => !!D.quizzes[id].lectura === lectura); if (!ids.length) return "";
+  return lectura ? ids.map(quizCard).join("") : `<h2>🧠 ${ids.length > 1 ? "Quizzes" : "Quiz"} de teoría</h2>${ids.map(quizCard).join("")}`;
+}
 function vSesion(n) {
   const s = D.sesiones.find(x => x.n === n); if (!s) return vInicio();
   const p = progSes(s), prev = D.sesiones.find(x => x.n === n - 1), next = D.sesiones.find(x => x.n === n + 1);
@@ -192,9 +205,9 @@ function vSesion(n) {
   <h2>🎯 Objetivos</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.objetivos.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>
   <p><a class="btn sm" href="#/clases/s${n}">🎥 Ver clases grabadas de esta sesión</a></p>
   ${mediaHtml(s)}
+  ${videosHtml(s)}${lecturasHtml(s)}
   <h2>🧰 Materiales de la sesión</h2><div class="card"><ul class="res">${s.recursos.map(r => `<li><span class="ico">${ico[r.k] || "🔗"}</span>${r.u ? `<a href="${esc(r.u)}" target="${r.k === "guia" ? "_self" : "_blank"}" rel="noopener">${esc(r.t)}</a>` : esc(r.t)}</li>`).join("")}</ul>
    <p class="muted" style="margin:.5rem 0 0">🐍 <b>Python</b> en Colab (<i>Entorno de ejecución → Ejecutar todas</i>) · 📊 <b>R</b> en RStudio: abrí el .Rmd, presioná <i>Knit</i> y publicá con <i>Publish → RPubs</i>. Datasets en <a href="#/recursos">Recursos</a>; guía en <a href="../materiales/pdf/00_guia_inicio.pdf" target="_blank">Guía de inicio (PDF)</a>.</p></div>
-  ${videosHtml(s)}${lecturasHtml(s)}
   <h2>✅ Actividades y entregas</h2>
   ${s.actividades.map(a => { const r = D.rubricas[a.rubrica]; const ap = autoPct(S.auto, a); return `<div class="card"><div class="act">
     <input type="checkbox" id="chk_${a.id}" data-act="${a.id}" ${S.done[a.id] ? "checked" : ""} aria-label="Marcar como hecha">
@@ -212,11 +225,9 @@ function vSesion(n) {
     </div></div></div>`; }).join("")}
   ${rutaDatosHtml(s)}
   ${(s.practicas_reales || []).length ? `<h2>🗺️ Práctica con datos reales</h2><div class="card">${s.practicas_reales.map(p => `<div class="row" style="justify-content:space-between;padding:.35rem 0;border-bottom:1px solid var(--bd)"><span><b>${esc(p.nombre)}</b><br><span class="muted">${esc(p.desc)}</span></span><span class="row"><a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.colab)}">🐍 Colab</a>${p.rmd ? `<a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.rmd)}">📊 R → RPubs</a>` : ""}</span></div>`).join("")}<p class="muted" style="margin:.5rem 0 0">Fuentes, estado y cuidados en <a href="#/datos">Datos abiertos</a>. Citá siempre la fuente y no publiques datos personales.</p></div>` : ""}
-  ${(s.quizIds || []).length ? `<h2>🧠 ${s.quizIds.length > 1 ? "Quizzes" : "Quiz"} de teoría</h2>${s.quizIds.map(id => { const Q = D.quizzes[id], qq = S.quiz[id];
-    return `<div class="card"><div class="row" style="justify-content:space-between"><div><b>${Q.lectura ? `Quiz ${esc(Q.etiqueta)} · ` : ""}${esc(Q.titulo)}</b><div class="muted">${Q.preguntas.length} preguntas · ${Q.lectura ? "evalúa la lectura y el estudio de la presentación · " : ""}retroalimentación inmediata · reintentos ilimitados (cuenta tu mejor resultado)</div>
-    ${qq ? `<div class="muted">Mejor: <b>${qq.mejor}%</b> · Intentos: ${qq.intentos.length}</div>` : ""}</div><a class="btn" href="#/quiz/${id}">${qq ? "Reintentar" : "Comenzar quiz"}</a></div></div>`; }).join("")}` : ""}
+  ${quizzesHtml(s, false)}
   ${s.extra?.length ? `<h2>💡 Para profundizar</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.extra.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
-  <div class="row" style="justify-content:space-between;margin-top:1.5rem">${prev ? `<a class="btn sec" href="#/sesion/${prev.n}">← Sesión ${prev.n}</a>` : "<span></span>"}${next ? `<a class="btn sec" href="#/sesion/${next.n}">Sesión ${next.n} →</a>` : ""}</div>`;
+  <div class="row" data-novis style="justify-content:space-between;margin-top:1.5rem">${prev ? `<a class="btn sec" href="#/sesion/${prev.n}">← Sesión ${prev.n}</a>` : "<span></span>"}${next ? `<a class="btn sec" href="#/sesion/${next.n}">Sesión ${next.n} →</a>` : ""}</div>`;
 }
 
 /* ---------- quiz ---------- */
@@ -705,11 +716,13 @@ function bindCalendario(id) {
 }
 
 /* ---------- sesión y router ---------- */
+function vNoDisponible() { return `<h1>Contenido no disponible</h1><div class="card">El docente todavía no habilitó esta sección. <a href="#/">Volver al inicio</a></div>`; }
 async function cargarSesion() {
   PERFIL = null; ES_DOC = false; S = empty();
   if (!USER) return;
   try {
     ES_DOC = await B.esDocente(USER);
+    await cargarVis(true);
     PERFIL = await B.cargarPerfil(USER.uid);
     if (PERFIL) {
       const pr = (await B.cargarProgreso(USER.uid)) || {}, of = (await B.cargarCalificaciones(USER.uid)) || {};
@@ -727,7 +740,11 @@ async function render() {
   else if (!PERFIL) { guest = true; html = vCompletar(); bind = bindCompletar; crumb = "Completar registro"; }
   else {
     if (a === "acceso" || a === "registro") { location.hash = "#/"; return; }
-    switch (a) {
+    if (!ES_DOC) await cargarVis();
+    const claveSes = a === "quiz" ? (D.quizzes[n]?.sesion || n) : n;
+    const oculto = !ES_DOC && rutaOculta(a === "quiz" ? "sesion" : a, claveSes);
+    if (oculto) { html = vNoDisponible(); crumb = "No disponible"; }
+    else switch (a) {
       case "sesion": html = vSesion(n); crumb = `Módulo ${n}`; bind = bindSesion; break;
       case "quiz": html = vQuiz(n); crumb = `Módulo ${n} › Quiz`; bind = () => bindQuiz(n); break;
       case "notas": await refrescarNotas(); html = vNotas(); crumb = "Mis notas"; break;
@@ -745,7 +762,7 @@ async function render() {
   document.body.classList.toggle("guest", guest);
   $("#main").innerHTML = html; $("#crumb").textContent = `${C.curso} › ${crumb}`;
   if (!guest) navHtml("/" + [a, b].filter(Boolean).join("/")); else $("#user").textContent = "";
-  $("#logout").hidden = !USER; bind(); afterRender();
+  $("#logout").hidden = !USER; bind(); if (!guest) { botonEdicion(); aplicarMain(ruta); } afterRender();
   document.title = `${crumb} · Aula virtual · Visualización de Datos UNC`;
   $("#side").classList.remove("open"); $("#menu").setAttribute("aria-expanded", "false");
 }
@@ -781,6 +798,7 @@ $("#lnk-drive").href = drive(C.drive.raiz);
 /* ---------- arranque ---------- */
 initFx();
 B = await crearBackend(C);
+iniciarVis({ B, esDoc: () => ES_DOC, aviso, repintar: () => render() });
 await B.listo;
 USER = B.actual(); await cargarSesion(); render();
 B.onAuth(async u => { if (ocupado || (u?.uid === USER?.uid && u?.uid)) return; USER = u; await cargarSesion(); render(); });

@@ -41,3 +41,15 @@ Menú **🎥 Clases grabadas** (`#/clases`). El aula **no aloja videos**: el doc
 - Cada alumno marca "Ya la vi"; se guarda en su progreso (`rec_<id>`).
 - "Ocultar" es solo de interfaz: la regla de Firestore deja leer la colección a cualquier usuario con sesión. El control real de acceso es el del video en Drive/YouTube.
 - **Hay que volver a publicar las reglas** (`firebase/firestore.rules`) en Firebase → Firestore → Reglas para habilitar la colección `clases`.
+
+## Ocultar y mostrar elementos (docente)
+
+Con la sesión de docente aparece el botón **👁 Edición** en la barra superior. Al activarlo, cada sección, tarjeta, ítem de lista y opción del menú lateral muestra un botón 👁 para ocultarlo o mostrarlo a los estudiantes.
+- Por defecto **todo está visible**. Lo oculto se ve atenuado y con 🚫 para el docente; los estudiantes no lo ven (y si abren la dirección de una sección oculta, ven «Contenido no disponible»).
+- La barra de edición muestra cuántos elementos hay ocultos, la lista y **Mostrar todo**.
+- Se guarda en Firestore (`ajustes/visibilidad`); **hay que republicar `firebase/firestore.rules`**. Los estudiantes ven el cambio al navegar o recargar (se consulta cada minuto como máximo).
+- Los elementos se identifican por la ruta y el título; si cambia el título de un bloque, hay que volver a ocultarlo.
+- No es un control de seguridad: el contenido sigue en los archivos públicos del sitio.
+
+## Orden de una sesión
+Objetivos → Presentación (con su **Quiz de lectura pegado debajo**) → Infografía → Videos → Lecturas → Materiales → Actividades → Datos reales → Quiz de teoría → Para profundizar.

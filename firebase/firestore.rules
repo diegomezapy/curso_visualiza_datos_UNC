@@ -99,6 +99,16 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Ajustes del aula: qué elementos ocultó el docente. Lo lee cualquier usuario con sesión; lo escribe solo un docente.
+    // Es un control de interfaz, no de seguridad (el contenido sigue en los archivos del sitio).
+    match /ajustes/{id} {
+      allow read: if signed();
+      allow create, update: if docente() && id == 'visibilidad'
+        && request.resource.data.keys().hasOnly(['ocultos', 'actualizado'])
+        && request.resource.data.ocultos is map && request.resource.data.ocultos.size() <= 400;
+      allow delete: if false;
+    }
+
     // Lista de docentes: se administra solo desde la consola de Firebase.
     match /docentes/{email} {
       allow get: if signed() && request.auth.token.email == email;

@@ -2,7 +2,7 @@
    - Firebase (Auth + Firestore): producción. Se activa si config.firebase.apiKey está definido.
    - Demo: todo en localStorage del navegador, solo para probar la interfaz (NO es seguro ni compartido).
    Colecciones Firestore: usuarios/{uid} · progreso/{uid} · calificaciones/{uid} ·
-   respuestas_quiz/{id} · clases/{id} · cedulas/{cedula} · docentes/{email} */
+   respuestas_quiz/{id} · clases/{id} · ajustes/visibilidad · cedulas/{cedula} · docentes/{email} */
 
 const ERR = {
   "auth/email-already-in-use": "Ese correo ya tiene una cuenta. Ingresá o recuperá tu contraseña.",
@@ -78,6 +78,8 @@ async function crearFirebase(cfg) {
     async listarIntentosQuiz() { return (await fb.getDocs(fb.collection(db, "respuestas_quiz"))).docs.map(d => ({ id: d.id, ...d.data() })); },
     cargarPlanillasDocente: email => get("docentes", email.toLowerCase()),
     guardarCalificaciones: (uid, oficial) => fb.setDoc(fb.doc(db, "calificaciones", uid), { oficial, actualizado: fb.serverTimestamp() }),
+    async cargarVisibilidad() { return (await get("ajustes", "visibilidad"))?.ocultos || {}; },
+    guardarVisibilidad: ocultos => fb.setDoc(fb.doc(db, "ajustes", "visibilidad"), { ocultos, actualizado: fb.serverTimestamp() }),
     async listarClases() { return (await fb.getDocs(fb.collection(db, "clases"))).docs.map(d => ({ id: d.id, ...d.data(), actualizado: undefined })); },
     guardarClase: (c) => { const { id, ...r } = c; return fb.setDoc(fb.doc(db, "clases", id), { ...r, actualizado: fb.serverTimestamp() }); },
   };
@@ -138,6 +140,8 @@ function crearDemo(cfg) {
     async listarIntentosQuiz() { return Object.values(db0().respuestasQuiz); },
     async cargarPlanillasDocente() { return { planillas: cfg.demo?.planillas || {} }; },
     async guardarCalificaciones(u, o) { const d = db0(); d.calificaciones[u] = o; wr(d); },
+    async cargarVisibilidad() { return db0().ajustes?.visibilidad || {}; },
+    async guardarVisibilidad(o) { const d = db0(); d.ajustes = { ...(d.ajustes || {}), visibilidad: o }; wr(d); },
     async listarClases() { return Object.entries(db0().clases).map(([id, c]) => ({ id, ...c })); },
     async guardarClase(c) { const d = db0(), { id, ...r } = c; d.clases[id] = r; wr(d); },
   };
