@@ -71,7 +71,7 @@ function procesar(d, ejemplo) {
 function cargar() {
   const fail = e => { $("#aviso").innerHTML = '<div class="note">No se pudieron cargar los datos: ' + esc(e && e.message || e) + "</div>"; };
   if (window.google && google.script && google.script.run) { google.script.run.withSuccessHandler(d => procesar(d, false)).withFailureHandler(fail).getDatos(); return; }
-  if (ENDPOINT) { fetch(ENDPOINT + (ENDPOINT.includes("?") ? "&" : "?") + "action=datos").then(r => r.json()).then(d => procesar(d, false)).catch(fail); return; }
+  if (ENDPOINT) { location.replace(ENDPOINT); return; }
   fetch("ejemplo.csv").then(r => r.text()).then(t => procesar(csv(t), true)).catch(fail);
 }
 
