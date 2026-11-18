@@ -77,7 +77,7 @@ def hero():
     return f'''<section class="hero"><div><span class="hero-tag"><i></i> Maestría en Ingeniería y Ciencia de Datos · FACET – UNC</span>
 <h2 class="hero-h" style="border:0;margin-top:.5rem">Convertí datos en <span class="grad">decisiones que se entienden.</span></h2>
 <p>8 sesiones de visualización de datos con Python y R: percepción, color, dashboards, redes y storytelling con datos reales de Paraguay. Clases virtuales desde el 13 de noviembre de 2026.</p>
-<div class="cta"><a class="p" href="aula/index.html">🎓 Entrar al aula</a><a href="docs/programa.html">Ver el programa</a><a href="docs/cronograma.html">Cronograma</a></div></div>
+<div class="cta"><a class="p" href="aula/index.html">🎓 Entrar al aula</a><a href="aula/index.html#/invitado">👀 Explorar como invitado</a><a href="docs/programa.html">Ver el programa</a><a href="docs/cronograma.html">Cronograma</a></div></div>
 <svg class="hero-viz" viewBox="0 0 320 170" role="img" aria-label="Ilustración animada: barras por sesión y línea de tendencia"><g class="hv-grid">{grid}</g>
 <g class="hv-bars">{rects}</g><path class="hv-area" d="{ln} L292 140 L12 140 Z" fill="var(--ac)" fill-opacity=".14"/><path class="hv-line" d="{ln}" pathLength="1"/>{puntos}
 <circle class="hv-dot" r="5"><animateMotion dur="7s" repeatCount="indefinite" path="{ln}"/></circle></svg></section>'''

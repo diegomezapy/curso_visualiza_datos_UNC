@@ -53,3 +53,13 @@ Con la sesión de docente aparece el botón **👁 Edición** en la barra superi
 
 ## Orden de una sesión
 Objetivos → Presentación (con su **Quiz de lectura pegado debajo**) → Infografía → Videos → Lecturas → Materiales → Actividades → Datos reales → Quiz de teoría → Para profundizar.
+
+## Acceso como invitado
+
+Cualquier persona puede **ver el curso sin cuenta**: en la pantalla de ingreso hay un botón «Entrar como invitado», y el enlace directo es `…/aula/index.html#/invitado` (también está en la portada del sitio).
+- **Puede ver:** inicio, módulos (objetivos, presentación, infografía, videos, lecturas, materiales, actividades como lista), recursos, calendario, datos abiertos y «El tutor». Respeta lo que el docente ocultó con el modo edición.
+- **No puede:** responder quizzes, marcar o entregar actividades, completar formularios (autoevaluaciones, diagnóstico, entregas), ver calificaciones, clases grabadas, perfil ni panel docente. Esas rutas muestran «Solo para estudiantes registrados». Tampoco ve la carpeta de entregas ni el tablero del diagnóstico.
+- Al ingresar o crear cuenta se sale del modo invitado.
+- **Límite:** el modo invitado es de solo lectura en la interfaz, no un control de seguridad: los materiales del aula son archivos públicos del sitio. Lo que sí se protege con reglas es la escritura (los invitados no tienen sesión, así que Firestore les niega cualquier lectura o escritura salvo `ajustes/visibilidad`, que es público).
+- **Hay que republicar `firebase/firestore.rules`** para que los invitados respeten lo oculto. Sin eso ven todo.
+- Las carpetas de Drive tienen sus propios permisos: revisá con quién está compartida cada una.

@@ -36,7 +36,7 @@ export async function mostrarTodo() { const previo = VIS.ocultos; if (await guar
 export function ponerEdicion(v) { VIS.edicion = !!v; try { localStorage.setItem(KED, v ? "1" : "0"); } catch {} }
 
 /* ---------- menú lateral ---------- */
-const PROTEGIDOS = new Set(["#/", "#/perfil", "#/docente"]);
+const PROTEGIDOS = new Set(["#/", "#/perfil", "#/docente", "#/acceso"]);
 export function aplicarNav() {
   const doc = ctx.esDoc();
   $$("#nav .vz-nav").forEach(w => { const a = w.querySelector("a"); w.replaceWith(a); });

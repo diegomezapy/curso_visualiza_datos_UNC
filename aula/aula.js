@@ -14,6 +14,9 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
 const empty = () => ({ perfil: {}, done: {}, quiz: {}, auto: {}, oficial: {}, enlaces: {} });
 let S = empty(), USER = null, PERFIL = null, ES_DOC = false, ocupado = false, B;
+const KINV = "cvd_invitado", RUTAS_INV = ["", "sesion", "recursos", "calendario", "tutor", "datos"];
+let INV = false; try { INV = sessionStorage.getItem(KINV) === "1"; } catch {}
+const setInv = v => { INV = !!v; try { v ? sessionStorage.setItem(KINV, "1") : sessionStorage.removeItem(KINV); } catch {} };
 let tmr;
 const persist = () => { if (!USER || !PERFIL || PERFIL.virtual) return; clearTimeout(tmr); tmr = setTimeout(flush, 500); };
 const flush = () => { clearTimeout(tmr); if (USER && PERFIL && !PERFIL.virtual) B.guardarProgreso(USER.uid, { done: S.done, quiz: S.quiz, auto: S.auto, enlaces: S.enlaces }).catch(e => aviso(msgError(e), "bad")); };
@@ -65,11 +68,17 @@ const bar = (p, cls = "") => `<div class="bar ${cls}" role="progressbar" aria-va
 /* ---------- navegación ---------- */
 function navHtml(ruta) {
   const it = (h, t, extra = "") => `<a href="#${h}" ${ruta === h ? 'aria-current="page"' : ""}><span>${t}</span>${extra}</a>`;
+  if (!USER) {
+    let g = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
+    D.sesiones.forEach(s => { g += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`); });
+    g += `<div class="grp">Cuenta</div>` + it("/acceso", "🔑 Ingresar o crear cuenta");
+    $("#nav").innerHTML = g; $("#user").textContent = "Ingresar"; $("#user").setAttribute("href", "#/acceso"); aplicarNav(); return;
+  }
   let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/clases", "🎥 Clases grabadas") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
   D.sesiones.forEach(s => { const p = progSes(s); h += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`, `<span class="dot">${p.pct >= 1 ? "✅" : Math.round(p.pct * 100) + "%"}</span>`); });
   h += `<div class="grp">Cuenta</div>` + it("/perfil", "👤 Mi perfil") + (ES_DOC ? it("/docente", "🧑‍🏫 Panel docente") : "");
   $("#nav").innerHTML = h;
-  $("#user").textContent = PERFIL ? (PERFIL.nombres || "").split(" ")[0] : "Ingresar";
+  $("#user").textContent = PERFIL ? (PERFIL.nombres || "").split(" ")[0] : "Ingresar"; $("#user").setAttribute("href", "#/perfil");
   aplicarNav();
 }
 
@@ -198,7 +207,7 @@ function vSesion(n) {
   const p = progSes(s), prev = D.sesiones.find(x => x.n === n - 1), next = D.sesiones.find(x => x.n === n + 1);
   const ico = { guia: "📖", colab: "🐍", codigo: "💻", drive: "📁", pdf: "📄", rmd: "📊", descarga: "⬇️" };
   const q = S.quiz[n];
-  const entregaNombre = id => `S${n}_${id}_${`${slug(PERFIL.apellidos)}_${slug(PERFIL.nombres)}`}`;
+  const entregaNombre = id => PERFIL ? `S${n}_${id}_${`${slug(PERFIL.apellidos)}_${slug(PERFIL.nombres)}`}` : id;
   return `<span class="tag">${s.unidad} · Sesión ${s.n}</span>${s.n === 8 ? ' <span class="tag warn">Redes opcional</span>' : ""}
   <h1>${esc(s.titulo)}</h1><p class="sub">${esc(s.resumen)}${C.fechas?.[n] ? " · <b>" + esc(C.fechas[n]) + "</b>" : ""}</p>
   ${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} completado</span>
@@ -223,7 +232,7 @@ function vSesion(n) {
       <div class="tw"><table><thead><tr><th>Criterio</th><th>Peso</th><th>Tu nivel</th></tr></thead><tbody>${r.criterios.map((c, i) => `<tr><td>${esc(c.n)}</td><td>${c.w}%</td><td><select data-auto="${a.id}" data-i="${i}" aria-label="${esc(c.n)}"><option value="0">–</option>${[1, 2, 3, 4].map(v => `<option value="${v}" ${S.auto[a.id]?.[i] == v ? "selected" : ""}>${v} · ${LVL[v]}</option>`).join("")}</select></td></tr>`).join("")}</tbody></table></div>
       <p class="muted" id="ap_${a.id}" style="margin:.4rem 0 0">${ap == null ? "Completá los niveles para ver tu autoestimación." : `Autoestimación: <b>${fmt(ap * a.pts)}/${a.pts}</b> pts (${fmt(ap * 100, 0)}%) — referencial; la nota oficial la asigna el docente.`}</p></div></details>` : ""}
     </div></div></div>`; }).join("")}
-  ${rutaDatosHtml(s)}
+  ${USER ? rutaDatosHtml(s) : ""}
   ${(s.practicas_reales || []).length ? `<h2>🗺️ Práctica con datos reales</h2><div class="card">${s.practicas_reales.map(p => `<div class="row" style="justify-content:space-between;padding:.35rem 0;border-bottom:1px solid var(--bd)"><span><b>${esc(p.nombre)}</b><br><span class="muted">${esc(p.desc)}</span></span><span class="row"><a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.colab)}">🐍 Colab</a>${p.rmd ? `<a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.rmd)}">📊 R → RPubs</a>` : ""}</span></div>`).join("")}<p class="muted" style="margin:.5rem 0 0">Fuentes, estado y cuidados en <a href="#/datos">Datos abiertos</a>. Citá siempre la fuente y no publiques datos personales.</p></div>` : ""}
   ${quizzesHtml(s, false)}
   ${s.extra?.length ? `<h2>💡 Para profundizar</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.extra.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
@@ -291,7 +300,7 @@ function vRecursos() {
    <li><span class="ico">📂</span><a target="_blank" rel="noopener" href="${drive(C.drive.raiz)}">Carpeta general del aula</a></li>
    <li><span class="ico">📘</span><a target="_blank" rel="noopener" href="${drive(C.drive.programa)}">Programa y guías</a></li>
    <li><span class="ico">🗂</span><a target="_blank" rel="noopener" href="${drive(C.drive.datos)}">Datasets</a></li>
-   <li><span class="ico">📤</span><a target="_blank" rel="noopener" href="${drive(C.drive.entregas)}">Entregas de estudiantes</a></li>
+   <li data-solo-reg><span class="ico">📤</span><a target="_blank" rel="noopener" href="${drive(C.drive.entregas)}">Entregas de estudiantes</a></li>
    <li><span class="ico">🎓</span><a target="_blank" rel="noopener" href="${drive(C.drive.integrador)}">Proyecto integrador</a></li>
    ${D.sesiones.map(s => `<li><span class="ico">${s.n}</span><a target="_blank" rel="noopener" href="${drive(C.drive.sesiones[s.n])}">Sesión ${s.n}: materiales</a></li>`).join("")}</ul></div>
   <h2>📄 Fichas y hojas de referencia (PDF)</h2><div class="card"><ul class="res">
@@ -350,7 +359,8 @@ function vAcceso() {
    <div class="row" style="margin-top:1rem"><button class="btn" type="submit">Ingresar</button><button class="btn sec" type="button" id="gb">Ingresar con Google</button></div></form>
    <p style="margin:1rem 0 0"><a href="#" id="olv">¿Olvidaste tu contraseña?</a></p>
    <form id="rf" hidden style="margin-top:.6rem"><label for="re">Te enviaremos un enlace para restablecerla</label><input type="email" id="re" required placeholder="tu correo registrado"><div class="row" style="margin-top:.6rem"><button class="btn sec" type="submit">Enviar enlace</button></div></form><div id="rmsg" class="muted" role="status"></div></div>
-  <div class="card"><b>¿Primera vez?</b> Creá tu cuenta con tus datos personales. <a class="btn" href="#/registro" style="margin-left:.5rem">Crear cuenta</a></div></div>`;
+  <div class="card"><b>¿Primera vez?</b> Creá tu cuenta con tus datos personales. <a class="btn" href="#/registro" style="margin-left:.5rem">Crear cuenta</a></div>
+  <div class="card"><b>¿Solo querés mirar?</b> Entrá como invitado: podés ver el curso, los materiales y los recursos, pero no responder quizzes, entregar actividades, completar formularios ni ver calificaciones. <a class="btn sec" href="#/invitado" style="margin-left:.5rem">👀 Entrar como invitado</a></div></div>`;
 }
 function bindAcceso() {
   $("#lf").addEventListener("submit", async e => { e.preventDefault(); const b = e.submitter; b.disabled = true;
@@ -716,6 +726,20 @@ function bindCalendario(id) {
 }
 
 /* ---------- sesión y router ---------- */
+function vInicioInvitado() {
+  return `${heroHtml(null, "")}
+  <div class="card note"><b>Estás viendo el curso como invitado.</b> Podés recorrer los módulos, las presentaciones, los videos, las lecturas y los recursos. Para responder quizzes, entregar actividades, completar formularios o ver calificaciones necesitás una cuenta. <span class="row" style="margin-top:.5rem"><a class="btn sm" href="#/acceso">Ingresar</a><a class="btn sm sec" href="#/registro">Crear cuenta</a></span></div>
+  ${proximosHtml()}
+  <h2>Módulos</h2><div class="grid">${D.sesiones.map(s => `<a class="card link" href="#/sesion/${s.n}"><span class="tag">${s.unidad} · Sesión ${s.n}</span><h3 style="margin-top:.5rem">${esc(s.titulo)}</h3><span class="muted">${esc(s.resumen)}${C.fechas?.[s.n] ? " · " + esc(C.fechas[s.n]) : ""}</span></a>`).join("")}</div>`;
+}
+function vSoloRegistrados() { return `<h1>Solo para estudiantes registrados</h1><div class="card">Esta sección (quizzes, clases grabadas, calificaciones, perfil y formularios) requiere una cuenta. <span class="row" style="margin-top:.6rem"><a class="btn" href="#/acceso">Ingresar</a><a class="btn sec" href="#/registro">Crear cuenta</a><a class="btn sec" href="#/">Volver al inicio</a></span></div>`; }
+/* En modo invitado se ocultan los controles que guardan datos o abren formularios (la vista queda de solo lectura). */
+function modoInvitado(main) {
+  const ocultar = x => x && x.setAttribute("data-inv", "1");
+  $$(".act input[type=checkbox], label.chk2, [data-solo-reg], input[data-enl], .act details, .act a.btn", main).forEach(x => ocultar(x.matches("input[data-enl]") ? x.closest("div") : x));
+  $$('a[href^="#/quiz/"]', main).forEach(a => { const sp = document.createElement("span"); sp.className = "muted"; sp.textContent = "🔒 Ingresá para responder"; a.replaceWith(sp); });
+  $$("form", main).forEach(ocultar);
+}
 function vNoDisponible() { return `<h1>Contenido no disponible</h1><div class="card">El docente todavía no habilitó esta sección. <a href="#/">Volver al inicio</a></div>`; }
 async function cargarSesion() {
   PERFIL = null; ES_DOC = false; S = empty();
@@ -735,15 +759,21 @@ let renderTk = 0;
 async function render() {
   const tk = ++renderTk, ruta = (location.hash.replace(/^#/, "") || "/"), [, a, b] = ruta.split("/"), n = +b;
   let html, bind = () => {}, crumb = "Inicio", guest = false;
-  if (!USER) { guest = true; if (a === "registro") { html = vRegistro(); bind = bindRegistro; crumb = "Crear cuenta"; } else { html = vAcceso(); bind = bindAcceso; crumb = "Ingresar"; } }
+  if (USER && INV) setInv(false);
+  if (!USER && a === "invitado") { setInv(true); location.hash = "#/"; return; }
+  if (!USER && (a === "acceso" || a === "registro")) setInv(false);
+  const invitado = !USER && INV;
+  if (!USER && !invitado) { guest = true; if (a === "registro") { html = vRegistro(); bind = bindRegistro; crumb = "Crear cuenta"; } else { html = vAcceso(); bind = bindAcceso; crumb = "Ingresar"; } }
   else if (necesitaVerificar()) { guest = true; html = vVerificar(); bind = bindVerificar; crumb = "Verificar correo"; }
-  else if (!PERFIL) { guest = true; html = vCompletar(); bind = bindCompletar; crumb = "Completar registro"; }
+  else if (USER && !PERFIL) { guest = true; html = vCompletar(); bind = bindCompletar; crumb = "Completar registro"; }
   else {
-    if (a === "acceso" || a === "registro") { location.hash = "#/"; return; }
+    if (USER && (a === "acceso" || a === "registro")) { location.hash = "#/"; return; }
     if (!ES_DOC) await cargarVis();
     const claveSes = a === "quiz" ? (D.quizzes[n]?.sesion || n) : n;
     const oculto = !ES_DOC && rutaOculta(a === "quiz" ? "sesion" : a, claveSes);
-    if (oculto) { html = vNoDisponible(); crumb = "No disponible"; }
+    const bloqueado = invitado && !RUTAS_INV.includes(a || "");
+    if (bloqueado) { html = vSoloRegistrados(); crumb = "Solo estudiantes"; }
+    else if (oculto) { html = vNoDisponible(); crumb = "No disponible"; }
     else switch (a) {
       case "sesion": html = vSesion(n); crumb = `Módulo ${n}`; bind = bindSesion; break;
       case "quiz": html = vQuiz(n); crumb = `Módulo ${n} › Quiz`; bind = () => bindQuiz(n); break;
@@ -755,14 +785,14 @@ async function render() {
       case "recursos": html = vRecursos(); crumb = "Recursos"; bind = bindRecursos; break;
       case "perfil": html = vPerfil(); crumb = "Mi perfil"; bind = bindPerfil; break;
       case "docente": html = await vDocente(); crumb = "Panel docente"; bind = bindDocente; break;
-      default: await refrescarNotas(); await cargarAgenda(); html = vInicio();
+      default: await refrescarNotas(); await cargarAgenda(); html = invitado ? vInicioInvitado() : vInicio();
     }
   }
   if (tk !== renderTk) return;
   document.body.classList.toggle("guest", guest);
   $("#main").innerHTML = html; $("#crumb").textContent = `${C.curso} › ${crumb}`;
   if (!guest) navHtml("/" + [a, b].filter(Boolean).join("/")); else $("#user").textContent = "";
-  $("#logout").hidden = !USER; bind(); if (!guest) { botonEdicion(); aplicarMain(ruta); } afterRender();
+  $("#logout").hidden = !USER; bind(); if (invitado) modoInvitado($("#main")); if (!guest) { botonEdicion(); aplicarMain(ruta); } afterRender();
   document.title = `${crumb} · Aula virtual · Visualización de Datos UNC`;
   $("#side").classList.remove("open"); $("#menu").setAttribute("aria-expanded", "false");
 }
