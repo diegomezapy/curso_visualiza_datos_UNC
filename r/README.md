@@ -10,6 +10,7 @@ Ocho documentos R Markdown (uno por sesión) equivalentes a los laboratorios de 
 | 4 | `04_kpis_storytelling.Rmd` | KPIs, small multiples, contribución al cambio |
 | 4 | `04_ejercicio_ephc_concepcion.Rmd` | **ejercicio guiado** (Quiz 4B): ocupación en Concepción con la EPHC del INE, 2022–2025. Descarga ~100 MB la primera vez; con conexión del INE inestable puede tardar |
 | 5 | `05_dashboards_interactivos.Rmd` | plotly + crosstalk + DT (sin servidor) |
+| 5 | `05_tablero_aduanas_python.Rmd` | Tablero de aduanas con **Python en RStudio** (reticulate + plotly); Quiz 5A |
 | 6 | `06_reporting_automatizado.Rmd` + `plantilla_reporte_sucursal.Rmd` | informes parametrizados |
 | 7 | `07_estructuras_complejas.Rmd` | PCA, t-SNE, series, mapa |
 | 8 | `08_redes.Rmd` | igraph, centralidad, matriz de adyacencia |

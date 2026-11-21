@@ -206,7 +206,7 @@ function quizzesHtml(s, ubic) {
 function vSesion(n) {
   const s = D.sesiones.find(x => x.n === n); if (!s) return vInicio();
   const p = progSes(s), prev = D.sesiones.find(x => x.n === n - 1), next = D.sesiones.find(x => x.n === n + 1);
-  const ico = { guia: "📖", colab: "🐍", codigo: "💻", drive: "📁", pdf: "📄", rmd: "📊", descarga: "⬇️" };
+  const ico = { guia: "📖", colab: "🐍", codigo: "💻", drive: "📁", pdf: "📄", rmd: "📊", descarga: "⬇️", web: "🌐" };
   const q = S.quiz[n];
   const entregaNombre = id => PERFIL ? `S${n}_${id}_${`${slug(PERFIL.apellidos)}_${slug(PERFIL.nombres)}`}` : id;
   return `<span class="tag">${s.unidad} · Sesión ${s.n}</span>${s.n === 8 ? ' <span class="tag warn">Redes opcional</span>' : ""}

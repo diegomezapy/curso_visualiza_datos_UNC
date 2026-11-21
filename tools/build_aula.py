@@ -31,7 +31,8 @@ INFO_TXT = ("Tres bloques. Izquierda: procesamiento preatentivo (memoria icónic
 # Presentaciones incrustadas por sesión (los archivos se generan con tools/procesar_presentacion.py)
 PRESENTACIONES = {1: {"dir": "unidad1", "titulo": "Presentación de la unidad", "infografia": True},
                   2: {"dir": "unidad2_eleccion", "titulo": "Presentación: elección de gráficos"},
-                  4: {"dir": "unidad2_ggplot", "titulo": "Presentación: ggplot2, capa por capa"}}
+                  4: {"dir": "unidad2_ggplot", "titulo": "Presentación: ggplot2, capa por capa"},
+                  5: {"dir": "unidad5_dashboards", "titulo": "Presentación: dashboards con datos de aduanas"}}
 R_OK = {"pr01_explorador", "pr02_dncp", "pr03_banco_mundial"}
 sesiones = []
 for s in c.SESIONES:
@@ -51,6 +52,11 @@ for s in c.SESIONES:
     if n == 4:
         rec.insert(5, {"t": "R · Ejercicio guiado: ocupación en Concepción con la EPHC (.Rmd)", "u": f"{cfg['repo']}/blob/main/r/04_ejercicio_ephc_concepcion.Rmd", "k": "rmd"})
         rec.insert(6, {"t": "R · Descargar el .Rmd del ejercicio", "u": f"{cfg['raw']}/r/04_ejercicio_ephc_concepcion.Rmd", "k": "descarga"})
+    if n == 5:
+        rec.insert(5, {"t": "R · Tablero de aduanas con código Python en RStudio (reticulate, .Rmd)", "u": f"{cfg['repo']}/blob/main/r/05_tablero_aduanas_python.Rmd", "k": "rmd"})
+        rec.insert(6, {"t": "R · Descargar el .Rmd del tablero de aduanas", "u": f"{cfg['raw']}/r/05_tablero_aduanas_python.Rmd", "k": "descarga"})
+        rec.insert(7, {"t": "Tablero interactivo: valor mensual por medio de transporte (plotly)", "u": "media/unidad5_dashboards/tablero_i1.html", "k": "web"})
+        rec.insert(8, {"t": "Tablero interactivo: evolución mensual y ranking de aduanas (plotly)", "u": "media/unidad5_dashboards/tablero_d1.html", "k": "web"})
     if n == 5: rec.append({"t": "App Dash de ejemplo (app_dash.py)", "u": f"{cfg['repo']}/blob/main/sesiones/{d}/app_dash.py", "k": "codigo"})
     if n == 6: rec.append({"t": "R · Plantilla de informe parametrizado", "u": f"{cfg['repo']}/blob/main/r/plantilla_reporte_sucursal.Rmd", "k": "rmd"})
     prs = [{"id": pid, "nombre": nm, "desc": ds, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS if n in ses and rol != "docente"]

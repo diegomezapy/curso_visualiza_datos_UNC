@@ -1,0 +1,213 @@
+---
+title: "Sesión 5 · Tablero de aduanas con Python en RStudio"
+subtitle: "Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET – UNC"
+author: "Tu nombre y apellido"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+# Python dentro de RStudio con reticulate. La primera vez (en la consola):
+#   install.packages("reticulate"); reticulate::virtualenv_create("r-viz")
+#   reticulate::py_install(c("pandas", "plotly"), "r-viz")
+library(reticulate)
+use_virtualenv("r-viz", required = FALSE)
+# Los datos agregados están en el repositorio del curso; se descargan si no existen.
+base <- "https://raw.githubusercontent.com/diegomezapy/curso_visualiza_datos_UNC/main/aula/media/unidad5_dashboards/fuentes/datos/"
+for (f in c("cubo_importaciones.csv", "subitems_muestra.csv"))
+  if (!file.exists(f)) download.file(paste0(base, f), f, quiet = TRUE, mode = "wb")
+```
+
+> **Objetivo.** Construir, con **Python** (pandas + plotly) ejecutado desde **RStudio**, un tablero sobre las **importaciones de electrónica 2024–2025** (base de datos abiertos de aduanas, DNIT). Es el mismo código de la presentación de la sesión 5. Al final: *Knit → Publish → RPubs* (los filtros de plotly funcionan en el navegador, sin servidor).
+
+# 1. Los datos
+
+La base original de la DNIT usa **punto y coma** (`;`) como separador y **coma decimal**. Acá trabajamos con una versión **agregada** (año, mes, aduana, país, medio de transporte). Un detalle importante: cada fila de la base original es un **subítem** y repite el valor del ítem.
+
+```{python datos}
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+import plotly.io as pio
+from plotly.subplots import make_subplots
+pio.templates.default = "plotly_white"
+
+cubo = pd.read_csv("cubo_importaciones.csv")
+cubo["fecha"] = pd.to_datetime(
+    dict(year=cubo.anio, month=cubo.mes, day=1))
+cubo["fob_mm"] = cubo.fob_usd / 1e6   # millones de USD
+# La base no trae junio de 2025: se excluye ese mes
+# de ambos años para comparar períodos iguales
+cubo = cubo[cubo.mes != 6]
+```
+
+```{python}
+cubo.head()
+```
+
+# 2. Antes del tablero: validar el dato
+
+La muestra `subitems_muestra.csv` conserva las filas de 300 despachos tal como vienen en la base.
+
+```{python trampa}
+sub = pd.read_csv("subitems_muestra.csv")
+ingenuo = sub.groupby("aduana").fob_usd.sum()
+correcto = (sub.drop_duplicates(["despacho", "item"])
+               .groupby("aduana").fob_usd.sum())
+t = pd.DataFrame({"Suma de todas las filas": ingenuo,
+                  "Un registro por ítem": correcto})
+t = t.nlargest(6, "Suma de todas las filas") / 1e6
+fig = px.bar(t, barmode="group",
+             color_discrete_sequence=["#D55E00", "#0072B2"],
+             title="FOB por aduana (muestra de 300 despachos)",
+             labels={"value": "Millones de USD", "aduana": "",
+                     "variable": ""})
+```
+```{python trampa_fig, results='asis'}
+print(fig.to_html(include_plotlyjs="cdn", full_html=False))
+```
+
+**Pregunta:** ¿por cuánto se multiplica el valor si se suman todas las filas? ¿Por qué ocurre?
+
+# 3. KPI y tendencia
+
+```{python kpi}
+a = cubo.groupby("anio").agg(fob=("fob_mm", "sum"),
+                             items=("items", "sum"))
+china = (cubo[cubo.pais == "CHINA"].groupby("anio").fob_mm.sum()
+         / a.fob)
+kpis = [("Valor FOB (millones de USD)", a.fob, ",.0f"),
+        ("Ítems importados", a["items"], ",d"),
+        ("Participación de China", china, ".0%")]
+fig = go.Figure()
+for i, (nombre, s, fmt) in enumerate(kpis):
+    fig.add_trace(go.Indicator(
+        mode="number+delta", value=s[2025],
+        delta=dict(reference=s[2024], relative=True,
+                   valueformat=".1%"),
+        number=dict(valueformat=fmt),
+        title=dict(text=nombre),
+        domain=dict(row=0, column=i)))
+fig.update_layout(grid=dict(rows=1, columns=3),
+                  title="2025 frente a 2024 (mismos meses)")
+```
+```{python kpi_fig, results='asis'}
+print(fig.to_html(include_plotlyjs="cdn", full_html=False))
+```
+```{python tendencia}
+m = cubo.groupby(["anio", "mes"], as_index=False).fob_mm.sum()
+m["anio"] = m.anio.astype(str)
+fig = px.line(m, x="mes", y="fob_mm", color="anio",
+              markers=True,
+              color_discrete_map={"2024": "#9FB6CB",
+                                  "2025": "#D55E00"},
+              title="Valor importado por mes",
+              labels={"fob_mm": "Millones de USD",
+                      "mes": "Mes", "anio": ""})
+fig.update_xaxes(dtick=1)
+```
+```{python tendencia_fig, results='asis'}
+print(fig.to_html(include_plotlyjs="cdn", full_html=False))
+```
+
+# 4. Comparaciones y composición
+
+```{python ranking}
+r = (cubo.groupby("aduana", as_index=False).fob_mm.sum()
+         .nlargest(10, "fob_mm").sort_values("fob_mm"))
+r["color"] = ["#D55E00" if a == r.aduana.iloc[-1]
+              else "#9FB6CB" for a in r.aduana]
+fig = go.Figure(go.Bar(
+    x=r.fob_mm, y=r.aduana, orientation="h",
+    marker_color=r.color,
+    hovertemplate="%{y}: %{x:,.1f} millones<extra></extra>"))
+fig.update_layout(title="Aduanas con mayor valor importado")
+fig.update_xaxes(title="Millones de USD (2024–2025)")
+```
+```{python ranking_fig, results='asis'}
+print(fig.to_html(include_plotlyjs="cdn", full_html=False))
+```
+```{python treemap}
+p = cubo.groupby("pais", as_index=False).fob_mm.sum()
+p = p.sort_values("fob_mm", ascending=False)
+p["grupo"] = p.pais.where(p.index.isin(p.index[:8]), "OTROS")
+p = p.groupby("grupo", as_index=False).fob_mm.sum()
+fig = px.treemap(p, path=["grupo"], values="fob_mm",
+                 title="Origen del valor importado")
+fig.update_traces(texttemplate="%{label}<br>%{value:,.0f}",
+                  marker_colors=["#0072B2"] * len(p))
+```
+```{python treemap_fig, results='asis'}
+print(fig.to_html(include_plotlyjs="cdn", full_html=False))
+```
+```{python calor}
+top = cubo.groupby("aduana").fob_mm.sum().nlargest(8).index
+z = (cubo[cubo.aduana.isin(top) & (cubo.anio == 2025)]
+     .pivot_table(index="aduana", columns="mes",
+                  values="fob_mm", aggfunc="sum")
+     .loc[top])
+fig = px.imshow(z, aspect="auto",
+                color_continuous_scale="Blues",
+                title="Valor importado por aduana y mes (2025)",
+                labels=dict(x="Mes (2025)", y="",
+                            color="Millones<br>de USD"))
+```
+```{python calor_fig, results='asis'}
+print(fig.to_html(include_plotlyjs="cdn", full_html=False))
+```
+
+# 5. El tablero corregido y la interacción
+
+```{python tablero}
+fig = make_subplots(rows=1, cols=2, column_widths=[.5, .5],
+    horizontal_spacing=.3,
+    subplot_titles=("Valor mensual (millones de USD)",
+                    "Top 8 aduanas (2024–2025)"))
+for anio, col in [(2024, "#9FB6CB"), (2025, "#D55E00")]:
+    s = cubo[cubo.anio == anio].groupby("mes").fob_mm.sum()
+    fig.add_trace(go.Scatter(x=s.index, y=s.values,
+        name=str(anio), mode="lines+markers",
+        line=dict(color=col)), 1, 1)
+r = (cubo.groupby("aduana").fob_mm.sum()
+         .nlargest(8).sort_values())
+fig.add_trace(go.Bar(x=r.values, y=r.index, orientation="h",
+        marker_color="#0072B2", showlegend=False), 1, 2)
+fig.update_layout(title="Importaciones de electrónica: "
+                  "2025 supera a 2024 (+39 %)")
+```
+```{python tablero_fig, results='asis'}
+print(fig.to_html(include_plotlyjs="cdn", full_html=False))
+```
+```{python filtro}
+medios = sorted(cubo.medio.unique())
+fig = go.Figure()
+for m in medios:
+    s = cubo[cubo.medio == m].groupby("fecha").fob_mm.sum()
+    fig.add_scatter(x=s.index, y=s.values, name=m,
+                    mode="lines")
+botones = [dict(label="Todos", method="update",
+                args=[{"visible": [True] * len(medios)}])]
+botones += [dict(label=m.title(), method="update",
+                 args=[{"visible": [x == m for x in medios]}])
+            for m in medios]
+fig.update_layout(updatemenus=[dict(buttons=botones, x=1,
+                                    xanchor="right", y=1.17)],
+                  title="Valor mensual por medio de transporte",
+                  yaxis_title="Millones de USD")
+```
+```{python filtro_fig, results='asis'}
+print(fig.to_html(include_plotlyjs="cdn", full_html=False))
+```
+
+# 6. Para entregar (Mini-proyecto 2)
+
+1. Agregá un **filtro de año** al tablero y un indicador nuevo (por ejemplo, **USD por kilo neto**: necesitás la columna `kilo_neto` del cubo).
+2. Escribí un **título que enuncie el mensaje** del tablero y una nota sobre las limitaciones (período, junio de 2025 ausente, deduplicación).
+3. Aplicá el checklist de calidad de la presentación y comentá en 100 palabras qué cambiaste.
+4. *Knit* y publicá en **RPubs**; pegá el enlace en el aula.
