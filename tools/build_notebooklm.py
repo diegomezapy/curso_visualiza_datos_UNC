@@ -32,7 +32,7 @@ def fuente_sesion(s):
     ppt = ""
     import json
     DECKS = {1: [("unidad1", "Ciencia de la percepción gráfica")], 2: [("unidad2_eleccion", "Elección de gráficos")], 4: [("unidad2_ggplot", "ggplot2, capa por capa")],
-             5: [("unidad5_dashboards", "Dashboards con datos de aduanas"), ("unidad5_tablero_shiny", "Tablero dinámico en RStudio con Shiny")]}
+             5: [("unidad5_dashboards", "Dashboards con datos de aduanas"), ("unidad5_tablero_shiny", "Tablero dinámico en RStudio con Shiny"), ("unidad5_looker", "Looker Studio con el Censo Agropecuario 2022")]}
     for carpeta, nombre in DECKS.get(n, []):
         sj = RAIZ / "aula" / "media" / carpeta / "slides.json"
         if sj.exists():

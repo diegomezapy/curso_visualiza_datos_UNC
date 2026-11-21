@@ -33,7 +33,8 @@ PRESENTACIONES = {1: {"dir": "unidad1", "titulo": "Presentación de la unidad", 
                   2: {"dir": "unidad2_eleccion", "titulo": "Presentación: elección de gráficos"},
                   4: {"dir": "unidad2_ggplot", "titulo": "Presentación: ggplot2, capa por capa"},
                   5: [{"dir": "unidad5_dashboards", "titulo": "Presentación 1: dashboards con datos de aduanas"},
-                      {"dir": "unidad5_tablero_shiny", "titulo": "Presentación 2: tablero dinámico en RStudio (Shiny)"}]}
+                      {"dir": "unidad5_tablero_shiny", "titulo": "Presentación 2: tablero dinámico en RStudio (Shiny)"},
+                      {"dir": "unidad5_looker", "titulo": "Presentación 3: Looker Studio con el Censo Agropecuario 2022"}]}
 R_OK = {"pr01_explorador", "pr02_dncp", "pr03_banco_mundial"}
 sesiones = []
 for s in c.SESIONES:
@@ -60,6 +61,9 @@ for s in c.SESIONES:
         rec.insert(8, {"t": "Tablero interactivo: evolución mensual y ranking de aduanas (plotly)", "u": "media/unidad5_dashboards/tablero_d1.html", "k": "web"})
         rec.insert(9, {"t": "R · Tablero dinámico Shiny de aduanas: app.R (abrir en RStudio y Run App)", "u": f"{cfg['repo']}/blob/main/r/app_tablero_aduanas/app.R", "k": "rmd"})
         rec.insert(10, {"t": "R · Descargar app.R del tablero Shiny", "u": f"{cfg['raw']}/r/app_tablero_aduanas/app.R", "k": "descarga"})
+        rec.insert(11, {"t": "Datos del CAN 2022 por departamento (CSV) para Looker Studio", "u": f"{cfg['raw']}/aula/media/unidad5_looker/fuentes/datos/can2022_departamentos.csv", "k": "descarga"})
+        rec.insert(12, {"t": "Datos del CAN 2022 por tamaño de finca (CSV)", "u": f"{cfg['raw']}/aula/media/unidad5_looker/fuentes/datos/can2022_estratos.csv", "k": "descarga"})
+        rec.insert(13, {"t": "Guía paso a paso: informe de Looker Studio con el CAN 2022", "u": f"{cfg['repo']}/blob/main/docs/looker_studio_can2022.md", "k": "guia"})
     if n == 5: rec.append({"t": "App Dash de ejemplo (app_dash.py)", "u": f"{cfg['repo']}/blob/main/sesiones/{d}/app_dash.py", "k": "codigo"})
     if n == 6: rec.append({"t": "R · Plantilla de informe parametrizado", "u": f"{cfg['repo']}/blob/main/r/plantilla_reporte_sucursal.Rmd", "k": "rmd"})
     prs = [{"id": pid, "nombre": nm, "desc": ds, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS if n in ses and rol != "docente"]

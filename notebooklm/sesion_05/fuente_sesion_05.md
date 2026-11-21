@@ -683,6 +683,281 @@ Resumen: Jerarquía y filtros con propósito; Plotly (HTML interactivo) y Dash (
 - ▸ Escribí un título que enuncie el mensaje y una nota con las limitaciones de los datos.
 - ▸ Resolvé el Quiz 5B del aula: evalúa lo visto en esta presentación.
 - Un tablero dinámico bien hecho responde preguntas que el autor todavía no pensó, sin perder claridad.
+## Texto de la presentación de la sesión (Looker Studio con el Censo Agropecuario 2022)
+### Diapositiva 1 · MAESTRÍA EN INGENIERÍA Y CIENCIA DE DATOS · FACET – UNC
+- Looker Studio, paso a paso, con el Censo Agropecuario 2022
+- Cómo armar un informe interactivo gratuito en la nube (antes Google Data Studio) con datos oficiales del MAG
+- Sesión 5 · Unidad 2 · Dashboards interactivos
+### Diapositiva 2 · Looker Studio: informes interactivos en la nube
+- Herramienta
+- Característica
+- Qué significa
+- Gratuito y en la nube
+- Se usa desde el navegador con una cuenta de Google; no hay que instalar nada.
+- Conectores
+- Hojas de cálculo de Google, archivos CSV, BigQuery, Google Analytics y más.
+- Se comparte como un documento
+- Permisos de lector o editor, enlace público o por correo; se puede incrustar en una web.
+- Interacción sin programar
+- Filtros, controles, filtrado cruzado entre gráficos y mapas.
+- Límites
+- No es para análisis estadístico complejo; los datos se preparan antes y viven en la fuente.
+- Sirve para tableros de seguimiento con datos ya ordenados: lo que cambia respecto de Shiny es que no requiere código ni servidor.
+- Documentación: support.google.com/looker-studio
+### Diapositiva 3 · Los datos: Censo Agropecuario Nacional 2022 (MAG)
+- Punto de partida
+- departamento
+- iso_3166_2
+- region
+- fincas_2022
+- superficie_2022_ha
+- var_fincas_pct
+- Concepción
+- PY-1
+- Oriental
+- -4,1
+- San Pedro
+- PY-2
+- Oriental
+- Cordillera
+- PY-3
+- Oriental
+- Guairá
+- PY-4
+- Oriental
+- Caaguazú
+- PY-5
+- Oriental
+- Caazapá
+- PY-6
+- Oriental
+- -12,3
+- …
+- …
+- …
+- …
+- …
+- …
+- ▸ 291.497 fincas y 30,4 millones de hectáreas en 17 departamentos.
+- ▸ Volumen I del CAN 2022: 78 cuadros por tamaño de finca y departamento.
+- ▸ Se extrajeron 5 cuadros y se armó una fila por departamento (can2022_departamentos.csv) y una tabla por estratos de tamaño.
+- Los totales de nuestra tabla coinciden con el censo: 291.497 fincas, 30.401.660 ha, 13.221.039 cabezas de vacunos y 245.002 productores residentes.
+- Verificá siempre que tu tabla preparada reproduzca los totales oficiales antes de graficar.
+- MAG (2024). Censo Agropecuario Nacional 2022, Volumen I. Archivos: can2022_departamentos.csv y can2022_estratos.csv.
+### Diapositiva 4 · Preparar la tabla: una fila por departamento
+- Preparación
+- Campo
+- Ejemplo
+- Tipo en Looker Studio
+- departamento
+- Concepción
+- Dimensión · texto
+- iso_3166_2
+- PY-1
+- Dimensión · Geografía (región/subregión de país)
+- region
+- Oriental
+- Dimensión · texto (para filtros y colores)
+- fincas_2022 · superficie_2022_ha
+- 16.670 · 1.521.325
+- Métrica · número (suma)
+- var_fincas_pct
+- −4,1
+- Métrica · número (se muestra como %)
+- pct_productoras_mujeres
+- Métrica · número (promedio, no suma)
+- ▸ Nombres de columna sin espacios ni tildes; números sin separador de miles en la hoja.
+- ▸ Los porcentajes y promedios no se suman: elegí la agregación correcta de cada métrica.
+- Resultado: Hoja de cálculo de Google con la pestaña «departamentos» (17 filas) y la pestaña «estratos» (12 filas).
+### Diapositiva 5 · Paso 1: crear el informe y conectar la fuente
+- Paso 1 de 8
+- lookerstudio.google.com
+- ›
+- Crear → Informe
+- ›
+- Agregar datos
+- ›
+- Conector: Hojas de cálculo de Google
+- ›
+- Elegir el archivo y la pestaña
+- ›
+- Agregar al informe
+- ▸ Conectá la pestaña departamentos como primera fuente de datos.
+- ▸ Looker Studio lee la hoja en vivo: si actualizás la hoja, el informe se actualiza.
+- ▸ Podés agregar más fuentes (por ejemplo, la pestaña estratos) y combinarlas por gráfico.
+- ▸ La cuenta que conecta la hoja debe tener acceso de lectura al archivo.
+- Se conecta una tabla ordenada: el trabajo de preparación del dato se hizo antes, no dentro de Looker.
+- Documentación: support.google.com/looker-studio/answer/6283323
+### Diapositiva 6 · Paso 2: revisar los campos antes de graficar
+- Paso 2 de 8
+- ▸ Dimensiones (categorías): departamento, región. Métricas (números): fincas, hectáreas.
+- ▸ Cambiá el tipo de iso_3166_2 a Geografía → Región de país (ISO 3166-2) para habilitar el mapa.
+- ▸ Revisá la agregación por defecto: suma para fincas y hectáreas; promedio para porcentajes.
+- ▸ Usá campos calculados para indicadores nuevos, por ejemplo hectáreas por finca: superficie_2022_ha / fincas_2022.
+- # Campo calculado (ejemplo)
+- Superficie promedio por finca
+- =
+- SUM(superficie_2022_ha)
+- / SUM(fincas_2022)
+- # Campo calculado (ejemplo)
+- Porcentaje de fincas que cayeron
+- =
+- (SUM(fincas_2022) - SUM(fincas_2008))
+- / SUM(fincas_2008)
+- Un promedio de porcentajes no es el porcentaje total: calculá el indicador como razón de sumas.
+- Los nombres de los campos y las opciones del editor pueden variar según la versión de Looker Studio.
+### Diapositiva 7 · Paso 3: tarjetas de resultados (KPI)
+- Paso 3 de 8
+- En Looker Studio
+- ▸ Insertar → Tarjeta de resultados.
+- ▸ Métrica: fincas_2022; agregá una segunda para la variación.
+- ▸ Repetir con superficie, vacunos y % de productoras.
+- ▸ Formato: miles con punto, un decimal en los porcentajes.
+- ▸ Las cuatro tarjetas resumen el país: 291.497 fincas; 30,4 millones de hectáreas.
+- ▸ Cada KPI lleva su comparación con 2008 (verde sube, naranja baja).
+- ▸ El 38,3 % de las productoras mujeres sale de 93.828 sobre 245.002.
+- KPI arriba y con comparación: lo primero que se lee.
+- Fuente: MAG, Censo Agropecuario Nacional 2022, Volumen I · maqueta con los datos reales (no es una captura de Looker Studio)
+### Diapositiva 8 · Paso 4: el mapa por departamento
+- Paso 4 de 8
+- En Looker Studio
+- ▸ Insertar → Mapa de burbujas o Mapa coroplético.
+- ▸ Dimensión geográfica: iso_3166_2.
+- ▸ Métrica del tamaño o color: superficie_2022_ha.
+- ▸ Opcional: color por región.
+- ▸ El Chaco (Occidental) concentra las fincas más extensas: Presidente Hayes, Boquerón y Alto Paraguay.
+- ▸ En la Región Oriental hay muchas fincas pequeñas: el tamaño de burbuja es menor.
+- ▸ Para el mapa de Looker, usá el código ISO (por ejemplo, PY-1 para Concepción).
+- El mapa responde dónde; no sirve para comparar con precisión: complementarlo con barras.
+- Fuente: MAG, Censo Agropecuario Nacional 2022, Volumen I · maqueta con los datos reales (no es una captura de Looker Studio)
+### Diapositiva 9 · Paso 5: ranking con barras ordenadas
+- Paso 5 de 8
+- En Looker Studio
+- ▸ Insertar → Gráfico de barras (horizontal).
+- ▸ Dimensión: departamento; métrica: superficie_2022_ha.
+- ▸ Orden: métrica descendente.
+- ▸ Color de énfasis para el departamento de interés.
+- ▸ Presidente Hayes, Boquerón y Alto Paraguay suman 17 millones de ha (56 % del total).
+- ▸ Concepción, destacada en naranja, ocupa el quinto lugar con 1,5 millones.
+- ▸ Barras horizontales y ordenadas: el ranking se lee de un vistazo.
+- Un ranking claro: ordenado, horizontal y con un solo color de énfasis.
+- Fuente: MAG, Censo Agropecuario Nacional 2022, Volumen I · maqueta con los datos reales (no es una captura de Looker Studio)
+### Diapositiva 10 · Paso 6: comparar 2008 con 2022
+- Paso 6 de 8
+- En Looker Studio
+- ▸ Campo var_fincas_pct en un gráfico de barras.
+- ▸ Orden por la métrica; eje con el cero visible.
+- ▸ Colores condicionales: azul si sube, naranja si baja.
+- ▸ Título que enuncia el hallazgo.
+- ▸ Boquerón (+30 %) y San Pedro (+29 %) son los que más aumentaron la cantidad de fincas.
+- ▸ Central (−52 %), Amambay (−41 %) y Misiones (−33 %) son los que más cayeron.
+- ▸ A nivel país, la cantidad de fincas casi no cambió (+0,6 %), pero hubo grandes cambios por departamento.
+- Una cifra nacional estable puede esconder cambios muy distintos entre departamentos.
+- Fuente: MAG, Censo Agropecuario Nacional 2022, Volumen I · maqueta con los datos reales (no es una captura de Looker Studio)
+### Diapositiva 11 · Paso 7: concentración de la tierra por tamaño de finca
+- Paso 7 de 8
+- En Looker Studio
+- ▸ Usar la fuente estratos (12 filas).
+- ▸ Barras agrupadas: pct_fincas_2022 y pct_superficie_2022.
+- ▸ Eje x: tamaño de finca en su orden natural (campo orden).
+- ▸ Dos métricas, dos colores, una leyenda clara.
+- ▸ Las fincas de 1.000 ha o más son el 1,6 % del total y manejan el 77,2 % de la superficie.
+- ▸ Las fincas de menos de 20 ha son el 82 % de las fincas y manejan solo el 4,2 % de la tierra.
+- ▸ Combinar dos fuentes en un informe permite contar dos historias con los mismos datos.
+- Dos barras por categoría muestran la desigualdad mejor que cualquier tabla.
+- Fuente: MAG, Censo Agropecuario Nacional 2022, Volumen I · maqueta con los datos reales (no es una captura de Looker Studio)
+### Diapositiva 12 · Paso 8: uso de la tierra, el país frente a un departamento
+- Paso 8 de 8
+- En Looker Studio
+- ▸ Barras apiladas al 100 % con una métrica por uso de la tierra.
+- ▸ Dimensión: departamento (con un filtro por departamento).
+- ▸ Una gama de colores consistente por tipo de uso.
+- ▸ En Concepción el 77 % de la superficie es pastura (49 % natural y 28 % cultivada); en el país, el 59 %.
+- ▸ Los cultivos temporales son el 15 % en el país y solo el 4 % en Concepción.
+- ▸ Con un filtro de departamento el mismo gráfico sirve para los 17.
+- Un mismo gráfico con un filtro de departamento reemplaza 17 gráficos distintos.
+- Fuente: MAG, Censo Agropecuario Nacional 2022, Volumen I · maqueta con los datos reales (no es una captura de Looker Studio)
+### Diapositiva 13 · Controles e interacción: que el lector explore
+- Interacción
+- ▸ Lista desplegable para Región y para Departamento: filtra todo el informe.
+- ▸ Control deslizante (ejemplo: hectáreas por finca) para acotar el rango.
+- ▸ Filtrado cruzado: al hacer clic en una barra o una burbuja, los demás gráficos se filtran.
+- ▸ Los controles se colocan arriba o a la izquierda, en un solo lugar.
+- ▸ Mismo principio que el mantra de Shneiderman: vista general, zoom y filtros, detalle bajo demanda.
+- ▸ Cada control debe responder una pregunta; los que nadie usa, se quitan.
+- Pocos controles y bien ubicados: el informe se explora sin instrucciones.
+- Fuente: MAG, Censo Agropecuario Nacional 2022, Volumen I · maqueta con los datos reales (no es una captura de Looker Studio)
+### Diapositiva 14 · Tema y diseño: jerarquía, color y texto
+- Diseño
+- Decisión de diseño
+- En este informe
+- Jerarquía de arriba hacia abajo
+- KPI → mapa y ranking → detalle por estratos
+- Título que enuncia un mensaje
+- «Pocas fincas muy grandes concentran la tierra»
+- Color con intención
+- Azul para datos; naranja solo para Concepción o lo que baja
+- Misma gama para el mismo concepto
+- Verde o naranja siempre indican sube o baja
+- Fuente y notas visibles
+- Pie: «MAG, CAN 2022, Volumen I» y definición de cada indicador
+- Menos es más
+- Un informe de una página con 6 gráficos como máximo
+- Basado en Few (2013) y en la parte 1 de la sesión 5.
+### Diapositiva 15 · Compartir e incrustar el informe
+- Publicación
+- Quiero…
+- Cómo
+- Cuidado con…
+- Que lo vea un grupo
+- Compartir → agregar correos con permiso de lector
+- No dar permiso de editor a todos
+- Que lo vea cualquiera con el enlace
+- Compartir → acceso a cualquiera con el enlace
+- Solo con datos públicos
+- Ponerlo en una web o en el aula
+- Archivo → Incorporar informe → copiar la URL de incrustación
+- La hoja de origen también debe ser accesible
+- Actualizar los datos
+- Editar la hoja de cálculo
+- Los datos del informe cambian para todos
+- Para el aula: compartí el enlace del informe con permiso de lector y pegalo en la entrega; la URL de incrustación sirve para una web propia.
+- Los nombres de los menús pueden variar según el idioma y la versión de Looker Studio.
+### Diapositiva 16 · ¿Looker Studio, Shiny o plotly? Cuándo usar cada uno
+- Para decidir
+- Looker Studio
+- plotly (HTML estático)
+- Shiny (R)
+- Código
+- Sin programar
+- Python o R
+- R (o Python con Shiny para Python)
+- Servidor
+- No (lo aloja Google)
+- No (HTML en RPubs o GitHub Pages)
+- Sí (shinyapps.io, Posit Connect)
+- Datos
+- Tabla preparada (Hoja, CSV, BigQuery)
+- Embebidos en el archivo
+- Cualquiera, con cálculos a pedido
+- Personalización
+- Media: depende de los gráficos disponibles
+- Alta
+- Muy alta
+- Ideal para
+- Informes de seguimiento para equipos
+- Informes con pocos datos y mucho diseño
+- Exploración con cálculos complejos
+- Elegí la herramienta más simple que resuelva la necesidad de tu audiencia.
+- Resumen de las tres presentaciones de la sesión 5.
+### Diapositiva 17 · Para practicar: tu informe en Looker Studio
+- Tu turno
+- ▸ Subí can2022_departamentos.csv a una Hoja de cálculo de Google y conectala a un informe nuevo.
+- ▸ Armá tarjetas, un ranking y un gráfico de variación 2008–2022.
+- ▸ Agregá un control de Región y escribí un título con el mensaje principal.
+- ▸ Compartilo con permiso de lector y pegá el enlace en el aula.
+- ▸ Resolvé el Quiz 5C del aula: evalúa lo visto en esta presentación.
+- Un buen informe de BI cuenta una historia verificable con datos oficiales y se entiende en cinco segundos.
 
 ## Lecturas recomendadas (enlaces; subir el texto solo si la licencia lo permite)
 - Plotly para Python · documentación (web, en) · https://plotly.com/python/ · 
