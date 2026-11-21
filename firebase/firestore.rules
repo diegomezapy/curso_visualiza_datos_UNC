@@ -21,7 +21,8 @@ service cloud.firestore {
         && d.email == request.auth.token.email
         && d.consentimiento is map;
     }
-    // Cada respuesta tiene solo esos 4 campos (si falta alguno, la regla falla) y textos acotados.
+    // Cada respuesta tiene solo esos 4 campos con su tipo (si falta alguno, la regla falla). No se limita el largo de los textos
+    // porque más comprobaciones por respuesta superan el límite de evaluación de Firestore con 15 respuestas.
     function respuestaQuizValida(r) {
       return r.keys().hasOnly(['pregunta', 'respuesta', 'correcta', 'acierto'])
         && r.pregunta is string && r.respuesta is string && r.correcta is string && r.acierto is bool;
