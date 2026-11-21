@@ -51,6 +51,7 @@ def pagina(s):
 <h4>🧰 Materiales</h4><ul>{''.join(rec)}</ul>
 {f'<h4>🎬 Videos</h4><ul>{vids}</ul>' if vids else ''}
 {f'<h4>📚 Lecturas</h4><ul>{lec}</ul>' if lec else ''}
+{('<h4>📑 Presentación: elección de gráficos</h4><ul>' + li(WEB + '/aula/media/unidad2_eleccion/presentacion.pdf', '📑 Presentación (PDF, 20 diapositivas)') + li(WEB + '/aula/media/unidad2_eleccion/presentacion.pptx', '⬇ Presentación (PowerPoint)') + '</ul><p><i>Quiz 2A: evalúa la lectura de la presentación.</i></p>') if n == 2 else ''}
 {('<h4>📑 Presentación: ggplot2, capa por capa</h4><ul>' + li(WEB + '/aula/media/unidad2_ggplot/presentacion.pdf', '📑 Presentación (PDF, 24 diapositivas)') + li(WEB + '/aula/media/unidad2_ggplot/presentacion.pptx', '⬇ Presentación (PowerPoint)') + '</ul>') if n == 4 else ''}
 {('<h4>📝 Ejercicio guiado (Quiz 4B)</h4><ul>' + li(cfg['repo'] + '/blob/main/r/04_ejercicio_ephc_concepcion.Rmd', '📊 R · Ejercicio: ocupación en Concepción con la EPHC (.Rmd)') + li(cfg['raw'] + '/r/04_ejercicio_ephc_concepcion.Rmd', '⬇ Descargar el .Rmd') + '</ul>') if n == 4 else ''}
 {('<h4>📑 Presentación e infografía</h4><ul>' + li(WEB + '/aula/media/unidad1/presentacion.pdf', '📑 Presentación (PDF, 14 diapositivas)') + li(WEB + '/aula/media/unidad1/presentacion.pptx', '⬇ Presentación (PowerPoint)') + li(WEB + '/aula/media/unidad1/infografia.webp', '🗺️ Infografía: la ciencia de la percepción gráfica') + '</ul><p><i>Quiz 1B: evalúa la lectura de la presentación.</i></p>') if n == 1 else ''}

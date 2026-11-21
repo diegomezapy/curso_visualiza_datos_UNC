@@ -14,6 +14,8 @@ PERSONA = ("Sos un docente universitario de visualización de datos para una mae
  "con ejemplos de datos reales de Paraguay cuando la fuente los traiga. Usá SOLO lo que dicen las fuentes: si algo no está, decí que no está en las fuentes y no lo inventes. "
  "No des cifras, fechas ni citas que no figuren en las fuentes. Nombrá la fuente de cada afirmación importante.")
 
+TITULOS_PPT = {1: 'Ciencia de la percepción gráfica', 2: 'Elección de gráficos', 4: 'ggplot2, capa por capa'}
+
 def limpiar(t):  # quita encabezado de unidad/duración para que la fuente sea autocontenida
     return t.strip()
 
@@ -28,10 +30,10 @@ def fuente_sesion(s):
     lects = "\n".join(f"- {l['t']} ({l['tipo']}, {l['idioma']}) · {l['u']} · {l.get('nota','')}" for l in rc.LECTURAS.get(n, []))
     acts = "\n".join(f"- {a['titulo']} ({a['pts']} pts)" for a in s["actividades"])
     ppt = ""
-    sj = RAIZ / "aula" / "media" / {1: "unidad1", 4: "unidad2_ggplot"}.get(n, "_") / "slides.json"
-    if n in (1, 4) and sj.exists():
+    sj = RAIZ / "aula" / "media" / {1: "unidad1", 2: "unidad2_eleccion", 4: "unidad2_ggplot"}.get(n, "_") / "slides.json"
+    if n in (1, 2, 4) and sj.exists():
         import json
-        ppt = f"\n## Texto de la presentación de la sesión ({'Ciencia de la percepción gráfica' if n == 1 else 'ggplot2, capa por capa'})\n" + "\n".join(
+        ppt = f"\n## Texto de la presentación de la sesión ({TITULOS_PPT.get(n, 'ggplot2, capa por capa')})\n" + "\n".join(
             f"### Diapositiva {d['n']} · {d['titulo']}\n" + "\n".join(f"- {t}" for t in d["texto"]) for d in json.loads(sj.read_text(encoding="utf-8")))
     return f"""# Sesión {n} · {s['titulo']}
 Curso: Visualización de Datos · Maestría en Ingeniería y Ciencia de Datos · FACET–UNC. Unidad {s['unidad']}.

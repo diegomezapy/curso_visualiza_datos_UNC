@@ -30,6 +30,7 @@ INFO_TXT = ("Tres bloques. Izquierda: procesamiento preatentivo (memoria icónic
   "Derecha: los tres pilares del mapeo de datos (atributos del dato, codificación visual adecuada y claridad de propósito) y el rediseño de gráficos tradicionales: gráfico circular, barras divididas y mapa de coropletas se reemplazan por puntos agrupados, rectángulos enmarcados y diferencias representadas directamente.")
 # Presentaciones incrustadas por sesión (los archivos se generan con tools/procesar_presentacion.py)
 PRESENTACIONES = {1: {"dir": "unidad1", "titulo": "Presentación de la unidad", "infografia": True},
+                  2: {"dir": "unidad2_eleccion", "titulo": "Presentación: elección de gráficos"},
                   4: {"dir": "unidad2_ggplot", "titulo": "Presentación: ggplot2, capa por capa"}}
 R_OK = {"pr01_explorador", "pr02_dncp", "pr03_banco_mundial"}
 sesiones = []
