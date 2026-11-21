@@ -1,6 +1,6 @@
 ---
 title: "Análisis sociodemográfico de la ciudad de Concepción, 2022–2025"
-subtitle: "Ejercicio guiado · Sesión 2 · Visualización de Datos"
+subtitle: "Ejercicio guiado · Sesión 4 · Visualización de Datos"
 author: "Curso Visualiza Datos · MICD · FACET–UNC"
 date: "20 de noviembre de 2026"
 lang: es
@@ -25,7 +25,7 @@ library(ggplot2)
 library(readr)
 ```
 
-> **Cómo usar este documento.** Funciona tal cual: descarga los cuatro archivos del INE a la carpeta `datos_ephc/` (junto a este archivo) la primera vez y luego los reutiliza. Los recuadros **«Tu turno»** son para que completes y razones; el quiz **2B** del aula evalúa lo que se hace acá.
+> **Cómo usar este documento.** Funciona tal cual: descarga los cuatro archivos del INE a la carpeta `datos_ephc/` (junto a este archivo) la primera vez y luego los reutiliza. Los recuadros **«Tu turno»** son para que completes y razones; el quiz **4B** del aula evalúa lo que se hace acá.
 
 # Introducción
 

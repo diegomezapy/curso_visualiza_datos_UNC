@@ -1,4 +1,4 @@
-"""Contenido de la presentación «ggplot2, capa por capa» (sesión 2). Solo datos: no dibuja nada.
+"""Contenido de la presentación «ggplot2, capa por capa» (sesión 4, Unidad 2). Solo datos: no dibuja nada.
 En el código de cada paso, las líneas que empiezan con § son las NUEVAS de ese paso (se resaltan en la diapositiva y se quita la marca al ejecutar)."""
 
 def cadena(*capas):

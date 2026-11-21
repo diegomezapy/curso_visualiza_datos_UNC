@@ -236,7 +236,7 @@ QUIZZES_EXTRA = [dict(id="9", sesion=1, etiqueta="1B", titulo="Lectura de la pre
     ["1,5:1", "2:1", "3:1", "4,5:2"], 2,
     "Para cumplir las normas WCAG de accesibilidad en gráficos, los elementos visuales deben mantener un contraste de color mínimo de 3:1."),
 ]),
- dict(id="10", sesion=2, etiqueta="2B", titulo="Ejercicio: análisis sociodemográfico de Concepción con la EPHC", ubicacion="practica",
+ dict(id="10", sesion=4, etiqueta="4B", titulo="Ejercicio: análisis sociodemográfico de Concepción con la EPHC", ubicacion="practica",
   nota="evalúa lo aprendido en el ejercicio de la EPHC (Concepción, 2022–2025)", volver="📝 Volver al ejercicio", categoria="Ejercicio EPHC Concepción", preguntas=[
   q("En el ejercicio se suma la variable FACTOR en lugar de contar filas para estimar cuántas personas hay en cada situación de ocupación. ¿Por qué?",
     ["Porque FACTOR elimina de la base los valores faltantes.", "Porque la EPHC es una muestra: cada fila representa a varias personas de la población y FACTOR indica cuántas.", "Porque FACTOR convierte la variable PEAA en categorías.", "Porque contar filas no está permitido en R."], 1,
@@ -269,7 +269,7 @@ QUIZZES_EXTRA = [dict(id="9", sesion=1, etiqueta="1B", titulo="Lectura de la pre
     ["Porque equivale a la población real.", "Porque reemplaza al factor de expansión.", "Porque muestra cuántas observaciones respaldan cada estimación: con pocos casos, la estimación es menos precisa.", "Para duplicar los datos y verificar el cálculo."], 2,
     "Las cifras expandidas son estimaciones. Mostrar el tamaño de muestra detrás de cada una ayuda a no sobreinterpretar diferencias pequeñas, sobre todo en un departamento con pocos casos."),
 ]),
- dict(id="11", sesion=2, etiqueta="2A", titulo="Lectura de la presentación: ggplot2, capa por capa", ubicacion="media",
+ dict(id="11", sesion=4, etiqueta="4A", titulo="Lectura de la presentación: ggplot2, capa por capa", ubicacion="media",
   nota="evalúa la lectura y el estudio de la presentación de ggplot2", volver="📑 Volver a la presentación", categoria="Presentación ggplot2", preguntas=[
   q("¿Qué produce ggplot(data = ocup_larga) cuando se ejecuta solo, sin estéticas ni geometrías?",
     ["Un gráfico de líneas con todas las variables.", "Un lienzo vacío con los datos asignados: todavía no se dibuja nada.", "Un error, porque falta la geometría.", "Un gráfico de barras por defecto."], 1,

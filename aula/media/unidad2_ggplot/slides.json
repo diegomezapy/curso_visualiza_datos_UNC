@@ -6,7 +6,7 @@
   "texto": [
    "Capa por capa, con datos reales de la Encuesta Permanente de Hogares Continua (INE)",
    "MAESTRÍA EN INGENIERÍA Y CIENCIA DE DATOS · FACET – UNC",
-   "Sesión 2 · Elección de gráficos"
+   "Sesión 4 · Visual analytics, KPIs y storytelling"
   ]
  },
  {
@@ -493,10 +493,10 @@
   "titulo": "Para practicar",
   "texto": [
    "Tu turno",
-   "▸ Corré el ejercicio guiado 02_ejercicio_ephc_concepcion.Rmd: usa estas mismas capas con los microdatos completos de la EPHC.",
+   "▸ Corré el ejercicio guiado 04_ejercicio_ephc_concepcion.Rmd: usa estas mismas capas con los microdatos completos de la EPHC.",
    "▸ Cambiá un paso por vez y observá qué ocurre: quitá group, mové color fuera de aes(), probá geom_col().",
    "▸ Reemplazá Concepción por otro departamento (DPTO == 2, 3…) y volvé a mirar el mensaje.",
-   "▸ Respondé el Quiz 2B del aula para comprobar lo aprendido.",
+   "▸ Respondé el Quiz 4B del aula para comprobar lo aprendido.",
    "ggplot2 no dibuja un gráfico: lo describe. Datos + estéticas + capas + escalas + textos + tema."
   ]
  }

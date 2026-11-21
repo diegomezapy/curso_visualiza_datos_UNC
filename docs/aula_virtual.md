@@ -68,7 +68,7 @@ Cualquier persona puede **ver el curso sin cuenta**: en la pantalla de ingreso h
 - Las carpetas de Drive tienen sus propios permisos: revisá con quién está compartida cada una.
 
 ## Presentaciones incrustadas
-Cada sesión puede tener una presentación con visor propio (diapositivas, texto accesible, PDF y PowerPoint). Hoy: sesión 1 (percepción gráfica, con infografía y Quiz 1B) y sesión 2 (**ggplot2, capa por capa**, 24 diapositivas con datos reales de la EPHC).
+Cada sesión puede tener una presentación con visor propio (diapositivas, texto accesible, PDF y PowerPoint). Hoy: sesión 1 (percepción gráfica, con infografía y Quiz 1B) y sesión 4, primera de la Unidad 2 (**ggplot2, capa por capa**, 24 diapositivas con datos reales de la EPHC; con el ejercicio de la EPHC y los quizzes 4A y 4B).
 - Se registran en `PRESENTACIONES` de `tools/build_aula.py`; los archivos están en `aula/media/<carpeta>/`.
 - Para regenerar una: `python tools/procesar_presentacion.py <carpeta>` (requiere LibreOffice, `pdftoppm` y Pillow) a partir del `.pptx` de `fuentes/`.
 - La de ggplot2 se construye con código: `tools/ggplot_spec.py` (contenido y código de cada paso) → `tools/ggplot_pasos_a_archivos.py` → `Rscript tools/ggplot_figuras.R` (ejecuta ese mismo código y guarda las figuras) → `python tools/ggplot_pptx.py`. Los datos agregados salen de `tools/ggplot_datos.R` (requiere los CSV del INE).

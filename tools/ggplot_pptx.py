@@ -112,9 +112,9 @@ def portada():
     caja(sl, 0.7, 2.0, 6.3, 2.2, ["Cómo se construye una figura en R con ggplot2"], size=38, color=DARK, bold=True, anchor=MSO_ANCHOR.MIDDLE)
     caja(sl, 0.7, 4.3, 6.2, 0.9, ["Capa por capa, con datos reales de la Encuesta Permanente de Hogares Continua (INE)"], size=17, color=MUT)
     caja(sl, 0.7, 1.35, 6.3, 0.4, ["MAESTRÍA EN INGENIERÍA Y CIENCIA DE DATOS · FACET – UNC"], size=11, color=ACC, bold=True)
-    caja(sl, 0.7, 5.6, 6.2, 0.6, ["Sesión 2 · Elección de gráficos"], size=14, color=TXT)
+    caja(sl, 0.7, 5.6, 6.2, 0.6, ["Sesión 4 · Visual analytics, KPIs y storytelling"], size=14, color=TXT)
     imagen(sl, FIG / "p12.png", 7.3, 1.9, 5.5)
-    sl.notes_slide.notes_text_frame.text = "Presentación de la sesión 2: gramática de gráficos con ggplot2, construida en 12 pasos con datos de la EPHC de Concepción 2022–2025. El código de cada diapositiva es el que genera la figura."
+    sl.notes_slide.notes_text_frame.text = "Presentación de la sesión 4 (Unidad 2): gramática de gráficos con ggplot2, construida en 12 pasos con datos de la EPHC de Concepción 2022–2025. El código de cada diapositiva es el que genera la figura."
 
 def datos():
     sl = nueva("El ejemplo: ocupación en Concepción con la EPHC", "Punto de partida", "Mostrar el data frame antes de graficar: una fila por año y situación (formato largo).")
@@ -214,8 +214,8 @@ def completo():
     callout(sl, 0.5, 6.45, 12.3, 0.6, "Cada línea corresponde a una de las capas de los 12 pasos. Probá quitar una y mirá qué cambia.", size=14)
 
 def practicar():
-    sl = nueva("Para practicar", "Tu turno", "Cierre: conectar con el ejercicio guiado y el Quiz 2B.")
-    viñetas(sl, 0.7, 1.5, 7.2, 4.5, ["Corré el ejercicio guiado **02_ejercicio_ephc_concepcion.Rmd**: usa estas mismas capas con los microdatos completos de la EPHC.", "Cambiá **un paso por vez** y observá qué ocurre: quitá `group`, mové `color` fuera de `aes()`, probá `geom_col()`.", "Reemplazá Concepción por otro departamento (`DPTO == 2`, 3…) y volvé a mirar el mensaje.", "Respondé el **Quiz 2B** del aula para comprobar lo aprendido."], size=18)
+    sl = nueva("Para practicar", "Tu turno", "Cierre: conectar con el ejercicio guiado y el Quiz 4B.")
+    viñetas(sl, 0.7, 1.5, 7.2, 4.5, ["Corré el ejercicio guiado **04_ejercicio_ephc_concepcion.Rmd**: usa estas mismas capas con los microdatos completos de la EPHC.", "Cambiá **un paso por vez** y observá qué ocurre: quitá `group`, mové `color` fuera de `aes()`, probá `geom_col()`.", "Reemplazá Concepción por otro departamento (`DPTO == 2`, 3…) y volvé a mirar el mensaje.", "Respondé el **Quiz 4B** del aula para comprobar lo aprendido."], size=18)
     imagen(sl, FIG / "f_facetas.png", 8.3, 1.6, 4.5)
     callout(sl, 0.7, 6.0, 12.1, 0.95, "ggplot2 no dibuja un gráfico: lo describe. Datos + estéticas + capas + escalas + textos + tema.", size=17)
 

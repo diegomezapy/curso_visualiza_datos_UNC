@@ -1,6 +1,6 @@
 # Ejecuta el código REAL de cada paso (aula/media/unidad2_ggplot/fuentes/pasos/*.R) y guarda la figura.
 # Así la diapositiva muestra exactamente el código que produce la imagen.
-# Uso: Rscript tools/ggplot_figuras.R      (antes: python tools/ggplot_presentacion.py pasos ; datos: tools/ggplot_datos.R)
+# Uso: Rscript tools/ggplot_figuras.R      (antes: python tools/ggplot_pasos_a_archivos.py ; datos: tools/ggplot_datos.R)
 suppressMessages({library(ggplot2); library(dplyr); library(readr); library(patchwork); library(ragg)})
 base <- "aula/media/unidad2_ggplot/fuentes"
 ocup_larga <- read_csv(file.path(base, "datos", "ocup_concepcion.csv"), show_col_types = FALSE) |>
