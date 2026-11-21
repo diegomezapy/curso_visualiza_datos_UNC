@@ -580,7 +580,7 @@ async function vClases() {
      <b>${esc(c.titulo)}</b>${c.notas ? `<div class="muted">${esc(c.notas)}</div>` : ""}
      ${caps.length ? `<div class="chips">${caps.map(k => v.tipo === "yt" ? `<a href="#" data-cseek="${esc(c.id)}" data-s="${k.s}">${esc(k.t)} ${esc(k.n)}</a>` : `<span class="chip" style="font-size:.75rem">${esc(k.t)} ${esc(k.n)}</span>`).join("")}</div>` : ""}
      <div class="row" style="margin-top:.5rem;justify-content:space-between"><label class="chk2"><input type="checkbox" data-cvis="${esc(c.id)}" ${visto ? "checked" : ""}> Ya la vi</label>
-     <span><a class="btn sm" href="#/sesion/${esc(c.sesion)}">Ir a la sesión</a>${ES_DOC ? ` <button class="btn sm" data-cedit="${esc(c.id)}">Editar</button> <button class="btn sm" data-chide="${esc(c.id)}">${c.visible === false ? "Mostrar" : "Ocultar"}</button>` : ""}</span></div></div></div>`; };
+     <span><a class="btn sm" href="#/sesion/${esc(c.sesion)}">Ir a la sesión</a>${ES_DOC ? ` <button class="btn sm" data-cedit="${esc(c.id)}">Editar</button> <button class="btn sm" data-chide="${esc(c.id)}">${c.visible === false ? "Mostrar" : "Ocultar"}</button> <button class="btn sm" data-cdel="${esc(c.id)}">🗑 Eliminar</button>` : ""}</span></div></div></div>`; };
   return `<h1>🎥 Clases grabadas</h1><p class="sub">Si faltaste o querés repasar: mirá la clase y marcá <i>Ya la vi</i>. ${CLASES.length ? `Viste <b>${vistas}</b> de <b>${CLASES.length}</b>.` : ""}</p>${demoBanner()}
   ${form}<div class="chips2" style="margin:.8rem 0">${chips.map(([k, t]) => `<a class="chip ${CL_FILTRO === k ? "on" : ""}" href="#/clases/${k}">${t}</a>`).join("")}</div>
   ${lista.length ? `<div class="vgrid">${lista.map(card).join("")}</div>` : `<div class="card muted">Todavía no hay clases grabadas${CL_FILTRO !== "todas" ? " para esta sesión" : ""}.${ES_DOC ? " Cargá la primera con el formulario de arriba." : " El docente las publicará acá."}</div>`}
@@ -595,6 +595,9 @@ function bindClases() {
   $$("[data-cvis]").forEach(c => c.addEventListener("change", () => { const k = "rec_" + c.dataset.cvis; if (c.checked) S.done[k] = true; else delete S.done[k]; persist(); }));
   $$("[data-cedit]").forEach(b => b.addEventListener("click", () => { CL_EDIT = por(b.dataset.cedit); render().then(() => $("#clform")?.scrollIntoView()); }));
   $$("[data-chide]").forEach(b => b.addEventListener("click", async () => { const c = por(b.dataset.chide); try { await B.guardarClase({ ...c, visible: c.visible === false }); aviso("Listo ✔"); render(); } catch (e) { aviso(msgError(e), "bad"); } }));
+  $$("[data-cdel]").forEach(b => b.addEventListener("click", async () => { const c = por(b.dataset.cdel);
+    if (!confirm(`¿Eliminar la clase «${c?.titulo || ""}»?\n\nSe borra del aula (el video en Drive/YouTube no se toca). Esta acción no se puede deshacer.`)) return;
+    try { await B.eliminarClase(b.dataset.cdel); aviso("Clase eliminada"); render(); } catch (e) { aviso(msgError(e), "bad"); } }));
   $("#cl_x")?.addEventListener("click", () => { CL_EDIT = null; render(); });
   $("#clf")?.addEventListener("submit", async e => { e.preventDefault();
     const url = $("#cl_u").value.trim(), v = parseVideo(url); if (!v) return aviso("El enlace debe empezar con https://", "bad");

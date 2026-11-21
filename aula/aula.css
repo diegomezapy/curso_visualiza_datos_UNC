@@ -166,3 +166,5 @@ section.vz{margin:0}section.vz.vz-ed{padding-top:2px}
 #nav a[hidden]{display:none!important}
 
 [data-inv]{display:none!important}
+.vz-b.del{right:38px}.vz-b.sec.del{background:var(--bad);color:#fff}.vz-nav .vz-b.del{position:static}
+@media(max-width:640px){.topbar{flex-wrap:wrap;gap:.35rem .5rem;padding:.5rem .8rem}.crumb{flex:1 1 100%;order:5;white-space:normal}#menu{order:0}}

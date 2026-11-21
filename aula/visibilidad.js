@@ -1,39 +1,65 @@
-/* Visibilidad de contenidos: el docente oculta o muestra cualquier elemento del aula.
-   Por defecto todo está visible. La lista de ocultos vive en Firestore (ajustes/visibilidad) y se aplica al dibujar cada vista.
-   OJO: es un control de interfaz, no de seguridad: el contenido sigue estando en los archivos del sitio. */
+/* Visibilidad de contenidos: el docente/tutor puede OCULTAR (los estudiantes no lo ven; él sí, atenuado) o ELIMINAR (nadie lo ve; queda en la Papelera
+   y se puede restaurar) cualquier elemento del aula. Por defecto todo está visible. Las listas viven en Firestore (ajustes/visibilidad).
+   OJO: es un control de interfaz, no de seguridad: el contenido sigue estando en los archivos del sitio; para quitarlo de verdad hay que borrarlo del repositorio. */
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
 const slug = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 48);
 const KED = "cvd_edicion";
 
-export const VIS = { ocultos: {}, edicion: false, t: 0 };
+export const VIS = { ocultos: {}, eliminados: {}, edicion: false, t: 0 };
 let ctx = { B: null, esDoc: () => false, aviso: () => {}, repintar: () => {} };
 export const iniciarVis = c => { ctx = { ...ctx, ...c }; try { VIS.edicion = localStorage.getItem(KED) === "1"; } catch {} };
 export const cuantos = () => Object.keys(VIS.ocultos).length;
 
-/* Rutas del menú que se pueden ocultar (Inicio, Mi perfil y Panel docente nunca). */
+/* Rutas del menú que se pueden ocultar o eliminar (Inicio, Mi perfil y Panel docente nunca). */
 export const NAV_OCULTABLES = ["calendario", "clases", "datos", "tutor", "notas", "recursos", "sesion"];
 export const claveRuta = (a, n) => NAV_OCULTABLES.includes(a) ? "nav:/" + a + (a === "sesion" ? "/" + n : "") : null;
-export const rutaOculta = (a, n) => { const k = claveRuta(a, n); return !!(k && VIS.ocultos[k]); };
+export const rutaOculta = (a, n) => { const k = claveRuta(a, n); return !!(k && (VIS.ocultos[k] || VIS.eliminados[k])); };
 
 export async function cargarVis(forzar = false) {
   if (!ctx.B?.cargarVisibilidad) return;
   if (!forzar && Date.now() - VIS.t < 60000) return;
-  try { VIS.ocultos = (await ctx.B.cargarVisibilidad()) || {}; VIS.t = Date.now(); } catch { VIS.ocultos = VIS.ocultos || {}; }
+  try { const r = (await ctx.B.cargarVisibilidad()) || {}; VIS.ocultos = r.ocultos || {}; VIS.eliminados = r.eliminados || {}; VIS.t = Date.now(); } catch { /* sin reglas publicadas: todo visible */ }
 }
 
-async function guardar(nuevo, previo) {
-  VIS.ocultos = nuevo;
-  try { await ctx.B.guardarVisibilidad(nuevo); VIS.t = Date.now(); return true; }
-  catch (e) { VIS.ocultos = previo; ctx.aviso("No se pudo guardar el cambio: " + (e?.message || "error") + ". Revisá que las reglas de Firestore incluyan «ajustes».", "bad"); return false; }
+async function guardar(ocultos, eliminados) {
+  const previo = { o: VIS.ocultos, e: VIS.eliminados };
+  VIS.ocultos = ocultos; VIS.eliminados = eliminados;
+  try { await ctx.B.guardarVisibilidad(ocultos, eliminados); VIS.t = Date.now(); return true; }
+  catch (e) { VIS.ocultos = previo.o; VIS.eliminados = previo.e; ctx.aviso("No se pudo guardar el cambio: " + (e?.message || "error") + ". Revisá que las reglas de Firestore incluyan «ajustes».", "bad"); return false; }
 }
 async function alternar(clave, etiqueta) {
-  const previo = VIS.ocultos, nuevo = { ...previo };
-  if (nuevo[clave]) delete nuevo[clave]; else nuevo[clave] = String(etiqueta).slice(0, 120);
-  if (await guardar(nuevo, previo)) { ctx.aviso(nuevo[clave] ? "Oculto para los estudiantes" : "Visible para los estudiantes"); ctx.repintar(); }
+  const o = { ...VIS.ocultos };
+  if (o[clave]) delete o[clave]; else o[clave] = String(etiqueta).slice(0, 120);
+  if (await guardar(o, VIS.eliminados)) { ctx.aviso(o[clave] ? "Oculto para los estudiantes" : "Visible para los estudiantes"); ctx.repintar(); }
 }
-export async function mostrarTodo() { const previo = VIS.ocultos; if (await guardar({}, previo)) { ctx.aviso("Todo visible otra vez"); ctx.repintar(); } }
+async function eliminar(clave, etiqueta) {
+  if (!confirm(`¿Eliminar «${etiqueta}» del aula?\n\nDeja de verse para todos (también para vos). Podés restaurarlo desde la Papelera del modo edición.`)) return;
+  const o = { ...VIS.ocultos }, e = { ...VIS.eliminados }; delete o[clave]; e[clave] = String(etiqueta).slice(0, 120);
+  if (await guardar(o, e)) { ctx.aviso("Eliminado. Está en la Papelera."); ctx.repintar(); }
+}
+async function restaurar(clave) {
+  const e = { ...VIS.eliminados }; delete e[clave];
+  if (await guardar(VIS.ocultos, e)) { ctx.aviso("Restaurado"); ctx.repintar(); }
+}
+export async function mostrarTodo() { if (await guardar({}, VIS.eliminados)) { ctx.aviso("Todo visible otra vez"); ctx.repintar(); } }
+export async function restaurarTodo() { if (await guardar(VIS.ocultos, {})) { ctx.aviso("Papelera vaciada: todo restaurado"); ctx.repintar(); } }
 export function ponerEdicion(v) { VIS.edicion = !!v; try { localStorage.setItem(KED, v ? "1" : "0"); } catch {} }
+
+/* ---------- botones ---------- */
+function boton(clave, etiqueta, off, tipo = "") {
+  const b = document.createElement("button"); b.type = "button"; b.className = "vz-b " + tipo; b.dataset.vk = clave;
+  b.title = off ? "Oculto para estudiantes: tocá para mostrar" : "Visible: tocá para ocultar a los estudiantes";
+  b.setAttribute("aria-label", (off ? "Mostrar: " : "Ocultar: ") + etiqueta); b.textContent = off ? "🚫" : "👁";
+  b.addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); alternar(clave, etiqueta); });
+  return b;
+}
+function botonEliminar(clave, etiqueta, tipo = "") {
+  const b = document.createElement("button"); b.type = "button"; b.className = "vz-b del " + tipo; b.dataset.vkdel = clave;
+  b.title = "Eliminar del aula (queda en la Papelera)"; b.setAttribute("aria-label", "Eliminar: " + etiqueta); b.textContent = "🗑";
+  b.addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); eliminar(clave, etiqueta); });
+  return b;
+}
 
 /* ---------- menú lateral ---------- */
 const PROTEGIDOS = new Set(["#/", "#/perfil", "#/docente", "#/acceso"]);
@@ -44,21 +70,14 @@ export function aplicarNav() {
     a.classList.remove("vz-off"); a.hidden = false;
     const h = a.getAttribute("href"); if (!h || PROTEGIDOS.has(h)) return;
     const clave = "nav:" + h.replace(/^#/, ""), etiqueta = "Menú · " + a.textContent.replace(/\s+/g, " ").trim().replace(/\d+%|✅/g, "").trim();
+    if (VIS.eliminados[clave]) { a.hidden = true; return; }
     const off = !!VIS.ocultos[clave];
     if (off && !doc) { a.hidden = true; return; }
     if (off) a.classList.add("vz-off");
     if (doc && VIS.edicion) {
-      const w = document.createElement("div"); w.className = "vz-nav"; a.replaceWith(w); w.appendChild(a); w.appendChild(boton(clave, etiqueta, off));
+      const w = document.createElement("div"); w.className = "vz-nav"; a.replaceWith(w); w.appendChild(a); w.appendChild(boton(clave, etiqueta, off)); w.appendChild(botonEliminar(clave, etiqueta));
     }
   });
-}
-
-function boton(clave, etiqueta, off, tipo = "") {
-  const b = document.createElement("button"); b.type = "button"; b.className = "vz-b " + tipo; b.dataset.vk = clave;
-  b.title = off ? "Oculto para estudiantes: tocá para mostrar" : "Visible: tocá para ocultar a los estudiantes";
-  b.setAttribute("aria-label", (off ? "Mostrar: " : "Ocultar: ") + etiqueta); b.textContent = off ? "🚫" : "👁";
-  b.addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); alternar(clave, etiqueta); });
-  return b;
 }
 
 /* ---------- contenido de la vista ---------- */
@@ -91,19 +110,27 @@ export function aplicarMain(ruta) {
     const tipo = el.matches("section.vz") ? "sec" : el.matches("li") ? "li" : "bloque", et = etiquetaDe(el);
     const base = `${ruta || "/"}|${tipo}|${slug(et)}`; usados[base] = (usados[base] || 0) + 1;
     const clave = usados[base] > 1 ? `${base}~${usados[base]}` : base, off = !!VIS.ocultos[clave];
+    if (VIS.eliminados[clave]) { el.hidden = true; el.setAttribute("data-vk-hide", "1"); continue; }   // eliminado: no se ve para nadie
     if (off && !doc) { el.hidden = true; el.setAttribute("data-vk-hide", "1"); continue; }
     if (off) el.classList.add("vz-off");
-    if (doc && VIS.edicion) { el.classList.add("vz-ed"); el.appendChild(boton(clave, et, off, tipo === "sec" ? "sec" : "")); }
+    if (doc && VIS.edicion) {
+      el.classList.add("vz-ed"); const t = tipo === "sec" ? "sec" : "";
+      el.appendChild(boton(clave, et, off, t)); el.appendChild(botonEliminar(clave, et, t));
+    }
   }
   if (doc && VIS.edicion) {
-    const barra = document.createElement("div"); barra.className = "vz-bar card"; barra.setAttribute("role", "region"); barra.setAttribute("aria-label", "Modo edición de visibilidad");
-    const lista = Object.entries(VIS.ocultos);
-    barra.innerHTML = `<b>👁 Modo edición</b> · Tocá 👁 junto a cualquier sección, tarjeta o ítem para ocultarlo o mostrarlo a los estudiantes (vos siempre lo ves; lo oculto aparece atenuado con 🚫). Por defecto todo está visible.
-      <div class="row" style="margin-top:.4rem"><span class="tag ${lista.length ? "warn" : "ok"}">${lista.length} oculto(s)</span><button type="button" class="btn sec sm" id="vzall" ${lista.length ? "" : "disabled"}>Mostrar todo</button></div>
-      ${lista.length ? `<details><summary>Ver lista de ocultos</summary><ul class="res">${lista.map(([k, t]) => `<li><span>${esc(t || k)}</span><button type="button" class="btn sec sm" data-vzun="${esc(k)}">Mostrar</button></li>`).join("")}</ul></details>` : ""}`;
+    const barra = document.createElement("div"); barra.className = "vz-bar card"; barra.setAttribute("role", "region"); barra.setAttribute("aria-label", "Modo edición");
+    const ocl = Object.entries(VIS.ocultos), eli = Object.entries(VIS.eliminados);
+    barra.innerHTML = `<b>👁 Modo edición</b> · <b>👁</b> oculta o muestra un elemento a los estudiantes (vos lo ves atenuado, con 🚫). <b>🗑</b> lo elimina del aula para todos y lo manda a la <b>Papelera</b>, de donde se restaura. Por defecto todo está visible.
+      <div class="row" style="margin-top:.4rem"><span class="tag ${ocl.length ? "warn" : "ok"}">${ocl.length} oculto(s)</span><button type="button" class="btn sec sm" id="vzall" ${ocl.length ? "" : "disabled"}>Mostrar todo</button>
+       <span class="tag ${eli.length ? "bad" : "ok"}">🗑 ${eli.length} en la papelera</span><button type="button" class="btn sec sm" id="vzrest" ${eli.length ? "" : "disabled"}>Restaurar todo</button></div>
+      ${ocl.length ? `<details><summary>Ver lista de ocultos</summary><ul class="res">${ocl.map(([k, t]) => `<li><span>${esc(t || k)}</span><button type="button" class="btn sec sm" data-vzun="${esc(k)}">Mostrar</button></li>`).join("")}</ul></details>` : ""}
+      ${eli.length ? `<details><summary>Papelera</summary><ul class="res">${eli.map(([k, t]) => `<li><span>${esc(t || k)}</span><button type="button" class="btn sec sm" data-vzrs="${esc(k)}">Restaurar</button></li>`).join("")}</ul></details>` : ""}`;
     main.insertBefore(barra, main.firstChild);
     $("#vzall", barra)?.addEventListener("click", () => mostrarTodo());
+    $("#vzrest", barra)?.addEventListener("click", () => restaurarTodo());
     $$("[data-vzun]", barra).forEach(b => b.addEventListener("click", () => alternar(b.dataset.vzun, "")));
+    $$("[data-vzrs]", barra).forEach(b => b.addEventListener("click", () => restaurar(b.dataset.vzrs)));
   }
 }
 
@@ -111,7 +138,7 @@ export function aplicarMain(ruta) {
 export function botonEdicion() {
   let b = $("#edbtn"); const doc = ctx.esDoc();
   if (!doc) { b?.parentNode.removeChild(b); return; }
-  if (!b) { b = document.createElement("button"); b.id = "edbtn"; b.type = "button"; b.className = "user"; b.title = "Ocultar o mostrar elementos del aula a los estudiantes";
+  if (!b) { b = document.createElement("button"); b.id = "edbtn"; b.type = "button"; b.className = "user"; b.title = "Ocultar, mostrar o eliminar elementos del aula";
     b.addEventListener("click", () => { ponerEdicion(!VIS.edicion); ctx.repintar(); }); $(".topbar")?.insertBefore(b, $("#fxbtn") || $("#user")); }
   b.textContent = VIS.edicion ? "👁 Edición: sí" : "👁 Edición: no"; b.setAttribute("aria-pressed", VIS.edicion);
 }

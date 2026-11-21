@@ -96,16 +96,17 @@ service cloud.firestore {
       allow create, update: if docente() && request.resource.data.keys().hasAll(['titulo', 'url', 'sesion', 'fecha'])
         && request.resource.data.titulo is string && request.resource.data.titulo.size() <= 150
         && request.resource.data.url is string && request.resource.data.url.matches('^https://.*');
-      allow delete: if false;
+      allow delete: if docente();
     }
 
-    // Ajustes del aula: qué elementos ocultó el docente. Lo lee cualquiera (incluidos invitados sin cuenta); lo escribe solo un docente.
+    // Ajustes del aula: qué elementos ocultó o eliminó (papelera) el docente. Lo lee cualquiera (incluidos invitados sin cuenta); lo escribe solo un docente.
     // Es un control de interfaz, no de seguridad (el contenido sigue en los archivos del sitio).
     match /ajustes/{id} {
       allow read: if true;   // público: también lo leen los invitados (solo contiene qué elementos están ocultos)
       allow create, update: if docente() && id == 'visibilidad'
-        && request.resource.data.keys().hasOnly(['ocultos', 'actualizado'])
-        && request.resource.data.ocultos is map && request.resource.data.ocultos.size() <= 400;
+        && request.resource.data.keys().hasOnly(['ocultos', 'eliminados', 'actualizado'])
+        && request.resource.data.ocultos is map && request.resource.data.ocultos.size() <= 400
+        && (!('eliminados' in request.resource.data) || (request.resource.data.eliminados is map && request.resource.data.eliminados.size() <= 400));
       allow delete: if false;
     }
 

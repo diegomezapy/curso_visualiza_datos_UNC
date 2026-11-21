@@ -3,7 +3,7 @@ Estructura sugerida por el programa: **Teoría 30 % · Práctica 50 % · Integra
 
 | Componente | Peso | Instrumento | Detalle |
 |---|---|---|---|
-| **Teoría** | 30 | Quizzes y lecturas guiadas | 8 quizzes de 5 preguntas (S1-S8) más el **Quiz 1B** (10 preguntas, lectura de la presentación de la sesión 1) y el **Quiz 2B** (10 preguntas, ejercicio de la EPHC en la sesión 2); se promedian los 6 mejores de los 10 → 30 pts. Banco: [banco_quizzes.md](banco_quizzes.md) |
+| **Teoría** | 30 | Quizzes y lecturas guiadas | 8 quizzes de 5 preguntas (S1-S8) más el **Quiz 1B** (10 preguntas, lectura de la presentación de la sesión 1) el **Quiz 2A** (10 preguntas, presentación de ggplot2) y el **Quiz 2B** (10 preguntas, ejercicio de la EPHC), todos en la sesión 2; se promedian los 6 mejores de los 11 → 30 pts. Banco: [banco_quizzes.md](banco_quizzes.md) |
 | **Práctica** | 50 | Laboratorios y mini-proyectos | Ej. S1 (5) + Ej. S2 (5) + Ej. S3 (5) + **MP1** (10) + **MP2** (10) + Ej. S6 (5) + **MP3** (10) |
 | **Integrador** | 20 | Informe técnico + presentación | Informe 12 + presentación 8. Ver [proyecto_integrador.md](proyecto_integrador.md) |
 

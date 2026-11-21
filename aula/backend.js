@@ -78,8 +78,9 @@ async function crearFirebase(cfg) {
     async listarIntentosQuiz() { return (await fb.getDocs(fb.collection(db, "respuestas_quiz"))).docs.map(d => ({ id: d.id, ...d.data() })); },
     cargarPlanillasDocente: email => get("docentes", email.toLowerCase()),
     guardarCalificaciones: (uid, oficial) => fb.setDoc(fb.doc(db, "calificaciones", uid), { oficial, actualizado: fb.serverTimestamp() }),
-    async cargarVisibilidad() { return (await get("ajustes", "visibilidad"))?.ocultos || {}; },
-    guardarVisibilidad: ocultos => fb.setDoc(fb.doc(db, "ajustes", "visibilidad"), { ocultos, actualizado: fb.serverTimestamp() }),
+    async cargarVisibilidad() { const d = await get("ajustes", "visibilidad"); return { ocultos: d?.ocultos || {}, eliminados: d?.eliminados || {} }; },
+    guardarVisibilidad: (ocultos, eliminados = {}) => fb.setDoc(fb.doc(db, "ajustes", "visibilidad"), { ocultos, eliminados, actualizado: fb.serverTimestamp() }),
+    eliminarClase: id => fb.deleteDoc(fb.doc(db, "clases", id)),
     async listarClases() { return (await fb.getDocs(fb.collection(db, "clases"))).docs.map(d => ({ id: d.id, ...d.data(), actualizado: undefined })); },
     guardarClase: (c) => { const { id, ...r } = c; return fb.setDoc(fb.doc(db, "clases", id), { ...r, actualizado: fb.serverTimestamp() }); },
   };
@@ -140,8 +141,9 @@ function crearDemo(cfg) {
     async listarIntentosQuiz() { return Object.values(db0().respuestasQuiz); },
     async cargarPlanillasDocente() { return { planillas: cfg.demo?.planillas || {} }; },
     async guardarCalificaciones(u, o) { const d = db0(); d.calificaciones[u] = o; wr(d); },
-    async cargarVisibilidad() { return db0().ajustes?.visibilidad || {}; },
-    async guardarVisibilidad(o) { const d = db0(); d.ajustes = { ...(d.ajustes || {}), visibilidad: o }; wr(d); },
+    async cargarVisibilidad() { const v = db0().ajustes?.visibilidad || {}; return { ocultos: v.ocultos || {}, eliminados: v.eliminados || {} }; },
+    async guardarVisibilidad(ocultos, eliminados = {}) { const d = db0(); d.ajustes = { ...(d.ajustes || {}), visibilidad: { ocultos, eliminados } }; wr(d); },
+    async eliminarClase(id) { const d = db0(); delete d.clases[id]; wr(d); },
     async listarClases() { return Object.entries(db0().clases).map(([id, c]) => ({ id, ...c })); },
     async guardarClase(c) { const d = db0(), { id, ...r } = c; d.clases[id] = r; wr(d); },
   };

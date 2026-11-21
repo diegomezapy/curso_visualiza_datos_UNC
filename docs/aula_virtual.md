@@ -49,6 +49,9 @@ Con la sesión de docente aparece el botón **👁 Edición** en la barra superi
 - La barra de edición muestra cuántos elementos hay ocultos, la lista y **Mostrar todo**.
 - Se guarda en Firestore (`ajustes/visibilidad`); **hay que republicar `firebase/firestore.rules`**. Los estudiantes ven el cambio al navegar o recargar (se consulta cada minuto como máximo).
 - Los elementos se identifican por la ruta y el título; si cambia el título de un bloque, hay que volver a ocultarlo.
+- **Eliminar (🗑):** además de ocultar, el docente puede eliminar cualquier elemento (con confirmación). Deja de verse **para todos, también para el docente**, y va a la **Papelera** del modo edición, de donde se restaura uno por uno o todo junto. Para los elementos del aula es una eliminación *lógica* (el contenido sigue en los archivos del sitio; para quitarlo de verdad hay que borrarlo del repositorio).
+- **Clases grabadas:** el botón «🗑 Eliminar» de cada clase la **borra de verdad** de Firestore (no se puede deshacer; el video en Drive/YouTube no se toca).
+- Hay que republicar `firebase/firestore.rules` (se agregó el campo `eliminados` y el borrado de clases al docente).
 - No es un control de seguridad: el contenido sigue en los archivos públicos del sitio.
 
 ## Orden de una sesión
