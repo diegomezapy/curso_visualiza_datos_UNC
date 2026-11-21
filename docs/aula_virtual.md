@@ -63,3 +63,9 @@ Cualquier persona puede **ver el curso sin cuenta**: en la pantalla de ingreso h
 - **Límite:** el modo invitado es de solo lectura en la interfaz, no un control de seguridad: los materiales del aula son archivos públicos del sitio. Lo que sí se protege con reglas es la escritura (los invitados no tienen sesión, así que Firestore les niega cualquier lectura o escritura salvo `ajustes/visibilidad`, que es público).
 - **Hay que republicar `firebase/firestore.rules`** para que los invitados respeten lo oculto. Sin eso ven todo.
 - Las carpetas de Drive tienen sus propios permisos: revisá con quién está compartida cada una.
+
+## Presentaciones incrustadas
+Cada sesión puede tener una presentación con visor propio (diapositivas, texto accesible, PDF y PowerPoint). Hoy: sesión 1 (percepción gráfica, con infografía y Quiz 1B) y sesión 2 (**ggplot2, capa por capa**, 24 diapositivas con datos reales de la EPHC).
+- Se registran en `PRESENTACIONES` de `tools/build_aula.py`; los archivos están en `aula/media/<carpeta>/`.
+- Para regenerar una: `python tools/procesar_presentacion.py <carpeta>` (requiere LibreOffice, `pdftoppm` y Pillow) a partir del `.pptx` de `fuentes/`.
+- La de ggplot2 se construye con código: `tools/ggplot_spec.py` (contenido y código de cada paso) → `tools/ggplot_pasos_a_archivos.py` → `Rscript tools/ggplot_figuras.R` (ejecuta ese mismo código y guarda las figuras) → `python tools/ggplot_pptx.py`. Los datos agregados salen de `tools/ggplot_datos.R` (requiere los CSV del INE).

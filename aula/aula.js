@@ -155,7 +155,7 @@ function rutaDatosHtml(s) {
 function mediaHtml(s) {
   const m = s.media; if (!m) return "";
   const sl = m.slides, inf = m.infografia, k = "media_ppt_" + s.n;
-  return `<h2 id="deck">📑 Presentación de la unidad <span class="muted" style="font-weight:400;font-size:.9rem">· ${sl.length} diapositivas</span></h2>
+  return `<h2 id="deck">📑 ${esc(m.titulo || "Presentación de la unidad")} <span class="muted" style="font-weight:400;font-size:.9rem">· ${sl.length} diapositivas</span></h2>
   <div class="card deck" data-n="${sl.length}" tabindex="0" aria-label="Visor de la presentación. Usá las flechas del teclado para avanzar.">
    <div class="deck-stage"><button class="deck-nav" id="dprev" aria-label="Diapositiva anterior">‹</button>
     <img id="dimg" src="${esc(m.base)}/${esc(sl[0].img)}" alt="${esc(sl[0].titulo)}" width="1280" height="720"><button class="deck-nav" id="dnext" aria-label="Diapositiva siguiente">›</button></div>
@@ -167,13 +167,14 @@ function mediaHtml(s) {
    <details><summary>Ver todas las diapositivas</summary><div class="deck-thumbs">${sl.map((x, i) => `<button type="button" class="deck-th" data-go="${i + 1}" aria-label="Ir a: ${esc(x.titulo)}"><img src="${esc(m.base)}/${esc(x.img)}" alt="" loading="lazy" width="160" height="90"><span>${x.n}. ${esc(x.titulo)}</span></button>`).join("")}</div></details>
   </div>
   ${quizzesHtml(s, "media")}
-  <h2>🗺️ Infografía</h2><figure class="card info"><button type="button" class="info-b" id="infb" aria-label="Ampliar la infografía"><img src="${esc(inf.src)}" alt="${esc(inf.alt)}" loading="lazy"></button>
+  ${inf ? `<h2>🗺️ Infografía</h2><figure class="card info"><button type="button" class="info-b" id="infb" aria-label="Ampliar la infografía"><img src="${esc(inf.src)}" alt="${esc(inf.alt)}" loading="lazy"></button>
    <figcaption class="muted">Tocá la imagen para ampliarla. <a href="${esc(inf.src)}" download>⬇ Descargar</a></figcaption>
-   <details><summary>Descripción en texto</summary><p class="muted">${esc(inf.descripcion)}</p></details></figure>`;
+   <details><summary>Descripción en texto</summary><p class="muted">${esc(inf.descripcion)}</p></details></figure>` : ""}`;
 }
 function bindMedia() {
   const d = $(".deck"); if (!d) return;
-  const m = D.sesiones.find(x => x.media)?.media, sl = m.slides; let i = 1;
+  const sn = +location.hash.split("/")[2], m = D.sesiones.find(x => x.n === sn)?.media; if (!m) return;
+  const sl = m.slides; let i = 1;
   const ir = n => { i = Math.max(1, Math.min(sl.length, n)); const x = sl[i - 1]; const img = $("#dimg"); img.src = `${m.base}/${x.img}`; img.alt = x.titulo;
     $("#dtit").textContent = x.titulo; $("#dcount").textContent = `${i} / ${sl.length}`; $("#drange").value = i;
     $("#dtxt").innerHTML = x.texto.length ? "<ul>" + x.texto.map(t => `<li>${esc(t)}</li>`).join("") + "</ul>" : "Esta diapositiva es solo visual.";

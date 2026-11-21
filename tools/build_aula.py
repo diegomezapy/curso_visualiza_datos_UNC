@@ -28,6 +28,9 @@ import catalogo as cat
 INFO_TXT = ("Tres bloques. Izquierda: procesamiento preatentivo (memoria icónica que procesa atributos antes de la cognición), jerarquía de la Gestalt (conexión y encierro superan a la proximidad) y contraste de accesibilidad WCAG de 3:1. "
   "Centro: jerarquía de tareas perceptivas, de mayor a menor precisión: posición en escala común, escalas no alineadas, longitud/dirección/ángulo, área, volumen y curvatura, sombreado y saturación. "
   "Derecha: los tres pilares del mapeo de datos (atributos del dato, codificación visual adecuada y claridad de propósito) y el rediseño de gráficos tradicionales: gráfico circular, barras divididas y mapa de coropletas se reemplazan por puntos agrupados, rectángulos enmarcados y diferencias representadas directamente.")
+# Presentaciones incrustadas por sesión (los archivos se generan con tools/procesar_presentacion.py)
+PRESENTACIONES = {1: {"dir": "unidad1", "titulo": "Presentación de la unidad", "infografia": True},
+                  2: {"dir": "unidad2_ggplot", "titulo": "Presentación: ggplot2, capa por capa"}}
 R_OK = {"pr01_explorador", "pr02_dncp", "pr03_banco_mundial"}
 sesiones = []
 for s in c.SESIONES:
@@ -52,10 +55,13 @@ for s in c.SESIONES:
     prs = [{"id": pid, "nombre": nm, "desc": ds, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS if n in ses and rol != "docente"]
     qids = ([str(n)] if n in c.QUIZZES else []) + [e["id"] for e in c.QUIZZES_EXTRA if e["sesion"] == n]
     media = None
-    if n == 1 and (RAIZ / "aula" / "media" / "unidad1" / "slides.json").exists():
-        sl = json.loads((RAIZ / "aula" / "media" / "unidad1" / "slides.json").read_text(encoding="utf-8"))
-        media = {"base": "media/unidad1/diapositivas", "slides": sl, "pdf": "media/unidad1/presentacion.pdf", "pptx": "media/unidad1/presentacion.pptx",
-                 "infografia": {"src": "media/unidad1/infografia.webp", "alt": "Infografía: La ciencia de la percepción gráfica. Jerarquía y principios de diseño visual", "descripcion": INFO_TXT}}
+    mc = PRESENTACIONES.get(n)
+    if mc and (RAIZ / "aula" / "media" / mc["dir"] / "slides.json").exists():
+        d_ = mc["dir"]
+        sl = json.loads((RAIZ / "aula" / "media" / d_ / "slides.json").read_text(encoding="utf-8"))
+        media = {"titulo": mc["titulo"], "base": f"media/{d_}/diapositivas", "slides": sl, "pdf": f"media/{d_}/presentacion.pdf", "pptx": f"media/{d_}/presentacion.pptx"}
+        if mc.get("infografia"):
+            media["infografia"] = {"src": f"media/{d_}/infografia.webp", "alt": "Infografía: La ciencia de la percepción gráfica. Jerarquía y principios de diseño visual", "descripcion": INFO_TXT}
     s2 = {k: v for k, v in s.items() if k != "lecturas"}
     sesiones.append({**s2, "corto": CORTO[n], "quizIds": qids, "media": media, "practicas_reales": prs, "recursos": rec, "videos": rc.VIDEOS.get(n, []), "lecturas": rc.LECTURAS.get(n, []), "quiz": n in c.QUIZZES})
 

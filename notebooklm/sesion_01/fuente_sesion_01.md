@@ -54,7 +54,7 @@ Ejercicio S1 (5 pts, rúbrica R1) · Quiz 1 (teoría).
 - Actividad 0b · Del dato a la visualización: publicá tu análisis de los resultados del diagnóstico · RPubs (R) + Colab (Python) (0 pts)
 - Ejercicio S1: rehacer un gráfico de prensa (antes/después + 5 líneas) · publicar en RPubs (5 pts)
 
-## Texto de la presentación de la unidad (Ciencia de la percepción gráfica)
+## Texto de la presentación de la sesión (Ciencia de la percepción gráfica)
 ### Diapositiva 1 · Módulo de Visualización de Datos
 - Sesiones 1-3: La Ciencia de la Percepción Gráfica
 - MAESTRÍA EN INGENIERÍA Y CIENCIA DE DATOS
