@@ -32,7 +32,8 @@ INFO_TXT = ("Tres bloques. Izquierda: procesamiento preatentivo (memoria icónic
 PRESENTACIONES = {1: {"dir": "unidad1", "titulo": "Presentación de la unidad", "infografia": True},
                   2: {"dir": "unidad2_eleccion", "titulo": "Presentación: elección de gráficos"},
                   4: {"dir": "unidad2_ggplot", "titulo": "Presentación: ggplot2, capa por capa"},
-                  5: {"dir": "unidad5_dashboards", "titulo": "Presentación: dashboards con datos de aduanas"}}
+                  5: [{"dir": "unidad5_dashboards", "titulo": "Presentación 1: dashboards con datos de aduanas"},
+                      {"dir": "unidad5_tablero_shiny", "titulo": "Presentación 2: tablero dinámico en RStudio (Shiny)"}]}
 R_OK = {"pr01_explorador", "pr02_dncp", "pr03_banco_mundial"}
 sesiones = []
 for s in c.SESIONES:
@@ -57,18 +58,23 @@ for s in c.SESIONES:
         rec.insert(6, {"t": "R · Descargar el .Rmd del tablero de aduanas", "u": f"{cfg['raw']}/r/05_tablero_aduanas_python.Rmd", "k": "descarga"})
         rec.insert(7, {"t": "Tablero interactivo: valor mensual por medio de transporte (plotly)", "u": "media/unidad5_dashboards/tablero_i1.html", "k": "web"})
         rec.insert(8, {"t": "Tablero interactivo: evolución mensual y ranking de aduanas (plotly)", "u": "media/unidad5_dashboards/tablero_d1.html", "k": "web"})
+        rec.insert(9, {"t": "R · Tablero dinámico Shiny de aduanas: app.R (abrir en RStudio y Run App)", "u": f"{cfg['repo']}/blob/main/r/app_tablero_aduanas/app.R", "k": "rmd"})
+        rec.insert(10, {"t": "R · Descargar app.R del tablero Shiny", "u": f"{cfg['raw']}/r/app_tablero_aduanas/app.R", "k": "descarga"})
     if n == 5: rec.append({"t": "App Dash de ejemplo (app_dash.py)", "u": f"{cfg['repo']}/blob/main/sesiones/{d}/app_dash.py", "k": "codigo"})
     if n == 6: rec.append({"t": "R · Plantilla de informe parametrizado", "u": f"{cfg['repo']}/blob/main/r/plantilla_reporte_sucursal.Rmd", "k": "rmd"})
     prs = [{"id": pid, "nombre": nm, "desc": ds, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS if n in ses and rol != "docente"]
     qids = ([str(n)] if n in c.QUIZZES else []) + [e["id"] for e in c.QUIZZES_EXTRA if e["sesion"] == n]
-    media = None
-    mc = PRESENTACIONES.get(n)
-    if mc and (RAIZ / "aula" / "media" / mc["dir"] / "slides.json").exists():
+    media = []
+    mcs = PRESENTACIONES.get(n) or []
+    for mc in (mcs if isinstance(mcs, list) else [mcs]):
         d_ = mc["dir"]
+        if not (RAIZ / "aula" / "media" / d_ / "slides.json").exists(): continue
         sl = json.loads((RAIZ / "aula" / "media" / d_ / "slides.json").read_text(encoding="utf-8"))
-        media = {"titulo": mc["titulo"], "base": f"media/{d_}/diapositivas", "slides": sl, "pdf": f"media/{d_}/presentacion.pdf", "pptx": f"media/{d_}/presentacion.pptx"}
+        md = {"titulo": mc["titulo"], "base": f"media/{d_}/diapositivas", "slides": sl, "pdf": f"media/{d_}/presentacion.pdf", "pptx": f"media/{d_}/presentacion.pptx"}
         if mc.get("infografia"):
-            media["infografia"] = {"src": f"media/{d_}/infografia.webp", "alt": "Infografía: La ciencia de la percepción gráfica. Jerarquía y principios de diseño visual", "descripcion": INFO_TXT}
+            md["infografia"] = {"src": f"media/{d_}/infografia.webp", "alt": "Infografía: La ciencia de la percepción gráfica. Jerarquía y principios de diseño visual", "descripcion": INFO_TXT}
+        media.append(md)
+    media = media or None
     s2 = {k: v for k, v in s.items() if k != "lecturas"}
     sesiones.append({**s2, "corto": CORTO[n], "quizIds": qids, "media": media, "practicas_reales": prs, "recursos": rec, "videos": rc.VIDEOS.get(n, []), "lecturas": rc.LECTURAS.get(n, []), "quiz": n in c.QUIZZES})
 
@@ -78,7 +84,7 @@ data = {
     "agenda_base": {"eventos": ag.eventos(), "nota": "Calendario base cargado desde el aula."},
     "sesiones": sesiones,
     "quizzes": {**{str(k): {"titulo": v[0], "preguntas": v[1], "sesion": k, "etiqueta": str(k)} for k, v in c.QUIZZES.items()},
-                **{e["id"]: {"titulo": e["titulo"], "preguntas": e["preguntas"], "sesion": e["sesion"], "etiqueta": e["etiqueta"], "ubicacion": e.get("ubicacion", "final"), "nota": e.get("nota", ""), "volver": e.get("volver", "")} for e in c.QUIZZES_EXTRA}},
+                **{e["id"]: {"titulo": e["titulo"], "preguntas": e["preguntas"], "sesion": e["sesion"], "etiqueta": e["etiqueta"], "ubicacion": e.get("ubicacion", "final"), "deck": e.get("deck", 0), "nota": e.get("nota", ""), "volver": e.get("volver", "")} for e in c.QUIZZES_EXTRA}},
     "rubricas": {k: {"titulo": v[0], "criterios": [{"n": a, "w": b} for a, b in v[1]]} for k, v in c.RUBRICAS.items()},
     "abiertos": {"fuentes": cat.FUENTES, "estados": {k: list(v) for k, v in cat.ESTADOS.items()},
                  "practicas": [{"id": pid, "nombre": nm, "desc": ds, "sesiones": ses, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS]},

@@ -153,37 +153,45 @@ function rutaDatosHtml(s) {
 }
 /* ---------- presentación e infografía (Unidad 1) ---------- */
 function mediaHtml(s) {
-  const m = s.media; if (!m) return "";
-  const sl = m.slides, inf = m.infografia, k = "media_ppt_" + s.n;
-  return `<h2 id="deck">📑 ${esc(m.titulo || "Presentación de la unidad")} <span class="muted" style="font-weight:400;font-size:.9rem">· ${sl.length} diapositivas</span></h2>
-  <div class="card deck" data-n="${sl.length}" tabindex="0" aria-label="Visor de la presentación. Usá las flechas del teclado para avanzar.">
-   <div class="deck-stage"><button class="deck-nav" id="dprev" aria-label="Diapositiva anterior">‹</button>
-    <img id="dimg" src="${esc(m.base)}/${esc(sl[0].img)}" alt="${esc(sl[0].titulo)}" width="1280" height="720"><button class="deck-nav" id="dnext" aria-label="Diapositiva siguiente">›</button></div>
-   <div class="deck-bar"><b id="dtit">${esc(sl[0].titulo)}</b><span class="muted" id="dcount">1 / ${sl.length}</span></div>
-   <input type="range" id="drange" min="1" max="${sl.length}" value="1" aria-label="Ir a la diapositiva">
-   <div class="row" style="margin-top:.5rem"><button class="btn sec sm" id="dfs" type="button">⛶ Pantalla completa</button><a class="btn sec sm" href="${esc(m.pdf)}" target="_blank" rel="noopener">⬇ PDF</a><a class="btn sec sm" href="${esc(m.pptx)}" download>⬇ PowerPoint</a>
+  const ms = (Array.isArray(s.media) ? s.media : [s.media]).filter(Boolean);
+  return ms.map((m, i) => deckHtml(s, m, i)).join("");
+}
+function deckHtml(s, m, i) {
+  const sl = m.slides, inf = m.infografia, k = i ? `media_ppt_${s.n}_${i}` : "media_ppt_" + s.n;
+  const A = x => i ? `class="${x}"` : `class="${x}" id="${x}"`;   // el primer visor conserva los id de siempre
+  return `<h2 id="${i ? "deck" + (i + 1) : "deck"}">📑 ${esc(m.titulo || "Presentación de la unidad")} <span class="muted" style="font-weight:400;font-size:.9rem">· ${sl.length} diapositivas</span></h2>
+  <div class="card deck" data-i="${i}" data-n="${sl.length}" tabindex="0" aria-label="Visor de la presentación. Usá las flechas del teclado para avanzar.">
+   <div class="deck-stage"><button type="button" class="deck-nav dprev" ${i ? "" : 'id="dprev"'} aria-label="Diapositiva anterior">‹</button>
+    <img ${A("dimg")} src="${esc(m.base)}/${esc(sl[0].img)}" alt="${esc(sl[0].titulo)}" width="1280" height="720"><button type="button" class="deck-nav dnext" ${i ? "" : 'id="dnext"'} aria-label="Diapositiva siguiente">›</button></div>
+   <div class="deck-bar"><b ${A("dtit")}>${esc(sl[0].titulo)}</b><span ${A("dcount").replace('class="dcount"', 'class="muted dcount"')}>1 / ${sl.length}</span></div>
+   <input type="range" ${A("drange")} min="1" max="${sl.length}" value="1" aria-label="Ir a la diapositiva">
+   <div class="row" style="margin-top:.5rem"><button class="btn sec sm dfs" ${i ? "" : 'id="dfs"'} type="button">⛶ Pantalla completa</button><a class="btn sec sm" href="${esc(m.pdf)}" target="_blank" rel="noopener">⬇ PDF</a><a class="btn sec sm" href="${esc(m.pptx)}" download>⬇ PowerPoint</a>
     <label class="chk2" style="margin-left:auto"><input type="checkbox" data-act="${k}" ${S.done[k] ? "checked" : ""}> Ya estudié la presentación</label></div>
-   <details style="margin-top:.5rem"><summary>Texto de esta diapositiva</summary><div id="dtxt" class="muted"></div></details>
-   <details><summary>Ver todas las diapositivas</summary><div class="deck-thumbs">${sl.map((x, i) => `<button type="button" class="deck-th" data-go="${i + 1}" aria-label="Ir a: ${esc(x.titulo)}"><img src="${esc(m.base)}/${esc(x.img)}" alt="" loading="lazy" width="160" height="90"><span>${x.n}. ${esc(x.titulo)}</span></button>`).join("")}</div></details>
+   <details style="margin-top:.5rem"><summary>Texto de esta diapositiva</summary><div ${A("dtxt").replace('class="dtxt"', 'class="muted dtxt"')}></div></details>
+   <details><summary>Ver todas las diapositivas</summary><div class="deck-thumbs">${sl.map((x, j) => `<button type="button" class="deck-th" data-go="${j + 1}" aria-label="Ir a: ${esc(x.titulo)}"><img src="${esc(m.base)}/${esc(x.img)}" alt="" loading="lazy" width="160" height="90"><span>${x.n}. ${esc(x.titulo)}</span></button>`).join("")}</div></details>
   </div>
-  ${quizzesHtml(s, "media")}
-  ${inf ? `<h2>🗺️ Infografía</h2><figure class="card info"><button type="button" class="info-b" id="infb" aria-label="Ampliar la infografía"><img src="${esc(inf.src)}" alt="${esc(inf.alt)}" loading="lazy"></button>
+  ${quizzesHtml(s, "media", i)}
+  ${inf ? `<h2>🗺️ Infografía</h2><figure class="card info"><button type="button" class="info-b" ${i ? "" : 'id="infb"'} aria-label="Ampliar la infografía"><img src="${esc(inf.src)}" alt="${esc(inf.alt)}" loading="lazy"></button>
    <figcaption class="muted">Tocá la imagen para ampliarla. <a href="${esc(inf.src)}" download>⬇ Descargar</a></figcaption>
    <details><summary>Descripción en texto</summary><p class="muted">${esc(inf.descripcion)}</p></details></figure>` : ""}`;
 }
 function bindMedia() {
-  const d = $(".deck"); if (!d) return;
-  const sn = +location.hash.split("/")[2], m = D.sesiones.find(x => x.n === sn)?.media; if (!m) return;
-  const sl = m.slides; let i = 1;
-  const ir = n => { i = Math.max(1, Math.min(sl.length, n)); const x = sl[i - 1]; const img = $("#dimg"); img.src = `${m.base}/${x.img}`; img.alt = x.titulo;
-    $("#dtit").textContent = x.titulo; $("#dcount").textContent = `${i} / ${sl.length}`; $("#drange").value = i;
-    $("#dtxt").innerHTML = x.texto.length ? "<ul>" + x.texto.map(t => `<li>${esc(t)}</li>`).join("") + "</ul>" : "Esta diapositiva es solo visual.";
+  const sn = +location.hash.split("/")[2], ses = D.sesiones.find(x => x.n === sn); if (!ses?.media) return;
+  const ms = (Array.isArray(ses.media) ? ses.media : [ses.media]).filter(Boolean);
+  $$(".deck").forEach(d => bindDeck(d, ms[+d.dataset.i || 0]));
+}
+function bindDeck(d, m) {
+  if (!m) return;
+  const q = sel => d.querySelector(sel), sl = m.slides; let i = 1;
+  const ir = n => { i = Math.max(1, Math.min(sl.length, n)); const x = sl[i - 1]; const img = q(".dimg"); img.src = `${m.base}/${x.img}`; img.alt = x.titulo;
+    q(".dtit").textContent = x.titulo; q(".dcount").textContent = `${i} / ${sl.length}`; q(".drange").value = i;
+    q(".dtxt").innerHTML = x.texto.length ? "<ul>" + x.texto.map(t => `<li>${esc(t)}</li>`).join("") + "</ul>" : "Esta diapositiva es solo visual.";
     [i, i + 1].forEach(k => { if (sl[k]) new Image().src = `${m.base}/${sl[k].img}`; }); };
-  $("#dprev").addEventListener("click", () => ir(i - 1)); $("#dnext").addEventListener("click", () => ir(i + 1));
-  $("#drange").addEventListener("input", e => ir(+e.target.value));
-  $$("[data-go]").forEach(b => b.addEventListener("click", () => { ir(+b.dataset.go); d.scrollIntoView({ behavior: "smooth", block: "start" }); }));
+  q(".dprev").addEventListener("click", () => ir(i - 1)); q(".dnext").addEventListener("click", () => ir(i + 1));
+  q(".drange").addEventListener("input", e => ir(+e.target.value));
+  d.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => { ir(+b.dataset.go); d.scrollIntoView({ behavior: "smooth", block: "start" }); }));
   d.addEventListener("keydown", e => { if (e.key === "ArrowRight") { ir(i + 1); e.preventDefault(); } else if (e.key === "ArrowLeft") { ir(i - 1); e.preventDefault(); } });
-  $("#dfs").addEventListener("click", () => { const st = $(".deck-stage"); if (document.fullscreenElement) document.exitFullscreen(); else st.requestFullscreen?.(); });
+  q(".dfs").addEventListener("click", () => { const st = q(".deck-stage"); if (document.fullscreenElement) document.exitFullscreen(); else st.requestFullscreen?.(); });
   ir(1);
   $("#infb")?.addEventListener("click", () => {
     const lb = document.createElement("div"); lb.className = "lb"; lb.setAttribute("role", "dialog"); lb.setAttribute("aria-label", "Infografía ampliada");
@@ -199,8 +207,8 @@ function quizCard(id) {
     ${qq ? `<div class="muted">Mejor: <b>${qq.mejor}%</b> · Intentos: ${qq.intentos.length}</div>` : ""}</div><a class="btn" href="#/quiz/${id}">${qq ? "Reintentar" : "Comenzar quiz"}</a></div></div>`;
 }
 // ubic: "media" (pegado a la presentación), "practica" (pegado a las actividades) o "final" (quizzes de teoría, al final de la sesión).
-function quizzesHtml(s, ubic) {
-  const ids = (s.quizIds || []).filter(id => (D.quizzes[id].ubicacion || "final") === ubic); if (!ids.length) return "";
+function quizzesHtml(s, ubic, deck = 0) {
+  const ids = (s.quizIds || []).filter(id => (D.quizzes[id].ubicacion || "final") === ubic && (ubic !== "media" || (D.quizzes[id].deck || 0) === deck)); if (!ids.length) return "";
   return ubic !== "final" ? ids.map(quizCard).join("") : `<h2>🧠 ${ids.length > 1 ? "Quizzes" : "Quiz"} de teoría</h2>${ids.map(quizCard).join("")}`;
 }
 function vSesion(n) {

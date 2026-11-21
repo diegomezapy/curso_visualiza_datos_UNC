@@ -374,6 +374,315 @@ Resumen: Jerarquía y filtros con propósito; Plotly (HTML interactivo) y Dash (
 - ▸ Corregí el tablero recargado aplicando el checklist.
 - ▸ Resolvé el Quiz 5A del aula: evalúa lo visto en esta presentación.
 - Un buen tablero no muestra todo: muestra lo que ayuda a decidir.
+## Texto de la presentación de la sesión (Tablero dinámico en RStudio con Shiny)
+### Diapositiva 1 · MAESTRÍA EN INGENIERÍA Y CIENCIA DE DATOS · FACET – UNC
+- Un tablero dinámico en RStudio con Shiny
+- Lo construimos paso a paso con la base de aduanas (DNIT): filtros, KPI, gráficos que responden al clic y descarga de datos
+- Sesión 5 · Unidad 2 · Dashboards interactivos
+### Diapositiva 2 · Estático o dinámico: ¿dónde corre el cálculo?
+- Punto de partida
+- Estático (RPubs, plotly)
+- Dinámico (Shiny)
+- Dónde corre el código
+- Una sola vez, al hacer Knit
+- En un servidor de R, cada vez que alguien interactúa
+- Filtros
+- Dentro del navegador, sobre datos ya incluidos
+- Recalculan con R: cualquier análisis o dato
+- Datos
+- Embebidos en el HTML (tamaño limitado)
+- Pueden leerse de archivos, bases o APIs
+- Publicación
+- RPubs, GitHub Pages: gratis y sin servidor
+- shinyapps.io, Posit Connect o servidor propio
+- Ideal para
+- Informes y tableros con pocos datos
+- Exploración con muchos datos o cálculos a pedido
+- Elegí lo más simple que resuelva la necesidad: si los filtros alcanzan con HTML estático, no hace falta un servidor.
+- Chang et al. (2024). Shiny: Web Application Framework for R. shiny.posit.co
+### Diapositiva 3 · Cómo piensa Shiny: entradas, cálculos reactivos y salidas
+- Idea central
+- Entradas
+- input$anio
+- input$medio
+- Datos reactivos
+- datos <- reactive({…})
+- Salidas
+- output$fob
+- output$tendencia
+- output$tabla
+- →
+- →
+- ▸ ui describe la pantalla: controles (checkboxGroupInput) y contenedores de resultados (plotlyOutput).
+- ▸ server es una función con la lógica: reactive() calcula una vez los datos filtrados y todas las salidas los reutilizan.
+- ▸ Cuando el usuario cambia un filtro, Shiny invalida solo lo que depende de él y lo recalcula.
+- Regla de oro: el filtrado se escribe una sola vez en un reactive(), no en cada gráfico.
+- Referencia: mastering-shiny.org (Wickham)
+### Diapositiva 4 · Preparación: paquetes, datos y carpeta de la app
+- Punto de partida
+- # En la consola de R (una sola vez)
+- install.packages(c("shiny", "bslib", "plotly",
+- "dplyr", "DT"))
+- # Estructura de la carpeta
+- tablero_aduanas/
+- ├── app.R
+- └── cubo_importaciones.csv
+- cubo <- read.csv("cubo_importaciones.csv") |>
+- filter(mes != 6) |>   # la base no trae junio de 2025
+- mutate(fob_mm = fob_usd / 1e6)
+- # Original DNIT: separador ';' y coma decimal
+- read.csv2("aduana_2025_ENERO.csv")
+- # equivale a read.csv(sep = ";", dec = ",")
+- ▸ La base original de aduanas viene separada por punto y coma y con coma decimal: read.csv2() lo lee bien.
+- ▸ Cada fila es un subítem: se deduplica por despacho e ítem antes de agregar (visto en la parte 1 de la sesión).
+- ▸ La app lee un cubo agregado (año, mes, aduana, país, medio): liviano y rápido.
+- ▸ Un tablero dinámico no debería leer 200 MB en cada consulta: se preagrega.
+- ▸ Para correrla: abrir app.R en RStudio y pulsar Run App.
+- Fuente: DNIT, base de datos abiertos de aduanas · importaciones de electrónica 2024–2025 (sin junio de 2025) · capturas de la app en ejecución
+### Diapositiva 5 · Paso 1: una app mínima, con un solo valor
+- Paso 1 de 6
+- library(shiny)
+- library(bslib)
+- library(dplyr)
+- library(plotly)
+- cubo <- read.csv("cubo_importaciones.csv") |>
+- filter(mes != 6) |>   # la base no trae junio de 2025
+- mutate(fob_mm = fob_usd / 1e6)
+- fmt <- scales::label_number(
+- big.mark = ".", decimal.mark = ",")
+- ui <- page_fluid(
+- h2("Importaciones de electrónica"),
+- value_box("Valor FOB (millones de USD)",
+- textOutput("fob"), theme = "primary")
+- )
+- server <- function(input, output, session) {
+- output$fob <- renderText(fmt(sum(cubo$fob_mm)))
+- }
+- shinyApp(ui, server)
+- # …
+- ▸ page_fluid() crea la página; value_box() muestra el KPI.
+- ▸ textOutput("fob") en la ui es un hueco que el server llena con renderText().
+- ▸ Todavía sin filtros: el valor es la suma de todos los datos.
+- ui declara los huecos; server decide qué poner en cada uno.
+- Fuente: DNIT, base de datos abiertos de aduanas · importaciones de electrónica 2024–2025 (sin junio de 2025) · capturas de la app en ejecución
+### Diapositiva 6 · Paso 2: filtros y KPI que se recalculan
+- Paso 2 de 6
+- medios <- sort(unique(cubo$medio))
+- ui <- page_sidebar(
+- sidebar = sidebar(
+- checkboxGroupInput("anio", "Año", …),
+- checkboxGroupInput("medio", "Medio…",
+- medios, medios)),
+- layout_columns(fill = FALSE,
+- value_box("Valor FOB…", textOutput("fob")),
+- value_box("Ítems…", textOutput("items")),
+- # … otros 2 value_box (USD/kg, % China)
+- )
+- )
+- server <- function(input, output, session) {
+- datos <- reactive({
+- req(input$anio, input$medio)
+- cubo |>
+- filter(anio %in% input$anio,
+- medio %in% input$medio)
+- })
+- output$fob <- renderText(
+- fmt(sum(datos()$fob_mm)))
+- # … items, usd_kg y china igual
+- }
+- ▸ checkboxGroupInput() crea los filtros; page_sidebar() los ubica a la izquierda.
+- ▸ datos <- reactive({…}) filtra una sola vez; los 4 KPI lo reutilizan.
+- ▸ En la captura se desmarcó AVION: el valor FOB pasó de 750 a 614 millones de USD.
+- Un cambio en un filtro recalcula solo lo que depende de él.
+- Fuente: DNIT, base de datos abiertos de aduanas · importaciones de electrónica 2024–2025 (sin junio de 2025) · capturas de la app en ejecución
+### Diapositiva 7 · Paso 3: un gráfico de tendencia reactivo
+- Paso 3 de 6
+- textOutput("china"), theme = "success")),
+- card(card_header("Valor mensual (millones de USD)"),
+- plotlyOutput("tendencia", height = 170))
+- # …
+- output$tendencia <- renderPlotly({
+- m <- datos() |>
+- group_by(anio, mes) |>
+- summarise(fob_mm = sum(fob_mm), .groups = "drop")
+- plot_ly(m, x = ~mes, y = ~fob_mm,
+- color = ~factor(anio),
+- type = "scatter", mode = "lines+markers",
+- colors = c("2024" = "#9FB6CB",
+- "2025" = "#D55E00")) |>
+- layout(xaxis = list(title = "Mes", dtick = 1),
+- yaxis = list(title = ""),
+- legend = list(orientation = "h"))
+- })
+- ▸ plotlyOutput() en la ui y renderPlotly() en el server: el gráfico usa datos().
+- ▸ Dos años superpuestos por mes: 2025 en naranja, 2024 en gris de contexto.
+- ▸ Si se cambian los filtros, la curva se redibuja sola.
+- El gráfico no filtra: consume los datos reactivos ya filtrados.
+- Fuente: DNIT, base de datos abiertos de aduanas · importaciones de electrónica 2024–2025 (sin junio de 2025) · capturas de la app en ejecución
+### Diapositiva 8 · Paso 4: ranking de aduanas y países de origen
+- Paso 4 de 6
+- plotlyOutput("tendencia", height = 170)),
+- layout_columns(fill = FALSE,
+- card(card_header("Aduanas con mayor valor (clic)"),
+- plotlyOutput("aduanas", height = 190)),
+- card(card_header("Países de origen"),
+- plotlyOutput("paises", height = 190)))
+- # …
+- output$aduanas <- renderPlotly({
+- r <- datos() |>
+- group_by(aduana) |>
+- summarise(fob_mm = sum(fob_mm)) |>
+- slice_max(fob_mm, n = 8)
+- plot_ly(r, x = ~fob_mm,
+- y = ~reorder(aduana, fob_mm),
+- type = "bar", orientation = "h",
+- source = "rank",
+- marker = list(color = "#0072B2")) |>
+- layout(xaxis = list(title = "Millones de USD"),
+- yaxis = list(title = ""))
+- })
+- output$paises <- renderPlotly({
+- p <- datos() |>
+- group_by(pais) |>
+- summarise(fob_mm = sum(fob_mm)) |>
+- slice_max(fob_mm, n = 8)
+- plot_ly(p, x = ~fob_mm, y = ~reorder(pais, fob_mm),
+- type = "bar", orientation = "h",
+- marker = list(color = "#9FB6CB")) |>
+- layout(xaxis = list(title = "Millones de USD"),
+- yaxis = list(title = ""))
+- })
+- ▸ Dos tarjetas en layout_columns(): barras horizontales ordenadas con reorder().
+- ▸ Aduanas en azul de énfasis; países en gris: el color guía la mirada.
+- ▸ Ambos gráficos reutilizan datos().
+- Cada gráfico responde una pregunta: ¿dónde entra? y ¿de dónde viene?
+- Fuente: DNIT, base de datos abiertos de aduanas · importaciones de electrónica 2024–2025 (sin junio de 2025) · capturas de la app en ejecución
+### Diapositiva 9 · Paso 5: interacción con propósito: el clic filtra
+- Paso 5 de 6
+- actionButton("limpiar", "Quitar filtro…"),
+- textOutput("sel"),
+- # …
+- server <- function(input, output, session) {
+- aduana_sel <- reactiveVal(NULL)
+- observeEvent(
+- event_data("plotly_click", source = "rank"),
+- aduana_sel(event_data("plotly_click",
+- source = "rank")$y))
+- observeEvent(input$limpiar, aduana_sel(NULL))
+- datos <- reactive({
+- req(input$anio, input$medio)
+- d <- cubo |> filter(…)
+- if (!is.null(aduana_sel()))
+- d <- filter(d, aduana == aduana_sel())
+- d
+- })
+- # … en el gráfico de aduanas:
+- event_register("plotly_click")
+- ▸ event_data("plotly_click") lee la barra que el usuario tocó.
+- ▸ reactiveVal() guarda la aduana elegida; datos() agrega ese filtro.
+- ▸ En la captura se hizo clic en PTO SEGURO FLUVIAL: todos los KPI y gráficos se actualizan.
+- Hacer clic en un dato para filtrar es zoom y filtros del mantra de Shneiderman.
+- Fuente: DNIT, base de datos abiertos de aduanas · importaciones de electrónica 2024–2025 (sin junio de 2025) · capturas de la app en ejecución
+### Diapositiva 10 · Paso 6: detalle bajo demanda, descarga y tema
+- Paso 6 de 6
+- theme = bs_theme(primary = "#0072B2"),
+- # …
+- plotlyOutput("paises", height = 190))),
+- card(card_header("Detalle",
+- downloadButton("bajar", "Descargar CSV",
+- class = "btn-sm")),
+- DT::DTOutput("tabla"))
+- # …
+- output$tabla <- DT::renderDT(
+- datos() |>
+- group_by(aduana, pais) |>
+- summarise(items = sum(items),
+- fob_mm = round(sum(fob_mm), 2),
+- .groups = "drop") |>
+- arrange(desc(fob_mm)),
+- options = list(pageLength = 6, dom = "tip"),
+- rownames = FALSE)
+- output$bajar <- downloadHandler(
+- "importaciones_filtradas.csv",
+- function(file) write.csv(datos(), file,
+- row.names = FALSE))
+- ▸ DT::DTOutput() muestra una tabla paginada con el detalle (details on demand).
+- ▸ downloadButton() + downloadHandler() permiten bajar los datos filtrados.
+- ▸ bs_theme() ajusta colores: pocos cambios, mucha coherencia.
+- Detalle y descarga: el lector puede verificar y reutilizar lo que ve.
+- Fuente: DNIT, base de datos abiertos de aduanas · importaciones de electrónica 2024–2025 (sin junio de 2025) · capturas de la app en ejecución
+### Diapositiva 11 · El tablero completo: esqueleto de la app
+- Resumen
+- library(shiny); library(bslib); library(dplyr); library(plotly)
+- cubo <- read.csv("cubo_importaciones.csv") |> …
+- ui <- page_sidebar(
+- title = "Importaciones de electrónica · DNIT",
+- sidebar = sidebar(<filtros>, <botón limpiar>),
+- layout_columns(<4 value_box de KPI>),
+- card(plotlyOutput("tendencia")),
+- layout_columns(card(plotlyOutput("aduanas")),
+- card(plotlyOutput("paises"))),
+- card(DT::DTOutput("tabla"))
+- )
+- server <- function(input, output, session) {
+- aduana_sel <- reactiveVal(NULL)   # estado del clic
+- datos <- reactive({ … })          # filtro único
+- output$fob <- renderText(…)       # KPI
+- output$tendencia <- renderPlotly(…)
+- output$aduanas <- renderPlotly(…)  # clic = filtro
+- output$tabla <- DT::renderDT(…)
+- }
+- shinyApp(ui, server)
+- ▸ 65 líneas de R: KPI, tendencia, ranking, composición, tabla y descarga.
+- ▸ El archivo completo está en r/app_tablero_aduanas/app.R.
+- Fuente: DNIT, base de datos abiertos de aduanas · importaciones de electrónica 2024–2025 (sin junio de 2025) · capturas de la app en ejecución
+### Diapositiva 12 · Buenas prácticas para un tablero dinámico
+- Para recordar
+- Práctica
+- Por qué
+- En el código
+- Un solo reactive() para filtrar
+- Evita repetir y recalcular el filtro
+- datos <- reactive({…})
+- Validar entradas con req()
+- Sin selección, la app no falla ni muestra errores
+- req(input$anio, input$medio)
+- Preagregar los datos
+- Menos filas = respuesta inmediata
+- cubo_importaciones.csv (3.304 filas)
+- Estado explícito de la interacción
+- El clic debe poder deshacerse
+- reactiveVal() y botón «Quitar filtro»
+- Mostrar el filtro activo
+- El lector sabe qué está viendo
+- output$sel («Aduana: …»)
+- Declarar fuente y límites
+- Reproducibilidad y honestidad
+- Título, pie y nota (sin junio de 2025)
+- Few (2013) y Wickham, Mastering Shiny.
+### Diapositiva 13 · Cómo publicar y compartir el tablero
+- Herramientas
+- # Publicar en shinyapps.io (cuenta gratuita)
+- install.packages("rsconnect")
+- rsconnect::setAccountInfo(name = "…", token = "…",
+- secret = "…")
+- rsconnect::deployApp("tablero_aduanas")
+- # Ejecutarla en tu computadora
+- shiny::runApp("tablero_aduanas")
+- ▸ RPubs publica HTML estático: sirve para el tablero de la parte 1 (plotly), no para Shiny.
+- ▸ shinyapps.io: la forma más rápida de compartir una app con un enlace (plan gratuito con límites).
+- ▸ Posit Connect o Shiny Server: para uso institucional con control de acceso.
+- ▸ Alternativa sin servidor: Shinylive (la app corre en el navegador con WebAssembly).
+- Antes de publicar datos: verificá que sean públicos o estén agregados, y que el pie declare la fuente.
+- Documentación: docs.posit.co/shinyapps.io
+### Diapositiva 14 · Para practicar: ampliá el tablero
+- Tu turno
+- ▸ Abrí r/app_tablero_aduanas/app.R en RStudio y pulsá Run App.
+- ▸ Agregá un filtro por país y un KPI nuevo (por ejemplo, el valor medio por ítem).
+- ▸ Hacé que el clic en el gráfico de países también filtre el tablero.
+- ▸ Escribí un título que enuncie el mensaje y una nota con las limitaciones de los datos.
+- ▸ Resolvé el Quiz 5B del aula: evalúa lo visto en esta presentación.
+- Un tablero dinámico bien hecho responde preguntas que el autor todavía no pensó, sin perder claridad.
 
 ## Lecturas recomendadas (enlaces; subir el texto solo si la licencia lo permite)
 - Plotly para Python · documentación (web, en) · https://plotly.com/python/ · 
