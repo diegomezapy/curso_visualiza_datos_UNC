@@ -1,0 +1,294 @@
+---
+title: "Análisis sociodemográfico de la ciudad de Concepción, 2022–2025"
+subtitle: "Ejercicio guiado · Sesión 2 · Visualización de Datos"
+author: "Curso Visualiza Datos · MICD · FACET–UNC"
+date: "20 de noviembre de 2026"
+lang: es
+output:
+  html_document:
+    theme: cosmo
+    highlight: tango
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: true
+    code_folding: hide
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 8, fig.height = 4.8, dpi = 110)
+options(timeout = 900)                       # los archivos del INE son grandes
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(readr)
+```
+
+> **Cómo usar este documento.** Funciona tal cual: descarga los cuatro archivos del INE a la carpeta `datos_ephc/` (junto a este archivo) la primera vez y luego los reutiliza. Los recuadros **«Tu turno»** son para que completes y razones; el quiz **2B** del aula evalúa lo que se hace acá.
+
+# Introducción
+
+La **Encuesta Permanente de Hogares Continua (EPHC)** del INE es la fuente oficial de indicadores del mercado de trabajo. Este ejercicio la usa para describir la ocupación en la ciudad de **Concepción** entre 2022 y 2025 y, sobre todo, para practicar el camino completo *dato → tabla → gráfico → mensaje*.
+
+# Objetivos
+
+## General
+
+Analizar, con tablas y gráficos, la situación de ocupación de la población del departamento de Concepción en el período 2022–2025.
+
+## Específicos
+
+- Estimar cuántas personas están ocupadas, desocupadas e inactivas cada año, usando el factor de expansión.
+- Calcular las tasas de actividad, ocupación, desocupación e inactividad y cuantificar su variación interanual.
+- Elegir y construir un gráfico adecuado para mostrar una serie en el tiempo, con etiquetas legibles.
+
+# Datos
+
+Archivos anuales de personas (tabla `REG02`) de la EPHC, publicados por el INE en <https://www.ine.gov.py/microdatos/>:
+
+| Año | Archivo |
+|---|---|
+| 2022 | <https://www.ine.gov.py/microdatos/register/EPHC-ANUAL/EPHC_2022_ANUAL/REG02_EPHC_ANUAL_2022.csv> |
+| 2023 | <https://www.ine.gov.py/microdatos/register/EPHC-ANUAL/EPHC_2023_ANUAL/REG02_EPHC_ANUAL_2023.csv> |
+| 2024 | <https://www.ine.gov.py/microdatos/register/EPHC-ANUAL/EPHC_2024_ANUAL/REG02_EPHC_ANUAL_2024.csv> |
+| 2025 | <https://www.ine.gov.py/microdatos/register/EPHC-ANUAL/EPHC_2025_ANUAL/REG02_EPHC_ANUAL_2025.csv> |
+
+Variables que usamos: `AÑO`, `DPTO` (departamento; 1 = Concepción), `P02` (edad), `P06` (sexo: 1 = hombre, 6 = mujer), `PEAA` (condición de actividad: 1 = ocupado, 2 = desocupado, 3 = inactivo) y `FACTOR` (factor de expansión).
+
+# Metodología
+
+Estudio descriptivo de corte transversal repetido (un corte por año, 2022–2025). Como la EPHC es una **muestra**, cada persona encuestada representa a varias: las cantidades de población se estiman **sumando `FACTOR`**, no contando filas.
+
+Definiciones (a partir de `PEAA`):
+
+- **PEA** (población económicamente activa) = ocupados + desocupados.
+- **PET** (en este ejercicio) = PEA + inactivos, es decir, las personas con condición de actividad definida.
+- **Tasa de actividad** = PEA / PET × 100.
+- **Tasa de ocupación** = ocupados / PET × 100.
+- **Tasa de desocupación** = desocupados / PEA × 100.
+- **Tasa de inactividad** = inactivos / PET × 100.
+
+> **Ojo:** en estos archivos `PEAA` viene definida desde los **10 años** de edad. Las cifras oficiales del INE se calculan con una edad mínima de la PET que debés verificar en su diccionario y metodología. Por eso, después de las tasas hay una **comprobación de sensibilidad** con la población de 15 años y más.
+
+# Gestión de datos
+
+## Descarga y lectura
+
+La función descarga cada año una sola vez y lee **solo las columnas necesarias**. Los archivos usan `;` como separador, coma decimal y celdas en blanco para los datos que no corresponden.
+
+```{r lectura}
+dir.create("datos_ephc", showWarnings = FALSE)
+base_url <- "https://www.ine.gov.py/microdatos/register/EPHC-ANUAL/EPHC_%d_ANUAL/REG02_EPHC_ANUAL_%d.csv"
+vars <- c("AÑO", "DPTO", "P02", "P06", "PEAA", "FACTOR")
+
+leer_ephc <- function(anio) {
+  destino <- file.path("datos_ephc", sprintf("REG02_EPHC_ANUAL_%d.csv", anio))
+  if (!file.exists(destino)) {
+    url <- sprintf(base_url, anio, anio)
+    ok <- tryCatch(utils::download.file(url, destino, mode = "wb", quiet = TRUE) == 0, error = function(e) FALSE)
+    if (!ok) { unlink(destino); stop("No se pudo descargar ", url, ". Bajalo a mano y guardalo como ", destino) }
+  }
+  read_delim(destino, delim = ";", na = c("", " "), show_col_types = FALSE,
+             locale = locale(decimal_mark = ",", grouping_mark = ".", encoding = "UTF-8"),
+             col_select = any_of(vars)) |>
+    rename(anio = any_of("AÑO"))
+}
+
+anios <- 2022:2025
+lista <- lapply(anios, leer_ephc)
+names(lista) <- anios
+sapply(lista, nrow)   # filas (personas encuestadas) por año
+```
+
+## Revisar antes de apilar
+
+Antes de unir las bases conviene comprobar que **tienen las mismas columnas** y que cada variable se codifica igual en todos los años.
+
+```{r revisar}
+sapply(lista, names)
+```
+
+```{r}
+sapply(lista, function(d) table(d$P06, useNA = "ifany"))
+```
+
+## Apilar los años y poner etiquetas
+
+Se apilan con `bind_rows()` (que respeta los nombres de las columnas) y recién **después** se recodifican las variables, así todas las bases reciben el mismo tratamiento.
+
+```{r apilar}
+eph <- bind_rows(lista) |>
+  mutate(
+    sexo   = factor(P06, levels = c(1, 6), labels = c("Hombres", "Mujeres")),
+    ocup   = factor(PEAA, levels = c(1, 2, 3), labels = c("Ocupado", "Desocupado", "Inactivo"))
+  )
+nrow(eph)
+table(eph$sexo, eph$anio, useNA = "ifany")
+```
+
+> **Tu turno 1.** La tabla de arriba, ¿tiene algún `NA` en `sexo`? Si recodificáramos `P06` solo en la base de 2022 y luego apiláramos, ¿qué pasaría con los otros años? Probalo en un chunk aparte y explicá por qué.
+
+# Exploración
+
+## Casos por año y sexo
+
+```{r casos-sexo}
+tabla1 <- table(eph$sexo, eph$anio)
+barplot(tabla1, beside = TRUE, legend.text = TRUE, col = c("#0072B2", "#D55E00"),
+        main = "Personas encuestadas por año, según sexo", xlab = "Año", ylab = "Casos (muestra)")
+```
+
+## Edad
+
+```{r edad}
+summary(eph$P02)
+eph |> group_by(anio) |> summarise(edad_media = round(mean(P02, na.rm = TRUE), 1), .groups = "drop")
+```
+
+```{r hist-edad}
+hist(eph$P02, main = "Distribución de la edad", xlab = "Edad (años)", col = "#9ec9e2", border = "white")
+```
+
+# Concepción
+
+Nos quedamos con el departamento de **Concepción** (código 1) y comprobamos el filtro:
+
+```{r filtro}
+conce <- filter(eph, DPTO == 1)
+table(conce$DPTO, conce$anio)
+```
+
+## Personas por situación de ocupación
+
+Se **expande** con `FACTOR` y se conserva el número de casos de la muestra para saber cuánta información respalda cada estimación.
+
+```{r expandida}
+ocup_larga <- conce |>
+  filter(!is.na(anio), !is.na(ocup), !is.na(FACTOR)) |>
+  group_by(anio, ocup) |>
+  summarise(personas = sum(FACTOR), casos_muestrales = n(), .groups = "drop") |>
+  arrange(anio, ocup)
+ocup_larga
+```
+
+Para calcular las tasas hace falta una fila por año y una columna por situación (formato **ancho**):
+
+```{r ancha}
+ocup_ancha <- ocup_larga |>
+  select(anio, ocup, personas) |>
+  pivot_wider(names_from = ocup, values_from = personas) |>
+  arrange(anio)
+ocup_ancha
+```
+
+## Tasas laborales
+
+```{r tasas}
+tasas <- ocup_ancha |>
+  mutate(
+    pea = Ocupado + Desocupado,
+    pet = pea + Inactivo,
+    tasa_actividad    = 100 * pea / pet,
+    tasa_ocupacion    = 100 * Ocupado / pet,
+    tasa_desocupacion = 100 * Desocupado / pea,
+    tasa_inactividad  = 100 * Inactivo / pet
+  ) |>
+  select(anio, starts_with("tasa_")) |>
+  mutate(across(starts_with("tasa_"), ~ round(.x, 2)))
+tasas
+```
+
+### Sensibilidad: ¿y si la PET empieza a los 15 años?
+
+La definición de la población en edad de trabajar cambia las tasas. Repetimos el cálculo solo con personas de 15 años y más:
+
+```{r sensibilidad}
+tasas_15 <- conce |>
+  filter(!is.na(ocup), !is.na(FACTOR), P02 >= 15) |>
+  group_by(anio, ocup) |>
+  summarise(personas = sum(FACTOR), .groups = "drop") |>
+  pivot_wider(names_from = ocup, values_from = personas) |>
+  mutate(pea = Ocupado + Desocupado, pet = pea + Inactivo,
+         tasa_actividad_15 = round(100 * pea / pet, 2),
+         tasa_ocupacion_15 = round(100 * Ocupado / pet, 2),
+         tasa_desocupacion_15 = round(100 * Desocupado / pea, 2)) |>
+  select(anio, ends_with("_15"))
+left_join(tasas, tasas_15, by = "anio") |> select(anio, tasa_ocupacion, tasa_ocupacion_15, tasa_desocupacion, tasa_desocupacion_15)
+```
+
+> **Tu turno 2.** Calculá la **variación interanual** de la tasa de ocupación (en puntos porcentuales) con `mutate(var_pp = tasa_ocupacion - lag(tasa_ocupacion))`. ¿En qué año subió más? ¿Qué denominador usa cada tasa y por qué la de desocupación es distinta?
+
+# Figuras
+
+La evolución en el tiempo se muestra con **líneas y puntos** (posición sobre una escala común, la tarea perceptiva más precisa), una línea por situación y colores distinguibles también para quienes tienen daltonismo.
+
+```{r fig-base}
+ocup_larga <- ocup_larga |>
+  mutate(etiqueta = scales::number(personas, big.mark = ".", decimal.mark = ",", accuracy = 1))
+
+ggplot(ocup_larga, aes(anio, personas, color = ocup, group = ocup)) +
+  geom_line() + geom_point()
+```
+
+La versión mejorada: años enteros en el eje, valor exacto en cada punto, colores accesibles y título que dice el mensaje.
+
+```{r fig-final}
+colores <- c(Ocupado = "#0072B2", Desocupado = "#D55E00", Inactivo = "#009E73")
+
+fig <- ggplot(ocup_larga, aes(anio, personas, color = ocup, group = ocup)) +
+  geom_line(linewidth = 0.9) +
+  geom_point(size = 2.6) +
+  geom_text(aes(label = etiqueta), vjust = -0.9, size = 3, show.legend = FALSE) +
+  scale_x_continuous(breaks = anios) +
+  scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ","),
+                     expand = expansion(mult = c(0.05, 0.15))) +
+  scale_color_manual(values = colores) +
+  labs(title = "Concepción: personas ocupadas, desocupadas e inactivas, 2022–2025",
+       subtitle = "Estimaciones expandidas con el factor de expansión de la EPHC",
+       x = "Año", y = "Personas estimadas", color = "Situación",
+       caption = "Fuente: INE, Encuesta Permanente de Hogares Continua (anual).") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom", plot.title = element_text(face = "bold"))
+fig
+```
+
+```{r fig-tasas}
+tasas_larga <- tasas |>
+  pivot_longer(starts_with("tasa_"), names_to = "tasa", values_to = "valor", names_prefix = "tasa_")
+
+ggplot(tasas_larga, aes(anio, valor, color = tasa, group = tasa)) +
+  geom_line(linewidth = 0.9) + geom_point(size = 2.4) +
+  scale_x_continuous(breaks = anios) +
+  labs(title = "Concepción: tasas laborales, 2022–2025", x = "Año", y = "%", color = NULL,
+       caption = "Fuente: INE, EPHC anual.") +
+  theme_minimal(base_size = 12) + theme(legend.position = "bottom")
+```
+
+> **Tu turno 3.** ¿Qué gráfico sería **inadecuado** para esta serie (por ejemplo, un gráfico circular por año o barras apiladas en 3D)? Justificalo con la jerarquía de Cleveland y McGill.
+
+# Resultados
+
+```{r resultados, include=FALSE}
+t22 <- filter(tasas, anio == min(anio)); t25 <- filter(tasas, anio == max(anio))
+```
+
+Entre `r min(tasas$anio)` y `r max(tasas$anio)`, la tasa de ocupación en Concepción pasó de **`r t22$tasa_ocupacion` %** a **`r t25$tasa_ocupacion` %**, y la tasa de desocupación de **`r t22$tasa_desocupacion` %** a **`r t25$tasa_desocupacion` %**.
+
+> **Tu turno 4.** Redactá en 3 líneas el mensaje principal para una autoridad departamental, sin jerga y con la fuente. Incluí el tamaño de la muestra (`casos_muestrales`) para que se entienda cuánta precisión hay detrás de cada cifra.
+
+# Limitaciones
+
+- Son **estimaciones muestrales**: las diferencias pequeñas entre años pueden no ser significativas. Con pocos casos en un departamento, la incertidumbre es mayor.
+- No se calcularon intervalos de confianza (requieren el diseño muestral).
+- La definición de PET debe contrastarse con el diccionario del INE antes de comparar con cifras oficiales.
+
+# Próximo paso: tablero
+
+Con las tablas `ocup_larga` y `tasas` se puede armar un tablero interactivo (por ejemplo con `plotly` o `flexdashboard`), que es el tema de la **sesión 5**.
+
+# Referencias
+
+- INE Paraguay. *Encuesta Permanente de Hogares Continua (EPHC), microdatos*. <https://www.ine.gov.py/microdatos/>
+- Wilke, C. (2019). *Fundamentals of Data Visualization*. <https://clauswilke.com/dataviz/>
+- Cleveland, W. y McGill, R. (1984). Graphical perception. *JASA*, 79(387).

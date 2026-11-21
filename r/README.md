@@ -6,6 +6,7 @@ Ocho documentos R Markdown (uno por sesión) equivalentes a los laboratorios de 
 |---|---|---|
 | 1 | `01_percepcion.Rmd` | Anscombe, jerarquía perceptiva, preatentivos |
 | 2 | `02_eleccion_graficos.Rmd` | distribuciones, ranking, overplotting, matriz de decisión |
+| 2 | `02_ejercicio_ephc_concepcion.Rmd` | **ejercicio guiado** (Quiz 2B): ocupación en Concepción con la EPHC del INE, 2022–2025. Descarga ~100 MB la primera vez; con conexión del INE inestable puede tardar |
 | 3 | `03_color_diseno_etica.Rmd` | paletas, anotación, galería de engaños |
 | 4 | `04_kpis_storytelling.Rmd` | KPIs, small multiples, contribución al cambio |
 | 5 | `05_dashboards_interactivos.Rmd` | plotly + crosstalk + DT (sin servidor) |

@@ -44,6 +44,9 @@ for s in c.SESIONES:
     if n == 1:
         rec.insert(3, {"t": "Python · Lab 0 en Colab: resultados del diagnóstico", "u": f"{cfg['colab']}/sesiones/01_principios/lab00_diagnostico.ipynb", "k": "colab"})
         rec.insert(5, {"t": "R · 00_diagnostico.Rmd: resultados del diagnóstico (RPubs)", "u": f"{cfg['repo']}/blob/main/r/00_diagnostico.Rmd", "k": "rmd"})
+    if n == 2:
+        rec.insert(5, {"t": "R · Ejercicio guiado: ocupación en Concepción con la EPHC (.Rmd)", "u": f"{cfg['repo']}/blob/main/r/02_ejercicio_ephc_concepcion.Rmd", "k": "rmd"})
+        rec.insert(6, {"t": "R · Descargar el .Rmd del ejercicio", "u": f"{cfg['raw']}/r/02_ejercicio_ephc_concepcion.Rmd", "k": "descarga"})
     if n == 5: rec.append({"t": "App Dash de ejemplo (app_dash.py)", "u": f"{cfg['repo']}/blob/main/sesiones/{d}/app_dash.py", "k": "codigo"})
     if n == 6: rec.append({"t": "R · Plantilla de informe parametrizado", "u": f"{cfg['repo']}/blob/main/r/plantilla_reporte_sucursal.Rmd", "k": "rmd"})
     prs = [{"id": pid, "nombre": nm, "desc": ds, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS if n in ses and rol != "docente"]
