@@ -166,7 +166,7 @@ function mediaHtml(s) {
    <details style="margin-top:.5rem"><summary>Texto de esta diapositiva</summary><div id="dtxt" class="muted"></div></details>
    <details><summary>Ver todas las diapositivas</summary><div class="deck-thumbs">${sl.map((x, i) => `<button type="button" class="deck-th" data-go="${i + 1}" aria-label="Ir a: ${esc(x.titulo)}"><img src="${esc(m.base)}/${esc(x.img)}" alt="" loading="lazy" width="160" height="90"><span>${x.n}. ${esc(x.titulo)}</span></button>`).join("")}</div></details>
   </div>
-  ${quizzesHtml(s, true)}
+  ${quizzesHtml(s, "media")}
   <h2>🗺️ Infografía</h2><figure class="card info"><button type="button" class="info-b" id="infb" aria-label="Ampliar la infografía"><img src="${esc(inf.src)}" alt="${esc(inf.alt)}" loading="lazy"></button>
    <figcaption class="muted">Tocá la imagen para ampliarla. <a href="${esc(inf.src)}" download>⬇ Descargar</a></figcaption>
    <details><summary>Descripción en texto</summary><p class="muted">${esc(inf.descripcion)}</p></details></figure>`;
@@ -194,13 +194,13 @@ function bindMedia() {
 }
 function quizCard(id) {
   const Q = D.quizzes[id], qq = S.quiz[id];
-  return `<div class="card quizcard"><div class="row" style="justify-content:space-between"><div><b>${Q.lectura ? `Quiz ${esc(Q.etiqueta)} · ` : ""}${esc(Q.titulo)}</b><div class="muted">${Q.preguntas.length} preguntas · ${Q.lectura ? "evalúa la lectura y el estudio de la presentación · " : ""}retroalimentación inmediata · reintentos ilimitados (cuenta tu mejor resultado)</div>
+  return `<div class="card quizcard"><div class="row" style="justify-content:space-between"><div><b>${Q.nota ? `Quiz ${esc(Q.etiqueta)} · ` : ""}${esc(Q.titulo)}</b><div class="muted">${Q.preguntas.length} preguntas · ${Q.nota ? esc(Q.nota) + " · " : ""}retroalimentación inmediata · reintentos ilimitados (cuenta tu mejor resultado)</div>
     ${qq ? `<div class="muted">Mejor: <b>${qq.mejor}%</b> · Intentos: ${qq.intentos.length}</div>` : ""}</div><a class="btn" href="#/quiz/${id}">${qq ? "Reintentar" : "Comenzar quiz"}</a></div></div>`;
 }
-// lectura=true: quizzes ligados a un material (van pegados a él); lectura=false: los de teoría, al final de la sesión.
-function quizzesHtml(s, lectura) {
-  const ids = (s.quizIds || []).filter(id => !!D.quizzes[id].lectura === lectura); if (!ids.length) return "";
-  return lectura ? ids.map(quizCard).join("") : `<h2>🧠 ${ids.length > 1 ? "Quizzes" : "Quiz"} de teoría</h2>${ids.map(quizCard).join("")}`;
+// ubic: "media" (pegado a la presentación), "practica" (pegado a las actividades) o "final" (quizzes de teoría, al final de la sesión).
+function quizzesHtml(s, ubic) {
+  const ids = (s.quizIds || []).filter(id => (D.quizzes[id].ubicacion || "final") === ubic); if (!ids.length) return "";
+  return ubic !== "final" ? ids.map(quizCard).join("") : `<h2>🧠 ${ids.length > 1 ? "Quizzes" : "Quiz"} de teoría</h2>${ids.map(quizCard).join("")}`;
 }
 function vSesion(n) {
   const s = D.sesiones.find(x => x.n === n); if (!s) return vInicio();
@@ -232,9 +232,10 @@ function vSesion(n) {
       <div class="tw"><table><thead><tr><th>Criterio</th><th>Peso</th><th>Tu nivel</th></tr></thead><tbody>${r.criterios.map((c, i) => `<tr><td>${esc(c.n)}</td><td>${c.w}%</td><td><select data-auto="${a.id}" data-i="${i}" aria-label="${esc(c.n)}"><option value="0">–</option>${[1, 2, 3, 4].map(v => `<option value="${v}" ${S.auto[a.id]?.[i] == v ? "selected" : ""}>${v} · ${LVL[v]}</option>`).join("")}</select></td></tr>`).join("")}</tbody></table></div>
       <p class="muted" id="ap_${a.id}" style="margin:.4rem 0 0">${ap == null ? "Completá los niveles para ver tu autoestimación." : `Autoestimación: <b>${fmt(ap * a.pts)}/${a.pts}</b> pts (${fmt(ap * 100, 0)}%) — referencial; la nota oficial la asigna el docente.`}</p></div></details>` : ""}
     </div></div></div>`; }).join("")}
+  ${quizzesHtml(s, "practica")}
   ${USER ? rutaDatosHtml(s) : ""}
   ${(s.practicas_reales || []).length ? `<h2>🗺️ Práctica con datos reales</h2><div class="card">${s.practicas_reales.map(p => `<div class="row" style="justify-content:space-between;padding:.35rem 0;border-bottom:1px solid var(--bd)"><span><b>${esc(p.nombre)}</b><br><span class="muted">${esc(p.desc)}</span></span><span class="row"><a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.colab)}">🐍 Colab</a>${p.rmd ? `<a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.rmd)}">📊 R → RPubs</a>` : ""}</span></div>`).join("")}<p class="muted" style="margin:.5rem 0 0">Fuentes, estado y cuidados en <a href="#/datos">Datos abiertos</a>. Citá siempre la fuente y no publiques datos personales.</p></div>` : ""}
-  ${quizzesHtml(s, false)}
+  ${quizzesHtml(s, "final")}
   ${s.extra?.length ? `<h2>💡 Para profundizar</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.extra.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
   <div class="row" data-novis style="justify-content:space-between;margin-top:1.5rem">${prev ? `<a class="btn sec" href="#/sesion/${prev.n}">← Sesión ${prev.n}</a>` : "<span></span>"}${next ? `<a class="btn sec" href="#/sesion/${next.n}">Sesión ${next.n} →</a>` : ""}</div>`;
 }
@@ -248,7 +249,7 @@ function vQuiz(n) {
   if (!QZ[n]) nuevoQuiz(n);
   const z = QZ[n], total = z.preguntas.length;
   const ses = D.quizzes[n].sesion || n;
-  let html = `<a href="#/sesion/${ses}">← Sesión ${ses}</a>${D.quizzes[n].lectura ? ` · <a href="#/sesion/${ses}">📑 Volver a la presentación</a>` : ""}<h1>Quiz · ${esc(D.quizzes[n].titulo)}</h1><p class="sub">Elegí una opción por pregunta. Al enviar verás la corrección y la explicación.</p>`;
+  let html = `<a href="#/sesion/${ses}">← Sesión ${ses}</a>${D.quizzes[n].volver ? ` · <a href="#/sesion/${ses}">${esc(D.quizzes[n].volver)}</a>` : ""}<h1>Quiz · ${esc(D.quizzes[n].titulo)}</h1><p class="sub">Elegí una opción por pregunta. Al enviar verás la corrección y la explicación.</p>`;
   if (z.hecho) {
     const ok = z.preguntas.filter((p, i) => p.ops[z.resp[i]]?.ok).length, pct = Math.round(ok / total * 100);
     html += `<div class="card"><div class="big">${pct}%</div><div>${ok} de ${total} correctas · mejor resultado: <b>${S.quiz[n].mejor}%</b> ${pct >= 60 ? '<span class="tag ok">Aprobado</span>' : '<span class="tag bad">Repasá y reintentá</span>'}</div></div>`;

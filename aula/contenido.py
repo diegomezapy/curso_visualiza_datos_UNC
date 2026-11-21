@@ -203,7 +203,8 @@ SESIONES = [
 ]
 
 # Quizzes adicionales ligados a una sesión (se suman al grupo de quizzes; id numérico > 8 para no chocar con las sesiones).
-QUIZZES_EXTRA = [dict(id="9", sesion=1, etiqueta="1B", titulo="Lectura de la presentación: Ciencia de la percepción gráfica", preguntas=[
+QUIZZES_EXTRA = [dict(id="9", sesion=1, etiqueta="1B", titulo="Lectura de la presentación: Ciencia de la percepción gráfica", ubicacion="media",
+  nota="evalúa la lectura y el estudio de la presentación", volver="📑 Volver a la presentación", categoria="Lectura de la presentación", preguntas=[
   q("¿Qué es la percepción gráfica según la teoría desarrollada por Cleveland y McGill?",
     ["La capacidad para memorizar cifras numéricas presentadas en tablas de datos.", "La decodificación visual de información cuantitativa y categórica representada en un gráfico.", "El diseño artístico de diagramas visualmente atractivos para presentaciones ejecutivas.", "El cálculo intuitivo de operaciones matemáticas a partir de colores e imágenes."], 1,
     "La percepción gráfica es el proceso del sistema visual humano para decodificar e interpretar la información cuantitativa o categórica codificada en un gráfico."),
@@ -234,6 +235,39 @@ QUIZZES_EXTRA = [dict(id="9", sesion=1, etiqueta="1B", titulo="Lectura de la pre
   q("Según las directrices WCAG para gráficos accesibles, ¿cuál es la relación mínima de contraste de color requerida entre los elementos de una visualización?",
     ["1,5:1", "2:1", "3:1", "4,5:2"], 2,
     "Para cumplir las normas WCAG de accesibilidad en gráficos, los elementos visuales deben mantener un contraste de color mínimo de 3:1."),
+]),
+ dict(id="10", sesion=2, etiqueta="2B", titulo="Ejercicio: análisis sociodemográfico de Concepción con la EPHC", ubicacion="practica",
+  nota="evalúa lo aprendido en el ejercicio de la EPHC (Concepción, 2022–2025)", volver="📝 Volver al ejercicio", categoria="Ejercicio EPHC Concepción", preguntas=[
+  q("En el ejercicio se suma la variable FACTOR en lugar de contar filas para estimar cuántas personas hay en cada situación de ocupación. ¿Por qué?",
+    ["Porque FACTOR elimina de la base los valores faltantes.", "Porque la EPHC es una muestra: cada fila representa a varias personas de la población y FACTOR indica cuántas.", "Porque FACTOR convierte la variable PEAA en categorías.", "Porque contar filas no está permitido en R."], 1,
+    "La EPHC encuesta a una parte de la población. El factor de expansión (FACTOR) dice a cuántas personas representa cada fila; sumarlo estima la población, mientras que contar filas solo da los casos de la muestra."),
+  q("Con PEAA recodificada (1 = Ocupado, 2 = Desocupado, 3 = Inactivo), ¿cómo se calcula la Población Económicamente Activa (PEA)?",
+    ["Ocupados + Inactivos.", "Desocupados + Inactivos.", "Ocupados + Desocupados.", "Ocupados + Desocupados + Inactivos."], 2,
+    "La PEA reúne a quienes trabajan o buscan trabajo: ocupados + desocupados. Sumar también a los inactivos da la población en edad de trabajar (PET), que es lo que el script llama pet."),
+  q("¿Cuál es el denominador correcto de la tasa de desocupación en el ejercicio?",
+    ["La población en edad de trabajar (PET).", "La población total del departamento.", "La población económicamente activa (PEA).", "Solo las personas ocupadas."], 2,
+    "La tasa de desocupación = desocupados / PEA × 100: mide qué parte de quienes participan en el mercado laboral no consigue trabajo. Usar la PET mediría otra cosa."),
+  q("El script calcula la tasa de ocupación como 100 × Ocupado / pet. ¿Cómo se interpreta?",
+    ["El porcentaje de la PEA que está ocupada.", "El porcentaje de la población en edad de trabajar que está ocupada.", "El porcentaje de ocupados que busca otro empleo.", "El porcentaje de personas inactivas."], 1,
+    "Con la PET como denominador, la tasa de ocupación indica qué parte de la población en edad de trabajar tiene empleo. La parte de la PEA que está ocupada es el complemento de la tasa de desocupación."),
+  q("En una versión del ejercicio se aplicó factor(P06, levels = c(1, 6), labels = c(\"Hombres\", \"Mujeres\")) solo a la base de 2022 y luego se apilaron los cuatro años con rbind(). ¿Qué pasa con el sexo de 2023 a 2025?",
+    ["Se convierte automáticamente a «Hombres» y «Mujeres».", "R da un error y no apila las bases.", "Se mantiene como 1 y 6 sin cambios.", "Queda como NA, porque los valores 1 y 6 no coinciden con las etiquetas del factor."], 3,
+    "Al apilar, R intenta encajar los valores 1 y 6 en un factor cuyas categorías son «Hombres» y «Mujeres», no coinciden y quedan NA. Hay que recodificar todas las bases igual o recodificar después de apilarlas, y revisar el resultado con table()."),
+  q("¿Qué hace ephconcep <- filter(eph, DPTO == 1)?",
+    ["Calcula el promedio de cada departamento.", "Agrega una columna con el nombre del departamento.", "Elimina las filas de Concepción.", "Se queda solo con las filas del departamento con código 1 (Concepción), de todos los años apilados."], 3,
+    "filter() conserva las filas que cumplen la condición. Después se hace table(DPTO, AÑO) para comprobar que quedó solo Concepción en los cuatro años."),
+  q("¿Para qué se pasa la tabla de formato largo a ancho con pivot_wider() antes de calcular las tasas?",
+    ["Para tener Ocupado, Desocupado e Inactivo en columnas separadas por año y poder operar entre ellas (pea, pet y las tasas).", "Porque ggplot2 solo funciona con datos en formato ancho.", "Para eliminar los años repetidos.", "Para ordenar las categorías alfabéticamente."], 0,
+    "Para las cuentas conviene una fila por año con una columna por situación. Para graficar, en cambio, se vuelve al formato largo (tab_fig1), que es lo que espera ggplot2."),
+  q("Se quiere mostrar cómo cambió entre 2022 y 2025 la cantidad de personas ocupadas, desocupadas e inactivas. ¿Qué gráfico es más adecuado?",
+    ["Un gráfico circular por año.", "Líneas con puntos: el año en el eje horizontal y una línea por situación de ocupación.", "Barras apiladas en 3D.", "Un mapa de calor sin ejes."], 1,
+    "Es una serie en el tiempo. Las líneas permiten juzgar por posición sobre una escala común, la tarea perceptiva más precisa, y conectan los años. El círculo, el 3D y el color sin ejes dificultan la comparación."),
+  q("En el gráfico final se agregó geom_text(aes(label = etiqueta), vjust = -0.8). ¿Para qué sirve?",
+    ["Para cambiar el color de las líneas.", "Para eliminar la leyenda.", "Para escribir el valor de cada punto, un poco más arriba, de modo que se lea sin estimarlo en el eje.", "Para ordenar los años."], 2,
+    "Las etiquetas muestran el valor exacto de cada punto (aquí con separador de miles) y vjust negativo las coloca encima para que no tapen el marcador."),
+  q("La tabla de personas expandidas conserva también casos_muestrales = n(). ¿Por qué conviene mostrarlo?",
+    ["Porque equivale a la población real.", "Porque reemplaza al factor de expansión.", "Porque muestra cuántas observaciones respaldan cada estimación: con pocos casos, la estimación es menos precisa.", "Para duplicar los datos y verificar el cálculo."], 2,
+    "Las cifras expandidas son estimaciones. Mostrar el tamaño de muestra detrás de cada una ayuda a no sobreinterpretar diferencias pequeñas, sobre todo en un departamento con pocos casos."),
 ])]
 
 RUBRICAS = {

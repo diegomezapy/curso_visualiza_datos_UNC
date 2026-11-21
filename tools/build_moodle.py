@@ -22,7 +22,7 @@ cdata = lambda t: "<![CDATA[" + t.replace("]]>", "]]]]><![CDATA[>") + "]]>"
 def xml_preguntas(sesiones):
     o = ['<?xml version="1.0" encoding="UTF-8"?>', "<quiz>"]
     grupos = [(f"Sesión {n}", f"S{n}", c.QUIZZES[n][1]) for n in sesiones if n in c.QUIZZES]
-    grupos += [(f"Sesión {e['sesion']} · Lectura de la presentación", f"S{e['sesion']}L", e["preguntas"]) for e in c.QUIZZES_EXTRA if ("L" + str(e["sesion"])) in sesiones or "extras" in sesiones]
+    grupos += [(f"Sesión {e['sesion']} · {e['categoria']}", f"S{e['etiqueta']}", e["preguntas"]) for e in c.QUIZZES_EXTRA if e["etiqueta"] in sesiones or "extras" in sesiones]
     for cat, pref, preg in grupos:
         n = pref
         o.append(f'<question type="category"><category><text>$course$/top/Visualización de datos/{cat}</text></category></question>')
@@ -60,7 +60,8 @@ def glosario():
     return f'<?xml version="1.0" encoding="UTF-8"?><GLOSSARY><INFO><NAME>Glosario de visualización de datos</NAME><INTRO>Términos clave del curso.</INTRO><INTROFORMAT>1</INTROFORMAT><ALLOWDUPLICATEDENTRIES>0</ALLOWDUPLICATEDENTRIES><DISPLAYFORMAT>dictionary</DISPLAYFORMAT><SHOWSPECIAL>1</SHOWSPECIAL><SHOWALPHABET>1</SHOWALPHABET><SHOWALL>1</SHOWALL><ALLOWCOMMENTS>0</ALLOWCOMMENTS><USEDYNALINK>1</USEDYNALINK><DEFAULTAPPROVAL>1</DEFAULTAPPROVAL><GLOBALGLOSSARY>0</GLOBALGLOSSARY><ENTBYPAGE>20</ENTBYPAGE><ENTRIES>{e}</ENTRIES></INFO></GLOSSARY>'
 
 (OUT / "preguntas" / "banco_completo.xml").write_text(xml_preguntas(sorted(c.QUIZZES) + ["extras"]), encoding="utf-8")
-(OUT / "preguntas" / "quiz_sesion_1_lectura_ppt.xml").write_text(xml_preguntas(["L1"]), encoding="utf-8")
+for e in c.QUIZZES_EXTRA:
+    (OUT / "preguntas" / f"quiz_{e['etiqueta']}.xml").write_text(xml_preguntas([e["etiqueta"]]), encoding="utf-8")
 for n in sorted(c.QUIZZES): (OUT / "preguntas" / f"quiz_sesion_{n}.xml").write_text(xml_preguntas([n]), encoding="utf-8")
 (OUT / "glosario.xml").write_text(glosario(), encoding="utf-8")
 for s in c.SESIONES: (OUT / "paginas" / f"sesion_{s['n']}.html").write_text(pagina(s), encoding="utf-8")

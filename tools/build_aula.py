@@ -62,7 +62,7 @@ data = {
     "agenda_base": {"eventos": ag.eventos(), "nota": "Calendario base cargado desde el aula."},
     "sesiones": sesiones,
     "quizzes": {**{str(k): {"titulo": v[0], "preguntas": v[1], "sesion": k, "etiqueta": str(k)} for k, v in c.QUIZZES.items()},
-                **{e["id"]: {"titulo": e["titulo"], "preguntas": e["preguntas"], "sesion": e["sesion"], "etiqueta": e["etiqueta"], "lectura": True} for e in c.QUIZZES_EXTRA}},
+                **{e["id"]: {"titulo": e["titulo"], "preguntas": e["preguntas"], "sesion": e["sesion"], "etiqueta": e["etiqueta"], "ubicacion": e.get("ubicacion", "final"), "nota": e.get("nota", ""), "volver": e.get("volver", "")} for e in c.QUIZZES_EXTRA}},
     "rubricas": {k: {"titulo": v[0], "criterios": [{"n": a, "w": b} for a, b in v[1]]} for k, v in c.RUBRICAS.items()},
     "abiertos": {"fuentes": cat.FUENTES, "estados": {k: list(v) for k, v in cat.ESTADOS.items()},
                  "practicas": [{"id": pid, "nombre": nm, "desc": ds, "sesiones": ses, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS]},
