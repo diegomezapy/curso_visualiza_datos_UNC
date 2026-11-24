@@ -14,7 +14,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
 const empty = () => ({ perfil: {}, done: {}, quiz: {}, auto: {}, oficial: {}, enlaces: {} });
 let S = empty(), USER = null, PERFIL = null, ES_DOC = false, ocupado = false, B;
-const KINV = "cvd_invitado", RUTAS_INV = ["", "sesion", "recursos", "calendario", "tutor", "datos"];
+const KINV = "cvd_invitado", RUTAS_INV = ["", "sesion", "recursos", "calendario", "tutor", "datos", "foro"];
 let INV = false; try { INV = sessionStorage.getItem(KINV) === "1"; } catch {}
 const setInv = v => { INV = !!v; try { v ? sessionStorage.setItem(KINV, "1") : sessionStorage.removeItem(KINV); } catch {} };
 let tmr;
@@ -69,12 +69,12 @@ const bar = (p, cls = "") => `<div class="bar ${cls}" role="progressbar" aria-va
 function navHtml(ruta) {
   const it = (h, t, extra = "") => `<a href="#${h}" ${ruta === h ? 'aria-current="page"' : ""}><span>${t}</span>${extra}</a>`;
   if (!USER) {
-    let g = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
+    let g = it("/", "🏠 Inicio") + it("/foro/prensa", "💬 Foro de prensa", '<span class="dot">Ingresar</span>') + it("/calendario", "📅 Calendario") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
     D.sesiones.forEach(s => { g += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`); });
     g += `<div class="grp">Cuenta</div>` + it("/acceso", "🔑 Ingresar o crear cuenta");
     $("#nav").innerHTML = g; $("#user").textContent = "Ingresar"; $("#user").setAttribute("href", "#/acceso"); aplicarNav(); return;
   }
-  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/clases", "🎥 Clases grabadas") + it("/foro/prensa", "💬 Foro de prensa") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
+  let h = it("/", "🏠 Inicio") + it("/foro/prensa", "💬 Foro de prensa", '<span class="dot">Unidad 3</span>') + it("/calendario", "📅 Calendario") + it("/clases", "🎥 Clases grabadas") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
   D.sesiones.forEach(s => { const p = progSes(s); h += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`, `<span class="dot">${p.pct >= 1 ? "✅" : Math.round(p.pct * 100) + "%"}</span>`); });
   h += `<div class="grp">Cuenta</div>` + it("/perfil", "👤 Mi perfil") + (ES_DOC ? it("/docente", "🧑‍🏫 Panel docente") : "");
   $("#nav").innerHTML = h;
@@ -86,7 +86,7 @@ function navHtml(ruta) {
 function proximosHtml() {
   if (!AGENDA || !AGENDA.eventos?.length) return "";
   const ev = AGENDA.eventos.filter(e => new Date(e.fin_iso) >= new Date()).slice(0, 3); if (!ev.length) return "";
-  return `<h2>📅 Próximos eventos</h2><div class="card"><ul class="res">${ev.map(e => { const t = TIPO_EV[e.tipo] || TIPO_EV.otro; return `<li><span class="ico">${t[0]}</span><span><a href="#/calendario/${encodeURIComponent(e.id)}"><b>${esc(e.titulo)}</b></a><br><span class="muted">${esc(fmtF(e))} · ${esc(e.inicio)}–${esc(e.fin)}</span></span></li>`; }).join("")}</ul><a href="#/calendario">Ver el calendario completo →</a></div>`;
+  return `<h2>📅 Próximos eventos</h2><div class="card"><ul class="res">${ev.map(e => { const t = TIPO_EV[e.tipo] || TIPO_EV.otro; return `<li><span class="ico">${t[0]}</span><span><a ${attrsEvento(e)}><b>${esc(e.titulo)}</b></a><br><span class="muted">${esc(fmtF(e))} · ${esc(horarioEvento(e))}</span> · <a href="#/calendario/${encodeURIComponent(e.id)}">Detalles</a></span></li>`; }).join("")}</ul><a href="#/calendario">Ver el calendario completo →</a></div>`;
 }
 function vInicio() {
   const reg = PERFIL?.nombres;
@@ -94,6 +94,7 @@ function vInicio() {
   const c = calcular(S.quiz, S.oficial);
   return `${heroHtml(progTotal(), esc((reg || "").split(" ")[0]))}
   <p class="sub">${esc(C.curso)} · ${esc(C.programa)} · ${esc(C.semestre)}</p>
+  <div class="card foro-promo"><div><span class="tag">Unidad 3 · discusión abierta</span><h2>💬 Foro de prensa paraguaya</h2><p>Analizá las visualizaciones de Última Hora y ABC Color, y comentá el rediseño de otra persona.</p></div><a class="btn" href="#/foro/prensa">Entrar al foro →</a></div>
   <div class="kpis">
     <div class="card"><div class="muted">Avance del curso</div><div class="big">${Math.round(progTotal() * 100)}%</div>${bar(progTotal())}</div>
     <div class="card"><div class="muted">Teoría (quizzes) / 30</div><div class="big">${fmt(c.teoria)}</div><div class="muted">mejores 6 de ${Object.keys(D.quizzes).length} quizzes</div></div>
@@ -411,6 +412,7 @@ const medidor = `<div class="muted" id="pwhint">Mínimo 8 caracteres, con letras
 
 function vAcceso() {
   return `<div class="auth"><div class="brand-big"><span class="logo">VD</span><div><h1 style="margin:0">Aula virtual</h1><div class="muted">${esc(C.curso)} · MICD · FACET – UNC</div></div></div>${demoBanner()}
+  ${location.hash.startsWith("#/foro/prensa") ? '<div class="card foro-promo"><b>💬 Foro de prensa paraguaya</b><p>Ingresá con tu cuenta para leer los análisis y participar en la discusión de la Unidad 3.</p></div>' : ""}
   <div class="card"><h2 style="margin-top:0">Ingresar</h2>
    <form id="lf"><label for="le">Correo electrónico</label><input type="email" id="le" required autocomplete="username"><label for="lp">Contraseña</label><input type="password" id="lp" required autocomplete="current-password">
    <div class="row" style="margin-top:1rem"><button class="btn" type="submit">Ingresar</button><button class="btn sec" type="button" id="gb">Ingresar con Google</button></div></form>
@@ -715,7 +717,7 @@ function vDatos() {
 }
 
 /* ---------- calendario y agenda ---------- */
-const TIPO_EV = { clase: ["🎓", "Clase", "#0072B2"], tutoria: ["💬", "Tutoría", "#009E73"], entrega: ["📤", "Entrega", "#D55E00"], evaluacion: ["📝", "Evaluación", "#CC79A7"], otro: ["📌", "Otro", "#8C8C8C"] };
+const TIPO_EV = { clase: ["🎓", "Clase", "#0072B2"], tutoria: ["💬", "Tutoría", "#009E73"], actividad: ["📋", "Actividad", "#D55E00"], foro: ["💬", "Foro", "#009E73"], entrega: ["📤", "Entrega", "#D55E00"], evaluacion: ["📝", "Evaluación", "#CC79A7"], otro: ["📌", "Otro", "#8C8C8C"] };
 let AGENDA = null, AGENDA_ERR = "", calMes = new Date(), calFiltro = "todos", calEjemplo = false;
 const agendaUrl = () => C.agenda?.endpoint || "";
 function agendaEjemplo() {
@@ -727,18 +729,29 @@ function agendaEjemplo() {
 async function cargarAgenda(forzar) {
   if (AGENDA && !forzar) return;
   const ep = agendaUrl(); AGENDA_ERR = "";
-  const base = () => ({ eventos: D.agenda_base?.eventos || [], estatica: true });
+  const base = () => ({ eventos: [...(D.agenda_base?.eventos || [])].sort((a, b) => a.inicio_iso.localeCompare(b.inicio_iso)), estatica: true });
   if (!ep) { AGENDA = base(); return; }
-  try { const r = await fetch(ep + (ep.includes("?") ? "&" : "?") + "action=agenda"); AGENDA = await r.json(); if (!AGENDA.eventos?.length) AGENDA = base(); }
+  try {
+    const r = await fetch(ep + (ep.includes("?") ? "&" : "?") + "action=agenda"); if (!r.ok) throw new Error("agenda");
+    const remota = await r.json(); if (!Array.isArray(remota.eventos)) throw new Error("agenda");
+    const unidos = new Map(base().eventos.map(e => [e.id, e]));
+    remota.eventos.forEach(e => { if (e?.id && e?.inicio_iso && e?.fin_iso) { const anterior = unidos.get(e.id) || {}; unidos.set(e.id, { ...anterior, ...e, enlace: e.enlace || anterior.enlace || "" }); } });
+    AGENDA = { eventos: [...unidos.values()].sort((a, b) => a.inicio_iso.localeCompare(b.inicio_iso)), estatica: remota.eventos.length === 0 };
+  }
   catch (e) { AGENDA = base(); AGENDA_ERR = "No se pudo leer la agenda del servidor; se muestra el calendario base de clases."; }
 }
+const enlaceEvento = e => { try { const u = new URL(e?.enlace || ""); return u.protocol === "https:" ? u.href : ""; } catch { return ""; } };
+const destinoEvento = e => { const url = enlaceEvento(e); if (!url) return `#/calendario/${encodeURIComponent(e.id)}`; const u = new URL(url); return u.origin === location.origin && u.pathname === location.pathname && u.hash ? u.hash : url; };
+const attrsEvento = e => { const href = destinoEvento(e); return `href="${esc(href)}"${href.startsWith("https://") ? ' target="_blank" rel="noopener"' : ""}`; };
+const horarioEvento = e => e.todo_el_dia ? "Disponible desde esta fecha" : `${e.inicio}–${e.fin}`;
 const evFecha = e => new Date(e.inicio_iso), pad2 = n => String(n).padStart(2, "0");
 const hoyZ = () => new Date().toLocaleDateString("sv-SE", { timeZone: "America/Asuncion" });
 const fmtF = e => new Date(e.inicio_iso).toLocaleDateString("es-PY", { weekday: "long", day: "numeric", month: "long", timeZone: "America/Asuncion" });
 function ics(evs) {
   const z = d => new Date(d).toISOString().replace(/[-:]/g, "").replace(/\.\d+Z/, "Z"), esc2 = t => String(t || "").replace(/([,;\\])/g, "\\$1").replace(/\n/g, "\\n");
-  return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Visualizacion de Datos UNC//Aula//ES", "CALSCALE:GREGORIAN"].concat(evs.flatMap(e => ["BEGIN:VEVENT", `UID:${e.id}@aula-vd-unc`, `DTSTAMP:${z(new Date())}`, `DTSTART:${z(e.inicio_iso)}`, `DTEND:${z(e.fin_iso)}`,
-    `SUMMARY:${esc2((TIPO_EV[e.tipo] || TIPO_EV.otro)[0] + " " + e.titulo)}`, `DESCRIPTION:${esc2(e.descripcion || "")}`, ...(e.enlace ? [`URL:${e.enlace}`] : []), "END:VEVENT"])).concat("END:VCALENDAR").join("\r\n");
+  return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Visualizacion de Datos UNC//Aula//ES", "CALSCALE:GREGORIAN"].concat(evs.flatMap(e => ["BEGIN:VEVENT", `UID:${e.id}@aula-vd-unc`, `DTSTAMP:${z(new Date())}`,
+    ...(e.todo_el_dia ? [`DTSTART;VALUE=DATE:${e.fecha.replace(/-/g, "")}`, `DTEND;VALUE=DATE:${e.fin_iso.slice(0, 10).replace(/-/g, "")}`] : [`DTSTART:${z(e.inicio_iso)}`, `DTEND:${z(e.fin_iso)}`]),
+    `SUMMARY:${esc2((TIPO_EV[e.tipo] || TIPO_EV.otro)[0] + " " + e.titulo)}`, `DESCRIPTION:${esc2(e.descripcion || "")}`, ...(enlaceEvento(e) ? [`URL:${enlaceEvento(e)}`] : []), "END:VEVENT"])).concat("END:VCALENDAR").join("\r\n");
 }
 function vCalendario() {
   const A = calEjemplo ? agendaEjemplo() : AGENDA, evs = (A?.eventos || []).filter(e => calFiltro === "todos" || e.tipo === calFiltro);
@@ -746,21 +759,23 @@ function vCalendario() {
   const porDia = {}; evs.forEach(e => { (porDia[e.fecha] = porDia[e.fecha] || []).push(e); });
   const celdas = []; for (let i = 0; i < off; i++) celdas.push('<div class="cd off"></div>');
   for (let d = 1; d <= nDias; d++) { const k = `${y}-${pad2(m + 1)}-${pad2(d)}`, lista = porDia[k] || [];
-    celdas.push(`<div class="cd ${k === hoyZ() ? "hoy" : ""}"><div class="dn">${d}</div>${lista.map(e => `<a href="#/calendario/${encodeURIComponent(e.id)}" class="ev" style="--c:${(TIPO_EV[e.tipo] || TIPO_EV.otro)[2]}" title="${esc(e.titulo)} · ${e.inicio}–${e.fin}">${(TIPO_EV[e.tipo] || TIPO_EV.otro)[0]} <span>${esc(e.inicio)} ${esc(e.titulo)}</span></a>`).join("")}</div>`); }
+    celdas.push(`<div class="cd ${k === hoyZ() ? "hoy" : ""}"><div class="dn">${d}</div>${lista.map(e => `<a ${attrsEvento(e)} class="ev" style="--c:${(TIPO_EV[e.tipo] || TIPO_EV.otro)[2]}" aria-label="Abrir ${esc(e.titulo)} · ${esc(fmtF(e))} · ${esc(horarioEvento(e))}" title="Abrir ${esc(e.titulo)} · ${esc(horarioEvento(e))}">${(TIPO_EV[e.tipo] || TIPO_EV.otro)[0]} <span>${e.todo_el_dia ? "" : esc(e.inicio) + " "}${esc(e.titulo)}</span></a>`).join("")}</div>`); }
   const proximos = (A?.eventos || []).filter(e => new Date(e.fin_iso) >= new Date()).filter(e => calFiltro === "todos" || e.tipo === calFiltro).slice(0, 8);
+  const mesEventos = evs.filter(e => e.fecha?.startsWith(`${y}-${pad2(m + 1)}`));
   const mes0 = primero.toLocaleDateString("es-PY", { month: "long", year: "numeric" }).replace(" de ", " "), mes = mes0.charAt(0).toUpperCase() + mes0.slice(1);
-  return `<h1>📅 Calendario del curso</h1><p class="sub">Clases, tutorías virtuales y fechas de entrega. Horario de Paraguay (UTC−3).</p>
+  return `<h1>📅 Calendario del curso</h1><p class="sub">Clases y actividades con fecha confirmada. Tocá cada evento para abrir el lugar de participación. Horario de Paraguay (UTC−3).</p>
   ${calEjemplo ? '<div class="card note"><b>Ejemplo.</b> Esta agenda es ilustrativa. La agenda real aparecerá aquí cuando el docente la publique.</div>' : ""}
   ${AGENDA_ERR ? `<div class="card note">${esc(AGENDA_ERR)}</div>` : ""}
-  ${AGENDA?.estatica && !calEjemplo ? `<div class="card note"><b>Calendario base de clases.</b> Clases virtuales los viernes de 18:00 a 22:00 y los sábados de 08:00 a 12:00. Las tutorías, las fechas de entrega y los correos de asistencia se suman acá cuando el docente los publique.</div>` : ""}
+  ${AGENDA?.estatica && !calEjemplo ? `<div class="card note"><b>Calendario del curso.</b> Clases virtuales los viernes de 18:00 a 22:00 y los sábados de 08:00 a 12:00. Se muestran las aperturas confirmadas; las tareas y los quizzes sin plazo fijado no aparecen como vencimientos.</div>` : ""}
   ${!agendaUrl() && !calEjemplo && !AGENDA?.eventos?.length ? `<div class="card note"><b>La agenda todavía no está publicada.</b> El docente la carga en la hoja de cálculo del curso (pestaña <i>Agenda</i>) y se muestra aquí automáticamente. <button class="btn sec" id="ejCal" style="margin-left:.5rem">Ver un ejemplo</button></div>` : ""}
   <div class="row" style="margin:.6rem 0"><button class="btn sec" id="cPrev" aria-label="Mes anterior">←</button><b style="min-width:11rem;text-align:center">${esc(mes)}</b><button class="btn sec" id="cNext" aria-label="Mes siguiente">→</button>
    <select id="cFil" aria-label="Filtrar por tipo" style="width:auto"><option value="todos">Todos los tipos</option>${Object.entries(TIPO_EV).map(([k, v]) => `<option value="${k}" ${calFiltro === k ? "selected" : ""}>${v[0]} ${v[1]}</option>`).join("")}</select>
    <button class="btn sec" id="cRef">↻ Actualizar</button><button class="btn sec" id="cIcs" ${evs.length ? "" : "disabled"}>⬇ Agregar a mi calendario (.ics)</button></div>
   <div class="cal"><div class="ch">Lun</div><div class="ch">Mar</div><div class="ch">Mié</div><div class="ch">Jue</div><div class="ch">Vie</div><div class="ch">Sáb</div><div class="ch">Dom</div>${celdas.join("")}</div>
+  <div class="cal-lista-movil"><h2>Actividades de ${esc(mes)}</h2>${mesEventos.length ? `<ul class="res">${mesEventos.map(e => `<li><span class="ico">${(TIPO_EV[e.tipo] || TIPO_EV.otro)[0]}</span><span><a ${attrsEvento(e)}><b>${esc(e.titulo)}</b></a><br><span class="muted">${esc(fmtF(e))} · ${esc(horarioEvento(e))}</span></span></li>`).join("")}</ul>` : '<p class="muted">No hay actividades confirmadas este mes.</p>'}</div>
   <div class="leg">${Object.values(TIPO_EV).map(v => `<span style="--c:${v[2]}">${v[0]} ${v[1]}</span>`).join("")}</div>
   <h2>Próximos eventos</h2>${proximos.length ? `<div class="card"><ul class="res">${proximos.map(e => { const t = TIPO_EV[e.tipo] || TIPO_EV.otro;
-    return `<li><span class="ico">${t[0]}</span><span><a href="#/calendario/${encodeURIComponent(e.id)}"><b>${esc(e.titulo)}</b></a><br><span class="muted">${esc(fmtF(e))} · ${esc(e.inicio)}–${esc(e.fin)}</span>${e.asistencia ? ' <span class="tag">asistencia</span>' : ""}${e.mini ? ' <span class="tag">mini-evaluación sin nota</span>' : ""}</span></li>`; }).join("")}</ul></div>` : '<div class="card muted">No hay eventos próximos.</div>'}
+    return `<li><span class="ico">${t[0]}</span><span><a ${attrsEvento(e)}><b>${esc(e.titulo)}</b></a><br><span class="muted">${esc(fmtF(e))} · ${esc(horarioEvento(e))}</span>${e.asistencia ? ' <span class="tag">asistencia</span>' : ""}${e.mini ? ' <span class="tag">mini-evaluación sin nota</span>' : ""} · <a href="#/calendario/${encodeURIComponent(e.id)}">Detalles</a></span></li>`; }).join("")}</ul></div>` : '<div class="card muted">No hay eventos próximos.</div>'}
   <div class="card"><b>¿Cómo funcionan la asistencia y la mini-evaluación?</b><ul style="margin:.4rem 0 0;padding-left:1.2rem">
    <li>📍 <b>Asistencia:</b> a la hora de cada clase o tutoría con registro recibís un <b>correo con tu enlace personal</b>. El formulario solo funciona durante el horario del evento (con 15 min de tolerancia).</li>
    <li>📝 <b>Mini-evaluación:</b> al terminar cada clase recibís otro correo con 3 preguntas sobre lo visto. <b>No suma puntos</b> para la certificación.</li>
@@ -769,13 +784,14 @@ function vCalendario() {
 function vEvento(id) {
   const A = calEjemplo ? agendaEjemplo() : AGENDA, e = (A?.eventos || []).find(x => x.id === id), t = e && (TIPO_EV[e.tipo] || TIPO_EV.otro);
   if (!e) return `<a href="#/calendario">← Calendario</a><h1>Evento no encontrado</h1>`;
-  return `<a href="#/calendario">← Calendario</a><h1>${t[0]} ${esc(e.titulo)}</h1><p class="sub">${esc(fmtF(e))} · ${esc(e.inicio)}–${esc(e.fin)} (hora de Paraguay)</p>
+  const sesion = Number(e.sesion), tieneSesion = Number.isInteger(sesion) && sesion >= 1 && sesion <= 8;
+  return `<a href="#/calendario">← Calendario</a><h1>${t[0]} ${esc(e.titulo)}</h1><p class="sub">${esc(fmtF(e))} · ${esc(horarioEvento(e))}${e.todo_el_dia ? "" : " (hora de Paraguay)"}</p>
   <div class="card">${e.descripcion ? `<p style="margin-top:0">${esc(e.descripcion)}</p>` : ""}
-   <div class="row"><span class="tag">${t[1]}</span>${e.sesion ? `<a href="#/sesion/${e.sesion}">Ir al módulo ${e.sesion}</a>` : ""}${e.enlace ? `<a class="btn" target="_blank" rel="noopener" href="${esc(e.enlace)}">Unirme a la sesión</a>` : ""}
+   <div class="row"><span class="tag">${t[1]}</span>${tieneSesion ? `<a href="#/sesion/${sesion}">Ir al módulo ${sesion}</a>` : ""}${enlaceEvento(e) ? `<a class="btn" ${attrsEvento(e)}>${esc(e.accion || "Abrir actividad")}</a>` : ""}${e.id === "apertura-s3" ? '<a href="#/foro/prensa">Participar en el foro</a>' : ""}${e.id === "foro-prensa-s3" ? '<a href="https://www.facet-unc.edu.py/moodle/mod/assign/view.php?id=6824" target="_blank" rel="noopener">Abrir la tarea en Moodle</a>' : ""}
    <button class="btn sec" id="evIcs">⬇ Agregar a mi calendario</button></div>
    ${e.asistencia ? '<p class="muted" style="margin:.8rem 0 0">📍 Recibirás por correo, a la hora de inicio, el enlace personal para registrar tu asistencia (solo funciona durante el horario).</p>' : ""}
    ${e.mini ? '<p class="muted" style="margin:.4rem 0 0">📝 Al terminar recibirás una mini-evaluación de 3 preguntas. No suma puntos.</p>' : ""}
-   ${!e.enlace && (e.tipo === "clase" || e.tipo === "tutoria") ? '<p class="muted" style="margin:.4rem 0 0">El enlace de la sesión llega en el correo de asistencia.</p>' : ""}</div>`;
+   ${!enlaceEvento(e) && (e.tipo === "clase" || e.tipo === "tutoria") ? '<p class="muted" style="margin:.4rem 0 0">El enlace de la sesión llega en el correo de asistencia.</p>' : ""}</div>`;
 }
 function bindCalendario(id) {
   $("#cPrev")?.addEventListener("click", () => { calMes = new Date(calMes.getFullYear(), calMes.getMonth() - 1, 1); render(); });
@@ -791,8 +807,12 @@ function bindCalendario(id) {
 function vInicioInvitado() {
   return `${heroHtml(null, "")}
   <div class="card note"><b>Estás viendo el curso como invitado.</b> Podés recorrer los módulos, las presentaciones, los videos, las lecturas y los recursos. Para responder quizzes, entregar actividades, completar formularios o ver calificaciones necesitás una cuenta. <span class="row" style="margin-top:.5rem"><a class="btn sm" href="#/acceso">Ingresar</a><a class="btn sm sec" href="#/registro">Crear cuenta</a></span></div>
+  <div class="card foro-promo"><div><span class="tag">Unidad 3 · discusión abierta</span><h2>💬 Foro de prensa paraguaya</h2><p>Entrá con tu cuenta para publicar un análisis y responder a otras personas.</p></div><a class="btn" href="#/foro/prensa">Ver el foro →</a></div>
   ${proximosHtml()}
   <h2>Módulos</h2><div class="grid">${D.sesiones.map(s => `<a class="card link" href="#/sesion/${s.n}"><span class="tag">${s.unidad} · Sesión ${s.n}</span><h3 style="margin-top:.5rem">${esc(s.titulo)}</h3><span class="muted">${esc(s.resumen)}${C.fechas?.[s.n] ? " · " + esc(C.fechas[s.n]) : ""}</span></a>`).join("")}</div>`;
+}
+function vForoInvitado() {
+  return `<a href="#/sesion/3">← Unidad 3</a><h1>💬 Foro de prensa paraguaya</h1><div class="card foro-promo"><div><p>El foro reúne la discusión sobre los reportes de Última Hora y ABC Color. Para leer los mensajes y participar necesitás una cuenta verificada del aula Git.</p><p>Podés consultar antes la <a href="tareas/ejercicio_s3_prensa_paraguaya.html" target="_blank" rel="noopener">consigna y las fuentes</a>.</p></div><button type="button" class="btn" id="foroLogin">Ingresar al foro →</button></div>`;
 }
 function vSoloRegistrados() { return `<h1>Solo para estudiantes registrados</h1><div class="card">Esta sección (quizzes, clases grabadas, calificaciones, perfil y formularios) requiere una cuenta. <span class="row" style="margin-top:.6rem"><a class="btn" href="#/acceso">Ingresar</a><a class="btn sec" href="#/registro">Crear cuenta</a><a class="btn sec" href="#/">Volver al inicio</a></span></div>`; }
 /* En modo invitado se ocultan los controles que guardan datos o abren formularios (la vista queda de solo lectura). */
@@ -838,7 +858,7 @@ async function render() {
     else if (oculto) { html = vNoDisponible(); crumb = "No disponible"; }
     else switch (a) {
       case "sesion": html = vSesion(n); crumb = `Módulo ${n}`; bind = bindSesion; break;
-      case "foro": if (b === "prensa") { html = await vForoPrensa(); crumb = "Foro de prensa"; bind = bindForoPrensa; break; }
+      case "foro": if (b === "prensa") { html = invitado ? vForoInvitado() : await vForoPrensa(); crumb = "Foro de prensa"; bind = invitado ? () => $("#foroLogin")?.addEventListener("click", () => { setInv(false); render(); }) : bindForoPrensa; break; }
       case "quiz": html = vQuiz(n); crumb = `Módulo ${n} › Quiz`; bind = () => bindQuiz(n); break;
       case "notas": await refrescarNotas(); html = vNotas(); crumb = "Mis notas"; break;
       case "clases": CL_FILTRO = b || "todas"; html = await vClases(); bind = bindClases; crumb = "Clases grabadas"; break;
