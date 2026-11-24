@@ -94,6 +94,45 @@ service cloud.firestore {
       allow delete: if docente();
     }
 
+    // Foro del ejercicio S3: solo cuentas verificadas con perfil y docentes.
+    // Cada estudiante crea un tema; las respuestas son documentos independientes.
+    function foroMiembro() {
+      return signed() && request.auth.token.email_verified == true
+        && (docente() || exists(/databases/$(database)/documents/usuarios/$(request.auth.uid)));
+    }
+    function autorForo(d) {
+      return d.autor is string && d.autor.size() <= 161
+        && (docente() && d.autor == 'Docente'
+          || d.autor == get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.nombres
+            + ' ' + get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.apellidos);
+    }
+    match /foro_prensa/{id} {
+      allow get, list: if foroMiembro();
+      allow create: if foroMiembro()
+        && request.resource.data.keys().hasOnly(['uid', 'tipo', 'autor', 'caso', 'titulo', 'texto', 'parentId', 'creado'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.creado == request.time
+        && autorForo(request.resource.data)
+        && request.resource.data.texto is string
+        && request.resource.data.texto.size() >= 20 && request.resource.data.texto.size() <= 5000
+        && (request.resource.data.tipo == 'tema'
+          && id == request.auth.uid
+          && request.resource.data.keys().hasAll(['caso', 'titulo'])
+          && request.resource.data.caso in ['ultima_hora', 'abc_color', 'comparacion']
+          && request.resource.data.titulo is string
+          && request.resource.data.titulo.size() >= 8 && request.resource.data.titulo.size() <= 150
+          && !('parentId' in request.resource.data)
+          || request.resource.data.tipo == 'respuesta'
+          && request.resource.data.keys().hasAll(['parentId'])
+          && request.resource.data.parentId is string
+          && request.resource.data.parentId != id
+          && exists(/databases/$(database)/documents/foro_prensa/$(request.resource.data.parentId))
+          && get(/databases/$(database)/documents/foro_prensa/$(request.resource.data.parentId)).data.tipo == 'tema'
+          && !('caso' in request.resource.data) && !('titulo' in request.resource.data));
+      allow update: if false;
+      allow delete: if docente();
+    }
+
     // Ajustes del aula: qué elementos ocultó o eliminó (papelera) el docente. Lo lee cualquiera (incluidos invitados sin cuenta); lo escribe solo un docente.
     // Es un control de interfaz, no de seguridad (el contenido sigue en los archivos del sitio).
     match /ajustes/{id} {
