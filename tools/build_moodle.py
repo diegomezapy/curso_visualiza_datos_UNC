@@ -67,7 +67,8 @@ def pagina(s):
                     for pid, nombre, _, _, _ in practicas)
     vids = "".join(li(f"https://www.youtube.com/watch?v={v['id']}" if v.get("tipo") != "playlist" else f"https://www.youtube.com/playlist?list={v['id']}", v["t"] + (" · " + v["nota"] if v.get("nota") else "")) for v in rc.VIDEOS.get(n, []))
     lec = "".join(li(l["u"], f"{l['t']} ({l['tipo']}, {l['idioma']})") for l in rc.LECTURAS.get(n, []))
-    acts = "".join(f"<li>{html.escape(a['titulo'])}" + (f" — <b>{a['pts']} pts</b>" if a["pts"] else "") + "</li>" for a in s["actividades"])
+    moodle_title = {"s3_ej": "Ejercicio S3: auditar y rediseñar una visualización de la prensa paraguaya · entrega oficial en Moodle"}
+    acts = "".join(f"<li>{html.escape(moodle_title.get(a['id'], a['titulo']))}" + (f" — <b>{a['pts']} pts</b>" if a["pts"] else "") + "</li>" for a in s["actividades"])
     return moodle_safe(f"""<h3>Sesión {n} · {html.escape(s['titulo'])}</h3>
 <p><b>Sección del aula:</b> Unidad {n}.</p>
 <p>{html.escape(s['resumen'])}</p>

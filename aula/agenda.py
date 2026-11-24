@@ -7,7 +7,7 @@ CORTO = ["Principios y percepción", "Elección de gráficos", "Color, diseño y
 INICIO = dt.date(2026, 11, 13)  # viernes
 DIAS = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]
 ENLACE_CLASE = "https://www.facet-unc.edu.py/moodle/mod/url/view.php?id=6792"
-ENLACE_TAREA_S3 = "https://www.facet-unc.edu.py/moodle/mod/assign/view.php?id=6824"
+ENLACE_TAREA_S3 = "https://diegomezapy.github.io/curso_visualiza_datos_UNC/aula/index.html#/sesion/3"
 ENLACE_FORO_S3 = "https://diegomezapy.github.io/curso_visualiza_datos_UNC/aula/index.html#/foro/prensa"
 
 def clases():
@@ -29,7 +29,7 @@ def eventos():
     # Son fechas de apertura confirmadas, no plazos de entrega. Se muestran como eventos de día completo.
     for id_, tipo, titulo, dia, sesion, descripcion, enlace, accion in [
         ("apertura-s3", "actividad", "Ejercicio S3 disponible", dt.date(2026, 11, 24), 3,
-         "La tarea de auditoría de prensa está abierta en Moodle. No tiene fecha de cierre fijada.", ENLACE_TAREA_S3, "Abrir la tarea"),
+         "La entrega del ejercicio se registra en la Unidad 3 del aula Git. No tiene fecha de cierre fijada.", ENLACE_TAREA_S3, "Ir a la entrega"),
         ("foro-prensa-s3", "foro", "Foro de prensa disponible", dt.date(2026, 11, 24), 3,
          "El foro de discusión de prensa paraguaya está abierto en el aula Git, sin fecha de cierre fijada.", ENLACE_FORO_S3, "Participar en el foro"),
     ]:

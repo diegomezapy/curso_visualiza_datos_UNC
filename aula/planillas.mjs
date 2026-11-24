@@ -54,3 +54,12 @@ export function tablaAutoevaluaciones(alumnos, actividades, rubricas) {
   return { encabezados, filas };
 }
 export const planillaAutoevaluaciones = (alumnos, actividades, rubricas) => { const t = tablaAutoevaluaciones(alumnos, actividades, rubricas); return csvPlanilla(t.encabezados, t.filas); };
+
+export function tablaEntregasS3(alumnos) {
+  const encabezados = ["uid", "apellidos", "nombres", "email", "actividad", "enlace_trabajo", "estado", "nota_5"];
+  const filas = alumnos.map(a => {
+    const enlace = a.progreso?.enlaces?.s3_ej?.trabajo || "";
+    return [a.uid, a.perfil.apellidos, a.perfil.nombres, a.perfil.email, "s3_ej", enlace, enlace ? "Entregado" : "Pendiente", a.oficial?.s3_ej ?? ""];
+  });
+  return { encabezados, filas };
+}

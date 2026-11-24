@@ -3,7 +3,7 @@
 import { crearBackend, msgError } from "./backend.js";
 import { heroHtml, afterRender, initFx } from "./fx.js";
 import { iniciarVis, cargarVis, aplicarNav, aplicarMain, botonEdicion, rutaOculta } from "./visibilidad.js";
-import { csvPlanilla, tablaRegistros, tablaQuizzes, tablaAutoevaluaciones } from "./planillas.mjs";
+import { csvPlanilla, tablaRegistros, tablaQuizzes, tablaAutoevaluaciones, tablaEntregasS3 } from "./planillas.mjs";
 import { xlsxPlanilla, XLSX_MIME } from "./xlsx.mjs";
 (async () => {
 "use strict";
@@ -116,8 +116,8 @@ function vInicio() {
 
 const ytUrl = v => v.tipo === "playlist" ? `https://www.youtube.com/playlist?list=${v.id}` : `https://www.youtube.com/watch?v=${v.id}`;
 const LEC_ICO = { pdf: "📄", libro: "📘", "artículo": "🧾", web: "🔗", datos: "🗂" };
-const RE_ENL = { rpubs: /^https:\/\/(www\.)?rpubs\.com\/.+/i, colab: /^https:\/\/(colab\.research\.google\.com|drive\.google\.com|colab\.google)\/.+/i };
-const ENL_TXT = { rpubs: ["📊 Enlace de tu publicación en RPubs", "https://rpubs.com/tu_usuario/titulo"], colab: ["🐍 Enlace de tu Colab (compartido: cualquiera con el enlace, Lector)", "https://colab.research.google.com/drive/..."] };
+const RE_ENL = { rpubs: /^https:\/\/(www\.)?rpubs\.com\/.+/i, colab: /^https:\/\/(colab\.research\.google\.com|drive\.google\.com|colab\.google)\/.+/i, trabajo: /^https:\/\/(rpubs\.com|www\.rpubs\.com|drive\.google\.com|docs\.google\.com)\/.+/i };
+const ENL_TXT = { rpubs: ["📊 Enlace de tu publicación en RPubs", "https://rpubs.com/tu_usuario/titulo"], colab: ["🐍 Enlace de tu Colab (compartido: cualquiera con el enlace, Lector)", "https://colab.research.google.com/drive/..."], trabajo: ["📄 Enlace a tu trabajo en RPubs o PDF en Google Drive", "https://rpubs.com/tu_usuario/titulo"] };
 function videosHtml(s) {
   if (!s.videos?.length) return "";
   const vistos = s.videos.filter(v => S.done["vid_" + v.id]).length;
@@ -142,7 +142,7 @@ function enlacesHtml(a) {
   if (!a.ent?.length) return "";
   const e = S.enlaces[a.id] || {};
   return `<div style="margin-top:.6rem"><b style="font-size:.9rem">Entrega por enlace</b>${a.ent.map(t => `<label for="enl_${a.id}_${t}" style="font-weight:400">${ENL_TXT[t][0]} ${e[t] ? "✅" : ""}</label><input type="url" id="enl_${a.id}_${t}" data-enl="${a.id}" data-t="${t}" placeholder="${ENL_TXT[t][1]}" value="${esc(e[t] || "")}">`).join("")}
-  <p class="muted" style="margin:.3rem 0 0">Al guardar todos los enlaces requeridos, la actividad se marca como entregada. Recordá: RPubs es público (sin datos personales).</p></div>`;
+  <p class="muted" style="margin:.3rem 0 0">Al guardar todos los enlaces requeridos, la actividad se marca como entregada en esta aula. Si compartís un PDF en Drive, concedé acceso de lectura al docente. RPubs es público: no incluyas datos personales.</p></div>`;
 }
 function rutaDatosHtml(s) {
   if (s.n !== 1) return "";
@@ -235,7 +235,7 @@ function vSesion(n) {
   <h2>🧰 Materiales de la sesión</h2><div class="card"><ul class="res">${s.recursos.map(r => `<li><span class="ico">${ico[r.k] || "🔗"}</span>${r.u ? `<a href="${esc(r.u)}" target="${r.k === "guia" ? "_self" : "_blank"}" rel="noopener">${esc(r.t)}</a>` : esc(r.t)}</li>`).join("")}</ul>
    <p class="muted" style="margin:.5rem 0 0">🐍 <b>Python</b> en Colab (<i>Entorno de ejecución → Ejecutar todas</i>) · 📊 <b>R</b> en RStudio: abrí el .Rmd, presioná <i>Knit</i> y publicá con <i>Publish → RPubs</i>. Datasets en <a href="#/recursos">Recursos</a>; guía en <a href="../materiales/pdf/00_guia_inicio.pdf" target="_blank">Guía de inicio (PDF)</a>.</p></div>
   <h2>✅ Actividades y entregas</h2>
-  ${n === 3 ? '<div class="card"><h3>💬 Discusión de prensa paraguaya</h3><p>Publicá tu análisis y comentá la propuesta de rediseño de otra persona. La entrega evaluada se realiza en Moodle.</p><a class="btn" href="#/foro/prensa">Participar en el foro →</a></div>' : ""}
+  ${n === 3 ? '<div class="card"><h3>💬 Discusión de prensa paraguaya</h3><p>Publicá tu análisis y comentá la propuesta de rediseño de otra persona. Registrá el enlace a tu trabajo en la actividad S3 de esta unidad.</p><a class="btn" href="#/foro/prensa">Participar en el foro →</a></div>' : ""}
   ${s.actividades.map(a => { const r = D.rubricas[a.rubrica]; const ap = autoPct(S.auto, a); return `<div class="card"><div class="act">
     <input type="checkbox" id="chk_${a.id}" data-act="${a.id}" ${S.done[a.id] ? "checked" : ""} aria-label="Marcar como hecha">
     <div style="flex:1"><label for="chk_${a.id}" style="margin:0;font-weight:600">${esc(a.titulo)}</label>
@@ -260,6 +260,11 @@ function vSesion(n) {
 
 /* ---------- foro de prensa (Unidad 3) ---------- */
 const CASOS_PRENSA = { ultima_hora: "Última Hora · déficit fiscal", abc_color: "ABC Color · exportación de carne", comparacion: "Comparación de ambos casos" };
+const IMAGENES_PRENSA = [
+  { medio: "Última Hora", fecha: "17/11/2026", titulo: "Evolución del déficit fiscal de Paraguay", articulo: "https://www.ultimahora.com/deficit-fiscal-supera-los-usd-2-000-millones-con-gastos-creciendo-10-pero-ingresos-solo-1", imagen: "https://grupovierci.brightspotcdn.com/dims4/default/6c71763/2147483647/strip/true/crop/985x555%2B0%2B11/resize/1000x563%21/quality/90/?url=https%3A%2F%2Fk2-prod-grupo-vierci.s3.us-east-1.amazonaws.com%2Fbrightspot%2Fec%2Fed%2F21eae6b3481a908080da9cbc773f%2Fevolucion-del-deficit-fiscal-de-paraguay.png" },
+  { medio: "ABC Color", fecha: "04/05/2026", titulo: "Exportación de carne bovina paraguaya en 2026", articulo: "https://www.abc.com.py/economia/2026/05/04/menos-exportacion-de-carne-pero-abril-logra-el-mejor-precio-por-tonelada-del-ano/", imagen: "https://www.abc.com.py/resizer/v2/LN35BOFBQVDYZJY5ENZZWODHKQ.jpg?auth=a81206651483ff4a69cbbb1212ae8434555e4005ddef1cd38bc6cf8419b6c800&smart=true&width=770" }
+];
+const imagenesPrensaHtml = () => `<div class="prensa-grid">${IMAGENES_PRENSA.map(c => `<figure class="card prensa-fig"><a href="${esc(c.articulo)}" target="_blank" rel="noopener noreferrer"><img src="${esc(c.imagen)}" alt="${esc(c.titulo)}. Imagen publicada por ${esc(c.medio)}" loading="lazy" referrerpolicy="no-referrer"></a><figcaption><b>${esc(c.medio)} · ${esc(c.fecha)}</b><br>${esc(c.titulo)}<br><a href="${esc(c.articulo)}" target="_blank" rel="noopener noreferrer">Leer la publicación y verificar el contexto ↗</a></figcaption></figure>`).join("")}</div>`;
 const fechaForo = x => { const d = x?.toDate?.() || new Date(x || 0); return Number.isNaN(d.getTime()) ? "" : new Intl.DateTimeFormat("es-PY", { dateStyle: "medium", timeStyle: "short", timeZone: "America/Asuncion" }).format(d); };
 const textoForo = s => esc(s).replace(/\n/g, "<br>");
 async function vForoPrensa() {
@@ -269,7 +274,8 @@ async function vForoPrensa() {
   const respuestas = posts.filter(p => p.tipo === "respuesta");
   const propio = temas.some(p => p.uid === USER.uid);
   return `<a href="#/sesion/3">← Unidad 3</a><h1>💬 Foro: visualizaciones en la prensa paraguaya</h1>
-  <p class="sub">Debatí con evidencia los gráficos de Última Hora y ABC Color. Leé la <a href="tareas/ejercicio_s3_prensa_paraguaya.html" target="_blank" rel="noopener">consigna y las fuentes</a> antes de publicar. La entrega calificada sigue en Moodle.</p>
+  <p class="sub">Debatí con evidencia los gráficos de Última Hora y ABC Color. Leé la <a href="tareas/ejercicio_s3_prensa_paraguaya.html" target="_blank" rel="noopener">consigna y las fuentes</a> antes de publicar. Registrá el enlace a tu trabajo en la <a href="#/sesion/3">actividad S3 de la Unidad 3</a>.</p>
+  <h2>Publicaciones para analizar</h2>${imagenesPrensaHtml()}
   <div class="card"><h2 style="margin-top:0">Preguntas para discutir</h2><ol><li>¿Qué interpretación sugiere la visualización y qué dato permite comprobarla?</li><li>¿Qué cambiarías en unidades, escala, período o distinción entre observaciones y proyecciones?</li><li>¿Cómo justificarías tu rediseño con la fuente primaria?</li></ol><p class="muted">Publicá un análisis inicial y respondé al menos a un compañero. Usá argumentos respetuosos; no compartas datos personales.</p></div>
   ${propio ? '<p class="note">Tu análisis inicial ya está publicado. Podés responder a otros mensajes.</p>' : `<form id="foroTema" class="card foro-form"><h2 style="margin-top:0">Publicar mi análisis</h2><label for="foroCaso">Publicación analizada</label><select id="foroCaso" required><option value="ultima_hora">Última Hora · déficit fiscal</option><option value="abc_color">ABC Color · exportación de carne</option><option value="comparacion">Comparación de ambos casos</option></select><label for="foroTitulo">Título</label><input id="foroTitulo" type="text" required minlength="8" maxlength="150"><label for="foroTexto">Análisis con evidencia</label><textarea id="foroTexto" required minlength="20" maxlength="5000" rows="7" placeholder="Describí el problema, citá un dato y explicá tu propuesta de rediseño."></textarea><div class="row"><button class="btn" type="submit">Publicar análisis</button><span class="muted">Una publicación inicial por persona.</span></div></form>`}
   <h2>Discusión <span class="muted">(${temas.length} análisis)</span></h2>
@@ -412,7 +418,7 @@ const medidor = `<div class="muted" id="pwhint">Mínimo 8 caracteres, con letras
 
 function vAcceso() {
   return `<div class="auth"><div class="brand-big"><span class="logo">VD</span><div><h1 style="margin:0">Aula virtual</h1><div class="muted">${esc(C.curso)} · MICD · FACET – UNC</div></div></div>${demoBanner()}
-  ${location.hash.startsWith("#/foro/prensa") ? '<div class="card foro-promo"><b>💬 Foro de prensa paraguaya</b><p>Ingresá con tu cuenta para leer los análisis y participar en la discusión de la Unidad 3.</p></div>' : ""}
+  ${location.hash.startsWith("#/foro/prensa") ? `<div class="card foro-promo"><b>💬 Foro de prensa paraguaya</b><p>Ingresá con tu cuenta para leer los análisis y participar en la discusión de la Unidad 3.</p></div><h2>Publicaciones para analizar</h2>${imagenesPrensaHtml()}` : ""}
   <div class="card"><h2 style="margin-top:0">Ingresar</h2>
    <form id="lf"><label for="le">Correo electrónico</label><input type="email" id="le" required autocomplete="username"><label for="lp">Contraseña</label><input type="password" id="lp" required autocomplete="current-password">
    <div class="row" style="margin-top:1rem"><button class="btn" type="submit">Ingresar</button><button class="btn sec" type="button" id="gb">Ingresar con Google</button></div></form>
@@ -527,7 +533,7 @@ const timers = {};
 function chipsEnlaces(enl) {
   const items = Object.entries(enl || {}).flatMap(([id, o]) => Object.entries(o || {}).map(([t, u]) => ({ id, t, u }))).filter(x => /^https:\/\//.test(x.u));
   if (!items.length) return "";
-  return `<div class="chips">${items.map(x => `<a target="_blank" rel="noopener noreferrer" href="${esc(x.u)}" title="${esc(x.u)}">S${actById(x.id)?.n ?? "?"}${x.id.includes("mp") ? " MP" + x.id.match(/mp(\d)/)[1] : ""} ${x.t === "rpubs" ? "📊" : "🐍"}</a>`).join("")}</div>`;
+  return `<div class="chips">${items.map(x => `<a target="_blank" rel="noopener noreferrer" href="${esc(x.u)}" title="${esc(x.u)}">S${actById(x.id)?.n ?? "?"}${x.id.includes("mp") ? " MP" + x.id.match(/mp(\d)/)[1] : ""} ${x.t === "rpubs" ? "📊" : x.t === "trabajo" ? "📄" : "🐍"}</a>`).join("")}</div>`;
 }
 function filaDoc(a) {
   const c = calcular(a.progreso.quiz, a.oficial), pg = progTotal({ done: a.progreso.done || {}, quiz: a.progreso.quiz || {} }), p = a.perfil;
@@ -560,6 +566,8 @@ async function vDocente() {
     <button type="button" class="btn sec" id="xlsxRespuestas" ${hayQuiz && !ERROR_INTENTOS ? "" : "disabled"}>⬇ Quizzes Excel</button>
     <button type="button" class="btn" id="csvAuto" ${hayAuto ? "" : "disabled"}>⬇ Autoevaluaciones CSV</button>
     <button type="button" class="btn sec" id="xlsxAuto" ${hayAuto ? "" : "disabled"}>⬇ Autoevaluaciones Excel</button>
+    <button type="button" class="btn" id="csvS3" ${ALUMNOS.length ? "" : "disabled"}>⬇ Entregas S3 CSV</button>
+    <button type="button" class="btn sec" id="xlsxS3" ${ALUMNOS.length ? "" : "disabled"}>⬇ Entregas S3 Excel</button>
     <button type="button" class="btn" id="csv" ${ALUMNOS.length ? "" : "disabled"}>⬇ Calificaciones CSV</button>
     <button type="button" class="btn sec" id="xlsxNotas" ${ALUMNOS.length ? "" : "disabled"}>⬇ Calificaciones Excel</button></div>
     <p class="muted" style="margin-bottom:0">Los quizzes de práctica nuevos incluyen cada respuesta. Los intentos anteriores conservan solo fecha y puntaje. Las evaluaciones formales y sus respuestas se administran en Moodle.</p>
@@ -579,6 +587,7 @@ function bindDocente() {
   exportar("#csvRegistro", "#xlsxRegistro", "registro_usuarios", () => tablaRegistros(ALUMNOS));
   exportar("#csvRespuestas", "#xlsxRespuestas", "respuestas_quizzes", () => tablaQuizzes(ALUMNOS, INTENTOS));
   exportar("#csvAuto", "#xlsxAuto", "autoevaluaciones", () => tablaAutoevaluaciones(ALUMNOS, ACTS, D.rubricas));
+  exportar("#csvS3", "#xlsxS3", "entregas_s3", () => tablaEntregasS3(ALUMNOS));
   $$("input[data-id]").forEach(inp => inp.addEventListener("input", () => {
     const u = inp.dataset.u, id = inp.dataset.id, g = actById(id), a = ALUMNOS.find(x => x.uid === u);
     if (inp.value === "") delete a.oficial[id]; else a.oficial[id] = Math.max(0, Math.min(g.pts, +inp.value));
@@ -741,7 +750,7 @@ async function cargarAgenda(forzar) {
   catch (e) { AGENDA = base(); AGENDA_ERR = "No se pudo leer la agenda del servidor; se muestra el calendario base de clases."; }
 }
 const enlaceEvento = e => { try { const u = new URL(e?.enlace || ""); return u.protocol === "https:" ? u.href : ""; } catch { return ""; } };
-const destinoEvento = e => { const url = enlaceEvento(e); if (!url) return `#/calendario/${encodeURIComponent(e.id)}`; const u = new URL(url); return u.origin === location.origin && u.pathname === location.pathname && u.hash ? u.hash : url; };
+const destinoEvento = e => { const url = enlaceEvento(e); if (!url) return `#/calendario/${encodeURIComponent(e.id)}`; const u = new URL(url); return u.hash && (u.origin === location.origin && u.pathname === location.pathname || u.hostname === "diegomezapy.github.io" && u.pathname === "/curso_visualiza_datos_UNC/aula/index.html") ? u.hash : url; };
 const attrsEvento = e => { const href = destinoEvento(e); return `href="${esc(href)}"${href.startsWith("https://") ? ' target="_blank" rel="noopener"' : ""}`; };
 const horarioEvento = e => e.todo_el_dia ? "Disponible desde esta fecha" : `${e.inicio}–${e.fin}`;
 const evFecha = e => new Date(e.inicio_iso), pad2 = n => String(n).padStart(2, "0");
@@ -787,7 +796,7 @@ function vEvento(id) {
   const sesion = Number(e.sesion), tieneSesion = Number.isInteger(sesion) && sesion >= 1 && sesion <= 8;
   return `<a href="#/calendario">← Calendario</a><h1>${t[0]} ${esc(e.titulo)}</h1><p class="sub">${esc(fmtF(e))} · ${esc(horarioEvento(e))}${e.todo_el_dia ? "" : " (hora de Paraguay)"}</p>
   <div class="card">${e.descripcion ? `<p style="margin-top:0">${esc(e.descripcion)}</p>` : ""}
-   <div class="row"><span class="tag">${t[1]}</span>${tieneSesion ? `<a href="#/sesion/${sesion}">Ir al módulo ${sesion}</a>` : ""}${enlaceEvento(e) ? `<a class="btn" ${attrsEvento(e)}>${esc(e.accion || "Abrir actividad")}</a>` : ""}${e.id === "apertura-s3" ? '<a href="#/foro/prensa">Participar en el foro</a>' : ""}${e.id === "foro-prensa-s3" ? '<a href="https://www.facet-unc.edu.py/moodle/mod/assign/view.php?id=6824" target="_blank" rel="noopener">Abrir la tarea en Moodle</a>' : ""}
+   <div class="row"><span class="tag">${t[1]}</span>${tieneSesion ? `<a href="#/sesion/${sesion}">Ir al módulo ${sesion}</a>` : ""}${enlaceEvento(e) ? `<a class="btn" ${attrsEvento(e)}>${esc(e.accion || "Abrir actividad")}</a>` : ""}${e.id === "apertura-s3" ? '<a href="#/foro/prensa">Participar en el foro</a>' : ""}${e.id === "foro-prensa-s3" ? '<a href="#/sesion/3">Entregar el trabajo en el aula Git</a>' : ""}
    <button class="btn sec" id="evIcs">⬇ Agregar a mi calendario</button></div>
    ${e.asistencia ? '<p class="muted" style="margin:.8rem 0 0">📍 Recibirás por correo, a la hora de inicio, el enlace personal para registrar tu asistencia (solo funciona durante el horario).</p>' : ""}
    ${e.mini ? '<p class="muted" style="margin:.4rem 0 0">📝 Al terminar recibirás una mini-evaluación de 3 preguntas. No suma puntos.</p>' : ""}
@@ -812,7 +821,7 @@ function vInicioInvitado() {
   <h2>Módulos</h2><div class="grid">${D.sesiones.map(s => `<a class="card link" href="#/sesion/${s.n}"><span class="tag">${s.unidad} · Sesión ${s.n}</span><h3 style="margin-top:.5rem">${esc(s.titulo)}</h3><span class="muted">${esc(s.resumen)}${C.fechas?.[s.n] ? " · " + esc(C.fechas[s.n]) : ""}</span></a>`).join("")}</div>`;
 }
 function vForoInvitado() {
-  return `<a href="#/sesion/3">← Unidad 3</a><h1>💬 Foro de prensa paraguaya</h1><div class="card foro-promo"><div><p>El foro reúne la discusión sobre los reportes de Última Hora y ABC Color. Para leer los mensajes y participar necesitás una cuenta verificada del aula Git.</p><p>Podés consultar antes la <a href="tareas/ejercicio_s3_prensa_paraguaya.html" target="_blank" rel="noopener">consigna y las fuentes</a>.</p></div><button type="button" class="btn" id="foroLogin">Ingresar al foro →</button></div>`;
+  return `<a href="#/sesion/3">← Unidad 3</a><h1>💬 Foro de prensa paraguaya</h1><div class="card foro-promo"><div><p>El foro reúne la discusión sobre los reportes de Última Hora y ABC Color. Para leer los mensajes y participar necesitás una cuenta verificada del aula Git.</p><p>Podés consultar antes la <a href="tareas/ejercicio_s3_prensa_paraguaya.html" target="_blank" rel="noopener">consigna y las fuentes</a>.</p></div><button type="button" class="btn" id="foroLogin">Ingresar al foro →</button></div><h2>Publicaciones para analizar</h2>${imagenesPrensaHtml()}`;
 }
 function vSoloRegistrados() { return `<h1>Solo para estudiantes registrados</h1><div class="card">Esta sección (quizzes, clases grabadas, calificaciones, perfil y formularios) requiere una cuenta. <span class="row" style="margin-top:.6rem"><a class="btn" href="#/acceso">Ingresar</a><a class="btn sec" href="#/registro">Crear cuenta</a><a class="btn sec" href="#/">Volver al inicio</a></span></div>`; }
 /* En modo invitado se ocultan los controles que guardan datos o abren formularios (la vista queda de solo lectura). */
@@ -890,7 +899,7 @@ function bindSesion() {
   $$("[data-enl]").forEach(inp => inp.addEventListener("change", () => {
     const id = inp.dataset.enl, t = inp.dataset.t, v = inp.value.trim(), a = actById(id);
     S.enlaces[id] = S.enlaces[id] || {};
-    if (v && !RE_ENL[t].test(v)) { aviso(t === "rpubs" ? "El enlace debe ser de rpubs.com (https://rpubs.com/...)." : "El enlace debe ser de Google Colab o Drive (https://colab.research.google.com/...).", "bad"); return; }
+    if (v && !RE_ENL[t].test(v)) { aviso(t === "rpubs" ? "El enlace debe ser de rpubs.com (https://rpubs.com/...)." : t === "trabajo" ? "Usá un enlace HTTPS de RPubs o Google Drive/Docs." : "El enlace debe ser de Google Colab o Drive (https://colab.research.google.com/...).", "bad"); return; }
     if (v) S.enlaces[id][t] = v; else delete S.enlaces[id][t];
     const completo = a.ent.every(x => S.enlaces[id][x]);
     if (completo) S.done[id] = true; else if (!v) delete S.done[id];

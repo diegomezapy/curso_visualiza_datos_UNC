@@ -12,8 +12,9 @@
 ## Foro y calendario
 
 - El **foro de prensa paraguaya** se abre desde la tarjeta destacada de Inicio, la primera parte del menú lateral o la Unidad 3: `#/foro/prensa`. Quien visita como invitado ve una presentación del foro y puede iniciar sesión desde allí; los mensajes requieren una cuenta verificada.
-- El calendario incluye las ocho clases sincrónicas y las aperturas confirmadas de la tarea S3 y del foro. Al seleccionar un evento se abre directamente el recurso de participación en Moodle o el foro Git. La ficha de cada evento sigue disponible mediante «Detalles».
+- El calendario incluye las ocho clases sincrónicas y las aperturas confirmadas de la tarea S3 y del foro. La tarea y el foro enlazan a sus espacios propios del aula Git; la ficha de cada evento sigue disponible mediante «Detalles». El acceso a la videollamada de las clases aún usa el recurso de reunión institucional configurado en Moodle.
 - Las aperturas de la tarea y del foro se muestran como eventos de día completo, **sin fecha de vencimiento**. No se asignan plazos a tareas o quizzes que no tengan uno confirmado. Si se configura la agenda de Apps Script, sus eventos se agregan a la agenda base y pueden actualizar eventos existentes por ID.
+- La actividad S3 se entrega dentro del aula Git mediante un enlace a RPubs o a un PDF en Google Drive compartido con el docente. El foro muestra las imágenes originales de los dos artículos, servidas por los medios y atribuidas con enlace a cada publicación.
 
 ## Cuentas y acceso
 - **Primer acceso:** el estudiante elige *Crear cuenta*, completa sus datos (nombres y apellidos, cédula, fecha de nacimiento, sexo, nacionalidad, departamento y ciudad, dirección, teléfono, institución, profesión, cohorte) y elige su propia contraseña; recibe un correo de verificación. También puede **ingresar con Google** y completar los datos la primera vez.

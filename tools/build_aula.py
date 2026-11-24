@@ -106,10 +106,10 @@ data = {
 for f in ("index.html", "aula.css", "aula.js", "backend.js", "planillas.mjs", "xlsx.mjs", "fx.js", "fxbg.js", "visibilidad.js"):
     shutil.copy(RAIZ / "aula" / f, SITE / f)
 
-# La consigna publicada en Moodle también se ofrece como página del aula Git.
+# El aula Git mantiene su propia consigna y su propio mecanismo de entrega.
 tareas = SITE / "tareas"
 tareas.mkdir(exist_ok=True)
-consigna = (RAIZ / "moodle" / "tareas" / "ejercicio_s3_prensa_paraguaya.html").read_text(encoding="utf-8")
+consigna = (RAIZ / "aula" / "tareas" / "ejercicio_s3_prensa_paraguaya.html").read_text(encoding="utf-8")
 (tareas / "ejercicio_s3_prensa_paraguaya.html").write_text(
     '<!doctype html><html lang="es"><head><meta charset="utf-8">'
     '<meta name="viewport" content="width=device-width,initial-scale=1">'
@@ -119,7 +119,8 @@ consigna = (RAIZ / "moodle" / "tareas" / "ejercicio_s3_prensa_paraguaya.html").r
     'main{display:block}li{margin:.6rem 0}h3,h4{margin-top:1.5rem}'
     'a{overflow-wrap:anywhere}</style></head><body>'
     '<nav aria-label="Navegación"><a href="../index.html#/sesion/3">Volver a la unidad 3</a>'
-    ' · <a href="https://www.facet-unc.edu.py/moodle/mod/assign/view.php?id=6824">Entregar en Moodle</a></nav>'
+    ' · <a href="../index.html#/foro/prensa">Participar en el foro</a>'
+    ' · <a href="../index.html#/sesion/3">Registrar la entrega</a></nav>'
     f'<main id="main">{consigna}</main></body></html>',
     encoding="utf-8",
 )
