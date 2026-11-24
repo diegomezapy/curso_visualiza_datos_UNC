@@ -51,6 +51,8 @@ for s in c.SESIONES:
     if n == 1:
         rec.insert(3, {"t": "Python · Lab 0 en Colab: resultados del diagnóstico", "u": f"{cfg['colab']}/sesiones/01_principios/lab00_diagnostico.ipynb", "k": "colab"})
         rec.insert(5, {"t": "R · 00_diagnostico.Rmd: resultados del diagnóstico (RPubs)", "u": f"{cfg['repo']}/blob/main/r/00_diagnostico.Rmd", "k": "rmd"})
+    if n == 3:
+        rec.insert(1, {"t": "Ejercicio S3 · Consigna completa de auditoría de prensa", "u": "tareas/ejercicio_s3_prensa_paraguaya.html", "k": "guia"})
     if n == 4:
         rec.insert(5, {"t": "R · Ejercicio guiado: ocupación en Concepción con la EPHC (.Rmd)", "u": f"{cfg['repo']}/blob/main/r/04_ejercicio_ephc_concepcion.Rmd", "k": "rmd"})
         rec.insert(6, {"t": "R · Descargar el .Rmd del ejercicio", "u": f"{cfg['raw']}/r/04_ejercicio_ephc_concepcion.Rmd", "k": "descarga"})
@@ -103,6 +105,24 @@ data = {
 (SITE / "data.js").write_text("window.CURSO=" + json.dumps(data, ensure_ascii=False) + ";", encoding="utf-8")
 for f in ("index.html", "aula.css", "aula.js", "backend.js", "planillas.mjs", "xlsx.mjs", "fx.js", "fxbg.js", "visibilidad.js"):
     shutil.copy(RAIZ / "aula" / f, SITE / f)
+
+# La consigna publicada en Moodle también se ofrece como página del aula Git.
+tareas = SITE / "tareas"
+tareas.mkdir(exist_ok=True)
+consigna = (RAIZ / "moodle" / "tareas" / "ejercicio_s3_prensa_paraguaya.html").read_text(encoding="utf-8")
+(tareas / "ejercicio_s3_prensa_paraguaya.html").write_text(
+    '<!doctype html><html lang="es"><head><meta charset="utf-8">'
+    '<meta name="viewport" content="width=device-width,initial-scale=1">'
+    '<title>Ejercicio S3 · Auditoría de prensa paraguaya</title>'
+    '<link rel="stylesheet" href="../aula.css">'
+    '<style>body{max-width:960px;margin:auto;padding:2rem 1.25rem}'
+    'main{display:block}li{margin:.6rem 0}h3,h4{margin-top:1.5rem}'
+    'a{overflow-wrap:anywhere}</style></head><body>'
+    '<nav aria-label="Navegación"><a href="../index.html#/sesion/3">Volver a la unidad 3</a>'
+    ' · <a href="https://www.facet-unc.edu.py/moodle/mod/assign/view.php?id=6824">Entregar en Moodle</a></nav>'
+    f'<main id="main">{consigna}</main></body></html>',
+    encoding="utf-8",
+)
 
 # Pages conserva archivos en caché; cada importación debe apuntar a la versión del archivo copiado.
 def version(nombre):

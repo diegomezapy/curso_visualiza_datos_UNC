@@ -51,6 +51,8 @@ def pagina(s):
     if n == 1:
         rec += [li(f"{cfg['colab']}/sesiones/01_principios/lab00_diagnostico.ipynb", "🐍 Lab 0: resultados del diagnóstico en Colab"),
                 li(f"{cfg['repo']}/blob/main/r/00_diagnostico.Rmd", "📊 Lab 0: resultados del diagnóstico en R Markdown")]
+    if n == 3:
+        rec.append(li(f"{WEB}/aula/tareas/ejercicio_s3_prensa_paraguaya.html", "Ejercicio S3: consigna de auditoría de prensa"))
     if n == 5:
         rec.append(li(f"{cfg['repo']}/blob/main/sesiones/{d}/app_dash.py", "🐍 Código de la aplicación Dash de ejemplo"))
         rec += [li(f"{WEB}/aula/media/unidad5_dashboards/tablero_d1.html", "🌐 Tablero interactivo: evolución mensual y ranking de aduanas"),

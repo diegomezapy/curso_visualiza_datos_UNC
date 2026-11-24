@@ -164,7 +164,7 @@ SESIONES = [
   resumen="Paletas accesibles, etiquetado directo, títulos-mensaje y galería de gráficos engañosos con su corrección.",
   objetivos=["Seleccionar paletas cualitativas, secuenciales y divergentes accesibles.", "Detectar y corregir gráficos engañosos con un checklist ético."],
   lecturas=[("Wilke (2019) caps. 17, 19-20 y 29", "https://clauswilke.com/dataviz/"), ("Cairo (2019), How Charts Lie (selección)", None)],
-  actividades=[dict(id="s3_ej", titulo="Ejercicio S3: corregir un gráfico 'malo' + 150 palabras sobre su daño potencial · publicar en RPubs", pts=5, rubrica="R1", entrega=True, ent=["rpubs"])],
+  actividades=[dict(id="s3_ej", titulo="Ejercicio S3: auditar y rediseñar una visualización de la prensa paraguaya · entrega oficial en Moodle", pts=5, rubrica="R1", entrega=False, accion=dict(t="Abrir la tarea en Moodle", u="https://www.facet-unc.edu.py/moodle/mod/assign/view.php?id=6824"))],
   extra=["Simular daltonismo en tus gráficos (Viz Palette / Coblis)", "Aplicar el checklist ético a un gráfico de tu trabajo"]),
  dict(n=4, titulo="Visual analytics, KPIs y storytelling", unidad="U2",
   resumen="Definición de KPIs accionables, small multiples, contribución al cambio y narrativa de datos.",
