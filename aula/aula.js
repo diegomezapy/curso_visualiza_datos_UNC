@@ -126,6 +126,13 @@ function videosHtml(s) {
    <div class="vinfo"><b>${esc(v.t)}</b>${v.nota ? `<div class="muted">${esc(v.nota)}</div>` : ""}
    <div class="row" style="justify-content:space-between;margin-top:.3rem"><label class="chk2"><input type="checkbox" data-vis="${v.id}" ${S.done["vid_" + v.id] ? "checked" : ""}> Visto</label><a target="_blank" rel="noopener" href="${ytUrl(v)}">Abrir en YouTube ↗</a></div></div></div>`).join("")}</div>`;
 }
+function grabacionesMoodleHtml(n) {
+  const grabaciones = (D.clases_moodle || []).filter(c => +c.sesion === n && c.visible !== false);
+  if (!grabaciones.length) return "";
+  return `<h2>🎥 Grabaciones publicadas en Moodle</h2><div class="card"><ul class="res">${grabaciones.map(c =>
+    `<li><span class="ico">▶</span><a href="${esc(c.url)}" target="_blank" rel="noopener noreferrer">${esc(c.titulo)}</a> <span class="muted">· acceso mediante Moodle FACET</span></li>`
+  ).join("")}</ul></div>`;
+}
 function lecturasHtml(s) {
   if (!s.lecturas?.length) return "";
   return `<h2>📚 Lecturas y documentos</h2><div class="card"><ul class="res">${s.lecturas.map(l => `<li><span class="ico">${LEC_ICO[l.tipo] || "🔗"}</span><span><a target="_blank" rel="noopener" href="${esc(l.u)}">${esc(l.t)}</a> <span class="tag">${esc(l.idioma)}</span>${l.nota ? ` <span class="muted">· ${esc(l.nota)}</span>` : ""}</span></li>`).join("")}</ul></div>`;
@@ -223,7 +230,7 @@ function vSesion(n) {
   <h2>🎯 Objetivos</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.objetivos.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>
   <p><a class="btn sm" href="#/clases/s${n}">🎥 Ver clases grabadas de esta sesión</a></p>
   ${mediaHtml(s)}
-  ${videosHtml(s)}${lecturasHtml(s)}
+  ${grabacionesMoodleHtml(n)}${videosHtml(s)}${lecturasHtml(s)}
   <h2>🧰 Materiales de la sesión</h2><div class="card"><ul class="res">${s.recursos.map(r => `<li><span class="ico">${ico[r.k] || "🔗"}</span>${r.u ? `<a href="${esc(r.u)}" target="${r.k === "guia" ? "_self" : "_blank"}" rel="noopener">${esc(r.t)}</a>` : esc(r.t)}</li>`).join("")}</ul>
    <p class="muted" style="margin:.5rem 0 0">🐍 <b>Python</b> en Colab (<i>Entorno de ejecución → Ejecutar todas</i>) · 📊 <b>R</b> en RStudio: abrí el .Rmd, presioná <i>Knit</i> y publicá con <i>Publish → RPubs</i>. Datasets en <a href="#/recursos">Recursos</a>; guía en <a href="../materiales/pdf/00_guia_inicio.pdf" target="_blank">Guía de inicio (PDF)</a>.</p></div>
   <h2>✅ Actividades y entregas</h2>
@@ -564,7 +571,9 @@ function parseVideo(u) {
 const hms = t => t.split(":").reverse().reduce((a, v, i) => a + (+v || 0) * 60 ** i, 0);
 function capitulos(txt) { return String(txt || "").split("\n").map(l => l.trim().match(/^((?:\d{1,2}:)?\d{1,2}:\d{2})\s+(.+)$/)).filter(Boolean).map(m => ({ t: m[1], s: hms(m[1]), n: m[2] })); }
 async function vClases() {
-  try { CLASES = await B.listarClases(); } catch (e) { return `<h1>🎥 Clases grabadas</h1><div class="card note">No se pudieron leer las clases: ${esc(msgError(e))}</div>`; }
+  let errorClases = "";
+  try { CLASES = await B.listarClases(); } catch (e) { CLASES = []; errorClases = `<div class="card note">No se pudieron leer otras clases: ${esc(msgError(e))}</div>`; }
+  CLASES = [...(D.clases_moodle || []), ...CLASES];
   CLASES = CLASES.filter(c => ES_DOC || c.visible !== false).sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
   const lista = CLASES.filter(c => CL_FILTRO === "todas" || String(c.sesion) === CL_FILTRO.slice(1));
   const chips = [["todas", "Todas"], ...D.sesiones.map(s => ["s" + s.n, "Sesión " + s.n])];
@@ -582,15 +591,15 @@ async function vClases() {
     <div style="grid-column:1/-1" class="row"><button class="btn" type="submit">${CL_EDIT ? "Guardar cambios" : "Publicar clase"}</button>${CL_EDIT ? '<button class="btn sm" type="button" id="cl_x">Cancelar</button>' : ""}</div>
    </form></details>` : "";
   const card = c => { const v = parseVideo(c.url) || {}, caps = capitulos(c.capitulos), visto = !!S.done["rec_" + c.id];
-    const player = v.tipo === "ext" ? `<div class="vbox" style="display:grid;place-items:center"><a class="btn" target="_blank" rel="noopener" href="${esc(v.url)}">▶ Abrir grabación</a></div>`
+    const player = v.tipo === "ext" ? `<div class="vbox" style="display:grid;place-items:center"><a class="btn" target="_blank" rel="noopener noreferrer" href="${esc(v.url)}">▶ ${c.origen === "moodle" ? "Abrir en Moodle" : "Abrir grabación"}</a></div>`
       : `<div class="vbox" id="cb_${esc(c.id)}"><button class="vthumb ${v.tipo === "drive" ? "pl" : ""}" data-cplay="${esc(c.id)}" aria-label="Reproducir: ${esc(c.titulo)}" ${v.tipo === "yt" ? `style="background-image:url(https://i.ytimg.com/vi/${v.id}/hqdefault.jpg)"` : ""}><span>▶</span></button></div>`;
-    return `<div class="vcard">${player}<div class="vinfo"><div class="row" style="justify-content:space-between"><span class="tag">Sesión ${esc(c.sesion)} · ${esc(c.fecha)}</span>${c.visible === false ? '<span class="tag warn">Oculta</span>' : ""}</div>
+    return `<div class="vcard">${player}<div class="vinfo"><div class="row" style="justify-content:space-between"><span class="tag">Sesión ${esc(c.sesion)} · ${esc(c.fecha)}</span>${c.origen === "moodle" ? '<span class="tag">Moodle FACET</span>' : ""}${c.visible === false ? '<span class="tag warn">Oculta</span>' : ""}</div>
      <b>${esc(c.titulo)}</b>${c.notas ? `<div class="muted">${esc(c.notas)}</div>` : ""}
      ${caps.length ? `<div class="chips">${caps.map(k => v.tipo === "yt" ? `<a href="#" data-cseek="${esc(c.id)}" data-s="${k.s}">${esc(k.t)} ${esc(k.n)}</a>` : `<span class="chip" style="font-size:.75rem">${esc(k.t)} ${esc(k.n)}</span>`).join("")}</div>` : ""}
      <div class="row" style="margin-top:.5rem;justify-content:space-between"><label class="chk2"><input type="checkbox" data-cvis="${esc(c.id)}" ${visto ? "checked" : ""}> Ya la vi</label>
-     <span><a class="btn sm" href="#/sesion/${esc(c.sesion)}">Ir a la sesión</a>${ES_DOC ? ` <button class="btn sm" data-cedit="${esc(c.id)}">Editar</button> <button class="btn sm" data-chide="${esc(c.id)}">${c.visible === false ? "Mostrar" : "Ocultar"}</button> <button class="btn sm" data-cdel="${esc(c.id)}">🗑 Eliminar</button>` : ""}</span></div></div></div>`; };
+     <span><a class="btn sm" href="#/sesion/${esc(c.sesion)}">Ir a la sesión</a>${ES_DOC && c.origen !== "moodle" ? ` <button class="btn sm" data-cedit="${esc(c.id)}">Editar</button> <button class="btn sm" data-chide="${esc(c.id)}">${c.visible === false ? "Mostrar" : "Ocultar"}</button> <button class="btn sm" data-cdel="${esc(c.id)}">🗑 Eliminar</button>` : ""}</span></div></div></div>`; };
   return `<h1>🎥 Clases grabadas</h1><p class="sub">Si faltaste o querés repasar: mirá la clase y marcá <i>Ya la vi</i>. ${CLASES.length ? `Viste <b>${vistas}</b> de <b>${CLASES.length}</b>.` : ""}</p>${demoBanner()}
-  ${form}<div class="chips2" style="margin:.8rem 0">${chips.map(([k, t]) => `<a class="chip ${CL_FILTRO === k ? "on" : ""}" href="#/clases/${k}">${t}</a>`).join("")}</div>
+  ${form}${errorClases}<div class="chips2" style="margin:.8rem 0">${chips.map(([k, t]) => `<a class="chip ${CL_FILTRO === k ? "on" : ""}" href="#/clases/${k}">${t}</a>`).join("")}</div>
   ${lista.length ? `<div class="vgrid">${lista.map(card).join("")}</div>` : `<div class="card muted">Todavía no hay clases grabadas${CL_FILTRO !== "todas" ? " para esta sesión" : ""}.${ES_DOC ? " Cargá la primera con el formulario de arriba." : " El docente las publicará acá."}</div>`}
   <p class="muted">Las grabaciones son material del curso: no las descargues ni compartas fuera del grupo.</p>`;
 }

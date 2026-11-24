@@ -17,6 +17,8 @@ jobs:
       - run: python tools/build_site.py
       - run: python tools/build_aula.py
       - run: python tools/build_diagnostico.py
+      - run: python tools/build_moodle.py
+      - run: python -m unittest discover -s tests -p test_moodle_resource_parity.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: site }

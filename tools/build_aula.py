@@ -85,6 +85,7 @@ for s in c.SESIONES:
 cfg["fechas"] = {**cfg.get("fechas", {}), **{k: v for k, v in ag.fechas().items() if not cfg.get("fechas", {}).get(k)}}
 data = {
     "config": cfg,
+    "clases_moodle": json.loads((RAIZ / "aula" / "clases_moodle.json").read_text(encoding="utf-8")),
     "agenda_base": {"eventos": ag.eventos(), "nota": "Calendario base cargado desde el aula."},
     "sesiones": sesiones,
     "quizzes": {**{str(k): {"titulo": v[0], "preguntas": v[1], "sesion": k, "etiqueta": str(k)} for k, v in c.QUIZZES.items()},

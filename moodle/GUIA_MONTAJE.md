@@ -1,6 +1,20 @@
 # Montaje del curso en Moodle (FACET-UNC)
 
-Todo lo de esta carpeta se genera con `python tools/build_moodle.py`. **No se probó contra el Moodle de la FACET** (no hay acceso desde este entorno): si un menú se llama distinto según la versión, usá el equivalente.
+Las páginas de esta carpeta se generan con `python tools/build_moodle.py`. El 2026-11-24 se publicaron en el curso FACET-UNC 271 la página de recursos generales y una página de recursos por unidad. El generador elimina caracteres fuera del plano básico Unicode: esa instalación rechazó una versión con emojis al guardar en su base de datos.
+
+| Sección de Moodle | Página publicada |
+|---|---|
+| Inicio y presentación | [Recursos generales del curso](https://www.facet-unc.edu.py/moodle/mod/page/view.php?id=6814) |
+| Unidad 1 | [Recursos de la unidad 1](https://www.facet-unc.edu.py/moodle/mod/page/view.php?id=6816) |
+| Unidad 2 | [Recursos de la unidad 2](https://www.facet-unc.edu.py/moodle/mod/page/view.php?id=6817) |
+| Unidad 3 | [Recursos de la unidad 3](https://www.facet-unc.edu.py/moodle/mod/page/view.php?id=6818) |
+| Unidad 4 | [Recursos de la unidad 4](https://www.facet-unc.edu.py/moodle/mod/page/view.php?id=6819) |
+| Unidad 5 | [Recursos de la unidad 5](https://www.facet-unc.edu.py/moodle/mod/page/view.php?id=6820) |
+| Unidad 6 | [Recursos de la unidad 6](https://www.facet-unc.edu.py/moodle/mod/page/view.php?id=6821) |
+| Unidad 7 | [Recursos de la unidad 7](https://www.facet-unc.edu.py/moodle/mod/page/view.php?id=6822) |
+| Unidad 8 | [Recursos de la unidad 8](https://www.facet-unc.edu.py/moodle/mod/page/view.php?id=6823) |
+
+La réplica usa enlaces a las mismas fichas, presentaciones, laboratorios, prácticas, lecturas y videos recomendados que el aula Git. Las cinco grabaciones presentes en Moodle se enlazan desde el aula Git mediante `aula/clases_moodle.json`, con el control de acceso del recurso Moodle.
 
 ## 1. Qué importar y qué pegar
 | Archivo | Dónde va en Moodle |
@@ -9,6 +23,7 @@ Todo lo de esta carpeta se genera con `python tools/build_moodle.py`. **No se pr
 | `preguntas/quiz_sesion_N.xml` | Igual, pero solo una sesión (si preferís ir de a una). |
 | `glosario.xml` | Actividad **Glosario** → *Importar entradas* (XML). Activá el autoenlace. |
 | `paginas/sesion_N.html` | Recurso **Página** (o Etiqueta) de la sesión N → editor HTML → botón `</>` → pegar. |
+| `paginas/recursos_generales.html` | Página de recursos de la sección **Inicio y presentación**. |
 
 ## 2. Estructura sugerida (un tema de Moodle por sesión)
 Nombre del tema: `Sesión N · Título · fecha`. En cada uno, en este orden:
