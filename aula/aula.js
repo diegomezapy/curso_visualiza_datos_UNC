@@ -74,7 +74,7 @@ function navHtml(ruta) {
     g += `<div class="grp">Cuenta</div>` + it("/acceso", "🔑 Ingresar o crear cuenta");
     $("#nav").innerHTML = g; $("#user").textContent = "Ingresar"; $("#user").setAttribute("href", "#/acceso"); aplicarNav(); return;
   }
-  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/clases", "🎥 Clases grabadas") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
+  let h = it("/", "🏠 Inicio") + it("/calendario", "📅 Calendario") + it("/clases", "🎥 Clases grabadas") + it("/foro/prensa", "💬 Foro de prensa") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
   D.sesiones.forEach(s => { const p = progSes(s); h += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`, `<span class="dot">${p.pct >= 1 ? "✅" : Math.round(p.pct * 100) + "%"}</span>`); });
   h += `<div class="grp">Cuenta</div>` + it("/perfil", "👤 Mi perfil") + (ES_DOC ? it("/docente", "🧑‍🏫 Panel docente") : "");
   $("#nav").innerHTML = h;
@@ -234,6 +234,7 @@ function vSesion(n) {
   <h2>🧰 Materiales de la sesión</h2><div class="card"><ul class="res">${s.recursos.map(r => `<li><span class="ico">${ico[r.k] || "🔗"}</span>${r.u ? `<a href="${esc(r.u)}" target="${r.k === "guia" ? "_self" : "_blank"}" rel="noopener">${esc(r.t)}</a>` : esc(r.t)}</li>`).join("")}</ul>
    <p class="muted" style="margin:.5rem 0 0">🐍 <b>Python</b> en Colab (<i>Entorno de ejecución → Ejecutar todas</i>) · 📊 <b>R</b> en RStudio: abrí el .Rmd, presioná <i>Knit</i> y publicá con <i>Publish → RPubs</i>. Datasets en <a href="#/recursos">Recursos</a>; guía en <a href="../materiales/pdf/00_guia_inicio.pdf" target="_blank">Guía de inicio (PDF)</a>.</p></div>
   <h2>✅ Actividades y entregas</h2>
+  ${n === 3 ? '<div class="card"><h3>💬 Discusión de prensa paraguaya</h3><p>Publicá tu análisis y comentá la propuesta de rediseño de otra persona. La entrega evaluada se realiza en Moodle.</p><a class="btn" href="#/foro/prensa">Participar en el foro →</a></div>' : ""}
   ${s.actividades.map(a => { const r = D.rubricas[a.rubrica]; const ap = autoPct(S.auto, a); return `<div class="card"><div class="act">
     <input type="checkbox" id="chk_${a.id}" data-act="${a.id}" ${S.done[a.id] ? "checked" : ""} aria-label="Marcar como hecha">
     <div style="flex:1"><label for="chk_${a.id}" style="margin:0;font-weight:600">${esc(a.titulo)}</label>
@@ -254,6 +255,45 @@ function vSesion(n) {
   ${quizzesHtml(s, "final")}
   ${s.extra?.length ? `<h2>💡 Para profundizar</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.extra.map(e => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
   <div class="row" data-novis style="justify-content:space-between;margin-top:1.5rem">${prev ? `<a class="btn sec" href="#/sesion/${prev.n}">← Sesión ${prev.n}</a>` : "<span></span>"}${next ? `<a class="btn sec" href="#/sesion/${next.n}">Sesión ${next.n} →</a>` : ""}</div>`;
+}
+
+/* ---------- foro de prensa (Unidad 3) ---------- */
+const CASOS_PRENSA = { ultima_hora: "Última Hora · déficit fiscal", abc_color: "ABC Color · exportación de carne", comparacion: "Comparación de ambos casos" };
+const fechaForo = x => { const d = x?.toDate?.() || new Date(x || 0); return Number.isNaN(d.getTime()) ? "" : new Intl.DateTimeFormat("es-PY", { dateStyle: "medium", timeStyle: "short", timeZone: "America/Asuncion" }).format(d); };
+const textoForo = s => esc(s).replace(/\n/g, "<br>");
+async function vForoPrensa() {
+  let posts;
+  try { posts = await B.listarForoPrensa(); } catch (e) { return `<h1>Foro de prensa paraguaya</h1><div class="card note" role="alert">No se pudieron cargar los mensajes: ${esc(msgError(e))}</div>`; }
+  const temas = posts.filter(p => p.tipo === "tema").sort((a, b) => fechaMs(b.creado) - fechaMs(a.creado));
+  const respuestas = posts.filter(p => p.tipo === "respuesta");
+  const propio = temas.some(p => p.uid === USER.uid);
+  return `<a href="#/sesion/3">← Unidad 3</a><h1>💬 Foro: visualizaciones en la prensa paraguaya</h1>
+  <p class="sub">Debatí con evidencia los gráficos de Última Hora y ABC Color. Leé la <a href="tareas/ejercicio_s3_prensa_paraguaya.html" target="_blank" rel="noopener">consigna y las fuentes</a> antes de publicar. La entrega calificada sigue en Moodle.</p>
+  <div class="card"><h2 style="margin-top:0">Preguntas para discutir</h2><ol><li>¿Qué interpretación sugiere la visualización y qué dato permite comprobarla?</li><li>¿Qué cambiarías en unidades, escala, período o distinción entre observaciones y proyecciones?</li><li>¿Cómo justificarías tu rediseño con la fuente primaria?</li></ol><p class="muted">Publicá un análisis inicial y respondé al menos a un compañero. Usá argumentos respetuosos; no compartas datos personales.</p></div>
+  ${propio ? '<p class="note">Tu análisis inicial ya está publicado. Podés responder a otros mensajes.</p>' : `<form id="foroTema" class="card foro-form"><h2 style="margin-top:0">Publicar mi análisis</h2><label for="foroCaso">Publicación analizada</label><select id="foroCaso" required><option value="ultima_hora">Última Hora · déficit fiscal</option><option value="abc_color">ABC Color · exportación de carne</option><option value="comparacion">Comparación de ambos casos</option></select><label for="foroTitulo">Título</label><input id="foroTitulo" type="text" required minlength="8" maxlength="150"><label for="foroTexto">Análisis con evidencia</label><textarea id="foroTexto" required minlength="20" maxlength="5000" rows="7" placeholder="Describí el problema, citá un dato y explicá tu propuesta de rediseño."></textarea><div class="row"><button class="btn" type="submit">Publicar análisis</button><span class="muted">Una publicación inicial por persona.</span></div></form>`}
+  <h2>Discusión <span class="muted">(${temas.length} análisis)</span></h2>
+  ${temas.length ? temas.map(p => `<article class="card foro-tema" id="tema-${esc(p.id)}"><span class="tag">${esc(CASOS_PRENSA[p.caso] || "Caso")}</span><h3>${esc(p.titulo)}</h3><p class="muted">${esc(p.autor)} · ${esc(fechaForo(p.creado))}</p><div class="foro-texto">${textoForo(p.texto)}</div>${ES_DOC ? `<button type="button" class="btn sec sm" data-borrar-foro="${esc(p.id)}">Eliminar tema</button>` : ""}
+    <div class="foro-respuestas"><h4>Respuestas</h4>${respuestas.filter(r => r.parentId === p.id).sort((a, b) => fechaMs(a.creado) - fechaMs(b.creado)).map(r => `<div class="foro-respuesta"><p class="muted">${esc(r.autor)} · ${esc(fechaForo(r.creado))}</p><div class="foro-texto">${textoForo(r.texto)}</div>${ES_DOC ? `<button type="button" class="btn sec sm" data-borrar-foro="${esc(r.id)}">Eliminar respuesta</button>` : ""}</div>`).join("") || '<p class="muted">Todavía no hay respuestas.</p>'}</div>
+    <form class="foro-responder" data-parent="${esc(p.id)}"><label for="respuesta-${esc(p.id)}">Responder a este análisis</label><textarea id="respuesta-${esc(p.id)}" required minlength="20" maxlength="5000" rows="3" placeholder="Agregá una observación o una propuesta fundamentada."></textarea><button class="btn sm" type="submit">Publicar respuesta</button></form></article>`).join("") : '<p class="card muted">Todavía no hay análisis. Publicá el primero.</p>'}`;
+}
+const fechaMs = x => (x?.toDate?.() || new Date(x || 0)).getTime() || 0;
+function bindForoPrensa() {
+  const autor = ES_DOC ? "Docente" : nombreCompleto(PERFIL);
+  $("#foroTema")?.addEventListener("submit", async e => {
+    e.preventDefault(); const f = e.currentTarget, b = f.querySelector("button"); b.disabled = true;
+    try { await B.guardarTemaPrensa(USER.uid, { autor, caso: $("#foroCaso").value, titulo: $("#foroTitulo").value.trim(), texto: $("#foroTexto").value.trim() }); aviso("Análisis publicado ✔"); await render(); }
+    catch (err) { aviso(msgError(err), "bad"); b.disabled = false; }
+  });
+  $$(".foro-responder").forEach(f => f.addEventListener("submit", async e => {
+    e.preventDefault(); const b = f.querySelector("button"); b.disabled = true;
+    try { await B.guardarRespuestaPrensa(crypto.randomUUID(), { uid: USER.uid, autor, parentId: f.dataset.parent, texto: f.querySelector("textarea").value.trim() }); aviso("Respuesta publicada ✔"); await render(); }
+    catch (err) { aviso(msgError(err), "bad"); b.disabled = false; }
+  }));
+  $$("[data-borrar-foro]").forEach(b => b.addEventListener("click", async () => {
+    if (!confirm("¿Eliminar este mensaje del foro?")) return;
+    b.disabled = true; try { await B.eliminarMensajePrensa(b.dataset.borrarForo); aviso("Mensaje eliminado"); await render(); }
+    catch (err) { aviso(msgError(err), "bad"); b.disabled = false; }
+  }));
 }
 
 /* ---------- quiz ---------- */
@@ -798,6 +838,7 @@ async function render() {
     else if (oculto) { html = vNoDisponible(); crumb = "No disponible"; }
     else switch (a) {
       case "sesion": html = vSesion(n); crumb = `Módulo ${n}`; bind = bindSesion; break;
+      case "foro": if (b === "prensa") { html = await vForoPrensa(); crumb = "Foro de prensa"; bind = bindForoPrensa; break; }
       case "quiz": html = vQuiz(n); crumb = `Módulo ${n} › Quiz`; bind = () => bindQuiz(n); break;
       case "notas": await refrescarNotas(); html = vNotas(); crumb = "Mis notas"; break;
       case "clases": CL_FILTRO = b || "todas"; html = await vClases(); bind = bindClases; crumb = "Clases grabadas"; break;

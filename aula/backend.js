@@ -83,6 +83,16 @@ async function crearFirebase(cfg) {
     eliminarClase: id => fb.deleteDoc(fb.doc(db, "clases", id)),
     async listarClases() { return (await fb.getDocs(fb.collection(db, "clases"))).docs.map(d => ({ id: d.id, ...d.data(), actualizado: undefined })); },
     guardarClase: (c) => { const { id, ...r } = c; return fb.setDoc(fb.doc(db, "clases", id), { ...r, actualizado: fb.serverTimestamp() }); },
+    async listarForoPrensa() { return (await fb.getDocs(fb.collection(db, "foro_prensa"))).docs.map(d => ({ id: d.id, ...d.data() })); },
+    guardarTemaPrensa: (uid, tema) => fb.setDoc(fb.doc(db, "foro_prensa", uid), { ...tema, uid, tipo: "tema", creado: fb.serverTimestamp() }),
+    guardarRespuestaPrensa: (id, respuesta) => fb.setDoc(fb.doc(db, "foro_prensa", id), { ...respuesta, tipo: "respuesta", creado: fb.serverTimestamp() }),
+    async eliminarMensajePrensa(id) {
+      const posts = await fb.getDocs(fb.collection(db, "foro_prensa"));
+      const ids = posts.docs.filter(d => d.id === id || d.data().parentId === id).map(d => d.id);
+      for (let i = 0; i < ids.length; i += 400) {
+        const b = fb.writeBatch(db); ids.slice(i, i + 400).forEach(x => b.delete(fb.doc(db, "foro_prensa", x))); await b.commit();
+      }
+    },
   };
 }
 
@@ -91,7 +101,7 @@ async function hash(s) { const b = await crypto.subtle.digest("SHA-256", new Tex
 function crearDemo(cfg) {
   const K = "cvd_demo_db", KS = "cvd_demo_sesion";
   const rd = () => { try { return JSON.parse(localStorage.getItem(K)) || {}; } catch { return {}; } };
-  const db0 = () => Object.assign({ cuentas: {}, usuarios: {}, progreso: {}, calificaciones: {}, respuestasQuiz: {}, cedulas: {}, clases: {} }, rd());
+  const db0 = () => Object.assign({ cuentas: {}, usuarios: {}, progreso: {}, calificaciones: {}, respuestasQuiz: {}, cedulas: {}, clases: {}, foroPrensa: {} }, rd());
   const wr = d => { try { localStorage.setItem(K, JSON.stringify(d)); } catch {} };
   const listeners = [];
   const sesion = () => { try { return localStorage.getItem(KS); } catch { return null; } };
@@ -146,6 +156,10 @@ function crearDemo(cfg) {
     async eliminarClase(id) { const d = db0(); delete d.clases[id]; wr(d); },
     async listarClases() { return Object.entries(db0().clases).map(([id, c]) => ({ id, ...c })); },
     async guardarClase(c) { const d = db0(), { id, ...r } = c; d.clases[id] = r; wr(d); },
+    async listarForoPrensa() { return Object.entries(db0().foroPrensa).map(([id, p]) => ({ id, ...p })); },
+    async guardarTemaPrensa(u, tema) { const d = db0(); if (d.foroPrensa[u]) throw err("Ya publicaste tu análisis inicial."); d.foroPrensa[u] = { ...tema, uid: u, tipo: "tema", creado: new Date().toISOString() }; wr(d); },
+    async guardarRespuestaPrensa(id, respuesta) { const d = db0(); d.foroPrensa[id] = { ...respuesta, tipo: "respuesta", creado: new Date().toISOString() }; wr(d); },
+    async eliminarMensajePrensa(id) { const d = db0(); Object.keys(d.foroPrensa).forEach(x => { if (x === id || d.foroPrensa[x].parentId === id) delete d.foroPrensa[x]; }); wr(d); },
   };
 }
 
