@@ -89,6 +89,7 @@ data = {
     "config": cfg,
     "clases_moodle": json.loads((RAIZ / "aula" / "clases_moodle.json").read_text(encoding="utf-8")),
     "agenda_base": {"eventos": ag.eventos(), "nota": "Calendario base cargado desde el aula."},
+    "foros": json.loads((RAIZ / "aula" / "foros.json").read_text(encoding="utf-8")),
     "sesiones": sesiones,
     "quizzes": {**{str(k): {"titulo": v[0], "preguntas": v[1], "sesion": k, "etiqueta": str(k)} for k, v in c.QUIZZES.items()},
                 **{e["id"]: {"titulo": e["titulo"], "preguntas": e["preguntas"], "sesion": e["sesion"], "etiqueta": e["etiqueta"], "ubicacion": e.get("ubicacion", "final"), "deck": e.get("deck", 0), "nota": e.get("nota", ""), "volver": e.get("volver", "")} for e in c.QUIZZES_EXTRA}},

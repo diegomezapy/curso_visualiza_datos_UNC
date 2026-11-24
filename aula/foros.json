@@ -1,0 +1,98 @@
+[
+  {
+    "n": 1,
+    "titulo": "Lo que se ve en cinco segundos",
+    "situacion": "Dos gráficos pueden contener los mismos datos y provocar lecturas distintas. Tomá una comparación o anomalía del laboratorio de percepción y elegí qué representación permite detectarla con mayor rapidez.",
+    "preguntas": [
+      "¿Qué pregunta debe responder la persona que mira el gráfico y quién es esa persona?",
+      "¿Qué dato concreto se reconoce primero en tu propuesta y cuál queda más difícil de ver?",
+      "¿Qué papel cumplen posición, longitud, área o color en esa diferencia?"
+    ],
+    "replica": "Respondé a otra propuesta con una conclusión que su gráfico podría ocultar y una mejora comprobable.",
+    "recurso": {"titulo": "Laboratorio 1: percepción y rediseño", "url": "../sesiones/01_principios/index.html"}
+  },
+  {
+    "n": 2,
+    "titulo": "Una pregunta, dos gráficos",
+    "situacion": "Elegí una de las preguntas del laboratorio de elección de gráficos. Compará dos tipos de visualización posibles para los mismos datos y defendé uno según el objetivo y la audiencia.",
+    "preguntas": [
+      "¿Qué variable y unidad de análisis se representan?",
+      "¿Qué responde mejor el gráfico elegido y qué pierde frente a la alternativa?",
+      "¿Cómo cambiaría tu elección si la audiencia o la granularidad fueran otras?"
+    ],
+    "replica": "Cambiá una condición del caso de otra persona, por ejemplo audiencia o escala, y discutí si su elección sigue funcionando.",
+    "recurso": {"titulo": "Laboratorio 2: elección de gráficos", "url": "../sesiones/02_eleccion_graficos/index.html"}
+  },
+  {
+    "n": 3,
+    "titulo": "Visualizaciones en la prensa paraguaya",
+    "situacion": "Analizá las infografías de Última Hora y ABC Color que se muestran en este foro. Separá las decisiones de diseño que afectan la interpretación de las preferencias estéticas.",
+    "preguntas": [
+      "¿Qué interpretación sugiere la visualización y qué dato permite comprobarla?",
+      "¿Qué cambiarías en unidades, escala, período o distinción entre observaciones y proyecciones?",
+      "¿Cómo justificarías tu rediseño con la fuente primaria?"
+    ],
+    "replica": "Contrastá un hallazgo de otra persona con la nota y con MEF o SENACSA, según el caso.",
+    "recurso": {"titulo": "Consigna y fuentes de prensa", "url": "tareas/ejercicio_s3_prensa_paraguaya.html"}
+  },
+  {
+    "n": 4,
+    "titulo": "¿Dónde actuaría una gerencia?",
+    "situacion": "Una gerencia debe elegir una acción para el próximo trimestre. Seleccioná un indicador del laboratorio de KPIs y construí una recomendación que pueda ponerse a prueba.",
+    "preguntas": [
+      "¿Cuál es el KPI, su denominador, período y punto de comparación?",
+      "¿Qué visualización de una página ayudaría a decidir y qué acción proponés?",
+      "¿Qué dato faltante podría invertir esa decisión?"
+    ],
+    "replica": "Buscá un escenario en el que la recomendación de otra persona resultaría equivocada y proponé el contexto necesario.",
+    "recurso": {"titulo": "Laboratorio 4: KPIs y storytelling", "url": "../sesiones/04_visual_analytics_kpis/index.html"}
+  },
+  {
+    "n": 5,
+    "titulo": "El filtro que cambia la conclusión",
+    "situacion": "Explorá el tablero de aduanas. Elegí una interacción indispensable y otra prescindible. Explicá qué conclusión cambia cuando se aplica el filtro.",
+    "preguntas": [
+      "¿Qué filtro o selección usaste y qué valor cambió?",
+      "¿Qué KPI, gráfico y tabla deben responder juntos a ese filtro?",
+      "¿Cómo debería verse el tablero cuando la selección no devuelve datos?"
+    ],
+    "replica": "Probá una selección contraria a la de otra persona y señalá una incoherencia o una mejora de interacción.",
+    "recurso": {"titulo": "Tablero interactivo de aduanas", "url": "media/unidad5_dashboards/tablero_d1.html"}
+  },
+  {
+    "n": 6,
+    "titulo": "¿Cuándo debe saltar una alerta?",
+    "situacion": "Un informe automatizado detecta una caída del margen superior a dos puntos porcentuales. Debe decidir qué comunicar cuando el período anterior falta o los datos son incompletos.",
+    "preguntas": [
+      "¿En qué condición exacta emitirías la alerta y qué unidad tiene el umbral?",
+      "¿Qué mostrarías si no hay comparación válida?",
+      "¿Qué dato o parámetro registrarías para reproducir el informe?"
+    ],
+    "replica": "Presentá un caso límite que podría producir una alerta engañosa y una regla para evitarlo.",
+    "recurso": {"titulo": "Laboratorio 6: reportes automatizados", "url": "../sesiones/06_reporting_automatizado/index.html"}
+  },
+  {
+    "n": 7,
+    "titulo": "Dos mapas, dos historias",
+    "situacion": "Dos áreas tienen poblaciones muy distintas. Un mapa de totales y otro de tasas pueden sugerir prioridades opuestas. Elegí cuál usarías para una decisión pública.",
+    "preguntas": [
+      "¿Qué variable, denominador, período y unidad mostrarías?",
+      "¿Qué cambia al usar tasa en lugar de total y al modificar las áreas geográficas?",
+      "¿Qué inferencia sobre personas no puede hacerse desde el mapa agregado?"
+    ],
+    "replica": "Identificá en la propuesta de otra persona un posible error de escala o inferencia ecológica y sugerí una vista complementaria.",
+    "recurso": {"titulo": "Laboratorio 7: geodatos y estructuras complejas", "url": "../sesiones/07_estructuras_complejas/index.html"}
+  },
+  {
+    "n": 8,
+    "titulo": "Defensa ante un comité escéptico",
+    "situacion": "Presentá una conclusión central de tu proyecto integrador como si un comité tuviera que decidir si actuar. Mostrá una visualización, una limitación y una recomendación prudente.",
+    "preguntas": [
+      "¿Qué decisión proponés y cuál es la evidencia visual más fuerte?",
+      "¿Qué incertidumbre, sesgo o dato faltante podría cambiarla?",
+      "¿Qué comprobación pedirías antes de ponerla en práctica?"
+    ],
+    "replica": "Asumí el papel de una gerencia crítica: formulá una pregunta difícil y sugerí qué evidencia permitiría responderla.",
+    "recurso": {"titulo": "Guía del proyecto integrador", "url": "../docs/proyecto_integrador.html"}
+  }
+]

@@ -38,6 +38,15 @@ def eventos():
                    "fin_iso": f"{(dia + dt.timedelta(days=1)).isoformat()}T00:00:00-03:00",
                    "todo_el_dia": True, "descripcion": descripcion, "enlace": enlace, "accion": accion,
                    "asistencia": False, "mini": False})
+    for n in (1, 2, 4, 5, 6, 7, 8):
+        dia = dt.date(2026, 11, 24)
+        ev.append({"id": f"foro-unidad-{n}", "tipo": "foro", "titulo": f"Foro de la Unidad {n} disponible",
+                   "sesion": n, "fecha": dia.isoformat(), "inicio": "", "fin": "",
+                   "inicio_iso": f"{dia.isoformat()}T00:00:00-03:00",
+                   "fin_iso": f"{(dia + dt.timedelta(days=1)).isoformat()}T00:00:00-03:00",
+                   "todo_el_dia": True, "descripcion": f"El foro de la Unidad {n} está abierto en el aula Git, sin fecha de cierre fijada.",
+                   "enlace": f"https://diegomezapy.github.io/curso_visualiza_datos_UNC/aula/index.html#/foro/{n}",
+                   "accion": "Participar en el foro", "asistencia": False, "mini": False})
     return sorted(ev, key=lambda e: e["inicio_iso"])
 
 def fechas():

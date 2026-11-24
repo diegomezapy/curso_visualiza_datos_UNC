@@ -15,4 +15,6 @@ node tests/aula_e2e_firebase.js
 ```
 La prueba de Firebase cubre: registro con datos personales, verificación de correo, persistencia, cédula duplicada,
 recuperación y cambio de contraseña, panel docente y los intentos de acceso indebido a las reglas de Firestore (deben dar 403).
+También comprueba que el foro de la Unidad 1 funciona con cuenta verificada, que sus mensajes no aparecen en la Unidad 2
+y que una persona anónima o un estudiante que intenta borrar mensajes recibe una denegación.
 No cubre el ingreso con Google (requiere un proyecto real).

@@ -11,8 +11,8 @@ a{color:var(--ac)}a:hover{color:var(--ac2)}
 .logo{display:grid;place-items:center;width:42px;height:42px;border-radius:10px;background:var(--ac);color:#fff;font-weight:800}
 #nav a{display:flex;justify-content:space-between;gap:.5rem;align-items:center;color:var(--sidefg);text-decoration:none;padding:.45rem .6rem;border-radius:8px;font-size:.92rem}
 #nav a:hover{background:rgba(255,255,255,.08)}#nav a[aria-current=page]{background:rgba(255,255,255,.16);font-weight:600}
-#nav a[href="#/foro/prensa"]{background:rgba(86,180,233,.18);border:1px solid rgba(134,210,255,.35);font-weight:700;margin:.25rem 0}
-#nav a[href="#/foro/prensa"]:hover,#nav a[href="#/foro/prensa"][aria-current=page]{background:rgba(86,180,233,.3)}
+#nav a[href="#/foros"]{background:rgba(86,180,233,.18);border:1px solid rgba(134,210,255,.35);font-weight:700;margin:.25rem 0}
+#nav a[href="#/foros"]:hover,#nav a[href="#/foros"][aria-current=page]{background:rgba(86,180,233,.3)}
 #nav .grp{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;opacity:.6;margin:.9rem .6rem .3rem}
 .dot{font-size:.72rem;opacity:.85}.side-foot{margin-top:1.5rem;font-size:.8rem;opacity:.8}.side-foot a{color:var(--sidefg)}
 .content{flex:1;min-width:0}

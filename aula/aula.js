@@ -14,7 +14,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
 const empty = () => ({ perfil: {}, done: {}, quiz: {}, auto: {}, oficial: {}, enlaces: {} });
 let S = empty(), USER = null, PERFIL = null, ES_DOC = false, ocupado = false, B;
-const KINV = "cvd_invitado", RUTAS_INV = ["", "sesion", "recursos", "calendario", "tutor", "datos", "foro"];
+const KINV = "cvd_invitado", RUTAS_INV = ["", "sesion", "recursos", "calendario", "tutor", "datos", "foro", "foros"];
 let INV = false; try { INV = sessionStorage.getItem(KINV) === "1"; } catch {}
 const setInv = v => { INV = !!v; try { v ? sessionStorage.setItem(KINV, "1") : sessionStorage.removeItem(KINV); } catch {} };
 let tmr;
@@ -27,6 +27,10 @@ const nombreCompleto = p => `${p.nombres || ""} ${p.apellidos || ""}`.trim();
 const slug = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9]+/g, "_").replace(/^_|_$/g, "");
 const fmt = (x, d = 1) => Number.isFinite(x) ? x.toFixed(d).replace(/\.0+$/, "") : "–";
 const ACTS = D.sesiones.flatMap(s => s.actividades.map(a => ({ ...a, n: s.n })));
+const FOROS = D.foros || [];
+const foroInfo = n => FOROS.find(f => f.n === n);
+const foroRuta = n => n === 3 ? "#/foro/prensa" : `#/foro/${n}`;
+const foroNumero = parte => parte === "prensa" ? 3 : /^[1-8]$/.test(parte || "") ? Number(parte) : 0;
 const PRACT = ["s1_ej", "s2_ej", "s3_ej", "s4_mp1", "s5_mp2", "s6_ej", "s7_mp3"];
 const actById = id => ACTS.find(a => a.id === id);
 const LVL = ["", "Insuficiente", "En desarrollo", "Logrado", "Sobresaliente"];
@@ -69,17 +73,24 @@ const bar = (p, cls = "") => `<div class="bar ${cls}" role="progressbar" aria-va
 function navHtml(ruta) {
   const it = (h, t, extra = "") => `<a href="#${h}" ${ruta === h ? 'aria-current="page"' : ""}><span>${t}</span>${extra}</a>`;
   if (!USER) {
-    let g = it("/", "🏠 Inicio") + it("/foro/prensa", "💬 Foro de prensa", '<span class="dot">Ingresar</span>') + it("/calendario", "📅 Calendario") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
+    let g = it("/", "🏠 Inicio") + it("/foros", "💬 Foros por unidad", '<span class="dot">8 foros</span>') + it("/foro/prensa", "📰 Foro de prensa", '<span class="dot">Unidad 3</span>') + it("/calendario", "📅 Calendario") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
     D.sesiones.forEach(s => { g += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`); });
     g += `<div class="grp">Cuenta</div>` + it("/acceso", "🔑 Ingresar o crear cuenta");
     $("#nav").innerHTML = g; $("#user").textContent = "Ingresar"; $("#user").setAttribute("href", "#/acceso"); aplicarNav(); return;
   }
-  let h = it("/", "🏠 Inicio") + it("/foro/prensa", "💬 Foro de prensa", '<span class="dot">Unidad 3</span>') + it("/calendario", "📅 Calendario") + it("/clases", "🎥 Clases grabadas") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
+  let h = it("/", "🏠 Inicio") + it("/foros", "💬 Foros por unidad", '<span class="dot">8 foros</span>') + it("/foro/prensa", "📰 Foro de prensa", '<span class="dot">Unidad 3</span>') + it("/calendario", "📅 Calendario") + it("/clases", "🎥 Clases grabadas") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
   D.sesiones.forEach(s => { const p = progSes(s); h += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`, `<span class="dot">${p.pct >= 1 ? "✅" : Math.round(p.pct * 100) + "%"}</span>`); });
   h += `<div class="grp">Cuenta</div>` + it("/perfil", "👤 Mi perfil") + (ES_DOC ? it("/docente", "🧑‍🏫 Panel docente") : "");
   $("#nav").innerHTML = h;
   $("#user").textContent = PERFIL ? (PERFIL.nombres || "").split(" ")[0] : "Ingresar"; $("#user").setAttribute("href", "#/perfil");
   aplicarNav();
+}
+function sincronizarMenu() {
+  const menu = $("#menu"), side = $("#side");
+  const abierto = side.classList.contains("open");
+  side.inert = document.body.classList.contains("guest") || (matchMedia("(max-width: 820px)").matches && !abierto);
+  menu.setAttribute("aria-expanded", String(abierto));
+  menu.setAttribute("aria-label", abierto ? "Cerrar menú" : "Abrir menú");
 }
 
 /* ---------- vistas ---------- */
@@ -94,7 +105,7 @@ function vInicio() {
   const c = calcular(S.quiz, S.oficial);
   return `${heroHtml(progTotal(), esc((reg || "").split(" ")[0]))}
   <p class="sub">${esc(C.curso)} · ${esc(C.programa)} · ${esc(C.semestre)}</p>
-  <div class="card foro-promo"><div><span class="tag">Unidad 3 · discusión abierta</span><h2>💬 Foro de prensa paraguaya</h2><p>Analizá las visualizaciones de Última Hora y ABC Color, y comentá el rediseño de otra persona.</p></div><a class="btn" href="#/foro/prensa">Entrar al foro →</a></div>
+  <div class="card foro-promo"><div><span class="tag">Ocho unidades · ocho debates</span><h2>💬 Foros de discusión</h2><p>En cada unidad, defendé una decisión con evidencia y poné a prueba una propuesta de otra persona.</p></div><a class="btn" href="#/foros">Explorar los foros →</a></div>
   <div class="kpis">
     <div class="card"><div class="muted">Avance del curso</div><div class="big">${Math.round(progTotal() * 100)}%</div>${bar(progTotal())}</div>
     <div class="card"><div class="muted">Teoría (quizzes) / 30</div><div class="big">${fmt(c.teoria)}</div><div class="muted">mejores 6 de ${Object.keys(D.quizzes).length} quizzes</div></div>
@@ -235,7 +246,7 @@ function vSesion(n) {
   <h2>🧰 Materiales de la sesión</h2><div class="card"><ul class="res">${s.recursos.map(r => `<li><span class="ico">${ico[r.k] || "🔗"}</span>${r.u ? `<a href="${esc(r.u)}" target="${r.k === "guia" ? "_self" : "_blank"}" rel="noopener">${esc(r.t)}</a>` : esc(r.t)}</li>`).join("")}</ul>
    <p class="muted" style="margin:.5rem 0 0">🐍 <b>Python</b> en Colab (<i>Entorno de ejecución → Ejecutar todas</i>) · 📊 <b>R</b> en RStudio: abrí el .Rmd, presioná <i>Knit</i> y publicá con <i>Publish → RPubs</i>. Datasets en <a href="#/recursos">Recursos</a>; guía en <a href="../materiales/pdf/00_guia_inicio.pdf" target="_blank">Guía de inicio (PDF)</a>.</p></div>
   <h2>✅ Actividades y entregas</h2>
-  ${n === 3 ? '<div class="card"><h3>💬 Discusión de prensa paraguaya</h3><p>Publicá tu análisis y comentá la propuesta de rediseño de otra persona. Registrá el enlace a tu trabajo en la actividad S3 de esta unidad.</p><a class="btn" href="#/foro/prensa">Participar en el foro →</a></div>' : ""}
+  ${foroInfo(n) ? `<div class="card foro-promo"><div><span class="tag">Foro de la Unidad ${n}</span><h3>💬 ${esc(foroInfo(n).titulo)}</h3><p>${esc(foroInfo(n).situacion)}</p></div><a class="btn" href="${foroRuta(n)}">Participar en el foro →</a></div>` : ""}
   ${s.actividades.map(a => { const r = D.rubricas[a.rubrica]; const ap = autoPct(S.auto, a); return `<div class="card"><div class="act">
     <input type="checkbox" id="chk_${a.id}" data-act="${a.id}" ${S.done[a.id] ? "checked" : ""} aria-label="Marcar como hecha">
     <div style="flex:1"><label for="chk_${a.id}" style="margin:0;font-weight:600">${esc(a.titulo)}</label>
@@ -273,7 +284,7 @@ async function vForoPrensa() {
   const temas = posts.filter(p => p.tipo === "tema").sort((a, b) => fechaMs(b.creado) - fechaMs(a.creado));
   const respuestas = posts.filter(p => p.tipo === "respuesta");
   const propio = temas.some(p => p.uid === USER.uid);
-  return `<a href="#/sesion/3">← Unidad 3</a><h1>💬 Foro: visualizaciones en la prensa paraguaya</h1>
+  return `<a href="#/foros">← Todos los foros</a> · <a href="#/sesion/3">Unidad 3</a><h1>💬 Foro: visualizaciones en la prensa paraguaya</h1>
   <p class="sub">Debatí con evidencia los gráficos de Última Hora y ABC Color. Leé la <a href="tareas/ejercicio_s3_prensa_paraguaya.html" target="_blank" rel="noopener">consigna y las fuentes</a> antes de publicar. Registrá el enlace a tu trabajo en la <a href="#/sesion/3">actividad S3 de la Unidad 3</a>.</p>
   <h2>Publicaciones para analizar</h2>${imagenesPrensaHtml()}
   <div class="card"><h2 style="margin-top:0">Preguntas para discutir</h2><ol><li>¿Qué interpretación sugiere la visualización y qué dato permite comprobarla?</li><li>¿Qué cambiarías en unidades, escala, período o distinción entre observaciones y proyecciones?</li><li>¿Cómo justificarías tu rediseño con la fuente primaria?</li></ol><p class="muted">Publicá un análisis inicial y respondé al menos a un compañero. Usá argumentos respetuosos; no compartas datos personales.</p></div>
@@ -299,6 +310,51 @@ function bindForoPrensa() {
   $$("[data-borrar-foro]").forEach(b => b.addEventListener("click", async () => {
     if (!confirm("¿Eliminar este mensaje del foro?")) return;
     b.disabled = true; try { await B.eliminarMensajePrensa(b.dataset.borrarForo); aviso("Mensaje eliminado"); await render(); }
+    catch (err) { aviso(msgError(err), "bad"); b.disabled = false; }
+  }));
+}
+
+function vForos() {
+  return `<h1>💬 Foros de discusión por unidad</h1><p class="sub">Elegí una unidad. En cada foro publicá una postura sustentada y respondé a otra persona con una prueba, un contraejemplo o una mejora concreta. Los mensajes requieren una cuenta verificada.</p>
+  <div class="grid">${FOROS.map(f => `<a class="card link" href="${foroRuta(f.n)}"><span class="tag">Unidad ${f.n}</span><h2 style="margin:.5rem 0">${esc(f.titulo)}</h2><p class="muted">${esc(f.situacion)}</p><b>Entrar al foro →</b></a>`).join("")}</div>`;
+}
+function guiaForoHtml(f) {
+  return `<div class="card"><h2 style="margin-top:0">El desafío</h2><p>${esc(f.situacion)}</p><ol>${f.preguntas.map(p => `<li>${esc(p)}</li>`).join("")}</ol>
+    <p><b>Réplica:</b> ${esc(f.replica)}</p><a href="${esc(f.recurso.url)}" target="_blank" rel="noopener noreferrer">${esc(f.recurso.titulo)} ↗</a>
+    <p class="muted" style="margin-bottom:0">Publicá un análisis con al menos un dato o una decisión verificable. Respondé con respeto y evitá compartir datos personales.</p></div>`;
+}
+async function vForoUnidad(n) {
+  if (n === 3) return vForoPrensa();
+  const f = foroInfo(n); if (!f) return vForos();
+  let posts;
+  try { posts = await B.listarForoUnidad(n); } catch (e) { return `<a href="#/foros">← Todos los foros</a><h1>Foro de la Unidad ${n}</h1><div class="card note" role="alert">No se pudieron cargar los mensajes: ${esc(msgError(e))}</div>`; }
+  const temas = posts.filter(p => p.tipo === "tema").sort((a, b) => fechaMs(b.creado) - fechaMs(a.creado));
+  const respuestas = posts.filter(p => p.tipo === "respuesta");
+  const propio = temas.some(p => p.uid === USER.uid);
+  return `<a href="#/foros">← Todos los foros</a> · <a href="#/sesion/${n}">Unidad ${n}</a><h1>💬 ${esc(f.titulo)}</h1>
+  ${guiaForoHtml(f)}
+  ${propio ? '<p class="card note">Tu análisis inicial ya está publicado. Podés responder a otras personas.</p>' : `<form id="foroTema" class="card foro-form"><h2 style="margin-top:0">Publicar mi postura</h2><label for="foroTitulo">Título</label><input id="foroTitulo" type="text" required minlength="8" maxlength="150"><label for="foroTexto">Análisis con evidencia</label><textarea id="foroTexto" required minlength="20" maxlength="5000" rows="7" placeholder="Presentá tu decisión, un dato verificable y una limitación o alternativa."></textarea><div class="row"><button class="btn" type="submit">Publicar postura</button><span class="muted">Una publicación inicial por persona y por unidad.</span></div></form>`}
+  <h2>Discusión <span class="muted">(${temas.length} propuestas)</span></h2>
+  ${temas.length ? temas.map(p => `<article class="card foro-tema" id="tema-${esc(p.id)}"><span class="tag">Unidad ${n}</span><h3>${esc(p.titulo)}</h3><p class="muted">${esc(p.autor)} · ${esc(fechaForo(p.creado))}</p><div class="foro-texto">${textoForo(p.texto)}</div>${ES_DOC ? `<button type="button" class="btn sec sm" data-borrar-foro="${esc(p.id)}">Eliminar tema</button>` : ""}
+    <div class="foro-respuestas"><h4>Respuestas</h4>${respuestas.filter(r => r.parentId === p.id).sort((a, b) => fechaMs(a.creado) - fechaMs(b.creado)).map(r => `<div class="foro-respuesta"><p class="muted">${esc(r.autor)} · ${esc(fechaForo(r.creado))}</p><div class="foro-texto">${textoForo(r.texto)}</div>${ES_DOC ? `<button type="button" class="btn sec sm" data-borrar-foro="${esc(r.id)}">Eliminar respuesta</button>` : ""}</div>`).join("") || '<p class="muted">Todavía no hay respuestas.</p>'}</div>
+    <form class="foro-responder" data-parent="${esc(p.id)}"><label for="respuesta-${esc(p.id)}">Responder a esta propuesta</label><textarea id="respuesta-${esc(p.id)}" required minlength="20" maxlength="5000" rows="3" placeholder="Aportá un contraejemplo, una comprobación o una mejora."></textarea><button class="btn sm" type="submit">Publicar respuesta</button></form></article>`).join("") : '<p class="card muted">Todavía no hay propuestas. Publicá la primera.</p>'}`;
+}
+function bindForoUnidad(n) {
+  if (n === 3) { bindForoPrensa(); return; }
+  const autor = ES_DOC ? "Docente" : nombreCompleto(PERFIL);
+  $("#foroTema")?.addEventListener("submit", async e => {
+    e.preventDefault(); const b = e.currentTarget.querySelector("button"); b.disabled = true;
+    try { await B.guardarTemaUnidad(n, USER.uid, { autor, titulo: $("#foroTitulo").value.trim(), texto: $("#foroTexto").value.trim() }); aviso("Postura publicada ✔"); await render(); }
+    catch (err) { aviso(msgError(err), "bad"); b.disabled = false; }
+  });
+  $$(".foro-responder").forEach(f => f.addEventListener("submit", async e => {
+    e.preventDefault(); const b = f.querySelector("button"); b.disabled = true;
+    try { await B.guardarRespuestaUnidad(n, crypto.randomUUID(), { uid: USER.uid, autor, parentId: f.dataset.parent, texto: f.querySelector("textarea").value.trim() }); aviso("Respuesta publicada ✔"); await render(); }
+    catch (err) { aviso(msgError(err), "bad"); b.disabled = false; }
+  }));
+  $$("[data-borrar-foro]").forEach(b => b.addEventListener("click", async () => {
+    if (!confirm("¿Eliminar este mensaje del foro?") ) return;
+    b.disabled = true; try { await B.eliminarMensajeUnidad(n, b.dataset.borrarForo); aviso("Mensaje eliminado"); await render(); }
     catch (err) { aviso(msgError(err), "bad"); b.disabled = false; }
   }));
 }
@@ -417,8 +473,10 @@ function leerPerfil() {
 const medidor = `<div class="muted" id="pwhint">Mínimo 8 caracteres, con letras y números.</div>`;
 
 function vAcceso() {
+  const nForo = location.hash.startsWith("#/foro/") ? foroNumero(location.hash.split("/")[2]) : 0;
+  const f = foroInfo(nForo);
   return `<div class="auth"><div class="brand-big"><span class="logo">VD</span><div><h1 style="margin:0">Aula virtual</h1><div class="muted">${esc(C.curso)} · MICD · FACET – UNC</div></div></div>${demoBanner()}
-  ${location.hash.startsWith("#/foro/prensa") ? `<div class="card foro-promo"><b>💬 Foro de prensa paraguaya</b><p>Ingresá con tu cuenta para leer los análisis y participar en la discusión de la Unidad 3.</p></div><h2>Publicaciones para analizar</h2>${imagenesPrensaHtml()}` : ""}
+  ${f ? `<div class="card foro-promo"><div><b>💬 Foro de la Unidad ${nForo}: ${esc(f.titulo)}</b><p>Ingresá con tu cuenta para leer y participar. ${esc(f.situacion)}</p></div></div>${nForo === 3 ? `<h2>Publicaciones para analizar</h2>${imagenesPrensaHtml()}` : ""}` : location.hash === "#/foros" ? '<div class="card foro-promo"><b>💬 Ocho foros de discusión</b><p>Ingresá o entrá como invitado para explorar los debates de cada unidad.</p></div>' : ""}
   <div class="card"><h2 style="margin-top:0">Ingresar</h2>
    <form id="lf"><label for="le">Correo electrónico</label><input type="email" id="le" required autocomplete="username"><label for="lp">Contraseña</label><input type="password" id="lp" required autocomplete="current-password">
    <div class="row" style="margin-top:1rem"><button class="btn" type="submit">Ingresar</button><button class="btn sec" type="button" id="gb">Ingresar con Google</button></div></form>
@@ -816,12 +874,13 @@ function bindCalendario(id) {
 function vInicioInvitado() {
   return `${heroHtml(null, "")}
   <div class="card note"><b>Estás viendo el curso como invitado.</b> Podés recorrer los módulos, las presentaciones, los videos, las lecturas y los recursos. Para responder quizzes, entregar actividades, completar formularios o ver calificaciones necesitás una cuenta. <span class="row" style="margin-top:.5rem"><a class="btn sm" href="#/acceso">Ingresar</a><a class="btn sm sec" href="#/registro">Crear cuenta</a></span></div>
-  <div class="card foro-promo"><div><span class="tag">Unidad 3 · discusión abierta</span><h2>💬 Foro de prensa paraguaya</h2><p>Entrá con tu cuenta para publicar un análisis y responder a otras personas.</p></div><a class="btn" href="#/foro/prensa">Ver el foro →</a></div>
+  <div class="card foro-promo"><div><span class="tag">Ocho unidades · ocho debates</span><h2>💬 Foros de discusión</h2><p>Explorá los desafíos de cada unidad; ingresá con tu cuenta para publicar y responder.</p></div><a class="btn" href="#/foros">Ver los foros →</a></div>
   ${proximosHtml()}
   <h2>Módulos</h2><div class="grid">${D.sesiones.map(s => `<a class="card link" href="#/sesion/${s.n}"><span class="tag">${s.unidad} · Sesión ${s.n}</span><h3 style="margin-top:.5rem">${esc(s.titulo)}</h3><span class="muted">${esc(s.resumen)}${C.fechas?.[s.n] ? " · " + esc(C.fechas[s.n]) : ""}</span></a>`).join("")}</div>`;
 }
-function vForoInvitado() {
-  return `<a href="#/sesion/3">← Unidad 3</a><h1>💬 Foro de prensa paraguaya</h1><div class="card foro-promo"><div><p>El foro reúne la discusión sobre los reportes de Última Hora y ABC Color. Para leer los mensajes y participar necesitás una cuenta verificada del aula Git.</p><p>Podés consultar antes la <a href="tareas/ejercicio_s3_prensa_paraguaya.html" target="_blank" rel="noopener">consigna y las fuentes</a>.</p></div><button type="button" class="btn" id="foroLogin">Ingresar al foro →</button></div><h2>Publicaciones para analizar</h2>${imagenesPrensaHtml()}`;
+function vForoInvitado(n) {
+  const f = foroInfo(n); if (!f) return vForos();
+  return `<a href="#/foros">← Todos los foros</a> · <a href="#/sesion/${n}">Unidad ${n}</a><h1>💬 ${esc(f.titulo)}</h1><div class="card foro-promo"><div><p>Podés revisar el desafío y sus recursos. Para leer los mensajes y participar necesitás una cuenta verificada del aula Git.</p></div><button type="button" class="btn" id="foroLogin">Ingresar al foro →</button></div>${n === 3 ? `<h2>Publicaciones para analizar</h2>${imagenesPrensaHtml()}` : ""}${guiaForoHtml(f)}`;
 }
 function vSoloRegistrados() { return `<h1>Solo para estudiantes registrados</h1><div class="card">Esta sección (quizzes, clases grabadas, calificaciones, perfil y formularios) requiere una cuenta. <span class="row" style="margin-top:.6rem"><a class="btn" href="#/acceso">Ingresar</a><a class="btn sec" href="#/registro">Crear cuenta</a><a class="btn sec" href="#/">Volver al inicio</a></span></div>`; }
 /* En modo invitado se ocultan los controles que guardan datos o abren formularios (la vista queda de solo lectura). */
@@ -867,7 +926,14 @@ async function render() {
     else if (oculto) { html = vNoDisponible(); crumb = "No disponible"; }
     else switch (a) {
       case "sesion": html = vSesion(n); crumb = `Módulo ${n}`; bind = bindSesion; break;
-      case "foro": if (b === "prensa") { html = invitado ? vForoInvitado() : await vForoPrensa(); crumb = "Foro de prensa"; bind = invitado ? () => $("#foroLogin")?.addEventListener("click", () => { setInv(false); render(); }) : bindForoPrensa; break; }
+      case "foros": html = vForos(); crumb = "Foros por unidad"; break;
+      case "foro": {
+        const fn = foroNumero(b);
+        if (!foroInfo(fn)) { html = vForos(); crumb = "Foros por unidad"; break; }
+        html = invitado ? vForoInvitado(fn) : await vForoUnidad(fn); crumb = `Foro de la Unidad ${fn}`;
+        bind = invitado ? () => $("#foroLogin")?.addEventListener("click", () => { setInv(false); render(); }) : () => bindForoUnidad(fn);
+        break;
+      }
       case "quiz": html = vQuiz(n); crumb = `Módulo ${n} › Quiz`; bind = () => bindQuiz(n); break;
       case "notas": await refrescarNotas(); html = vNotas(); crumb = "Mis notas"; break;
       case "clases": CL_FILTRO = b || "todas"; html = await vClases(); bind = bindClases; crumb = "Clases grabadas"; break;
@@ -886,7 +952,7 @@ async function render() {
   if (!guest) navHtml("/" + [a, b].filter(Boolean).join("/")); else $("#user").textContent = "";
   $("#logout").hidden = !USER; bind(); if (invitado) modoInvitado($("#main")); if (!guest) { botonEdicion(); aplicarMain(ruta); } afterRender();
   document.title = `${crumb} · Aula virtual · Visualización de Datos UNC`;
-  $("#side").classList.remove("open"); $("#menu").setAttribute("aria-expanded", "false");
+  $("#side").classList.remove("open"); sincronizarMenu();
 }
 function bindSesion() {
   bindMedia();
@@ -913,7 +979,8 @@ function bindSesion() {
   }));
 }
 addEventListener("hashchange", () => { if (!location.hash.startsWith("#/quiz/")) Object.keys(QZ).forEach(k => delete QZ[k]); render(); window.scrollTo(0, 0); });
-$("#menu").addEventListener("click", () => { const o = $("#side").classList.toggle("open"); $("#menu").setAttribute("aria-expanded", o); });
+$("#menu").addEventListener("click", () => { $("#side").classList.toggle("open"); sincronizarMenu(); });
+addEventListener("resize", sincronizarMenu);
 $("#logout").addEventListener("click", salir);
 $("#lnk-drive").href = drive(C.drive.raiz);
 

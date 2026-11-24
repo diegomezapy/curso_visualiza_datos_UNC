@@ -11,7 +11,7 @@ const alumno=(o={})=>({nombres:'Ana María',apellidos:'Benítez Gómez',cedula:'
 const oob=async(email,tipo)=>{const j=await (await fetch(`${AUTH}/emulator/v1/projects/${PRJ}/oobCodes`)).json();return j.oobCodes.filter(c=>c.email===email&&c.requestType===tipo).pop();};
 const verificar=async email=>{const c=await oob(email,'VERIFY_EMAIL');await fetch(c.oobLink);};
 const token=async(email,pw)=>(await (await fetch(`${AUTH}/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=fake`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email,password:pw,returnSecureToken:true})})).json());
-const fsr=(m,path,tok,body)=>fetch(`${FS}/v1/projects/${PRJ}/databases/(default)/documents/${path}`,{method:m,headers:{Authorization:'Bearer '+tok,'content-type':'application/json'},body:body?JSON.stringify(body):undefined}).then(r=>r.status);
+const fsr=(m,path,tok,body)=>fetch(`${FS}/v1/projects/${PRJ}/databases/(default)/documents/${path}`,{method:m,headers:{...(tok&&tok!=='x'?{Authorization:'Bearer '+tok}:{}),'content-type':'application/json'},body:body?JSON.stringify(body):undefined}).then(r=>r.status);
 const campos=o=>({fields:Object.fromEntries(Object.entries(o).map(([k,v])=>[k,typeof v==='string'?{stringValue:v}:{mapValue:{fields:{fecha:{stringValue:'x'}}}}]))});
 (async()=>{
 await fetch(`${AUTH}/emulator/v1/projects/${PRJ}/accounts`,{method:'DELETE'});await fetch(`${FS}/emulator/v1/projects/${PRJ}/databases/(default)/documents`,{method:'DELETE'});
@@ -24,6 +24,15 @@ await p.goto(U);await p.waitForSelector('#lf');console.log('modo real: banner de
 await p.click('text=Crear cuenta');await llenar(p,alumno());await p.check('#f_ok');await p.click('#rg button[type=submit]');
 await p.waitForSelector('h1:has-text("Verificá tu correo")');console.log('1 registro → pide verificar correo');
 await verificar('ana@ejemplo.com');await p.click('#vok');await p.waitForSelector('h1:has-text("Hola")');console.log('2 verificado →',await p.locator('h1').innerText());
+await p.goto(U+'#/foro/1');await p.waitForSelector('#foroTema');
+await p.fill('#foroTitulo','Una comparación más legible');
+await p.fill('#foroTexto','La posición en una escala común deja ver mejor la diferencia entre las observaciones del laboratorio.');
+await p.click('#foroTema button');await p.waitForSelector('.foro-tema');
+await p.goto(U+'#/foro/2');await p.waitForSelector('#foroTema');
+if(await p.locator('.foro-tema').count())throw Error('Los mensajes de la Unidad 1 aparecen en la Unidad 2');
+await p.goto(U+'#/foro/1');await p.waitForSelector('.foro-tema');
+if(await p.locator('#foroTema').count())throw Error('Se permite un segundo tema inicial en la misma unidad');
+console.log('   foro Unidad 1 persistido y separado de Unidad 2');
 // 3 progreso y persistencia tras recargar
 await p.goto(U+'#/sesion/1');await p.check('#chk_s1_ej');await p.waitForTimeout(1200);await p.reload();await p.waitForSelector('#chk_s1_ej');
 console.log('3 sesión y progreso persisten tras recargar:',await p.locator('#chk_s1_ej').isChecked());
@@ -63,6 +72,13 @@ await p.goto(U+'#/docente');console.log('12 alumno en #/docente:',await p.locato
 // REGLAS: ataques directos por REST
 const A=await token('ana@ejemplo.com','Final12345'), O=await token('docente@demo.local','Clave1234');
 const ua=A.localId; const otraUid=(await token('otra@ejemplo.com','Clave1234')).localId;
+const foroPath='foros/1/mensajes/'+ua;
+if(await fsr('GET',foroPath,A.idToken)!==200)throw Error('La cuenta verificada no puede leer su foro');
+const anonForo=await fsr('GET',foroPath,'x');
+if(![401,403].includes(anonForo))throw Error(`Un visitante puede leer mensajes del foro (HTTP ${anonForo})`);
+if(await fsr('DELETE',foroPath,A.idToken)!==403)throw Error('El estudiante puede borrar mensajes');
+if(await fsr('GET',foroPath,O.idToken)!==200)throw Error('El docente no puede leer el foro');
+console.log('   reglas del foro: lectura verificada, visitante y borrado estudiantil bloqueados');
 console.log('--- reglas de seguridad (esperado: 403 = bloqueado, 200 = permitido)');
 console.log(' alumno lee su perfil           :',await fsr('GET','usuarios/'+ua,A.idToken));
 console.log(' alumno lee perfil de otra cuenta:',await fsr('GET','usuarios/'+otraUid,A.idToken));

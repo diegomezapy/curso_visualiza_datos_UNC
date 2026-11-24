@@ -133,6 +133,35 @@ service cloud.firestore {
       allow delete: if docente();
     }
 
+    // Foros por unidad. La Unidad 3 conserva foro_prensa para preservar sus mensajes.
+    match /foros/{unidad}/mensajes/{id} {
+      allow get, list: if foroMiembro() && unidad in ['1', '2', '4', '5', '6', '7', '8'];
+      allow create: if foroMiembro()
+        && unidad in ['1', '2', '4', '5', '6', '7', '8']
+        && request.resource.data.keys().hasOnly(['uid', 'tipo', 'autor', 'titulo', 'texto', 'parentId', 'creado'])
+        && request.resource.data.keys().hasAll(['uid', 'tipo', 'autor', 'texto', 'creado'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.creado == request.time
+        && autorForo(request.resource.data)
+        && request.resource.data.texto is string
+        && request.resource.data.texto.size() >= 20 && request.resource.data.texto.size() <= 5000
+        && (request.resource.data.tipo == 'tema'
+          && id == request.auth.uid
+          && request.resource.data.keys().hasAll(['titulo'])
+          && request.resource.data.titulo is string
+          && request.resource.data.titulo.size() >= 8 && request.resource.data.titulo.size() <= 150
+          && !('parentId' in request.resource.data)
+          || request.resource.data.tipo == 'respuesta'
+          && request.resource.data.keys().hasAll(['parentId'])
+          && request.resource.data.parentId is string
+          && request.resource.data.parentId != id
+          && exists(/databases/$(database)/documents/foros/$(unidad)/mensajes/$(request.resource.data.parentId))
+          && get(/databases/$(database)/documents/foros/$(unidad)/mensajes/$(request.resource.data.parentId)).data.tipo == 'tema'
+          && !('titulo' in request.resource.data));
+      allow update: if false;
+      allow delete: if docente() && unidad in ['1', '2', '4', '5', '6', '7', '8'];
+    }
+
     // Ajustes del aula: qué elementos ocultó o eliminó (papelera) el docente. Lo lee cualquiera (incluidos invitados sin cuenta); lo escribe solo un docente.
     // Es un control de interfaz, no de seguridad (el contenido sigue en los archivos del sitio).
     match /ajustes/{id} {
