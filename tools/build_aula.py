@@ -34,7 +34,8 @@ PRESENTACIONES = {1: {"dir": "unidad1", "titulo": "Presentación de la unidad", 
                   4: {"dir": "unidad2_ggplot", "titulo": "Presentación: ggplot2, capa por capa"},
                   5: [{"dir": "unidad5_dashboards", "titulo": "Presentación 1: dashboards con datos de aduanas"},
                       {"dir": "unidad5_tablero_shiny", "titulo": "Presentación 2: tablero dinámico en RStudio (Shiny)"},
-                      {"dir": "unidad5_looker", "titulo": "Presentación 3: Looker Studio con el Censo Agropecuario 2022"}]}
+                      {"dir": "unidad5_looker", "titulo": "Presentación 3: Looker Studio con el Censo Agropecuario 2022"}],
+                  7: {"dir": "unidad7_earth_engine", "titulo": "Práctica guiada: NDVI en Google Earth Engine"}}
 R_OK = {"pr01_explorador", "pr02_dncp", "pr03_banco_mundial"}
 sesiones = []
 for s in c.SESIONES:
@@ -68,6 +69,9 @@ for s in c.SESIONES:
         rec.insert(13, {"t": "Guía paso a paso: informe de Looker Studio con el CAN 2022", "u": f"{cfg['repo']}/blob/main/docs/looker_studio_can2022.md", "k": "guia"})
     if n == 5: rec.append({"t": "App Dash de ejemplo (app_dash.py)", "u": f"{cfg['repo']}/blob/main/sesiones/{d}/app_dash.py", "k": "codigo"})
     if n == 6: rec.append({"t": "R · Plantilla de informe parametrizado", "u": f"{cfg['repo']}/blob/main/r/plantilla_reporte_sucursal.Rmd", "k": "rmd"})
+    if n == 7:
+        rec.insert(1, {"t": "Earth Engine · Guía paso a paso: Sentinel-2 y NDVI en Asunción", "u": "tareas/earth_engine_ndvi.html", "k": "guia"})
+        rec.insert(2, {"t": "Earth Engine · Descargar el guion JavaScript del ejercicio", "u": "practicas/earth_engine_ndvi_asuncion.js", "k": "descarga"})
     prs = [{"id": pid, "nombre": nm, "desc": ds, "rol": rol, "colab": f"{cfg['colab']}/practicas_reales/{pid}.ipynb", "rmd": (f"{cfg['repo']}/blob/main/r/{pid}.Rmd" if pid in R_OK else "")} for pid, nm, ds, ses, rol in cat.PRACTICAS if n in ses and rol != "docente"]
     qids = ([str(n)] if n in c.QUIZZES else []) + [e["id"] for e in c.QUIZZES_EXTRA if e["sesion"] == n]
     media = []
@@ -107,24 +111,27 @@ data = {
 for f in ("index.html", "aula.css", "aula.js", "backend.js", "planillas.mjs", "xlsx.mjs", "fx.js", "fxbg.js", "visibilidad.js"):
     shutil.copy(RAIZ / "aula" / f, SITE / f)
 
-# El aula Git mantiene su propia consigna y su propio mecanismo de entrega.
+# El aula Git mantiene sus propias consignas y mecanismos de participación.
 tareas = SITE / "tareas"
 tareas.mkdir(exist_ok=True)
-consigna = (RAIZ / "aula" / "tareas" / "ejercicio_s3_prensa_paraguaya.html").read_text(encoding="utf-8")
-(tareas / "ejercicio_s3_prensa_paraguaya.html").write_text(
-    '<!doctype html><html lang="es"><head><meta charset="utf-8">'
-    '<meta name="viewport" content="width=device-width,initial-scale=1">'
-    '<title>Ejercicio S3 · Auditoría de prensa paraguaya</title>'
-    '<link rel="stylesheet" href="../aula.css">'
-    '<style>body{max-width:960px;margin:auto;padding:2rem 1.25rem}'
-    'main{display:block}li{margin:.6rem 0}h3,h4{margin-top:1.5rem}'
-    'a{overflow-wrap:anywhere}</style></head><body>'
-    '<nav aria-label="Navegación"><a href="../index.html#/sesion/3">Volver a la unidad 3</a>'
-    ' · <a href="../index.html#/foro/prensa">Participar en el foro</a>'
-    ' · <a href="../index.html#/sesion/3">Registrar la entrega</a></nav>'
-    f'<main id="main">{consigna}</main></body></html>',
-    encoding="utf-8",
-)
+for nombre, titulo, sesion, foro, accion in [
+    ("ejercicio_s3_prensa_paraguaya", "Ejercicio S3 · Auditoría de prensa paraguaya", 3, "prensa", "Registrar la entrega"),
+    ("earth_engine_ndvi", "Práctica Earth Engine · Sentinel-2 y NDVI", 7, "7", "Responder el quiz 7A"),
+]:
+    consigna = (RAIZ / "aula" / "tareas" / f"{nombre}.html").read_text(encoding="utf-8")
+    destino = "quiz/17" if sesion == 7 else "sesion/3"
+    (tareas / f"{nombre}.html").write_text(
+        '<!doctype html><html lang="es"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width,initial-scale=1">'
+        f'<title>{titulo}</title><link rel="stylesheet" href="../aula.css">'
+        '<style>body{max-width:960px;margin:auto;padding:2rem 1.25rem}'
+        'main{display:block}li{margin:.6rem 0}h1,h2,h3,h4{margin-top:1.5rem}'
+        'a{overflow-wrap:anywhere}code{overflow-wrap:anywhere}</style></head><body>'
+        f'<nav aria-label="Navegación"><a href="../index.html#/sesion/{sesion}">Volver a la unidad {sesion}</a>'
+        f' · <a href="../index.html#/foro/{foro}">Participar en el foro</a>'
+        f' · <a href="../index.html#/{destino}">{accion}</a></nav>'
+        f'<main id="main">{consigna}</main></body></html>', encoding="utf-8")
+shutil.copytree(RAIZ / "aula" / "practicas", SITE / "practicas", dirs_exist_ok=True)
 
 # Pages conserva archivos en caché; cada importación debe apuntar a la versión del archivo copiado.
 def version(nombre):

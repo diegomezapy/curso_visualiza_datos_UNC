@@ -61,6 +61,11 @@ def pagina(s):
                 li(f"{cfg['raw']}/aula/media/unidad5_looker/fuentes/datos/can2022_estratos.csv", "⬇ Datos del CAN 2022 por tamaño de finca (CSV)")]
     if n == 6:
         rec.append(li(f"{cfg['repo']}/blob/main/r/plantilla_reporte_sucursal.Rmd", "📊 Plantilla de informe parametrizado en R Markdown"))
+    if n == 7:
+        rec += [li(f"{WEB}/aula/tareas/earth_engine_ndvi.html", "Guía paso a paso: Sentinel-2 y NDVI en Earth Engine"),
+                li(f"{WEB}/aula/practicas/earth_engine_ndvi_asuncion.js", "Descargar el guion JavaScript de Earth Engine"),
+                li(f"{WEB}/aula/media/unidad7_earth_engine/presentacion.pdf", "Presentación de la práctica (PDF, 17 diapositivas)"),
+                li(f"{WEB}/aula/media/unidad7_earth_engine/presentacion.pptx", "Descargar la presentación (PowerPoint)")]
     practicas = [p for p in cat.PRACTICAS if n in p[3] and p[4] != "docente"]
     reales = "".join(li(f"{cfg['colab']}/practicas_reales/{pid}.ipynb", f"🐍 {nombre} · Colab") +
                     (li(f"{cfg['repo']}/blob/main/r/{pid}.Rmd", f"📊 {nombre} · R Markdown") if pid in {"pr01_explorador", "pr02_dncp", "pr03_banco_mundial"} else "")

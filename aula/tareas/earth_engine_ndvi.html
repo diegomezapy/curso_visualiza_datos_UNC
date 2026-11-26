@@ -1,0 +1,37 @@
+<h1>Práctica guiada: NDVI y visualización georreferenciada en Google Earth Engine</h1>
+<p><strong>Unidad 7 · Estructuras complejas y geodatos.</strong> Duración sugerida: 60 a 90 minutos. El área de estudio es un rectángulo sobre Asunción y su entorno. Trabajaremos con reflectancia de superficie Sentinel-2 armonizada, escenas de mayo a agosto de 2025 y una máscara de vegetación y suelo visible.</p>
+
+<h2>Resultados esperados</h2>
+<ol>
+  <li>Ubicar un área mediante coordenadas longitud, latitud (EPSG:4326) y distinguir la huella de una escena del recorte final.</li>
+  <li>Crear un compuesto temporal, mostrar color natural y NDVI con una escala de color explícita.</li>
+  <li>Inspeccionar píxeles, leer un histograma y calcular una media espacial sin confundirlos con una medición de especie, salud vegetal o causalidad.</li>
+</ol>
+
+<h2>Preparación</h2>
+<p>Abrí el <a href="https://code.earthengine.google.com/" target="_blank" rel="noopener noreferrer">editor de Earth Engine</a> e iniciá sesión con tu propia cuenta de Google. Si Google solicita seleccionar o registrar un proyecto de Earth Engine, seguí las indicaciones de tu institución. El curso no requiere que compartas credenciales, proyecto o imágenes privadas con el docente. Descargá el <a href="../practicas/earth_engine_ndvi_asuncion.js" download>guion completo del ejercicio (.js)</a> o abrilo y copiá su contenido en un script nuevo del editor. La <a href="../index.html#/sesion/7">presentación de la unidad</a> muestra cada paso y sus capturas.</p>
+
+<h2>Secuencia paso a paso</h2>
+<ol>
+  <li><strong>Área:</strong> ejecutá <code>ee.Geometry.Rectangle([-57.59, -25.38, -57.43, -25.21], null, false)</code>. El orden es longitud oeste, latitud sur, longitud este, latitud norte. <code>Map.centerObject(area, 11)</code> centra la vista.</li>
+  <li><strong>Escenas:</strong> filtrá <code>COPERNICUS/S2_SR_HARMONIZED</code> por intersección espacial, del 2025-05-01 al 2025-09-01 (final exclusivo) y <code>CLOUDY_PIXEL_PERCENTAGE &lt; 30</code>. Leé en Console cuántas escenas candidatas encontró Earth Engine. El porcentaje de nubes describe la escena completa, no el rectángulo.</li>
+  <li><strong>Máscara:</strong> conservá las clases SCL 4 (vegetación) y 5 (suelo desnudo o no vegetado). SCL tiene resolución nominal de 20 m. Multiplicá B2, B3, B4 y B8 por 0,0001 para expresar reflectancia.</li>
+  <li><strong>Compuesto:</strong> calculá la mediana temporal por píxel y banda, luego <code>clip(area)</code>. Los píxeles sin observaciones válidas quedarán transparentes. Compará visualmente la huella y el recorte.</li>
+  <li><strong>Color natural:</strong> mostrá B4 (rojo), B3 (verde), B2 (azul) con mínimo 0,02 y máximo 0,30. Estos límites controlan la visualización, no modifican la reflectancia almacenada.</li>
+  <li><strong>NDVI:</strong> calculá <code>(B8 - B4) / (B8 + B4)</code>. Mostrá el resultado con límites 0 a 0,8 y paleta viridis. Activá y desactivá las capas para comparar.</li>
+  <li><strong>Inspector:</strong> hacé clic en dos lugares visibles del mapa. Anotá las coordenadas, los valores B4, B8 y NDVI; compará una zona con vegetación aparente y otra menos vegetada. La clase SCL y el compuesto pueden dejar píxeles sin valor.</li>
+  <li><strong>Histograma:</strong> en Console, abrí «Distribución del NDVI en píxeles visibles». El eje horizontal es NDVI y el vertical es cantidad de píxeles válidos por intervalo. Identificá el intervalo modal y describí la asimetría si la hay.</li>
+  <li><strong>Media:</strong> leé el NDVI medio del rectángulo calculado con <code>reduceRegion(ee.Reducer.mean(), scale: 30)</code>. Explicá por qué cambiar la máscara, las fechas o el área puede cambiar el resultado.</li>
+  <li><strong>Contraste:</strong> modificá solo <code>Map.addLayer(ndvi, … min/max …)</code> y observá qué cambia en el mapa y qué no cambia en el histograma ni en la media. Luego probá un periodo distinto y describí qué sí puede variar.</li>
+</ol>
+
+<h2>Actividad de cierre</h2>
+<p>Guardá tu script en tu cuenta si querés conservarlo. Prepará una captura de la vista de color natural, otra del NDVI y una del histograma, sin mostrar datos de tu cuenta. En el <a href="../index.html#/foro/7">foro de la unidad 7</a>, compartí una interpretación breve: área y fechas, dos patrones observados, un límite metodológico y una pregunta para tus compañeros. Respondé a una intervención ajena. Después completá el <a href="../index.html#/quiz/17">quiz 7A de la práctica</a>. El quiz es formativo y se registra en tu cuenta del aula.</p>
+
+<h2>Fuentes</h2>
+<ul>
+  <li><a href="https://developers.google.com/earth-engine/guides/quickstart_javascript" target="_blank" rel="noopener noreferrer">Google Earth Engine, guía del editor JavaScript</a>.</li>
+  <li><a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR_HARMONIZED" target="_blank" rel="noopener noreferrer">Catálogo Sentinel-2 SR armonizado, bandas, SCL y metadatos</a>.</li>
+  <li><a href="https://developers.google.com/earth-engine/apidocs/ui-chart-image-histogram" target="_blank" rel="noopener noreferrer">Referencia de ui.Chart.image.histogram</a>.</li>
+  <li><a href="https://developers.google.com/earth-engine/apidocs/ee-image-reduceregion" target="_blank" rel="noopener noreferrer">Referencia de ee.Image.reduceRegion</a>.</li>
+</ul>

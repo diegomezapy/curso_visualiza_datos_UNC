@@ -1,0 +1,201 @@
+[
+ {
+  "n": 1,
+  "img": "01.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Visualización georreferenciada con Google Earth Engine",
+   "Práctica guiada con Sentinel-2",
+   "Asunción y entorno · mayo a agosto de 2025",
+   "Color natural, NDVI, Inspector e histograma",
+   "Ejercicio formativo de la Unidad 7"
+  ]
+ },
+ {
+  "n": 2,
+  "img": "02.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Propósito y productos de la práctica",
+   "Al terminar, cada estudiante podrá construir un mapa de color natural y un mapa NDVI sobre la misma área.",
+   "También podrá inspeccionar píxeles, leer la distribución del NDVI y calcular una media espacial.",
+   "Producto para el aula: dos capturas de mapa, una del histograma, una interpretación breve en el foro de la Unidad 7 y el quiz 7A."
+  ]
+ },
+ {
+  "n": 3,
+  "img": "03.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Datos y decisiones antes de abrir el editor",
+   "Colección: COPERNICUS/S2_SR_HARMONIZED, reflectancia de superficie armonizada.",
+   "Área: rectángulo [-57.59, -25.38, -57.43, -25.21] en longitud, latitud.",
+   "Periodo: 2025-05-01 al 2025-09-01. La fecha final es exclusiva.",
+   "Filtro preliminar: menos de 30 % de nubosidad por escena. Después se aplica una máscara SCL por píxel."
+  ]
+ },
+ {
+  "n": 4,
+  "img": "04.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 1 · Acceso y área de estudio",
+   "Abrí code.earthengine.google.com, seleccioná un proyecto habilitado y creá un script. El rectángulo usa longitud oeste, latitud sur, longitud este y latitud norte. El mapa se centra luego en esa geometría."
+  ]
+ },
+ {
+  "n": 5,
+  "img": "05.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 2 · Colección y filtros",
+   "filterBounds(area) selecciona escenas que intersectan el rectángulo. filterDate fija el periodo y CLOUDY_PIXEL_PERCENTAGE elimina escenas demasiado nubladas. La consola mostró 48 escenas candidatas en esta ejecución."
+  ]
+ },
+ {
+  "n": 6,
+  "img": "06.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 3 · Máscara de superficies visibles",
+   "SCL 4 identifica vegetación y SCL 5 suelo desnudo o no vegetado. La función aplica esa máscara a cada escena y convierte las bandas B2, B3, B4 y B8 a reflectancia multiplicando por 0,0001."
+  ]
+ },
+ {
+  "n": 7,
+  "img": "07.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 4 · Compuesto y recorte",
+   "map(superficieVisible) procesa cada escena. median() toma la mediana temporal por píxel y banda. clip(area) limita el resultado al rectángulo. Los píxeles sin observaciones válidas quedan transparentes."
+  ]
+ },
+ {
+  "n": 8,
+  "img": "08.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 5 · Color natural y NDVI",
+   "Color natural asigna B4 al rojo, B3 al verde y B2 al azul. El NDVI usa (B8 − B4) / (B8 + B4), con B8 en infrarrojo cercano. La paleta y los límites min/max controlan solo la representación."
+  ]
+ },
+ {
+  "n": 9,
+  "img": "09.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 6 · Inspección del color natural",
+   "En Layers, desactivá NDVI para ver la composición RGB. La imagen recortada conserva patrones de ciudad, suelo y vegetación. Compará esta vista con el NDVI sin cambiar el área ni el periodo."
+  ]
+ },
+ {
+  "n": 10,
+  "img": "10.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 7 · Mapa NDVI",
+   "Activá NDVI. La paleta viridis muestra valores entre 0 y 0,8; valores mayores quedan saturados en el extremo de la escala. El mapa revela patrones relativos dentro de los píxeles no enmascarados."
+  ]
+ },
+ {
+  "n": 11,
+  "img": "11.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 8 · Inspector: píxel con NDVI alto",
+   "Hacé clic en un píxel visible. En la captura de ejemplo, B4 = 0,0143, B8 = 0,2958 y NDVI ≈ 0,908. Registrá las coordenadas y compará con el color natural. Son valores de un píxel del compuesto."
+  ]
+ },
+ {
+  "n": 12,
+  "img": "12.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 9 · Inspector: contraste urbano",
+   "Elegí un segundo píxel. En la captura de ejemplo, B4 = 0,0993, B8 = 0,1877 y NDVI ≈ 0,308. Un contraste entre dos píxeles sirve para formular hipótesis, no para identificar especies o causas."
+  ]
+ },
+ {
+  "n": 13,
+  "img": "13.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 10 · Histograma de píxeles válidos",
+   "ui.Chart.image.histogram agrupa los valores NDVI dentro del rectángulo a escala solicitada de 30 m. El eje horizontal es NDVI y el vertical, cantidad de píxeles válidos por intervalo. La máscara define qué entra."
+  ]
+ },
+ {
+  "n": 14,
+  "img": "14.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 11 · Lectura de la distribución",
+   "La mayor concentración de píxeles válidos se ubica aproximadamente entre NDVI 0,3 y 0,8."
+  ]
+ },
+ {
+  "n": 15,
+  "img": "15.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Paso 12 · NDVI medio del área",
+   "reduceRegion con ee.Reducer.mean calcula una media espacial de los píxeles válidos a escala de 30 m. En esta ejecución dio ≈ 0,509. No es el porcentaje de vegetación ni una calificación de su estado."
+  ]
+ },
+ {
+  "n": 16,
+  "img": "16.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Qué cambia en el mapa y qué cambia en los datos",
+   "Si modificás solo la paleta o min/max de Map.addLayer, cambian los colores. El histograma y la media siguen calculándose sobre el mismo NDVI.",
+   "Si cambiás área, periodo, filtro de escenas o máscara, pueden cambiar los píxeles incluidos, la distribución y la media.",
+   "El NDVI no identifica especies, no diagnostica por sí solo salud vegetal y no permite atribuir causalidad."
+  ]
+ },
+ {
+  "n": 17,
+  "img": "17.webp",
+  "titulo": "Universidad Nacional de Concepción",
+  "texto": [
+   "Facultad de Ciencias Exactas y Tecnológicas · Maestría en Ingeniería y Ciencia de Datos",
+   "Visualización de datos · Unidad 7 · 2.º semestre de 2026",
+   "Entrega, foro y quiz 7A",
+   "1. Guardá tu script y tomá una captura del color natural, una del NDVI y una del histograma. Excluí cualquier dato de tu cuenta.",
+   "2. En el foro de la Unidad 7, indicá área, fechas, dos patrones observados y una limitación. Respondé a otra persona.",
+   "3. Completá el quiz 7A del aula Git. El guion JavaScript completo está disponible para descarga junto a esta presentación."
+  ]
+ }
+]
