@@ -70,10 +70,11 @@ function segSemanaAnterior_(ahora) {
   d.setUTCDate(d.getUTCDate() + 6);
   return { inicio, fin: Utilities.formatDate(d, 'GMT', 'yyyy-MM-dd') };
 }
-function segResumen_(usuarios, intentos, mensajes, semana) {
-  const m = {};
+function segResumen_(usuarios, intentos, mensajes, semana, docentes) {
+  const m = {}, cuentasCi = {};
+  usuarios.forEach(u => { if (u.cedula) cuentasCi[u.cedula] = (cuentasCi[u.cedula] || 0) + 1; });
   usuarios.forEach(u => { m[u.id] = { uid: u.id, email: String(u.email || '').trim().toLowerCase(),
-    nombre: String(u.nombres || '').trim(), avisos: u.avisosSemanales !== false,
+    nombre: String(u.nombres || '').trim(), cedula: u.cedula || '', avisos: u.avisosSemanales !== false,
     quizzes: 0, suma: 0, temas: 0, respuestas: 0 }; });
   const dentro = x => { const f = segFecha_(x); return f >= semana.inicio && f <= semana.fin; };
   intentos.forEach(i => {
@@ -85,7 +86,11 @@ function segResumen_(usuarios, intentos, mensajes, semana) {
     if (p.tipo === 'tema') r.temas++;
     else if (p.tipo === 'respuesta') r.respuestas++;
   });
-  return Object.keys(m).map(k => m[k]).filter(r => r.avisos && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(r.email));
+  return Object.keys(m).map(k => m[k]).filter(r => r.avisos
+    && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(r.email)
+    && !/@(?:ejemplo\.com|example\.(?:com|net|org))$/.test(r.email)
+    && !(r.cedula && cuentasCi[r.cedula] > 1)
+    && !docentes.has(r.email));
 }
 function segCorreo_(r, semana) {
   const nombre = r.nombre.split(/\s+/)[0] || 'estudiante';
@@ -132,8 +137,9 @@ function procesarSeguimientoSemanal() {
     if (new Date(hoy + 'T12:00:00Z').getUTCDay() !== 1) return { estado: 'fuera_de_lunes' };
     const semana = segSemanaAnterior_(ahora);
     const usuarios = segList_('usuarios'), intentos = segList_('respuestas_quiz');
+    const docentes = new Set(segList_('docentes').map(d => d.id.toLowerCase()));
     const mensajes = segList_('foro_prensa').concat([1, 2, 4, 5, 6, 7, 8].flatMap(n => segList_('foros/' + n + '/mensajes')));
-    const resumenes = segResumen_(usuarios, intentos, mensajes, semana);
+    const resumenes = segResumen_(usuarios, intentos, mensajes, semana, docentes);
     let enviados = 0, omitidos = 0;
     for (const r of resumenes) {
       if (MailApp.getRemainingDailyQuota() < 1) break;

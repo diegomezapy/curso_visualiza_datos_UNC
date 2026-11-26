@@ -627,13 +627,17 @@ async function vDocente() {
   const semana = semanaDe(), anterior = semanaDe(new Date(), -1);
   const resumen = resumirParticipacion(ALUMNOS, INTENTOS, MENSAJES_DOC, semana);
   const enviados = new Map(ENVIOS_SEM.filter(e => e.semana === anterior.inicio).map(e => [e.uid, e]));
+  const cuentasCi = new Map();
+  ALUMNOS.forEach(a => { const ci = a.perfil.cedula; if (ci) cuentasCi.set(ci, (cuentasCi.get(ci) || 0) + 1); });
+  const ciDuplicadas = new Set([...cuentasCi].filter(([, n]) => n > 1).map(([ci]) => ci));
   const seguimientoHtml = `<h2>Seguimiento semanal</h2><div class="card">
     <p>Semana en curso: <b>${semana.inicio} a ${semana.fin}</b> (hora de Paraguay). Se cuentan intentos de quiz y publicaciones del foro con fecha registrada. Las notas oficiales siguen en la planilla de calificaciones.</p>
     <p>El resumen por correo corresponde a la semana anterior (${anterior.inicio} a ${anterior.fin}) y se programa los lunes. Cada estudiante puede desactivarlo en su perfil.</p>
+    ${ciDuplicadas.size ? `<p class="note">Hay ${ciDuplicadas.size} ${ciDuplicadas.size === 1 ? 'cédula' : 'cédulas'} con más de una cuenta. Esas cuentas quedan fuera del correo automático hasta corregir el padrón.</p>` : ""}
     ${ERROR_SEGUIMIENTO ? `<p class="note">El seguimiento aún no está disponible: ${esc(ERROR_SEGUIMIENTO)}</p>` : `<div class="row"><label class="chk"><input type="checkbox" id="segActivo" ${SEGUIMIENTO.activo ? "checked" : ""}> Enviar resúmenes semanales</label><label>Hasta <input type="date" id="segFin" value="${esc(SEGUIMIENTO.fechaFin || '2026-12-31')}"></label><button type="button" class="btn" id="segGuardar">Guardar programación</button></div>`}
     <p class="muted">El envío requiere el activador privado de Apps Script; activar esta opción por sí sola no envía mensajes.</p>
     <button type="button" class="btn sec" id="segExcel" ${resumen.length ? "" : "disabled"}>⬇ Participación semanal Excel</button>
-    <div class="tw"><table><thead><tr><th>Estudiante</th><th>Quiz esta semana</th><th>Media de quiz</th><th>Temas</th><th>Respuestas</th><th>Última actividad</th><th>Correo semana anterior</th></tr></thead><tbody>${resumen.map(r => `<tr><td>${esc(nombreCompleto(r.perfil))}</td><td>${r.quizzes}</td><td>${r.mediaQuiz == null ? '–' : r.mediaQuiz + ' %'}</td><td>${r.temas}</td><td>${r.respuestas}</td><td>${r.ultimo || '–'}</td><td>${r.perfil.avisosSemanales === false ? 'Desactivado por estudiante' : esc(enviados.get(r.uid)?.estado || 'Sin registro')}</td></tr>`).join('')}</tbody></table></div></div>`;
+    <div class="tw"><table><thead><tr><th>Estudiante</th><th>Quiz esta semana</th><th>Media de quiz</th><th>Temas</th><th>Respuestas</th><th>Última actividad</th><th>Correo semana anterior</th></tr></thead><tbody>${resumen.map(r => `<tr><td>${esc(nombreCompleto(r.perfil))}</td><td>${r.quizzes}</td><td>${r.mediaQuiz == null ? '–' : r.mediaQuiz + ' %'}</td><td>${r.temas}</td><td>${r.respuestas}</td><td>${r.ultimo || '–'}</td><td>${ciDuplicadas.has(r.perfil.cedula) ? 'Revisar cédula duplicada' : r.perfil.avisosSemanales === false ? 'Desactivado por estudiante' : esc(enviados.get(r.uid)?.estado || 'Sin registro')}</td></tr>`).join('')}</tbody></table></div></div>`;
   return `<h1>Panel docente</h1><p class="sub">${ALUMNOS.length} estudiante(s) registrados. Las notas que cargues se guardan al instante y el estudiante las ve en su aula.</p>${demoBanner()}
   ${seguimientoHtml}
   <h2>Planillas del aula</h2><div class="card"><div class="row">

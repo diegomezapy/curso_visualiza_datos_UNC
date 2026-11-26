@@ -4,6 +4,8 @@ El panel docente muestra, por estudiante, los intentos de quiz, el promedio form
 
 Cada lunes por la mañana, un proyecto **privado e independiente** de Google Apps Script puede enviar al correo registrado un resumen de la semana anterior y una invitación a continuar. El estudiante desactiva esos correos desde «Mi perfil». El docente pausa la programación y fija la fecha final desde el panel. Ningún token, credencial ni dato personal se publica en GitHub Pages.
 
+El envío excluye cuentas presentes en `docentes`, direcciones de ejemplo (`example.com`, `example.net`, `example.org`, `ejemplo.com`) y perfiles con cédula duplicada. El panel docente señala esas duplicidades para corregir el padrón antes de enviarles correos.
+
 ## Activación
 
 1. Publicar `firebase/firestore.rules` del repositorio. Las rutas `seguimiento/configuracion` y `seguimiento_envios/*` solo son legibles para el docente verificado. El navegador del estudiante no puede acceder a esos registros.
