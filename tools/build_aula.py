@@ -108,7 +108,7 @@ data = {
                  ("anscombe.csv", "Cuarteto de Anscombe"), ("wine.csv", "Vinos: 13 variables y 3 clases (alta dimensionalidad)"), ("karate_aristas.csv", "Red Zachary Karate Club: aristas (+ karate_nodos.csv)"), ("lesmis_aristas.csv", "Red Les Misérables: aristas con peso")],
 }
 (SITE / "data.js").write_text("window.CURSO=" + json.dumps(data, ensure_ascii=False) + ";", encoding="utf-8")
-for f in ("index.html", "aula.css", "aula.js", "backend.js", "planillas.mjs", "xlsx.mjs", "fx.js", "fxbg.js", "visibilidad.js"):
+for f in ("index.html", "aula.css", "aula.js", "backend.js", "planillas.mjs", "xlsx.mjs", "seguimiento.mjs", "fx.js", "fxbg.js", "visibilidad.js"):
     shutil.copy(RAIZ / "aula" / f, SITE / f)
 
 # El aula Git mantiene sus propias consignas y mecanismos de participación.

@@ -76,6 +76,14 @@ async function crearFirebase(cfg) {
     },
     guardarIntentoQuiz: (uid, intento) => fb.setDoc(fb.doc(db, "respuestas_quiz", intento.id), { ...intento, uid }),
     async listarIntentosQuiz() { return (await fb.getDocs(fb.collection(db, "respuestas_quiz"))).docs.map(d => ({ id: d.id, ...d.data() })); },
+    async listarMensajesDocente() {
+      const cols = [fb.collection(db, "foro_prensa"), ...[1, 2, 4, 5, 6, 7, 8].map(n => fb.collection(db, "foros", String(n), "mensajes"))];
+      const lotes = await Promise.all(cols.map(c => fb.getDocs(c)));
+      return lotes.flatMap((l, i) => l.docs.map(d => ({ id: d.id, unidad: i < 1 ? 3 : [1, 2, 4, 5, 6, 7, 8][i - 1], ...d.data() })));
+    },
+    cargarSeguimiento: () => get("seguimiento", "configuracion"),
+    guardarSeguimiento: datos => fb.setDoc(fb.doc(db, "seguimiento", "configuracion"), { ...datos, actualizado: fb.serverTimestamp() }),
+    async listarEnviosSeguimiento() { return (await fb.getDocs(fb.collection(db, "seguimiento_envios"))).docs.map(d => ({ id: d.id, ...d.data() })); },
     cargarPlanillasDocente: email => get("docentes", email.toLowerCase()),
     guardarCalificaciones: (uid, oficial) => fb.setDoc(fb.doc(db, "calificaciones", uid), { oficial, actualizado: fb.serverTimestamp() }),
     async cargarVisibilidad() { const d = await get("ajustes", "visibilidad"); return { ocultos: d?.ocultos || {}, eliminados: d?.eliminados || {} }; },
@@ -122,7 +130,7 @@ async function hash(s) { const b = await crypto.subtle.digest("SHA-256", new Tex
 function crearDemo(cfg) {
   const K = "cvd_demo_db", KS = "cvd_demo_sesion";
   const rd = () => { try { return JSON.parse(localStorage.getItem(K)) || {}; } catch { return {}; } };
-  const db0 = () => Object.assign({ cuentas: {}, usuarios: {}, progreso: {}, calificaciones: {}, respuestasQuiz: {}, cedulas: {}, clases: {}, foroPrensa: {}, foros: {} }, rd());
+  const db0 = () => Object.assign({ cuentas: {}, usuarios: {}, progreso: {}, calificaciones: {}, respuestasQuiz: {}, cedulas: {}, clases: {}, foroPrensa: {}, foros: {}, seguimiento: {}, seguimientoEnvios: {} }, rd());
   const wr = d => { try { localStorage.setItem(K, JSON.stringify(d)); } catch {} };
   const listeners = [];
   const sesion = () => { try { return localStorage.getItem(KS); } catch { return null; } };
@@ -170,6 +178,10 @@ function crearDemo(cfg) {
     async listarAlumnos() { const d = db0(); return Object.entries(d.usuarios).map(([u, perfil]) => ({ uid: u, perfil, progreso: d.progreso[u] || {}, oficial: d.calificaciones[u] || {} })); },
     async guardarIntentoQuiz(u, intento) { const d = db0(); d.respuestasQuiz[intento.id] = { ...intento, uid: u }; wr(d); },
     async listarIntentosQuiz() { return Object.values(db0().respuestasQuiz); },
+    async listarMensajesDocente() { const d = db0(); return [...Object.values(d.foroPrensa), ...Object.values(d.foros).flatMap(x => Object.values(x))]; },
+    async cargarSeguimiento() { return db0().seguimiento; },
+    async guardarSeguimiento(datos) { const d = db0(); d.seguimiento = datos; wr(d); },
+    async listarEnviosSeguimiento() { return Object.values(db0().seguimientoEnvios); },
     async cargarPlanillasDocente() { return { planillas: cfg.demo?.planillas || {} }; },
     async guardarCalificaciones(u, o) { const d = db0(); d.calificaciones[u] = o; wr(d); },
     async cargarVisibilidad() { const v = db0().ajustes?.visibilidad || {}; return { ocultos: v.ocultos || {}, eliminados: v.eliminados || {} }; },

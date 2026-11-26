@@ -8,4 +8,5 @@ salidas/*
 site/
 firebase/*.log
 *.log
+appsscript_seguimiento/.clasp.json
 salidas_informes/

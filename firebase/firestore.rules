@@ -68,6 +68,23 @@ service cloud.firestore {
       allow write: if own(uid);
     }
 
+    // La programación la controla el docente. El activador de Apps Script usa OAuth e IAM
+    // para registrar cada envío; el navegador nunca puede escribir ese registro.
+    match /seguimiento/configuracion {
+      allow get: if docente();
+      allow list, delete: if false;
+      allow create, update: if docente()
+        && request.resource.data.keys().hasOnly(['activo', 'fechaFin', 'actualizado'])
+        && request.resource.data.activo is bool
+        && request.resource.data.fechaFin is string
+        && request.resource.data.fechaFin.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+        && request.resource.data.actualizado == request.time;
+    }
+    match /seguimiento_envios/{id} {
+      allow get, list: if docente();
+      allow create, update, delete: if false;
+    }
+
     // Cada intento conserva las respuestas por pregunta sin hacer crecer indefinidamente progreso/{uid}.
     match /respuestas_quiz/{id} {
       allow get: if docente() || (signed() && resource.data.uid == request.auth.uid);

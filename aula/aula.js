@@ -5,6 +5,7 @@ import { heroHtml, afterRender, initFx } from "./fx.js";
 import { iniciarVis, cargarVis, aplicarNav, aplicarMain, botonEdicion, rutaOculta } from "./visibilidad.js";
 import { csvPlanilla, tablaRegistros, tablaQuizzes, tablaAutoevaluaciones, tablaEntregasS3 } from "./planillas.mjs";
 import { xlsxPlanilla, XLSX_MIME } from "./xlsx.mjs";
+import { semanaDe, resumirParticipacion } from "./seguimiento.mjs";
 (async () => {
 "use strict";
 const D = window.CURSO, C = D.config;
@@ -444,7 +445,7 @@ function bindRecursos() { $("#gq")?.addEventListener("input", e => { const q = e
 /* ---------- acceso, registro y cuenta ---------- */
 const DEPTOS = ["Asunción", "Concepción", "San Pedro", "Cordillera", "Guairá", "Caaguazú", "Caazapá", "Itapúa", "Misiones", "Paraguarí", "Alto Paraná", "Central", "Ñeembucú", "Amambay", "Canindeyú", "Presidente Hayes", "Boquerón", "Alto Paraguay", "Fuera de Paraguay"];
 const SEXOS = ["Femenino", "Masculino", "Otro", "Prefiero no decir"];
-const CONSENT = "Autorizo el tratamiento de mis datos personales con fines exclusivamente académicos y administrativos de este curso (identificación, seguimiento y evaluación). Los datos se almacenan en un servicio de Google (Firebase), solo son visibles para mí y para el docente, no se comparten con terceros y puedo solicitar su corrección o eliminación al docente.";
+const CONSENT = "Autorizo el tratamiento de mis datos personales con fines exclusivamente académicos y administrativos de este curso (identificación, seguimiento y evaluación). El docente puede enviarme un resumen semanal de mi participación al correo registrado; puedo desactivarlo en Mi perfil. Los datos se almacenan en un servicio de Google (Firebase), solo son visibles para mí y para el docente, no se comparten con terceros y puedo solicitar su corrección o eliminación al docente.";
 const claveOk = c => c.length >= 8 && /[A-Za-z]/.test(c) && /\d/.test(c);
 const demoBanner = () => B.modo === "demo" ? `<div class="note" style="margin-bottom:1rem"><b>MODO DEMOSTRACIÓN.</b> Este aula todavía no está conectada a un servidor: las cuentas y datos se guardan solo en este navegador. Ver <i>docs/configurar_firebase.md</i> para activar el modo real.</div>` : "";
 const inp = (id, label, v = "", ex = "", req = true) => `<div><label for="${id}">${label}${req ? " *" : ""}</label><input type="text" id="${id}" value="${esc(v)}" ${req ? "required" : ""} ${ex}></div>`;
@@ -517,7 +518,7 @@ function bindRegistro() {
     const b = e.submitter; b.disabled = true; ocupado = true; let u;
     try {
       u = await B.registrar(email, c);
-      await B.guardarPerfil(u.uid, { ...r.p, email, consentimiento: { fecha: new Date().toISOString(), version: "v1" } }, true);
+      await B.guardarPerfil(u.uid, { ...r.p, email, consentimiento: { fecha: new Date().toISOString(), version: "v2" } }, true);
       aviso("¡Cuenta creada!");
     } catch (er) { aviso(msgError(er), "bad"); }
     ocupado = false; b.disabled = false; USER = B.actual(); await cargarSesion(); location.hash = "#/"; render();
@@ -535,7 +536,7 @@ function bindCompletar() {
   $("#out2").addEventListener("click", salir);
   $("#cf").addEventListener("submit", async e => { e.preventDefault(); const r = leerPerfil(); if (r.error) return aviso(r.error, "bad");
     const b = e.submitter; b.disabled = true;
-    try { await B.guardarPerfil(USER.uid, { ...r.p, email: USER.email, consentimiento: { fecha: new Date().toISOString(), version: "v1" } }, true); await cargarSesion(); location.hash = "#/"; render(); }
+    try { await B.guardarPerfil(USER.uid, { ...r.p, email: USER.email, consentimiento: { fecha: new Date().toISOString(), version: "v2" } }, true); await cargarSesion(); location.hash = "#/"; render(); }
     catch (er) { aviso(msgError(er), "bad"); b.disabled = false; } });
 }
 
@@ -564,6 +565,7 @@ function vPerfil() {
   if (p.virtual) return `<h1>Mi cuenta</h1><div class="card">Sesión docente: <b>${esc(USER.email)}</b>.<div class="row" style="margin-top:.8rem"><button class="btn sec" id="out3">Cerrar sesión</button></div></div>${estadoCuenta()}`;
   return `<h1>Mi perfil</h1><p class="sub">Tu cuenta: <b>${esc(USER.email)}</b> · ingreso con ${USER.proveedor === "google.com" ? "Google" : "correo y contraseña"}.</p>
   <form id="pf" class="card">${camposPerfil(p, true)}<p class="muted">La cédula no se puede modificar; si hay un error, pedí la corrección al docente.</p>
+   <label class="chk"><input type="checkbox" id="avSemanal" ${p.avisosSemanales === false ? "" : "checked"}> <span>Recibir el resumen semanal de mi participación por correo. Puedo desactivarlo aquí cuando quiera.</span></label>
    <div class="row"><button class="btn" type="submit">Guardar cambios</button></div></form>
   ${USER.proveedor === "password" ? `<h2>Cambiar contraseña</h2><form id="cp" class="card"><div class="form-grid"><div><label for="p0">Contraseña actual</label><input type="password" id="p0" required autocomplete="current-password"></div><div></div>
    <div><label for="p1">Nueva contraseña</label><input type="password" id="p1" required minlength="8" autocomplete="new-password">${medidor}</div><div><label for="p2">Repetir nueva contraseña</label><input type="password" id="p2" required autocomplete="new-password"></div></div>
@@ -574,7 +576,7 @@ function vPerfil() {
 function bindPerfil() {
   $("#out3")?.addEventListener("click", salir);
   $("#pf")?.addEventListener("submit", async e => { e.preventDefault(); const r = leerPerfil(); if (r.error) return aviso(r.error, "bad");
-    try { const { cedula, ...resto } = r.p; await B.guardarPerfil(USER.uid, resto, false); await cargarSesion(); aviso("Perfil actualizado ✔"); render(); } catch (er) { aviso(msgError(er), "bad"); } });
+    try { const { cedula, ...resto } = r.p; await B.guardarPerfil(USER.uid, { ...resto, avisosSemanales: $("#avSemanal").checked }, false); await cargarSesion(); aviso("Perfil actualizado ✔"); render(); } catch (er) { aviso(msgError(er), "bad"); } });
   $("#p1")?.addEventListener("input", e => { $("#pwhint").style.color = claveOk(e.target.value) ? "var(--ok)" : ""; });
   $("#cp")?.addEventListener("submit", async e => { e.preventDefault(); const n = $("#p1").value;
     if (!claveOk(n)) return aviso("La nueva contraseña debe tener mínimo 8 caracteres, con letras y números.", "bad");
@@ -585,7 +587,7 @@ function bindPerfil() {
 async function salir() { flush(); await B.salir(); USER = null; PERFIL = null; ES_DOC = false; S = empty(); location.hash = "#/acceso"; render(); }
 
 /* ---------- panel docente ---------- */
-let ALUMNOS = [], INTENTOS = [], PLANILLAS = {}, ERROR_INTENTOS = "";
+let ALUMNOS = [], INTENTOS = [], PLANILLAS = {}, MENSAJES_DOC = [], ENVIOS_SEM = [], SEGUIMIENTO = {}, ERROR_INTENTOS = "", ERROR_SEGUIMIENTO = "";
 const GRADED = ACTS.filter(a => a.pts);
 const timers = {};
 function chipsEnlaces(enl) {
@@ -603,10 +605,16 @@ function filaDoc(a) {
 async function vDocente() {
   if (!ES_DOC) return `<h1>Acceso restringido</h1><div class="card">Esta sección es solo para docentes. Si sos docente, pedí que agreguen tu correo verificado a la colección <code>docentes</code>.</div>`;
   try { ALUMNOS = await B.listarAlumnos(); } catch (e) { return `<h1>Panel docente</h1><div class="card note">No se pudieron leer los datos: ${esc(msgError(e))}</div>`; }
-  const [rIntentos, rPlanillas] = await Promise.allSettled([B.listarIntentosQuiz(), B.cargarPlanillasDocente(USER.email)]);
+  const [rIntentos, rPlanillas, rMensajes, rSeguimiento, rEnvios] = await Promise.allSettled([
+    B.listarIntentosQuiz(), B.cargarPlanillasDocente(USER.email), B.listarMensajesDocente(),
+    B.cargarSeguimiento(), B.listarEnviosSeguimiento()]);
   INTENTOS = rIntentos.status === "fulfilled" ? rIntentos.value : [];
   ERROR_INTENTOS = rIntentos.status === "rejected" ? msgError(rIntentos.reason) : "";
   PLANILLAS = rPlanillas.status === "fulfilled" ? rPlanillas.value?.planillas || {} : {};
+  MENSAJES_DOC = rMensajes.status === "fulfilled" ? rMensajes.value : [];
+  ENVIOS_SEM = rEnvios.status === "fulfilled" ? rEnvios.value : [];
+  SEGUIMIENTO = rSeguimiento.status === "fulfilled" ? rSeguimiento.value || {} : {};
+  ERROR_SEGUIMIENTO = [rMensajes, rSeguimiento, rEnvios].filter(x => x.status === "rejected").map(x => msgError(x.reason)).join(" · ");
   ALUMNOS.sort((x, y) => (x.perfil.apellidos || "").localeCompare(y.perfil.apellidos || "", "es"));
   const hayQuiz = INTENTOS.length || ALUMNOS.some(a => Object.values(a.progreso.quiz || {}).some(q => q.intentos?.length));
   const hayAuto = ALUMNOS.some(a => Object.keys(a.progreso.auto || {}).length);
@@ -616,7 +624,18 @@ async function vDocente() {
     const m = String(u || "").match(/^https:\/\/docs\.google\.com\/spreadsheets\/d\/([\w-]+)(?:\/|$)/);
     return m ? `https://docs.google.com/spreadsheets/d/${m[1]}/export?format=xlsx` : "";
   };
+  const semana = semanaDe(), anterior = semanaDe(new Date(), -1);
+  const resumen = resumirParticipacion(ALUMNOS, INTENTOS, MENSAJES_DOC, semana);
+  const enviados = new Map(ENVIOS_SEM.filter(e => e.semana === anterior.inicio).map(e => [e.uid, e]));
+  const seguimientoHtml = `<h2>Seguimiento semanal</h2><div class="card">
+    <p>Semana en curso: <b>${semana.inicio} a ${semana.fin}</b> (hora de Paraguay). Se cuentan intentos de quiz y publicaciones del foro con fecha registrada. Las notas oficiales siguen en la planilla de calificaciones.</p>
+    <p>El resumen por correo corresponde a la semana anterior (${anterior.inicio} a ${anterior.fin}) y se programa los lunes. Cada estudiante puede desactivarlo en su perfil.</p>
+    ${ERROR_SEGUIMIENTO ? `<p class="note">El seguimiento aún no está disponible: ${esc(ERROR_SEGUIMIENTO)}</p>` : `<div class="row"><label class="chk"><input type="checkbox" id="segActivo" ${SEGUIMIENTO.activo ? "checked" : ""}> Enviar resúmenes semanales</label><label>Hasta <input type="date" id="segFin" value="${esc(SEGUIMIENTO.fechaFin || '2026-12-31')}"></label><button type="button" class="btn" id="segGuardar">Guardar programación</button></div>`}
+    <p class="muted">El envío requiere el activador privado de Apps Script; activar esta opción por sí sola no envía mensajes.</p>
+    <button type="button" class="btn sec" id="segExcel" ${resumen.length ? "" : "disabled"}>⬇ Participación semanal Excel</button>
+    <div class="tw"><table><thead><tr><th>Estudiante</th><th>Quiz esta semana</th><th>Media de quiz</th><th>Temas</th><th>Respuestas</th><th>Última actividad</th><th>Correo semana anterior</th></tr></thead><tbody>${resumen.map(r => `<tr><td>${esc(nombreCompleto(r.perfil))}</td><td>${r.quizzes}</td><td>${r.mediaQuiz == null ? '–' : r.mediaQuiz + ' %'}</td><td>${r.temas}</td><td>${r.respuestas}</td><td>${r.ultimo || '–'}</td><td>${r.perfil.avisosSemanales === false ? 'Desactivado por estudiante' : esc(enviados.get(r.uid)?.estado || 'Sin registro')}</td></tr>`).join('')}</tbody></table></div></div>`;
   return `<h1>Panel docente</h1><p class="sub">${ALUMNOS.length} estudiante(s) registrados. Las notas que cargues se guardan al instante y el estudiante las ve en su aula.</p>${demoBanner()}
+  ${seguimientoHtml}
   <h2>Planillas del aula</h2><div class="card"><div class="row">
     <button type="button" class="btn" id="csvRegistro" ${ALUMNOS.length ? "" : "disabled"}>⬇ Registro CSV</button>
     <button type="button" class="btn sec" id="xlsxRegistro" ${ALUMNOS.length ? "" : "disabled"}>⬇ Registro Excel</button>
@@ -637,7 +656,7 @@ async function vDocente() {
   <p class="muted">Escala sugerida: 1 (&lt;60) · 2 (60-69) · 3 (70-80) · 4 (81-90) · 5 (≥91). Ajustar al reglamento vigente. Práctica incluye hasta +3 por el ejercicio opcional de redes (tope 50).</p></div>` : `<div class="card muted">Aún no hay estudiantes registrados.</div>`}`;
 }
 function bindDocente() {
-  $("#dq")?.addEventListener("input", e => { const q = e.target.value.toLowerCase(); $$("tbody tr").forEach(tr => tr.hidden = !tr.dataset.q.includes(q)); });
+  $("#dq")?.addEventListener("input", e => { const q = e.target.value.toLowerCase(); $$("tbody tr[data-q]").forEach(tr => tr.hidden = !tr.dataset.q.includes(q)); });
   const exportar = (csvId, xlsxId, nombre, obtener) => {
     $(csvId)?.addEventListener("click", () => { const t = obtener(); descargar(nombre + ".csv", csvPlanilla(t.encabezados, t.filas), "text/csv"); });
     $(xlsxId)?.addEventListener("click", () => { const t = obtener(); descargar(nombre + ".xlsx", xlsxPlanilla(t.encabezados, t.filas), XLSX_MIME); });
@@ -646,6 +665,20 @@ function bindDocente() {
   exportar("#csvRespuestas", "#xlsxRespuestas", "respuestas_quizzes", () => tablaQuizzes(ALUMNOS, INTENTOS));
   exportar("#csvAuto", "#xlsxAuto", "autoevaluaciones", () => tablaAutoevaluaciones(ALUMNOS, ACTS, D.rubricas));
   exportar("#csvS3", "#xlsxS3", "entregas_s3", () => tablaEntregasS3(ALUMNOS));
+  $("#segGuardar")?.addEventListener("click", async () => {
+    const b = $("#segGuardar"), fechaFin = $("#segFin").value;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(fechaFin)) return aviso("Indicá una fecha final válida.", "bad");
+    b.disabled = true;
+    try { await B.guardarSeguimiento({ activo: $("#segActivo").checked, fechaFin }); aviso("Programación guardada ✔"); }
+    catch (e) { aviso(msgError(e), "bad"); }
+    b.disabled = false;
+  });
+  $("#segExcel")?.addEventListener("click", () => {
+    const semana = semanaDe(), r = resumirParticipacion(ALUMNOS, INTENTOS, MENSAJES_DOC, semana);
+    descargar(`participacion_${semana.inicio}.xlsx`, xlsxPlanilla(
+      ["semana_inicio", "semana_fin", "apellidos", "nombres", "email", "quiz_intentos", "quiz_media_pct", "foro_temas", "foro_respuestas", "ultima_actividad"],
+      r.map(x => [semana.inicio, semana.fin, x.perfil.apellidos, x.perfil.nombres, x.perfil.email, x.quizzes, x.mediaQuiz ?? "", x.temas, x.respuestas, x.ultimo])), XLSX_MIME);
+  });
   $$("input[data-id]").forEach(inp => inp.addEventListener("input", () => {
     const u = inp.dataset.u, id = inp.dataset.id, g = actById(id), a = ALUMNOS.find(x => x.uid === u);
     if (inp.value === "") delete a.oficial[id]; else a.oficial[id] = Math.max(0, Math.min(g.pts, +inp.value));
