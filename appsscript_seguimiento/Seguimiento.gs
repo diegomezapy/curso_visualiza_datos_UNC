@@ -107,6 +107,13 @@ function diagnosticarSeguimiento() {
   return { accesoFirestore: true, programacionActiva: !!config?.activo, estudiantes: segList_('usuarios').length,
     activadores: ScriptApp.getProjectTriggers().filter(t => t.getHandlerFunction() === 'procesarSeguimientoSemanal').length };
 }
+/** Comprueba creación y actualización con un registro técnico sin datos personales ni correo. */
+function verificarEscrituraSeguimiento() {
+  const id = 'verificacion_sistema';
+  segCrearEnvio_(id, { uid: id, semana: '0000-00-00', estado: 'prueba', creado: new Date().toISOString() });
+  segActualizarEnvio_(id, { estado: 'verificado' });
+  return { escrituraFirestore: segGet_('seguimiento_envios/' + id)?.estado === 'verificado' };
+}
 /** Crea un único activador del lunes por la mañana (la hora exacta puede variar dentro de la franja). */
 function instalarSeguimientoSemanal() {
   diagnosticarSeguimiento();

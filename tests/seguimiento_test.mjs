@@ -53,6 +53,8 @@ vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(new URL('../appsscript_seguimiento/Seguimiento.gs', import.meta.url), 'utf8'), ctx);
 const run = expr => vm.runInContext(expr, ctx);
 assert.equal(run('diagnosticarSeguimiento().estudiantes'), 2);
+assert.equal(run('verificarEscrituraSeguimiento().escrituraFirestore'), true);
+assert.equal(docs.get('seguimiento_envios/verificacion_sistema').fields.estado.stringValue, 'verificado');
 assert.equal(run('instalarSeguimientoSemanal().activadores'), 1);
 assert.equal(triggers.length, 1);
 const first = run('procesarSeguimientoSemanal()');
