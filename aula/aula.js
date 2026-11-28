@@ -6,6 +6,7 @@ import { iniciarVis, cargarVis, aplicarNav, aplicarMain, botonEdicion, rutaOcult
 import { csvPlanilla, tablaRegistros, tablaQuizzes, tablaAutoevaluaciones, tablaEntregasS3 } from "./planillas.mjs";
 import { xlsxPlanilla, XLSX_MIME } from "./xlsx.mjs";
 import { semanaDe, resumirParticipacion } from "./seguimiento.mjs";
+import { codigoHtml, enlazarCodigo, codigosPorSesion } from "./codigo.mjs";
 (async () => {
 "use strict";
 const D = window.CURSO, C = D.config;
@@ -13,14 +14,14 @@ const D = window.CURSO, C = D.config;
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
-const empty = () => ({ perfil: {}, done: {}, quiz: {}, auto: {}, oficial: {}, enlaces: {} });
+const empty = () => ({ perfil: {}, done: {}, quiz: {}, auto: {}, oficial: {}, enlaces: {}, codigo: {} });
 let S = empty(), USER = null, PERFIL = null, ES_DOC = false, ocupado = false, B;
 const KINV = "cvd_invitado", RUTAS_INV = ["", "sesion", "recursos", "calendario", "tutor", "datos", "foro", "foros"];
 let INV = false; try { INV = sessionStorage.getItem(KINV) === "1"; } catch {}
 const setInv = v => { INV = !!v; try { v ? sessionStorage.setItem(KINV, "1") : sessionStorage.removeItem(KINV); } catch {} };
 let tmr;
 const persist = () => { if (!USER || !PERFIL || PERFIL.virtual) return; clearTimeout(tmr); tmr = setTimeout(flush, 500); };
-const flush = () => { clearTimeout(tmr); if (USER && PERFIL && !PERFIL.virtual) B.guardarProgreso(USER.uid, { done: S.done, quiz: S.quiz, auto: S.auto, enlaces: S.enlaces }).catch(e => aviso(msgError(e), "bad")); };
+const flush = () => { clearTimeout(tmr); if (USER && PERFIL && !PERFIL.virtual) B.guardarProgreso(USER.uid, { done: S.done, quiz: S.quiz, auto: S.auto, enlaces: S.enlaces, codigo: S.codigo }).catch(e => aviso(msgError(e), "bad")); };
 addEventListener("pagehide", flush);
 function aviso(msg, tipo = "ok") { const t = $("#toast"); t.textContent = msg; t.className = "show " + tipo; clearTimeout(aviso.t); aviso.t = setTimeout(() => t.className = "", 4500); }
 const drive = id => `https://drive.google.com/drive/folders/${id}`;
@@ -57,9 +58,10 @@ function autoPct(auto, act) {
 }
 function progSes(s, st = S) {
   const qids = s.quizIds || (s.quiz ? [String(s.n)] : []);
-  const items = s.actividades.length + qids.length;
+  const items = s.actividades.length + qids.length + 2;
   let done = s.actividades.filter(a => st.done[a.id]).length;
   done += qids.filter(id => (st.quiz[id]?.mejor ?? -1) >= 60).length;
+  done += codigosPorSesion(s.n).filter(id => st.codigo?.[id]?.hecho).length;
   return { done, items, pct: items ? done / items : 0 };
 }
 const progTotal = (st = S) => { let d = 0, i = 0; D.sesiones.forEach(s => { const p = progSes(s, st); d += p.done; i += p.items; }); return i ? d / i : 0; };
@@ -239,7 +241,7 @@ function vSesion(n) {
   const entregaNombre = id => PERFIL ? `S${n}_${id}_${`${slug(PERFIL.apellidos)}_${slug(PERFIL.nombres)}`}` : id;
   return `<span class="tag">${s.unidad} · Sesión ${s.n}</span>${s.n === 8 ? ' <span class="tag warn">Redes opcional</span>' : ""}
   <h1>${esc(s.titulo)}</h1><p class="sub">${esc(s.resumen)}${C.fechas?.[n] ? " · <b>" + esc(C.fechas[n]) + "</b>" : ""}</p>
-  ${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} completado</span>
+  <div id="progreso_sesion_${n}">${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} completado</span></div>
   <h2>🎯 Objetivos</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.objetivos.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>
   <p><a class="btn sm" href="#/clases/s${n}">🎥 Ver clases grabadas de esta sesión</a></p>
   ${mediaHtml(s)}
@@ -262,6 +264,7 @@ function vSesion(n) {
       <div class="tw"><table><thead><tr><th>Criterio</th><th>Peso</th><th>Tu nivel</th></tr></thead><tbody>${r.criterios.map((c, i) => `<tr><td>${esc(c.n)}</td><td>${c.w}%</td><td><select data-auto="${a.id}" data-i="${i}" aria-label="${esc(c.n)}"><option value="0">–</option>${[1, 2, 3, 4].map(v => `<option value="${v}" ${S.auto[a.id]?.[i] == v ? "selected" : ""}>${v} · ${LVL[v]}</option>`).join("")}</select></td></tr>`).join("")}</tbody></table></div>
       <p class="muted" id="ap_${a.id}" style="margin:.4rem 0 0">${ap == null ? "Completá los niveles para ver tu autoestimación." : `Autoestimación: <b>${fmt(ap * a.pts)}/${a.pts}</b> pts (${fmt(ap * 100, 0)}%) — referencial; la nota oficial la asigna el docente.`}</p></div></details>` : ""}
     </div></div></div>`; }).join("")}
+  ${codigoHtml(n, S.codigo)}
   ${quizzesHtml(s, "practica")}
   ${USER ? rutaDatosHtml(s) : ""}
   ${(s.practicas_reales || []).length ? `<h2>🗺️ Práctica con datos reales</h2><div class="card">${s.practicas_reales.map(p => `<div class="row" style="justify-content:space-between;padding:.35rem 0;border-bottom:1px solid var(--bd)"><span><b>${esc(p.nombre)}</b><br><span class="muted">${esc(p.desc)}</span></span><span class="row"><a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.colab)}">🐍 Colab</a>${p.rmd ? `<a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.rmd)}">📊 R → RPubs</a>` : ""}</span></div>`).join("")}<p class="muted" style="margin:.5rem 0 0">Fuentes, estado y cuidados en <a href="#/datos">Datos abiertos</a>. Citá siempre la fuente y no publiques datos personales.</p></div>` : ""}
@@ -937,7 +940,7 @@ async function cargarSesion() {
     PERFIL = await B.cargarPerfil(USER.uid);
     if (PERFIL) {
       const pr = (await B.cargarProgreso(USER.uid)) || {}, of = (await B.cargarCalificaciones(USER.uid)) || {};
-      S = { perfil: { ...PERFIL, nombre: nombreCompleto(PERFIL), doc: PERFIL.cedula }, done: pr.done || {}, quiz: pr.quiz || {}, auto: pr.auto || {}, enlaces: pr.enlaces || {}, oficial: of };
+      S = { perfil: { ...PERFIL, nombre: nombreCompleto(PERFIL), doc: PERFIL.cedula }, done: pr.done || {}, quiz: pr.quiz || {}, auto: pr.auto || {}, enlaces: pr.enlaces || {}, codigo: pr.codigo || {}, oficial: of };
     } else if (ES_DOC) PERFIL = { nombres: USER.displayName || USER.email, apellidos: "", cedula: "", virtual: true };
   } catch (e) { aviso(msgError(e), "bad"); }
 }
@@ -993,6 +996,13 @@ async function render() {
 }
 function bindSesion() {
   bindMedia();
+  const nCodigo = Number(location.hash.match(/^#\/sesion\/(\d+)/)?.[1]);
+  if (nCodigo) enlazarCodigo(nCodigo, S.codigo, () => {
+    persist();
+    const sesion = D.sesiones.find(s => s.n === nCodigo), p = progSes(sesion), destino = $("#progreso_sesion_" + nCodigo);
+    if (destino) destino.innerHTML = `${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} completado</span>`;
+    if (USER) navHtml(location.hash.replace(/^#/, ""));
+  });
   $$("[data-play]").forEach(b => b.addEventListener("click", () => {
     const id = b.dataset.play, pl = b.dataset.tipo === "playlist";
     const src = pl ? `https://www.youtube-nocookie.com/embed/videoseries?list=${id}&autoplay=1` : `https://www.youtube-nocookie.com/embed/${id}?rel=0&autoplay=1`;

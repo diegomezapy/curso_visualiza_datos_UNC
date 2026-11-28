@@ -176,3 +176,21 @@ section.vz{margin:0}section.vz.vz-ed{padding-top:2px}
 [data-inv]{display:none!important}
 .vz-b.del{right:38px}.vz-b.sec.del{background:var(--bad);color:#fff}.vz-nav .vz-b.del{position:static}
 @media(max-width:640px){.topbar{flex-wrap:wrap;gap:.35rem .5rem;padding:.5rem .8rem}.crumb{flex:1 1 100%;order:5;white-space:normal}#menu{order:0}}
+
+/* Ensayos de código por unidad. */
+.codigo-card{border-color:var(--ac)}
+.codigo-head{display:flex;justify-content:space-between;align-items:start;gap:1rem}
+.codigo-head h3{margin:.5rem 0 .1rem}
+.codigo-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 .3rem}
+.codigo-tabs .btn{min-width:7rem;min-height:44px}
+.codigo-editor{display:block;min-height:230px;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;overflow:auto;tab-size:4}
+.codigo-actions{margin:.8rem 0}.codigo-actions .btn{min-height:44px}
+.codigo-actions [hidden]{display:none!important}
+.codigo-feedback,.codigo-pista{padding:.65rem .8rem;border-radius:8px;background:color-mix(in srgb,var(--ac) 8%,var(--card));margin:.5rem 0}
+.codigo-pista:empty,.codigo-grafico:empty{display:none}
+.codigo-salida{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:.7rem;max-height:240px;overflow:auto}
+.codigo-grafico{display:flex;flex-wrap:wrap;gap:.6rem;align-items:start;margin:.8rem 0}
+.codigo-grafico canvas,.codigo-grafico img{display:block;max-width:100%;height:auto;border:1px solid var(--bd);border-radius:8px;background:#fff}
+.codigo-nota{margin:.9rem 0 0}
+@media(max-width:640px){.codigo-head{display:block}.codigo-tabs .btn{flex:1}.codigo-actions .btn{flex:1 1 100%}.codigo-editor{font-size:12px}}
+@media print{.codigo-editor,.codigo-actions,.codigo-tabs,.codigo-grafico{display:none!important}}
