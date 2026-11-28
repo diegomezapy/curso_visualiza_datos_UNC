@@ -94,5 +94,25 @@ console.log(' docente lee perfil de alumno    :',await fsr('GET','usuarios/'+ua,
 console.log(' docente lista respuestas de quiz:',await fsr('GET','respuestas_quiz',O.idToken));
 console.log(' docente escribe calificaciones  :',await fsr('PATCH','calificaciones/'+ua,O.idToken,{fields:{oficial:{mapValue:{fields:{s1_ej:{integerValue:'4'}}}}}}));
 console.log(' docente lee cédulas (índice)    :',await fsr('GET','cedulas/4567890',O.idToken));
+// Gestión de matrícula: la credencial continúa, pero Firestore restringe datos del curso.
+await t.locator('#matFilas tr').filter({hasText:'ana@ejemplo.com'}).locator('[data-mat-editar]').click();
+await t.locator('#matDialog[open]').waitFor();
+await t.locator('#f_ciudad').fill('San Lorenzo');
+await t.locator('#matForm button[type=submit]').click();
+await t.locator('#matDialog[open]').waitFor({state:'hidden'});
+if(await fsr('GET','usuarios/'+ua,A.idToken)!==200)throw Error('Edición docente dañó el perfil');
+const filaAna=t.locator('#matFilas tr').filter({hasText:'ana@ejemplo.com'});
+t.once('dialog',d=>d.accept());
+await filaAna.locator('[data-mat-estado]').click();
+await t.locator('#matFilas tr[data-estado=bajas]').filter({hasText:'ana@ejemplo.com'}).waitFor();
+if(await fsr('GET','usuarios/'+ua,A.idToken)!==200)throw Error('La baja impide leer el propio perfil');
+if(await fsr('GET','progreso/'+ua,A.idToken)!==403)throw Error('La baja no bloquea progreso');
+if(await fsr('GET',foroPath,A.idToken)!==403)throw Error('La baja no bloquea el foro');
+await p.reload();await p.waitForSelector('h1:has-text("Matrícula dada de baja")');
+console.log('13 baja: perfil visible, progreso y foro bloqueados, aviso al estudiante');
+await t.locator('#matFilas tr[data-estado=bajas]').filter({hasText:'ana@ejemplo.com'}).locator('[data-mat-estado]').click();
+await t.locator('#matFilas tr[data-estado=activos]').filter({hasText:'ana@ejemplo.com'}).waitFor();
+if(await fsr('GET','progreso/'+ua,A.idToken)!==200)throw Error('La reactivación no restablece progreso');
+console.log('14 reactivación: progreso accesible');
 console.log('errores JS:',errs);
 await b.close();})().catch(e=>{console.error('FALLÓ:',e.message);process.exit(1)});

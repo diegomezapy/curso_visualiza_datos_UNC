@@ -3,11 +3,12 @@
 **URL:** https://diegomezapy.github.io/curso_visualiza_datos_UNC/aula/ · **Drive:** carpeta `AULA_VIRTUAL_CURSO_VISUALIZA_DATOS_UNC`
 
 ## Qué incluye
-- 8 módulos con objetivos, recursos, laboratorio en Google Colab, actividades con casilla de avance y **autoevaluación con rúbrica**.
+- 8 módulos de contenido con objetivos, recursos, laboratorio en Google Colab, actividades con casilla de avance y **autoevaluación con rúbrica**, más dos talleres guiados independientes (módulos 9 y 10).
+- Los talleres 9 (R) y 10 (Python) tienen 12 pasos cada uno, agrupados en cuatro bloques. Incluyen carga manual, simulación reproducible, importación CSV, gráficos por capas (ggplot2 en R), regresión descriptiva, series de tiempo, mapas de calor en cuadrícula por departamento y distrito, Likert, facetas y una figura final. Los datos territoriales son sintéticos y la cuadrícula no representa límites geográficos.
 - 8 quizzes autocorregidos (40 preguntas) con retroalimentación; reintentos ilimitados (cuenta el mejor).
 - **Mis notas:** cuestionarios (25), foros (25), trabajo final (30), coedición (20), total y escala sugerida 1-5 una vez cargadas todas las notas.
 - **Recursos:** carpetas de Drive, datasets, documentos, glosario (25 términos).
-- **Panel docente:** consulta registros, respuestas de quizzes y autoevaluaciones; registra notas y descarga cada planilla en CSV o Excel (.xlsx).
+- **Panel docente:** gestiona matrículas, consulta registros, respuestas de quizzes y autoevaluaciones; registra notas y descarga cada planilla en CSV o Excel (.xlsx).
 
 ## Foro y calendario
 
@@ -19,7 +20,7 @@
 ## Cuentas y acceso
 - **Primer acceso:** el estudiante elige *Crear cuenta*, completa sus datos (nombres y apellidos, cédula, fecha de nacimiento, sexo, nacionalidad, departamento y ciudad, dirección, teléfono, institución, profesión, cohorte) y elige su propia contraseña; recibe un correo de verificación. También puede **ingresar con Google** y completar los datos la primera vez.
 - **Recuperación:** “¿Olvidaste tu contraseña?” → enlace por correo. **Cambio de contraseña:** en *Mi perfil*.
-- **Cédula única:** no se permiten dos cuentas con la misma cédula. La cédula no se puede editar (solo el docente puede corregirla).
+- **Cédula única:** no se permiten dos cuentas nuevas con la misma cédula. El formulario de edición del docente conserva cédula y correo para no desajustar el índice de identidad ni Authentication.
 - Requiere conectar Firebase: ver [configurar_firebase.md](configurar_firebase.md). Sin eso, el aula corre en **modo demostración** (solo navegador).
 
 ## Flujo del estudiante
@@ -27,6 +28,10 @@
 
 ## Flujo del docente
 1. Crea su cuenta (su correo debe estar en la colección `docentes`). 2. **Panel docente** lista a los estudiantes con su avance y quizzes. 3. Descarga por separado en CSV o Excel el registro de usuarios, las respuestas de los quizzes de práctica, las autoevaluaciones y las calificaciones. 4. Abre o descarga en Excel las hojas externas configuradas para diagnóstico, asistencia, mini evaluaciones y otros formularios. 5. Carga las notas de cada actividad (se guardan al instante). La evaluación formal se administra en Moodle.
+
+En **Gestión de matrículas**, el docente busca por nombre, cédula o correo; corrige datos personales y puede dar de baja o reactivar una matrícula. La baja es reversible: el perfil y las notas se conservan, el estudiante ve un aviso de inactividad y las reglas de Firestore bloquean su acceso a progreso, quizzes, clases y foros. No elimina la cuenta de Firebase Authentication ni cambia el registro separado de asistencia de Apps Script. El docente debe publicar la versión correspondiente de `firebase/firestore.rules` para que la restricción de backend sea efectiva.
+
+Las prácticas de código guardan borradores, últimas ejecuciones y el estado de la miniayuda en la sesión de la pestaña. Al volver a un paso se recuperan el código y la consola; los gráficos se vuelven a generar al ejecutar. El avance acertado se guarda en Firestore para estudiantes y docentes. Al cerrar sesión se borra la memoria temporal de esa cuenta en la pestaña. En R, ggplot2 se descarga desde el repositorio binario de webR la primera vez que se utiliza; requiere conexión.
 
 Las respuestas por pregunta se conservan desde la activación de esta función. Los intentos anteriores solo guardaron fecha y porcentaje; la exportación los marca como `histórico sin detalle`.
 

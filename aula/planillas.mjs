@@ -11,8 +11,8 @@ export function csvPlanilla(encabezados, filas) {
 }
 
 export function tablaRegistros(alumnos) {
-  const encabezados = ["uid", "apellidos", "nombres", "cedula", "fecha_nacimiento", "sexo", "nacionalidad", "departamento", "ciudad", "direccion", "telefono", "institucion", "profesion", "email", "cohorte", "consentimiento_fecha", "consentimiento_version"];
-  const filas = alumnos.map(({ uid, perfil: p }) => [uid, p.apellidos, p.nombres, p.cedula, p.fechaNac, p.sexo, p.nacionalidad, p.departamento, p.ciudad, p.direccion, p.telefono, p.institucion, p.profesion, p.email, p.cohorte, p.consentimiento?.fecha, p.consentimiento?.version]);
+  const encabezados = ["uid", "apellidos", "nombres", "cedula", "fecha_nacimiento", "sexo", "nacionalidad", "departamento", "ciudad", "direccion", "telefono", "institucion", "profesion", "email", "cohorte", "estado_matricula", "consentimiento_fecha", "consentimiento_version"];
+  const filas = alumnos.map(({ uid, perfil: p }) => [uid, p.apellidos, p.nombres, p.cedula, p.fechaNac, p.sexo, p.nacionalidad, p.departamento, p.ciudad, p.direccion, p.telefono, p.institucion, p.profesion, p.email, p.cohorte, p.matriculaActiva === false ? "baja" : "activa", p.consentimiento?.fecha, p.consentimiento?.version]);
   return { encabezados, filas };
 }
 export const planillaRegistros = alumnos => { const t = tablaRegistros(alumnos); return csvPlanilla(t.encabezados, t.filas); };

@@ -36,8 +36,8 @@ Crear una cuenta de prueba → debe llegar el correo de verificación → ingres
 ## Qué se guarda y quién lo ve
 | Colección | Contenido | Estudiante | Docente |
 |---|---|---|---|
-| `usuarios/{uid}` | datos personales (nombres, apellidos, cédula, fecha de nacimiento, sexo, residencia, contacto, consentimiento) | lee y edita lo suyo (**la cédula no**) | lee todo |
-| `progreso/{uid}` | actividades hechas, quizzes, autoevaluaciones | lee/escribe lo suyo | lee todo |
+| `usuarios/{uid}` | datos personales y estado de matrícula | lee y edita algunos campos propios mientras la matrícula esté activa | lee y edita; da de baja o reactiva |
+| `progreso/{uid}` | actividades hechas, quizzes, autoevaluaciones y prácticas de código acertadas | lee/escribe lo suyo mientras la matrícula esté activa | lee todo y guarda su práctica propia |
 | `calificaciones/{uid}` | notas oficiales | **solo lee** lo suyo | lee y escribe |
 | `cedulas/{n}` | índice para impedir cédulas duplicadas | nadie lo lee | nadie lo lee |
 | `docentes/{correo}` | lista de docentes | — | solo se edita en la consola |
@@ -48,12 +48,13 @@ Las reglas de `firebase/firestore.rules` deben estar publicadas **antes** de act
 ## Contraseñas y recuperación
 - Cada estudiante elige su contraseña al registrarse (mínimo 8, con letras y números). **No se usa una contraseña inicial común** (p. ej. `123456`): cualquiera que conozca el nombre de un compañero podría entrar a su cuenta y ver su cédula y fecha de nacimiento.
 - **Recuperación:** “¿Olvidaste tu contraseña?” envía un enlace por correo (Firebase). **Cambio:** *Mi perfil → Cambiar contraseña*. Quien ingresa con Google no maneja contraseña en el aula.
-- Si un estudiante pierde acceso a su correo, el docente puede eliminar/restablecer su cuenta desde **Authentication** en la consola.
+- Si un estudiante pierde acceso a su correo, el docente gestiona su credencial desde **Authentication** en la consola.
 
 ## Cuidado de los datos personales
 - Los datos de cédula, fecha de nacimiento y sexo son **sensibles**: usar solo para fines del curso, exportar CSV o Excel únicamente si es necesario y no compartirlos en carpetas públicas de Drive.
 - El formulario incluye una cláusula de consentimiento; ajústela al texto que exija la institución (`CONSENT` en `aula/aula.js`).
-- Para eliminar a un estudiante: borrar su cuenta en Authentication y sus documentos en `usuarios`, `progreso`, `calificaciones` y `cedulas/{su cédula}`.
+- **Dar de baja** desde el panel docente es reversible y conserva documentos y credencial de Authentication. Antes de utilizarlo, publicar las reglas actuales de `firebase/firestore.rules`; de otro modo el bloqueo sería solo visual.
+- La eliminación definitiva de una cuenta y sus documentos es una operación administrativa distinta que requiere coordinar Authentication, `usuarios`, `progreso`, `calificaciones` y el índice `cedulas`. El panel no la ejecuta. El registro de asistencia de Apps Script usa una hoja separada.
 
 ## Mantenimiento
 - Regenerar el SDK empaquetado: `cd tools/firebase_vendor && npm install && npm run build` (genera `aula/vendor/firebase.js`).

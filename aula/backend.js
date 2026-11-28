@@ -59,6 +59,8 @@ async function crearFirebase(cfg) {
       if (nuevo) b.set(fb.doc(db, "cedulas", perfil.cedula), { uid });
       try { await b.commit(); } catch (e) { if (nuevo && e.code === "permission-denied") { const err = new Error("cedula-duplicada"); throw err; } throw e; }
     },
+    actualizarAlumno: (uid, campos) => fb.setDoc(fb.doc(db, "usuarios", uid), { ...campos, actualizado: fb.serverTimestamp() }, { merge: true }),
+    cambiarEstadoMatricula: (uid, activa) => fb.setDoc(fb.doc(db, "usuarios", uid), { matriculaActiva: activa, bajaFecha: activa ? null : fb.serverTimestamp(), actualizado: fb.serverTimestamp() }, { merge: true }),
     cargarProgreso: uid => get("progreso", uid),
     guardarProgreso: (uid, p) => fb.setDoc(fb.doc(db, "progreso", uid), { ...p, actualizado: fb.serverTimestamp() }),
     async cargarCalificaciones(uid) { return (await get("calificaciones", uid))?.oficial || {}; },
@@ -170,6 +172,8 @@ function crearDemo(cfg) {
       const d = db0(); if (nuevo && d.cedulas[perfil.cedula] && d.cedulas[perfil.cedula] !== u) throw err("cedula-duplicada");
       d.usuarios[u] = { ...(d.usuarios[u] || {}), ...perfil }; if (nuevo) d.cedulas[perfil.cedula] = u; wr(d);
     },
+    async actualizarAlumno(u, campos) { const d = db0(); if (!d.usuarios[u]) throw err("Matrícula inexistente."); d.usuarios[u] = { ...d.usuarios[u], ...campos, actualizado: new Date().toISOString() }; wr(d); },
+    async cambiarEstadoMatricula(u, activa) { const d = db0(); if (!d.usuarios[u]) throw err("Matrícula inexistente."); d.usuarios[u] = { ...d.usuarios[u], matriculaActiva: activa, bajaFecha: activa ? null : new Date().toISOString(), actualizado: new Date().toISOString() }; wr(d); },
     async cargarProgreso(u) { return db0().progreso[u] || null; },
     async guardarProgreso(u, p) { const d = db0(); d.progreso[u] = p; wr(d); },
     async cargarCalificaciones(u) { return db0().calificaciones[u] || {}; },

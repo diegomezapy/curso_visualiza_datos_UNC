@@ -6,7 +6,7 @@ import { iniciarVis, cargarVis, aplicarNav, aplicarMain, botonEdicion, rutaOcult
 import { csvPlanilla, tablaRegistros, tablaQuizzes, tablaAutoevaluaciones, tablaEntregasS3 } from "./planillas.mjs";
 import { xlsxPlanilla, XLSX_MIME } from "./xlsx.mjs";
 import { semanaDe, resumirParticipacion } from "./seguimiento.mjs";
-import { codigoHtml, enlazarCodigo, codigoProgreso, cancelarCodigo } from "./codigo.mjs";
+import { codigoHtml, enlazarCodigo, codigoProgreso, cancelarCodigo, limpiarCodigoSesion } from "./codigo.mjs";
 import { calcularNota, puntajeCuestionarios } from "./evaluacion.mjs";
 (async () => {
 "use strict";
@@ -21,8 +21,8 @@ const KINV = "cvd_invitado", RUTAS_INV = ["", "sesion", "recursos", "calendario"
 let INV = false; try { INV = sessionStorage.getItem(KINV) === "1"; } catch {}
 const setInv = v => { INV = !!v; try { v ? sessionStorage.setItem(KINV, "1") : sessionStorage.removeItem(KINV); } catch {} };
 let tmr;
-const persist = () => { if (!USER || !PERFIL || PERFIL.virtual) return; clearTimeout(tmr); tmr = setTimeout(flush, 500); };
-const flush = () => { clearTimeout(tmr); if (USER && PERFIL && !PERFIL.virtual) B.guardarProgreso(USER.uid, { done: S.done, quiz: S.quiz, auto: S.auto, enlaces: S.enlaces, codigo: S.codigo }).catch(e => aviso(msgError(e), "bad")); };
+const persist = () => { if (!USER || !PERFIL || PERFIL.matriculaActiva === false) return; clearTimeout(tmr); tmr = setTimeout(flush, 500); };
+const flush = () => { clearTimeout(tmr); if (USER && PERFIL && PERFIL.matriculaActiva !== false) B.guardarProgreso(USER.uid, { done: S.done, quiz: S.quiz, auto: S.auto, enlaces: S.enlaces, codigo: S.codigo }).catch(e => aviso(msgError(e), "bad")); };
 addEventListener("pagehide", flush);
 addEventListener("pagehide", cancelarCodigo);
 function aviso(msg, tipo = "ok") { const t = $("#toast"); t.textContent = msg; t.className = "show " + tipo; clearTimeout(aviso.t); aviso.t = setTimeout(() => t.className = "", 4500); }
@@ -73,11 +73,16 @@ function navHtml(ruta) {
   if (!USER) {
     let g = it("/", "🏠 Inicio") + it("/foros", "💬 Foros por unidad", '<span class="dot">8 foros</span>') + it("/foro/prensa", "📰 Foro de prensa", '<span class="dot">Unidad 3</span>') + it("/calendario", "📅 Calendario") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
     D.sesiones.forEach(s => { g += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`); });
+    g += it("/practica/r", "9. Prácticas guiadas R") + it("/practica/python", "10. Prácticas guiadas Python");
     g += `<div class="grp">Cuenta</div>` + it("/acceso", "🔑 Ingresar o crear cuenta");
     $("#nav").innerHTML = g; $("#user").textContent = "Ingresar"; $("#user").setAttribute("href", "#/acceso"); aplicarNav(); return;
   }
   let h = it("/", "🏠 Inicio") + it("/foros", "💬 Foros por unidad", '<span class="dot">8 foros</span>') + it("/foro/prensa", "📰 Foro de prensa", '<span class="dot">Unidad 3</span>') + it("/calendario", "📅 Calendario") + it("/clases", "🎥 Clases grabadas") + it("/datos", "🗺️ Datos abiertos") + it("/tutor", "👤 El tutor") + it("/notas", "📊 Mis notas") + it("/recursos", "📚 Recursos") + `<div class="grp">Módulos</div>`;
   D.sesiones.forEach(s => { const p = progSes(s); h += it(`/sesion/${s.n}`, `${s.n}. ${esc(s.corto)}`, `<span class="dot">${p.pct >= 1 ? "✅" : Math.round(p.pct * 100) + "%"}</span>`); });
+  for (const [numero, lenguaje] of [[9, "R"], [10, "Python"]]) {
+    const p = codigoProgreso(S.codigo, numero);
+    h += it(`/practica/${lenguaje.toLowerCase()}`, `${numero}. Prácticas guiadas ${lenguaje}`, `<span class="dot">${p.done}/${p.items}</span>`);
+  }
   h += `<div class="grp">Cuenta</div>` + it("/perfil", "👤 Mi perfil") + (ES_DOC ? it("/docente", "🧑‍🏫 Panel docente") : "");
   $("#nav").innerHTML = h;
   $("#user").textContent = PERFIL ? (PERFIL.nombres || "").split(" ")[0] : "Ingresar"; $("#user").setAttribute("href", "#/perfil");
@@ -120,15 +125,16 @@ function vInicio() {
   <div class="card foro-promo"><div><span class="tag">Ocho unidades · ocho debates</span><h2>💬 Foros de discusión</h2><p>En cada unidad, defendé una decisión con evidencia y poné a prueba una propuesta de otra persona.</p></div><a class="btn" href="#/foros">Explorar los foros →</a></div>
   ${bloqueTrabajoPractico("inicio")}
   <div class="kpis">
-    <div class="card"><div class="muted">Avance del curso</div><div class="big">${Math.round(progTotal() * 100)}%</div>${bar(progTotal())}</div>
+    <div class="card"><div class="muted">Avance de las ocho unidades</div><div class="big">${Math.round(progTotal() * 100)}%</div>${bar(progTotal())}</div>
     <div class="card"><div class="muted">Cuestionarios / 25</div><div class="big">${fmt(c.cuestionarios)}</div><div class="muted">mejores 6 de ${Object.keys(D.quizzes).length} cuestionarios</div></div>
     <div class="card"><div class="muted">Puntos registrados / 100</div><div class="big">${fmt(c.total)}</div><div class="muted">${c.completo ? `Escala sugerida: ${c.escala}` : "Faltan componentes por calificar"}</div></div>
   </div>
-  ${sig ? `<h2>Próximo paso</h2><a class="card link" href="#/sesion/${sig.n}"><span class="tag">Módulo ${sig.n}</span><h3>${esc(sig.titulo)}</h3><p class="muted" style="margin:.3rem 0 0">${esc(sig.resumen)}</p></a>` : `<div class="card"><b>¡Completaste todos los módulos!</b> Descargá tu reporte en <a href="#/notas">Mis notas</a>.</div>`}
+  ${sig ? `<h2>Próximo paso</h2><a class="card link" href="#/sesion/${sig.n}"><span class="tag">Módulo ${sig.n}</span><h3>${esc(sig.titulo)}</h3><p class="muted" style="margin:.3rem 0 0">${esc(sig.resumen)}</p></a>` : `<div class="card"><b>¡Completaste las ocho unidades de contenido!</b> Podés seguir con los talleres 9 y 10 o descargar tu reporte en <a href="#/notas">Mis notas</a>.</div>`}
   ${proximosHtml()}
   <h2>Módulos</h2><div class="grid">${D.sesiones.map(s => { const p = progSes(s); return `<a class="card link" href="#/sesion/${s.n}">
     <div class="row" style="justify-content:space-between"><span class="tag">${s.unidad} · Sesión ${s.n}</span>${p.pct >= 1 ? '<span class="tag ok">Completo</span>' : ""}</div>
-    <h3 style="margin-top:.5rem">${esc(s.titulo)}</h3>${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} actividades${C.fechas?.[s.n] ? " · " + esc(C.fechas[s.n]) : ""}</span></a>`; }).join("")}</div>
+    <h3 style="margin-top:.5rem">${esc(s.titulo)}</h3>${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} actividades${C.fechas?.[s.n] ? " · " + esc(C.fechas[s.n]) : ""}</span></a>`; }).join("")}
+    ${[[9,"R"],[10,"Python"]].map(([numero,lenguaje]) => { const p = codigoProgreso(S.codigo, numero); return `<a class="card link" href="#/practica/${lenguaje.toLowerCase()}"><span class="tag">Módulo ${numero} · Taller</span><h3 style="margin-top:.5rem">Prácticas guiadas de ${lenguaje}</h3>${bar(p.items ? p.done / p.items : 0)}<span class="muted">${p.done}/${p.items} pasos</span></a>`; }).join("")}</div>
   <h2>Cómo funciona esta aula</h2>
   <div class="card"><ol style="margin:0;padding-left:1.2rem">
    <li><b>Estudiá</b> cada módulo: guía, lecturas y laboratorio (se abre en Google Colab sin instalar nada).</li>
@@ -275,7 +281,7 @@ function vSesion(n) {
       <div class="tw"><table><thead><tr><th>Criterio</th><th>Peso</th><th>Tu nivel</th></tr></thead><tbody>${r.criterios.map((c, i) => `<tr><td>${esc(c.n)}</td><td>${c.w}%</td><td><select data-auto="${a.id}" data-i="${i}" aria-label="${esc(c.n)}"><option value="0">–</option>${[1, 2, 3, 4].map(v => `<option value="${v}" ${S.auto[a.id]?.[i] == v ? "selected" : ""}>${v} · ${LVL[v]}</option>`).join("")}</select></td></tr>`).join("")}</tbody></table></div>
       <p class="muted" id="ap_${a.id}" style="margin:.4rem 0 0">${ap == null ? "Completá los niveles para ver tu autoestimación." : `Autoestimación: <b>${fmt(ap * a.pts)}/${a.pts}</b> pts (${fmt(ap * 100, 0)}%) — referencial; la nota oficial la asigna el docente.`}</p></div></details>` : ""}
     </div></div></div>`; }).join("")}
-  ${codigoHtml(n, S.codigo)}
+  ${codigoHtml(n, S.codigo, USER?.uid)}
   ${quizzesHtml(s, "practica")}
   ${USER ? rutaDatosHtml(s) : ""}
   ${(s.practicas_reales || []).length ? `<h2>🗺️ Práctica con datos reales</h2><div class="card">${s.practicas_reales.map(p => `<div class="row" style="justify-content:space-between;padding:.35rem 0;border-bottom:1px solid var(--bd)"><span><b>${esc(p.nombre)}</b><br><span class="muted">${esc(p.desc)}</span></span><span class="row"><a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.colab)}">🐍 Colab</a>${p.rmd ? `<a class="btn sec sm" target="_blank" rel="noopener" href="${esc(p.rmd)}">📊 R → RPubs</a>` : ""}</span></div>`).join("")}<p class="muted" style="margin:.5rem 0 0">Fuentes, estado y cuidados en <a href="#/datos">Datos abiertos</a>. Citá siempre la fuente y no publiques datos personales.</p></div>` : ""}
@@ -600,7 +606,7 @@ function bindPerfil() {
     try { await B.cambiarClave($("#p0").value, n); e.target.reset(); aviso("Contraseña actualizada ✔"); } catch (er) { aviso(msgError(er), "bad"); } });
   $("#mydata")?.addEventListener("click", () => descargar(`mis_datos_${slug(PERFIL.apellidos)}.json`, JSON.stringify({ cuenta: { email: USER.email }, perfil: PERFIL, progreso: { done: S.done, quiz: S.quiz, auto: S.auto, enlaces: S.enlaces }, calificaciones: S.oficial }, null, 1)));
 }
-async function salir() { flush(); await B.salir(); USER = null; PERFIL = null; ES_DOC = false; S = empty(); location.hash = "#/acceso"; render(); }
+async function salir() { flush(); limpiarCodigoSesion(USER?.uid); await B.salir(); USER = null; PERFIL = null; ES_DOC = false; S = empty(); location.hash = "#/acceso"; render(); }
 
 /* ---------- panel docente ---------- */
 let ALUMNOS = [], INTENTOS = [], PLANILLAS = {}, MENSAJES_DOC = [], ENVIOS_SEM = [], SEGUIMIENTO = {}, ERROR_INTENTOS = "", ERROR_SEGUIMIENTO = "";
@@ -632,6 +638,8 @@ async function vDocente() {
   SEGUIMIENTO = rSeguimiento.status === "fulfilled" ? rSeguimiento.value || {} : {};
   ERROR_SEGUIMIENTO = [rMensajes, rSeguimiento, rEnvios].filter(x => x.status === "rejected").map(x => msgError(x.reason)).join(" · ");
   ALUMNOS.sort((x, y) => (x.perfil.apellidos || "").localeCompare(y.perfil.apellidos || "", "es"));
+  const matriculas = ALUMNOS.filter(a => a.uid !== USER.uid);
+  const activos = matriculas.filter(a => a.perfil.matriculaActiva !== false);
   const hayQuiz = INTENTOS.length || ALUMNOS.some(a => Object.values(a.progreso.quiz || {}).some(q => q.intentos?.length));
   const hayAuto = ALUMNOS.some(a => Object.keys(a.progreso.auto || {}).length);
   const links = [["diagnostico", "Diagnóstico inicial"], ["agenda", "Asistencia y mini evaluaciones"], ["entregas", "Otros formularios"]];
@@ -641,10 +649,10 @@ async function vDocente() {
     return m ? `https://docs.google.com/spreadsheets/d/${m[1]}/export?format=xlsx` : "";
   };
   const semana = semanaDe(), anterior = semanaDe(new Date(), -1);
-  const resumen = resumirParticipacion(ALUMNOS, INTENTOS, MENSAJES_DOC, semana);
+  const resumen = resumirParticipacion(activos, INTENTOS, MENSAJES_DOC, semana);
   const enviados = new Map(ENVIOS_SEM.filter(e => e.semana === anterior.inicio).map(e => [e.uid, e]));
   const cuentasCi = new Map();
-  ALUMNOS.forEach(a => { const ci = a.perfil.cedula; if (ci) cuentasCi.set(ci, (cuentasCi.get(ci) || 0) + 1); });
+  activos.forEach(a => { const ci = a.perfil.cedula; if (ci) cuentasCi.set(ci, (cuentasCi.get(ci) || 0) + 1); });
   const ciDuplicadas = new Set([...cuentasCi].filter(([, n]) => n > 1).map(([ci]) => ci));
   const seguimientoHtml = `<h2>Seguimiento semanal</h2><div class="card">
     <p>Semana en curso: <b>${semana.inicio} a ${semana.fin}</b> (hora de Paraguay). Se cuentan intentos de quiz y publicaciones del foro con fecha registrada. Las notas oficiales siguen en la planilla de calificaciones.</p>
@@ -654,7 +662,12 @@ async function vDocente() {
     <p class="muted">El envío requiere el activador privado de Apps Script; activar esta opción por sí sola no envía mensajes.</p>
     <button type="button" class="btn sec" id="segExcel" ${resumen.length ? "" : "disabled"}>⬇ Participación semanal Excel</button>
     <div class="tw"><table><thead><tr><th>Estudiante</th><th>Quiz esta semana</th><th>Media de quiz</th><th>Temas</th><th>Respuestas</th><th>Última actividad</th><th>Correo semana anterior</th></tr></thead><tbody>${resumen.map(r => `<tr><td>${esc(nombreCompleto(r.perfil))}</td><td>${r.quizzes}</td><td>${r.mediaQuiz == null ? '–' : r.mediaQuiz + ' %'}</td><td>${r.temas}</td><td>${r.respuestas}</td><td>${r.ultimo || '–'}</td><td>${ciDuplicadas.has(r.perfil.cedula) ? 'Revisar cédula duplicada' : r.perfil.avisosSemanales === false ? 'Desactivado por estudiante' : esc(enviados.get(r.uid)?.estado || 'Sin registro')}</td></tr>`).join('')}</tbody></table></div></div>`;
-  return `<h1>Panel docente</h1><p class="sub">${ALUMNOS.length} estudiante(s) registrados. Las notas que cargues se guardan al instante y el estudiante las ve en su aula.</p>${demoBanner()}
+  return `<h1>Panel docente</h1><p class="sub">${activos.length} matrícula(s) activa(s), ${matriculas.length - activos.length} de baja. Las notas que cargues se guardan al instante y el estudiante las ve en su aula.</p>${demoBanner()}
+  <h2>Gestión de matrículas</h2><div class="card"><p>Podés corregir los datos personales y dar de baja o reactivar una matrícula. La baja conserva los datos y no elimina la credencial de Firebase Authentication. El registro de asistencia de Apps Script se administra por separado.</p>
+    <div class="row"><label for="matBusca">Buscar estudiante</label><input id="matBusca" type="search" placeholder="Nombre, cédula o correo"><label for="matFiltro">Estado</label><select id="matFiltro"><option value="todos">Todos</option><option value="activos">Activos</option><option value="bajas">De baja</option></select></div>
+    <div class="tw"><table><thead><tr><th>Estudiante</th><th>Correo</th><th>Cédula</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="matFilas">${matriculas.map(a => `<tr data-matricula="${esc(a.uid)}" data-estado="${a.perfil.matriculaActiva === false ? 'bajas' : 'activos'}" data-busca="${esc((nombreCompleto(a.perfil) + ' ' + a.perfil.cedula + ' ' + a.perfil.email).toLowerCase())}"><td>${esc(nombreCompleto(a.perfil))}</td><td>${esc(a.perfil.email)}</td><td>${esc(a.perfil.cedula)}</td><td>${a.perfil.matriculaActiva === false ? 'De baja' : 'Activa'}</td><td><div class="row"><button type="button" class="btn sec" data-mat-editar="${esc(a.uid)}">Editar datos</button><button type="button" class="btn sec" data-mat-estado="${esc(a.uid)}">${a.perfil.matriculaActiva === false ? 'Reactivar' : 'Dar de baja'}</button></div></td></tr>`).join('')}</tbody></table></div>
+    <p id="matVacio" class="muted" hidden>No hay matrículas que coincidan con el filtro.</p></div>
+    <dialog id="matDialog" class="mat-dialog"><form id="matForm"><h2>Editar datos de estudiante</h2><p id="matIdentidad" class="muted"></p><div id="matCampos"></div><p class="muted">El correo y la cédula identifican la cuenta y no se modifican aquí.</p><div class="row"><button class="btn" type="submit">Guardar cambios</button><button class="btn sec" type="button" id="matCancelar">Cancelar</button></div></form></dialog>
   ${seguimientoHtml}
   <h2>Planillas del aula</h2><div class="card"><div class="row">
     <button type="button" class="btn" id="csvRegistro" ${ALUMNOS.length ? "" : "disabled"}>⬇ Registro CSV</button>
@@ -672,10 +685,37 @@ async function vDocente() {
     ${C.moodle_curso ? `<p><a href="${esc(C.moodle_curso)}" target="_blank" rel="noopener noreferrer">Evaluaciones formales y reportes en Moodle ↗</a></p>` : ""}</div>
   <h2>Hojas externas del curso</h2><div class="card"><ul class="res">${links.map(([clave, titulo]) => `<li>${enlaceSeguro(PLANILLAS[clave]) ? `<a href="${esc(PLANILLAS[clave])}" target="_blank" rel="noopener noreferrer">${titulo} ↗</a> · <a href="${esc(enlaceExcel(PLANILLAS[clave]))}" target="_blank" rel="noopener noreferrer">⬇ Excel</a>` : `${titulo}: <span class="muted">hoja no configurada</span>`}</li>`).join("")}</ul><p class="muted">Estas hojas se abren y descargan con los permisos de tu cuenta de Google. Sus enlaces se guardan en tu documento privado de docente en Firebase.</p></div>
   <div class="card"><input type="text" id="dq" placeholder="Buscar por nombre, cédula o correo…" style="max-width:360px" aria-label="Buscar estudiante"></div>
-  ${ALUMNOS.length ? `<div class="card tw"><table><thead><tr><th>Estudiante</th><th>Avance</th><th>Cuestionarios/25</th>${GRADED.map(g => `<th title="${esc(g.titulo)}">${g.id.replace("s", "S").replace("_", " ")}<br>/${g.pts}</th>`).join("")}<th>Foros/25</th><th>Trabajo final/30</th><th>Coedición/20</th><th>Total</th><th>Esc.</th></tr></thead><tbody>${ALUMNOS.map(filaDoc).join("")}</tbody></table>
+  ${activos.length ? `<div class="card tw"><table><thead><tr><th>Estudiante</th><th>Avance</th><th>Cuestionarios/25</th>${GRADED.map(g => `<th title="${esc(g.titulo)}">${g.id.replace("s", "S").replace("_", " ")}<br>/${g.pts}</th>`).join("")}<th>Foros/25</th><th>Trabajo final/30</th><th>Coedición/20</th><th>Total</th><th>Esc.</th></tr></thead><tbody>${activos.map(filaDoc).join("")}</tbody></table>
   <p class="muted">El total es provisorio hasta que se carguen todas las notas. Escala sugerida: 1 (&lt;60) · 2 (60-69) · 3 (70-80) · 4 (81-90) · 5 (≥91). Las notas anteriores de laboratorios y mini proyectos se conservan como registro y no se suman a la nueva ponderación.</p></div>` : `<div class="card muted">Aún no hay estudiantes registrados.</div>`}`;
 }
 function bindDocente() {
+  const filtrarMatriculas = () => { const q = $("#matBusca").value.trim().toLowerCase(), estado = $("#matFiltro").value; let visibles = 0; $$("#matFilas tr").forEach(tr => { tr.hidden = !tr.dataset.busca.includes(q) || (estado !== "todos" && tr.dataset.estado !== estado); if (!tr.hidden) visibles++; }); $("#matVacio").hidden = visibles > 0; };
+  $("#matBusca")?.addEventListener("input", filtrarMatriculas);
+  $("#matFiltro")?.addEventListener("change", filtrarMatriculas);
+  const dialog = $("#matDialog"); let editando = null;
+  $$("[data-mat-editar]").forEach(b => b.addEventListener("click", () => {
+    editando = ALUMNOS.find(a => a.uid === b.dataset.matEditar); if (!editando) return;
+    $("#matIdentidad").textContent = editando.perfil.email;
+    $("#matCampos").innerHTML = camposPerfil(editando.perfil, true);
+    dialog.showModal();
+  }));
+  $("#matCancelar")?.addEventListener("click", () => dialog.close());
+  $("#matForm")?.addEventListener("submit", async e => {
+    e.preventDefault(); if (!editando) return;
+    const r = leerPerfil(); if (r.error) return aviso(r.error, "bad");
+    const { cedula, ...campos } = r.p;
+    const guardar = e.submitter || $("#matForm button[type=submit]"); guardar.disabled = true;
+    try { await B.actualizarAlumno(editando.uid, campos); dialog.close(); aviso("Datos del estudiante actualizados ✔"); await render(); }
+    catch (er) { aviso(msgError(er), "bad"); guardar.disabled = false; }
+  });
+  $$("[data-mat-estado]").forEach(b => b.addEventListener("click", async () => {
+    const a = ALUMNOS.find(x => x.uid === b.dataset.matEstado); if (!a) return;
+    const activa = a.perfil.matriculaActiva === false;
+    if (!activa && !confirm(`¿Dar de baja la matrícula de ${nombreCompleto(a.perfil)} (${a.perfil.email})? La baja es reversible y conserva sus datos.`)) return;
+    b.disabled = true;
+    try { await B.cambiarEstadoMatricula(a.uid, activa); aviso(activa ? "Matrícula reactivada ✔" : "Matrícula dada de baja ✔"); await render(); }
+    catch (er) { aviso(msgError(er), "bad"); b.disabled = false; }
+  }));
   $("#dq")?.addEventListener("input", e => { const q = e.target.value.toLowerCase(); $$("tbody tr[data-q]").forEach(tr => tr.hidden = !tr.dataset.q.includes(q)); });
   const exportar = (csvId, xlsxId, nombre, obtener) => {
     $(csvId)?.addEventListener("click", () => { const t = obtener(); descargar(nombre + ".csv", csvPlanilla(t.encabezados, t.filas), "text/csv"); });
@@ -694,7 +734,7 @@ function bindDocente() {
     b.disabled = false;
   });
   $("#segExcel")?.addEventListener("click", () => {
-    const semana = semanaDe(), r = resumirParticipacion(ALUMNOS, INTENTOS, MENSAJES_DOC, semana);
+    const semana = semanaDe(), r = resumirParticipacion(ALUMNOS.filter(a => a.perfil.matriculaActiva !== false), INTENTOS, MENSAJES_DOC, semana);
     descargar(`participacion_${semana.inicio}.xlsx`, xlsxPlanilla(
       ["semana_inicio", "semana_fin", "apellidos", "nombres", "email", "quiz_intentos", "quiz_media_pct", "foro_temas", "foro_respuestas", "ultima_actividad"],
       r.map(x => [semana.inicio, semana.fin, x.perfil.apellidos, x.perfil.nombres, x.perfil.email, x.quizzes, x.mediaQuiz ?? "", x.temas, x.respuestas, x.ultimo])), XLSX_MIME);
@@ -708,9 +748,9 @@ function bindDocente() {
     clearTimeout(timers[u]); timers[u] = setTimeout(() => B.guardarCalificaciones(u, a.oficial).then(() => aviso("Nota guardada ✔")).catch(e => aviso(msgError(e), "bad")), 700);
   }));
   const tablaNotas = () => {
-    const qs = Object.keys(D.quizzes), head = ["apellidos", "nombres", "cedula", "fecha_nacimiento", "sexo", "departamento", "ciudad", "telefono", "email", "cohorte", "avance_%", ...qs.map(n => "quiz" + n + "_%"), "cuestionarios_25", ...GRADED.map(g => g.id), "foros_25", "trabajo_final_30", "coedicion_20", "total_100", "escala"];
+    const qs = Object.keys(D.quizzes), head = ["apellidos", "nombres", "cedula", "fecha_nacimiento", "sexo", "departamento", "ciudad", "telefono", "email", "cohorte", "estado_matricula", "avance_%", ...qs.map(n => "quiz" + n + "_%"), "cuestionarios_25", ...GRADED.map(g => g.id), "foros_25", "trabajo_final_30", "coedicion_20", "total_100", "escala"];
     const rows = ALUMNOS.map(a => { const p = a.perfil, q = a.progreso.quiz || {}, c = calcular(q, a.oficial);
-      return [p.apellidos, p.nombres, p.cedula, p.fechaNac, p.sexo, p.departamento, p.ciudad, p.telefono, p.email, p.cohorte, Math.round(progTotal({ done: a.progreso.done || {}, quiz: q }) * 100), ...qs.map(n => q[n]?.mejor ?? ""), fmt(c.cuestionarios, 2), ...GRADED.map(g => a.oficial[g.id] ?? ""), fmt(c.foros, 2), fmt(c.trabajoFinal, 2), fmt(c.coedicion, 2), fmt(c.total, 2), c.escala ?? ""]; });
+      return [p.apellidos, p.nombres, p.cedula, p.fechaNac, p.sexo, p.departamento, p.ciudad, p.telefono, p.email, p.cohorte, p.matriculaActiva === false ? "baja" : "activa", Math.round(progTotal({ done: a.progreso.done || {}, quiz: q }) * 100), ...qs.map(n => q[n]?.mejor ?? ""), fmt(c.cuestionarios, 2), ...GRADED.map(g => a.oficial[g.id] ?? ""), fmt(c.foros, 2), fmt(c.trabajoFinal, 2), fmt(c.coedicion, 2), fmt(c.total, 2), c.escala ?? ""]; });
     return { encabezados: head, filas: rows };
   };
   exportar("#csv", "#xlsxNotas", "calificaciones_curso", tablaNotas);
@@ -930,8 +970,17 @@ function vInicioInvitado() {
   ${bloqueTrabajoPractico("invitado")}
   <div class="card foro-promo"><div><span class="tag">Ocho unidades · ocho debates</span><h2>💬 Foros de discusión</h2><p>Explorá los desafíos de cada unidad; ingresá con tu cuenta para publicar y responder.</p></div><a class="btn" href="#/foros">Ver los foros →</a></div>
   ${proximosHtml()}
-  <h2>Módulos</h2><div class="grid">${D.sesiones.map(s => `<a class="card link" href="#/sesion/${s.n}"><span class="tag">${s.unidad} · Sesión ${s.n}</span><h3 style="margin-top:.5rem">${esc(s.titulo)}</h3><span class="muted">${esc(s.resumen)}${C.fechas?.[s.n] ? " · " + esc(C.fechas[s.n]) : ""}</span></a>`).join("")}</div>`;
+  <h2>Módulos</h2><div class="grid">${D.sesiones.map(s => `<a class="card link" href="#/sesion/${s.n}"><span class="tag">${s.unidad} · Sesión ${s.n}</span><h3 style="margin-top:.5rem">${esc(s.titulo)}</h3><span class="muted">${esc(s.resumen)}${C.fechas?.[s.n] ? " · " + esc(C.fechas[s.n]) : ""}</span></a>`).join("")}${[[9,"R"],[10,"Python"]].map(([numero,lenguaje]) => `<a class="card link" href="#/practica/${lenguaje.toLowerCase()}"><span class="tag">Módulo ${numero} · Taller</span><h3>Prácticas guiadas de ${lenguaje}</h3><span class="muted">12 pasos desde datos hasta visualizaciones. Ingresá con tu cuenta para practicar.</span></a>`).join("")}</div>`;
 }
+function vPractica(n) {
+  const lenguaje = n === 9 ? "R" : "Python", progreso = codigoProgreso(S.codigo, n);
+  return `<span class="tag">Módulo ${n} · Taller abierto a docentes y estudiantes</span><h1>Prácticas guiadas de ${lenguaje}</h1>
+    <p class="sub">Cuatro bloques y 12 pasos: datos manuales, simulados e importados; construcción de figuras por capas; regresión, series de tiempo, mapas de calor territoriales y escalas Likert.</p>
+    <div class="card"><p><b>Avance:</b> ${progreso.done}/${progreso.items} pasos. Cada paso tiene una consigna, código editable, consola, gráfico y pistas. Podés repetirlo y volver a tus respuestas durante esta sesión.</p>
+    <p class="muted">Las bases de los talleres son sintéticas. El mapa de calor territorial compara categorías en una cuadrícula; no muestra límites geográficos. En R, el bloque de capas usa ggplot2 y la primera ejecución descarga el paquete.</p></div>
+    ${codigoHtml(n, S.codigo, USER?.uid)}`;
+}
+function bindPractica(n) { enlazarCodigo(n, S.codigo, () => { persist(); if (USER) navHtml(location.hash.replace(/^#/, "")); }, USER?.uid); }
 function vForoInvitado(n) {
   const f = foroInfo(n); if (!f) return vForos();
   return `<a href="#/foros">← Todos los foros</a> · <a href="#/sesion/${n}">Unidad ${n}</a><h1>💬 ${esc(f.titulo)}</h1><div class="card foro-promo"><div><p>Podés revisar el desafío y sus recursos. Para leer los mensajes y participar necesitás una cuenta verificada del aula Git.</p></div><button type="button" class="btn" id="foroLogin">Ingresar al foro →</button></div>${n === 3 ? `<h2>Publicaciones para analizar</h2>${imagenesPrensaHtml()}` : ""}${guiaForoHtml(f)}`;
@@ -952,13 +1001,18 @@ async function cargarSesion() {
     ES_DOC = await B.esDocente(USER);
     await cargarVis(true);
     PERFIL = await B.cargarPerfil(USER.uid);
+    if (PERFIL && PERFIL.matriculaActiva === false && !ES_DOC) return;
     if (PERFIL) {
       const pr = (await B.cargarProgreso(USER.uid)) || {}, of = (await B.cargarCalificaciones(USER.uid)) || {};
       S = { perfil: { ...PERFIL, nombre: nombreCompleto(PERFIL), doc: PERFIL.cedula }, done: pr.done || {}, quiz: pr.quiz || {}, auto: pr.auto || {}, enlaces: pr.enlaces || {}, codigo: pr.codigo || {}, oficial: of };
-    } else if (ES_DOC) PERFIL = { nombres: USER.displayName || USER.email, apellidos: "", cedula: "", virtual: true };
+    } else if (ES_DOC) {
+      PERFIL = { nombres: USER.displayName || USER.email, apellidos: "", cedula: "", virtual: true };
+      const pr = (await B.cargarProgreso(USER.uid)) || {};
+      S.codigo = pr.codigo || {};
+    }
   } catch (e) { aviso(msgError(e), "bad"); }
 }
-async function refrescarNotas() { if (USER && PERFIL && !PERFIL.virtual) { try { S.oficial = (await B.cargarCalificaciones(USER.uid)) || {}; } catch {} } }
+async function refrescarNotas() { if (USER && PERFIL && !PERFIL.virtual && PERFIL.matriculaActiva !== false) { try { S.oficial = (await B.cargarCalificaciones(USER.uid)) || {}; } catch {} } }
 let renderTk = 0;
 async function render() {
   const tk = ++renderTk, ruta = (location.hash.replace(/^#/, "") || "/"), [, a, b] = ruta.split("/"), n = +b;
@@ -970,6 +1024,7 @@ async function render() {
   if (!USER && !invitado) { guest = true; if (a === "registro") { html = vRegistro(); bind = bindRegistro; crumb = "Crear cuenta"; } else { html = vAcceso(); bind = bindAcceso; crumb = "Ingresar"; } }
   else if (necesitaVerificar()) { guest = true; html = vVerificar(); bind = bindVerificar; crumb = "Verificar correo"; }
   else if (USER && !PERFIL) { guest = true; html = vCompletar(); bind = bindCompletar; crumb = "Completar registro"; }
+  else if (USER && PERFIL?.matriculaActiva === false && !ES_DOC) { guest = true; html = `<h1>Matrícula dada de baja</h1><div class="card"><p>Tu matrícula en esta aula está inactiva. Consultá al docente si necesitás reactivarla.</p><button type="button" class="btn" id="matSalir">Cerrar sesión</button></div>`; bind = () => $("#matSalir")?.addEventListener("click", salir); crumb = "Matrícula inactiva"; }
   else {
     if (USER && (a === "acceso" || a === "registro")) { location.hash = "#/"; return; }
     if (!ES_DOC) await cargarVis();
@@ -980,6 +1035,7 @@ async function render() {
     else if (oculto) { html = vNoDisponible(); crumb = "No disponible"; }
     else switch (a) {
       case "sesion": html = vSesion(n); crumb = `Módulo ${n}`; bind = bindSesion; break;
+      case "practica": if (b === "r" || b === "python") { const numero = b === "r" ? 9 : 10; html = vPractica(numero); crumb = `Módulo ${numero} · ${b === "r" ? "R" : "Python"}`; bind = () => bindPractica(numero); } else { html = vNoDisponible(); crumb = "No disponible"; } break;
       case "foros": html = vForos(); crumb = "Foros por unidad"; break;
       case "foro": {
         const fn = foroNumero(b);
@@ -1016,7 +1072,7 @@ function bindSesion() {
     const sesion = D.sesiones.find(s => s.n === nCodigo), p = progSes(sesion), destino = $("#progreso_sesion_" + nCodigo);
     if (destino) destino.innerHTML = `${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} completado</span>`;
     if (USER) navHtml(location.hash.replace(/^#/, ""));
-  });
+  }, USER?.uid);
   $$("[data-play]").forEach(b => b.addEventListener("click", () => {
     const id = b.dataset.play, pl = b.dataset.tipo === "playlist";
     const src = pl ? `https://www.youtube-nocookie.com/embed/videoseries?list=${id}&autoplay=1` : `https://www.youtube-nocookie.com/embed/${id}?rel=0&autoplay=1`;

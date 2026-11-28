@@ -9,6 +9,12 @@ service cloud.firestore {
 
     function signed() { return request.auth != null; }
     function own(uid) { return signed() && request.auth.uid == uid; }
+    function matriculado(uid) {
+      return own(uid)
+        && exists(/databases/$(database)/documents/usuarios/$(uid))
+        && (!('matriculaActiva' in get(/databases/$(database)/documents/usuarios/$(uid)).data)
+          || get(/databases/$(database)/documents/usuarios/$(uid)).data.matriculaActiva == true);
+    }
     function docente() {
       return signed() && request.auth.token.email_verified == true
         && exists(/databases/$(database)/documents/docentes/$(request.auth.token.email));
@@ -51,7 +57,12 @@ service cloud.firestore {
       allow read: if own(uid) || docente();
       allow create: if own(uid) && perfilValido(request.resource.data);
       // la cédula no se puede cambiar (solo el docente puede corregirla)
-      allow update: if (own(uid) && perfilValido(request.resource.data) && request.resource.data.cedula == resource.data.cedula) || docente();
+      allow update: if (matriculado(uid) && perfilValido(request.resource.data)
+        && request.resource.data.cedula == resource.data.cedula
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'nombres', 'apellidos', 'fechaNac', 'sexo', 'nacionalidad', 'departamento', 'ciudad',
+          'direccion', 'telefono', 'institucion', 'profesion', 'cohorte', 'avisosSemanales', 'actualizado'
+        ])) || docente();
       allow delete: if false;
     }
 
@@ -64,8 +75,8 @@ service cloud.firestore {
     }
 
     match /progreso/{uid} {
-      allow read: if own(uid) || docente();
-      allow write: if own(uid);
+      allow read: if matriculado(uid) || docente();
+      allow write: if matriculado(uid) || (docente() && own(uid));
     }
 
     // La programación la controla el docente. El activador de Apps Script usa OAuth e IAM
@@ -87,24 +98,24 @@ service cloud.firestore {
 
     // Cada intento conserva las respuestas por pregunta sin hacer crecer indefinidamente progreso/{uid}.
     match /respuestas_quiz/{id} {
-      allow get: if docente() || (signed() && resource.data.uid == request.auth.uid);
+      allow get: if docente() || (matriculado(request.auth.uid) && resource.data.uid == request.auth.uid);
       allow list: if docente();
-      allow create: if signed() && intentoValido(request.resource.data, id);
+      allow create: if matriculado(request.auth.uid) && intentoValido(request.resource.data, id);
       // Repetir exactamente la misma escritura es idempotente; alterar respuestas guardadas no está permitido.
-      allow update: if signed() && resource.data.uid == request.auth.uid
+      allow update: if matriculado(request.auth.uid) && resource.data.uid == request.auth.uid
         && request.resource.data == resource.data;
       allow delete: if false;
     }
 
     match /calificaciones/{uid} {
-      allow read: if own(uid) || docente();
+      allow read: if matriculado(uid) || docente();
       allow write: if docente();
     }
 
     // Clases grabadas: las leen los usuarios con sesión; solo el docente las crea o edita.
     // "visible:false" oculta la clase en la interfaz (no es secreto: el control real de acceso es el del video en Drive/YouTube).
     match /clases/{id} {
-      allow read: if signed();
+      allow read: if docente() || matriculado(request.auth.uid);
       allow create, update: if docente() && request.resource.data.keys().hasAll(['titulo', 'url', 'sesion', 'fecha'])
         && request.resource.data.titulo is string && request.resource.data.titulo.size() <= 150
         && request.resource.data.url is string && request.resource.data.url.matches('^https://.*');
@@ -115,7 +126,7 @@ service cloud.firestore {
     // Cada estudiante crea un tema; las respuestas son documentos independientes.
     function foroMiembro() {
       return signed() && request.auth.token.email_verified == true
-        && (docente() || exists(/databases/$(database)/documents/usuarios/$(request.auth.uid)));
+        && (docente() || matriculado(request.auth.uid));
     }
     function autorForo(d) {
       return d.autor is string && d.autor.size() <= 161
