@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
       - run: pip install -r requirements.txt
-      - run: node --test tests/codigo_retos.test.mjs
+      - run: node --test tests/codigo_retos.test.mjs tests/evaluacion.test.mjs
       - run: for f in sesiones/0[1-8]*/lab*.py; do python -W ignore "$f"; done
       - run: python tools/build_site.py
       - run: python tools/build_aula.py

@@ -64,7 +64,7 @@ ggplot(mat, aes(factor(origen, levels = orden), factor(destino, levels = rev(ord
 
 Layout con propósito · filtrar aristas débiles · no saturar etiquetas · si hay > 500 nodos, agregar o usar matriz / arc-diagram · reportar métricas, no solo "se ve bonito". Herramientas: `igraph`, `ggraph`, `visNetwork` (interactivo), **Gephi**, Cytoscape.
 
-# Ejercicio opcional (+3 pts)
+# Ejercicio opcional de práctica
 
 Construí una red de **co-ocurrencias** (a partir de un texto o de productos comprados juntos en `ventas_retail`) y presentá **2 hallazgos**. Publicalo en RPubs.
 

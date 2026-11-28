@@ -17,7 +17,7 @@ El curso usa **dos lenguajes complementarios**, con los mismos datos y los mismo
 | Mini-proyecto 1 | 10 | **RPubs** |
 | Mini-proyecto 2 | 10 | **RPubs** (tablero plotly/crosstalk) + **Colab** (versión Python) |
 | Mini-proyecto 3 | 10 | **RPubs** + **Colab** |
-| Integrador | 20 | Informe en **RPubs** + notebook reproducible en **Colab** |
+| Trabajo final | 30 | Bases y documento en la subcarpeta de Drive; tablero o reporte reproducible en R, Python o ambos, más presentación y defensa |
 | Ejercicio de redes (opcional) | +3 | **RPubs** |
 
 Los enlaces se pegan en cada actividad del **aula virtual**; el docente los ve en su panel.

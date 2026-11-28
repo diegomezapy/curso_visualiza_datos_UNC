@@ -7,6 +7,7 @@ import { csvPlanilla, tablaRegistros, tablaQuizzes, tablaAutoevaluaciones, tabla
 import { xlsxPlanilla, XLSX_MIME } from "./xlsx.mjs";
 import { semanaDe, resumirParticipacion } from "./seguimiento.mjs";
 import { codigoHtml, enlazarCodigo, codigoProgreso, cancelarCodigo } from "./codigo.mjs";
+import { calcularNota, puntajeCuestionarios } from "./evaluacion.mjs";
 (async () => {
 "use strict";
 const D = window.CURSO, C = D.config;
@@ -34,24 +35,16 @@ const FOROS = D.foros || [];
 const foroInfo = n => FOROS.find(f => f.n === n);
 const foroRuta = n => n === 3 ? "#/foro/prensa" : `#/foro/${n}`;
 const foroNumero = parte => parte === "prensa" ? 3 : /^[1-8]$/.test(parte || "") ? Number(parte) : 0;
-const PRACT = ["s1_ej", "s2_ej", "s3_ej", "s4_mp1", "s5_mp2", "s6_ej", "s7_mp3"];
 const actById = id => ACTS.find(a => a.id === id);
 const LVL = ["", "Insuficiente", "En desarrollo", "Logrado", "Sobresaliente"];
 
 /* ---------- cálculos compartidos (alumno y docente) ---------- */
 function teoria(quiz) {
-  const p = Object.keys(D.quizzes).map(n => quiz?.[n]?.mejor ?? 0).sort((a, b) => b - a).slice(0, 6);
-  const pct = p.reduce((a, b) => a + b, 0) / 6;
-  return { pct, pts: pct * 0.30 };
+  return puntajeCuestionarios(quiz, Object.keys(D.quizzes));
 }
 function calcular(quiz, oficial) {
-  const t = teoria(quiz), o = oficial || {};
-  const pr = Math.min(50, PRACT.reduce((s, id) => s + (+o[id] || 0), 0) + (+o.s8_red || 0));
-  const it = (+o.s8_inf || 0) + (+o.s8_pres || 0);
-  const total = t.pts + pr + it;
-  return { teoria: t.pts, practica: pr, integ: it, total, escala: escala(total) };
+  return calcularNota(quiz, oficial, Object.keys(D.quizzes));
 }
-const escala = t => { const r = Math.round(t); return r >= 91 ? 5 : r >= 81 ? 4 : r >= 70 ? 3 : r >= 60 ? 2 : 1; };
 function autoPct(auto, act) {
   const r = D.rubricas[act.rubrica]; if (!r || !auto?.[act.id]) return null;
   const tot = r.criterios.reduce((s, c) => s + c.w, 0);
@@ -104,6 +97,20 @@ function proximosHtml() {
   const ev = AGENDA.eventos.filter(e => new Date(e.fin_iso) >= new Date()).slice(0, 3); if (!ev.length) return "";
   return `<h2>📅 Próximos eventos</h2><div class="card"><ul class="res">${ev.map(e => { const t = TIPO_EV[e.tipo] || TIPO_EV.otro; return `<li><span class="ico">${t[0]}</span><span><a ${attrsEvento(e)}><b>${esc(e.titulo)}</b></a><br><span class="muted">${esc(fmtF(e))} · ${esc(horarioEvento(e))}</span> · <a href="#/calendario/${encodeURIComponent(e.id)}">Detalles</a></span></li>`; }).join("")}</ul><a href="#/calendario">Ver el calendario completo →</a></div>`;
 }
+function bloqueTrabajoPractico(ubicacion) {
+  const tituloId = `tp-titulo-${ubicacion}`;
+  return `<section class="card tp-bloque" aria-labelledby="${tituloId}">
+    <span class="tag">Trabajo práctico final · 30 %</span>
+    <h2 id="${tituloId}">📋 Guía de elaboración, entrega y defensa</h2>
+    <div class="tp-grid">
+      <div><strong>Investigá y documentá</strong><p>Elegí una pregunta y una base real. Prepará un documento de 6 a 10 páginas, el código reproducible y un tablero o reporte con hallazgos y fuentes.</p></div>
+      <div><strong>Entregá en tu carpeta</strong><p>Creá una subcarpeta propia en el Drive de trabajos prácticos. Depositá allí bases, documento, código y tablero; después pegá el enlace de tu subcarpeta en la actividad de la unidad 8.</p></div>
+      <div><strong>Presentá y defendé</strong><p>El último día de clases disponés de hasta 10 minutos de exposición y 5 de preguntas. La rúbrica del trabajo asigna 18 puntos al producto y 12 a la defensa.</p></div>
+    </div>
+    <div class="row tp-acciones"><a class="btn" href="../docs/proyecto_integrador.html">Leer guía y criterios →</a><a class="btn sec" href="#/sesion/8">Ir a la actividad →</a><a class="btn sec" data-solo-reg target="_blank" rel="noopener noreferrer" href="${drive(C.drive.trabajo_practico)}">Abrir Drive de trabajos prácticos ↗</a></div>
+    <p class="muted tp-pesos">Evaluación del curso: cuestionarios 25 %, foros 25 %, trabajo final 30 % y edición conjunta de documentos y tableros 20 %.</p>
+  </section>`;
+}
 function vInicio() {
   const reg = PERFIL?.nombres;
   const sig = D.sesiones.find(s => progSes(s).pct < 1);
@@ -111,10 +118,11 @@ function vInicio() {
   return `${heroHtml(progTotal(), esc((reg || "").split(" ")[0]))}
   <p class="sub">${esc(C.curso)} · ${esc(C.programa)} · ${esc(C.semestre)}</p>
   <div class="card foro-promo"><div><span class="tag">Ocho unidades · ocho debates</span><h2>💬 Foros de discusión</h2><p>En cada unidad, defendé una decisión con evidencia y poné a prueba una propuesta de otra persona.</p></div><a class="btn" href="#/foros">Explorar los foros →</a></div>
+  ${bloqueTrabajoPractico("inicio")}
   <div class="kpis">
     <div class="card"><div class="muted">Avance del curso</div><div class="big">${Math.round(progTotal() * 100)}%</div>${bar(progTotal())}</div>
-    <div class="card"><div class="muted">Teoría (quizzes) / 30</div><div class="big">${fmt(c.teoria)}</div><div class="muted">mejores 6 de ${Object.keys(D.quizzes).length} quizzes</div></div>
-    <div class="card"><div class="muted">Nota provisoria / 100</div><div class="big">${fmt(c.total)}</div><div class="muted">escala sugerida: ${c.escala}</div></div>
+    <div class="card"><div class="muted">Cuestionarios / 25</div><div class="big">${fmt(c.cuestionarios)}</div><div class="muted">mejores 6 de ${Object.keys(D.quizzes).length} cuestionarios</div></div>
+    <div class="card"><div class="muted">Puntos registrados / 100</div><div class="big">${fmt(c.total)}</div><div class="muted">${c.completo ? `Escala sugerida: ${c.escala}` : "Faltan componentes por calificar"}</div></div>
   </div>
   ${sig ? `<h2>Próximo paso</h2><a class="card link" href="#/sesion/${sig.n}"><span class="tag">Módulo ${sig.n}</span><h3>${esc(sig.titulo)}</h3><p class="muted" style="margin:.3rem 0 0">${esc(sig.resumen)}</p></a>` : `<div class="card"><b>¡Completaste todos los módulos!</b> Descargá tu reporte en <a href="#/notas">Mis notas</a>.</div>`}
   ${proximosHtml()}
@@ -132,8 +140,8 @@ function vInicio() {
 
 const ytUrl = v => v.tipo === "playlist" ? `https://www.youtube.com/playlist?list=${v.id}` : `https://www.youtube.com/watch?v=${v.id}`;
 const LEC_ICO = { pdf: "📄", libro: "📘", "artículo": "🧾", web: "🔗", datos: "🗂" };
-const RE_ENL = { rpubs: /^https:\/\/(www\.)?rpubs\.com\/.+/i, colab: /^https:\/\/(colab\.research\.google\.com|drive\.google\.com|colab\.google)\/.+/i, trabajo: /^https:\/\/(rpubs\.com|www\.rpubs\.com|drive\.google\.com|docs\.google\.com)\/.+/i };
-const ENL_TXT = { rpubs: ["📊 Enlace de tu publicación en RPubs", "https://rpubs.com/tu_usuario/titulo"], colab: ["🐍 Enlace de tu Colab (compartido: cualquiera con el enlace, Lector)", "https://colab.research.google.com/drive/..."], trabajo: ["📄 Enlace a tu trabajo en RPubs o PDF en Google Drive", "https://rpubs.com/tu_usuario/titulo"] };
+const RE_ENL = { rpubs: /^https:\/\/(www\.)?rpubs\.com\/.+/i, colab: /^https:\/\/(colab\.research\.google\.com|drive\.google\.com|colab\.google)\/.+/i, trabajo: /^https:\/\/(rpubs\.com|www\.rpubs\.com|drive\.google\.com|docs\.google\.com)\/.+/i, tp_carpeta: /^https:\/\/drive\.google\.com\/drive\/folders\/[A-Za-z0-9_-]+(?:[?#].*)?$/i, coed: /^https:\/\/(docs\.google\.com|drive\.google\.com|lookerstudio\.google\.com)\/.+/i };
+const ENL_TXT = { rpubs: ["📊 Enlace de tu publicación en RPubs", "https://rpubs.com/tu_usuario/titulo"], colab: ["🐍 Enlace de tu Colab (compartido: cualquiera con el enlace, Lector)", "https://colab.research.google.com/drive/..."], trabajo: ["📄 Enlace a tu trabajo en RPubs o PDF en Google Drive", "https://rpubs.com/tu_usuario/titulo"], tp_carpeta: ["📁 Enlace a tu subcarpeta de trabajo final en Drive", "https://drive.google.com/drive/folders/..."], coed: ["🤝 Enlace al documento o tablero editado conjuntamente", "https://docs.google.com/..."] };
 function videosHtml(s) {
   if (!s.videos?.length) return "";
   const vistos = s.videos.filter(v => S.done["vid_" + v.id]).length;
@@ -158,7 +166,7 @@ function enlacesHtml(a) {
   if (!a.ent?.length) return "";
   const e = S.enlaces[a.id] || {};
   return `<div style="margin-top:.6rem"><b style="font-size:.9rem">Entrega por enlace</b>${a.ent.map(t => `<label for="enl_${a.id}_${t}" style="font-weight:400">${ENL_TXT[t][0]} ${e[t] ? "✅" : ""}</label><input type="url" id="enl_${a.id}_${t}" data-enl="${a.id}" data-t="${t}" placeholder="${ENL_TXT[t][1]}" value="${esc(e[t] || "")}">`).join("")}
-  <p class="muted" style="margin:.3rem 0 0">Al guardar todos los enlaces requeridos, la actividad se marca como entregada en esta aula. Si compartís un PDF en Drive, concedé acceso de lectura al docente. RPubs es público: no incluyas datos personales.</p></div>`;
+  <p class="muted" style="margin:.3rem 0 0">${a.id === "s8_inf" ? "Pegá el enlace de tu propia subcarpeta. Al guardarlo, la actividad se marca como entregada; el docente verificará los archivos y asignará la nota. No subas datos personales." : a.id === "s8_coed" ? "Compartí un documento o tablero con historial de cambios visible. El docente verificará los aportes y asignará la nota." : "Al guardar todos los enlaces requeridos, la actividad se marca como entregada en esta aula. Si compartís un PDF en Drive, concedé acceso de lectura al docente. RPubs es público: no incluyas datos personales."}</p></div>`;
 }
 function rutaDatosHtml(s) {
   if (s.n !== 1) return "";
@@ -244,6 +252,7 @@ function vSesion(n) {
   return `<span class="tag">${s.unidad} · Sesión ${s.n}</span>${s.n === 8 ? ' <span class="tag warn">Redes opcional</span>' : ""}
   <h1>${esc(s.titulo)}</h1><p class="sub">${esc(s.resumen)}${C.fechas?.[n] ? " · <b>" + esc(C.fechas[n]) + "</b>" : ""}</p>
   <div id="progreso_sesion_${n}">${bar(p.pct, p.pct >= 1 ? "ok" : "")}<span class="muted">${p.done}/${p.items} completado</span></div>
+  ${n === 8 ? bloqueTrabajoPractico("sesion8") : ""}
   <h2>🎯 Objetivos</h2><div class="card"><ul style="margin:0;padding-left:1.2rem">${s.objetivos.map(o => `<li>${esc(o)}</li>`).join("")}</ul></div>
   <p><a class="btn sm" href="#/clases/s${n}">🎥 Ver clases grabadas de esta sesión</a></p>
   ${mediaHtml(s)}
@@ -259,7 +268,7 @@ function vSesion(n) {
     ${a.accion ? `<p style="margin:.6rem 0 0"><a class="btn" target="_blank" rel="noopener" href="${esc(a.accion.u)}">${esc(a.accion.t)} →</a></p>` : ""}
     ${a.entrega ? `<details style="margin-top:.6rem"><summary>Cómo entregar</summary><div style="padding:.4rem 0">
       <p style="margin:.3rem 0">Si entregás un archivo, nombralo: <code>${esc(entregaNombre(a.id))}.ext</code></p>
-      <div class="row"><a class="btn sec" target="_blank" rel="noopener" href="${drive(C.drive.entregas)}">📁 Abrir carpeta de entregas (Drive)</a>
+      <div class="row"><a class="btn sec" target="_blank" rel="noopener" href="${drive(a.id === "s8_inf" ? C.drive.trabajo_practico : C.drive.entregas)}">📁 Abrir carpeta de entregas (Drive)</a>
       ${C.formulario_entregas ? `<a class="btn" target="_blank" rel="noopener" href="${esc(C.formulario_entregas)}">📝 Entregar por formulario</a>` : ""}</div></div></details>` : ""}
     ${enlacesHtml(a)}
     ${r ? `<details style="margin-top:.4rem"><summary>Autoevaluación con rúbrica (${esc(r.titulo)})</summary><div style="padding:.5rem 0">
@@ -409,13 +418,14 @@ function vNotas() {
   const c = calcular(S.quiz, S.oficial), t = teoria(S.quiz);
   const filaQ = Object.keys(D.quizzes).map(n => { const q = S.quiz[n]; return `<tr><td>Quiz ${esc(D.quizzes[n].etiqueta || n)} · ${esc(D.quizzes[n].titulo)}</td><td>${q ? q.mejor + "%" : "–"}</td><td>${q ? q.intentos.length : 0}</td></tr>`; }).join("");
   const filaA = ACTS.filter(a => a.pts).map(a => { const ap = autoPct(S.auto, a), of = S.oficial[a.id]; return `<tr><td>S${a.n} · ${esc(a.titulo)}</td><td>${a.pts}</td><td>${S.done[a.id] ? "✅" : "⬜"}</td><td>${ap == null ? "–" : fmt(ap * a.pts)}</td><td>${of === undefined || of === "" ? '<span class="muted">pendiente</span>' : "<b>" + fmt(+of) + "</b>"}</td></tr>`; }).join("");
-  return `<h1>Mis notas y reporte</h1><p class="sub">Calificación estimada con lo que ya tiene nota oficial del docente. Teoría se calcula automáticamente con tus quizzes. Las notas oficiales se actualizan cuando el docente las carga.</p>
-  <div class="kpis"><div class="card"><div class="muted">Teoría / 30</div><div class="big">${fmt(c.teoria)}</div></div>
-   <div class="card"><div class="muted">Práctica / 50</div><div class="big">${fmt(c.practica)}</div></div>
-   <div class="card"><div class="muted">Integrador / 20</div><div class="big">${fmt(c.integ)}</div></div>
-   <div class="card"><div class="muted">Total / 100</div><div class="big">${fmt(c.total)}</div><div class="muted">Escala sugerida: <b>${c.escala}</b></div></div></div>
-  <h2>Quizzes (teoría 30 %)</h2><div class="card tw"><table><thead><tr><th>Quiz</th><th>Mejor</th><th>Intentos</th></tr></thead><tbody>${filaQ}</tbody></table><p class="muted">Se promedian los <b>6 mejores</b> de los quizzes (el de Redes es opcional y puede sustituir al más bajo). Promedio: ${fmt(t.pct)}%.</p></div>
-  <h2>Práctica e integrador</h2><div class="card tw"><table><thead><tr><th>Actividad</th><th>Pts</th><th>Hecha</th><th>Autoestimación</th><th>Nota oficial</th></tr></thead><tbody>${filaA}</tbody></table></div>
+  return `<h1>Mis notas y reporte</h1><p class="sub">Ponderación vigente: cuestionarios 25 %, foros 25 %, trabajo final 30 % y coedición 20 %. El total es provisorio hasta que el docente cargue las notas oficiales pendientes.</p>
+  <div class="kpis"><div class="card"><div class="muted">Cuestionarios / 25</div><div class="big">${fmt(c.cuestionarios)}</div></div>
+   <div class="card"><div class="muted">Foros / 25</div><div class="big">${S.oficial.s8_foros == null ? "Pendiente" : fmt(c.foros)}</div></div>
+   <div class="card"><div class="muted">Trabajo final / 30</div><div class="big">${S.oficial.s8_inf == null && S.oficial.s8_pres == null ? "Pendiente" : fmt(c.trabajoFinal)}</div></div>
+   <div class="card"><div class="muted">Coedición / 20</div><div class="big">${S.oficial.s8_coed == null ? "Pendiente" : fmt(c.coedicion)}</div></div>
+   <div class="card"><div class="muted">Puntos registrados / 100</div><div class="big">${fmt(c.total)}</div><div class="muted">${c.completo ? `Escala sugerida: <b>${c.escala}</b>` : "Nota final pendiente de componentes"}</div></div></div>
+  <h2>Cuestionarios (25 %)</h2><div class="card tw"><table><thead><tr><th>Cuestionario</th><th>Mejor</th><th>Intentos</th></tr></thead><tbody>${filaQ}</tbody></table><p class="muted">Se promedian los <b>6 mejores</b> resultados; el de Redes es opcional y puede sustituir al más bajo. Promedio: ${fmt(t.pct)}%.</p></div>
+  <h2>Actividades y notas oficiales</h2><div class="card tw"><table><thead><tr><th>Actividad</th><th>Pts</th><th>Hecha</th><th>Autoestimación</th><th>Nota oficial</th></tr></thead><tbody>${filaA}</tbody></table><p class="muted">Las calificaciones anteriores de ejercicios y mini proyectos se conservan como registro, pero no se suman otra vez a los cuatro componentes de la nota final.</p></div>
   <div class="row noprint" style="margin-top:1rem"><button class="btn sec" onclick="window.print()">🖨 Imprimir constancia de avance</button></div>
   <p class="muted">${esc(nombreCompleto(PERFIL))} · C.I. ${esc(PERFIL.cedula)} · generado ${new Date().toLocaleDateString("es-PY")}</p>`;
 }
@@ -426,7 +436,8 @@ function vRecursos() {
    <li><span class="ico">📂</span><a target="_blank" rel="noopener" href="${drive(C.drive.raiz)}">Carpeta general del aula</a></li>
    <li><span class="ico">📘</span><a target="_blank" rel="noopener" href="${drive(C.drive.programa)}">Programa y guías</a></li>
    <li><span class="ico">🗂</span><a target="_blank" rel="noopener" href="${drive(C.drive.datos)}">Datasets</a></li>
-   <li data-solo-reg><span class="ico">📤</span><a target="_blank" rel="noopener" href="${drive(C.drive.entregas)}">Entregas de estudiantes</a></li>
+   <li data-solo-reg><span class="ico">📤</span><a target="_blank" rel="noopener" href="${drive(C.drive.entregas)}">Otras entregas de estudiantes</a></li>
+   <li data-solo-reg><span class="ico">📋</span><a target="_blank" rel="noopener noreferrer" href="${drive(C.drive.trabajo_practico)}">Trabajo práctico: crear tu carpeta</a></li>
    <li><span class="ico">🎓</span><a target="_blank" rel="noopener" href="${drive(C.drive.integrador)}">Proyecto integrador</a></li>
    ${D.sesiones.map(s => `<li><span class="ico">${s.n}</span><a target="_blank" rel="noopener" href="${drive(C.drive.sesiones[s.n])}">Sesión ${s.n}: materiales</a></li>`).join("")}</ul></div>
   <h2>📄 Fichas y hojas de referencia (PDF)</h2><div class="card"><ul class="res">
@@ -434,7 +445,7 @@ function vRecursos() {
    ${D.sesiones.map(s => `<li><span class="ico">${s.n}</span><a target="_blank" href="../materiales/pdf/${["ficha_01_percepcion", "ficha_02_eleccion", "ficha_03_color_etica", "ficha_04_kpis_storytelling", "ficha_05_dashboards", "ficha_06_reporting", "ficha_07_complejas", "ficha_08_redes"][s.n - 1]}.pdf">Ficha de estudio · Sesión ${s.n}: ${esc(s.corto)}</a></li>`).join("")}</ul></div>
   <h2>🗃 Datasets (descarga directa)</h2><div class="card tw"><table><tbody>${D.datasets.map(([f, d]) => `<tr><td><a href="${C.raw}/datos/${f}" download>${f}</a></td><td class="muted">${esc(d)}</td></tr>`).join("")}</tbody></table><p class="muted">Sintéticos y reproducibles (<code>datos/generar_datos.py</code>). Para mini-proyectos e integrador usá datos reales (datos.gov.py, INE, BCP, Our World in Data).</p></div>
   <h2>📜 Documentos</h2><div class="card"><ul class="res">
-   ${[["programa", "Programa de estudios"], ["cronograma", "Cronograma"], ["evaluacion", "Evaluación"], ["rubricas", "Rúbricas"], ["proyecto_integrador", "Proyecto integrador"], ["bibliografia", "Bibliografía y fuentes de datos"], ["banco_quizzes", "Banco de quizzes (con respuestas)"]].map(([f, t]) => `<li><span class="ico">📄</span><a href="../docs/${f}.html">${t}</a></li>`).join("")}</ul></div>
+   ${[["programa", "Programa de estudios"], ["cronograma", "Cronograma"], ["evaluacion", "Evaluación"], ["rubricas", "Rúbricas"], ["proyecto_integrador", "Guía del trabajo práctico"], ["bibliografia", "Bibliografía y fuentes de datos"], ["banco_quizzes", "Banco de quizzes (con respuestas)"]].map(([f, t]) => `<li><span class="ico">📄</span><a href="../docs/${f}.html">${t}</a></li>`).join("")}</ul></div>
   <h2>⚙️ Entorno local (opcional)</h2><div class="card"><p style="margin-top:0">Podés trabajar sin instalar nada con Colab. Para trabajar en tu equipo:</p><pre style="overflow:auto;background:var(--bg);padding:.8rem;border-radius:8px"><code>git clone ${esc(C.repo)}.git
 cd curso_visualiza_datos_UNC
 python -m venv .venv &amp;&amp; source .venv/bin/activate
@@ -598,14 +609,14 @@ const timers = {};
 function chipsEnlaces(enl) {
   const items = Object.entries(enl || {}).flatMap(([id, o]) => Object.entries(o || {}).map(([t, u]) => ({ id, t, u }))).filter(x => /^https:\/\//.test(x.u));
   if (!items.length) return "";
-  return `<div class="chips">${items.map(x => `<a target="_blank" rel="noopener noreferrer" href="${esc(x.u)}" title="${esc(x.u)}">S${actById(x.id)?.n ?? "?"}${x.id.includes("mp") ? " MP" + x.id.match(/mp(\d)/)[1] : ""} ${x.t === "rpubs" ? "📊" : x.t === "trabajo" ? "📄" : "🐍"}</a>`).join("")}</div>`;
+  return `<div class="chips">${items.map(x => `<a target="_blank" rel="noopener noreferrer" href="${esc(x.u)}" title="${esc(x.u)}">S${actById(x.id)?.n ?? "?"}${x.id.includes("mp") ? " MP" + x.id.match(/mp(\d)/)[1] : ""} ${x.t === "rpubs" ? "📊" : x.t === "trabajo" ? "📄" : x.t === "tp_carpeta" ? "📁" : x.t === "coed" ? "🤝" : "🐍"}</a>`).join("")}</div>`;
 }
 function filaDoc(a) {
   const c = calcular(a.progreso.quiz, a.oficial), pg = progTotal({ done: a.progreso.done || {}, quiz: a.progreso.quiz || {} }), p = a.perfil;
   return `<tr data-u="${esc(a.uid)}" data-q="${esc((nombreCompleto(p) + " " + p.cedula + " " + p.email).toLowerCase())}"><td><b>${esc(nombreCompleto(p))}</b><div class="muted">C.I. ${esc(p.cedula)} · ${esc(p.email)}</div>${chipsEnlaces(a.progreso.enlaces)}</td>
-   <td>${Math.round(pg * 100)}%</td><td>${fmt(c.teoria)}</td>
+   <td>${Math.round(pg * 100)}%</td><td>${fmt(c.cuestionarios)}</td>
    ${GRADED.map(g => `<td><input type="number" min="0" max="${g.pts}" step="0.5" data-u="${esc(a.uid)}" data-id="${g.id}" value="${a.oficial[g.id] ?? ""}" aria-label="${esc(nombreCompleto(p))} ${g.id}"></td>`).join("")}
-   <td data-c="pr">${fmt(c.practica)}</td><td data-c="it">${fmt(c.integ)}</td><td data-c="tt"><b>${fmt(c.total)}</b></td><td data-c="es"><b>${c.escala}</b></td></tr>`;
+   <td data-c="fo">${fmt(c.foros)}</td><td data-c="tf">${fmt(c.trabajoFinal)}</td><td data-c="co">${fmt(c.coedicion)}</td><td data-c="tt"><b>${fmt(c.total)}</b></td><td data-c="es"><b>${c.escala ?? "Pend."}</b></td></tr>`;
 }
 async function vDocente() {
   if (!ES_DOC) return `<h1>Acceso restringido</h1><div class="card">Esta sección es solo para docentes. Si sos docente, pedí que agreguen tu correo verificado a la colección <code>docentes</code>.</div>`;
@@ -661,8 +672,8 @@ async function vDocente() {
     ${C.moodle_curso ? `<p><a href="${esc(C.moodle_curso)}" target="_blank" rel="noopener noreferrer">Evaluaciones formales y reportes en Moodle ↗</a></p>` : ""}</div>
   <h2>Hojas externas del curso</h2><div class="card"><ul class="res">${links.map(([clave, titulo]) => `<li>${enlaceSeguro(PLANILLAS[clave]) ? `<a href="${esc(PLANILLAS[clave])}" target="_blank" rel="noopener noreferrer">${titulo} ↗</a> · <a href="${esc(enlaceExcel(PLANILLAS[clave]))}" target="_blank" rel="noopener noreferrer">⬇ Excel</a>` : `${titulo}: <span class="muted">hoja no configurada</span>`}</li>`).join("")}</ul><p class="muted">Estas hojas se abren y descargan con los permisos de tu cuenta de Google. Sus enlaces se guardan en tu documento privado de docente en Firebase.</p></div>
   <div class="card"><input type="text" id="dq" placeholder="Buscar por nombre, cédula o correo…" style="max-width:360px" aria-label="Buscar estudiante"></div>
-  ${ALUMNOS.length ? `<div class="card tw"><table><thead><tr><th>Estudiante</th><th>Avance</th><th>Teoría/30</th>${GRADED.map(g => `<th title="${esc(g.titulo)}">${g.id.replace("s", "S").replace("_", " ")}<br>/${g.pts}</th>`).join("")}<th>Práct./50</th><th>Integr./20</th><th>Total</th><th>Esc.</th></tr></thead><tbody>${ALUMNOS.map(filaDoc).join("")}</tbody></table>
-  <p class="muted">Escala sugerida: 1 (&lt;60) · 2 (60-69) · 3 (70-80) · 4 (81-90) · 5 (≥91). Ajustar al reglamento vigente. Práctica incluye hasta +3 por el ejercicio opcional de redes (tope 50).</p></div>` : `<div class="card muted">Aún no hay estudiantes registrados.</div>`}`;
+  ${ALUMNOS.length ? `<div class="card tw"><table><thead><tr><th>Estudiante</th><th>Avance</th><th>Cuestionarios/25</th>${GRADED.map(g => `<th title="${esc(g.titulo)}">${g.id.replace("s", "S").replace("_", " ")}<br>/${g.pts}</th>`).join("")}<th>Foros/25</th><th>Trabajo final/30</th><th>Coedición/20</th><th>Total</th><th>Esc.</th></tr></thead><tbody>${ALUMNOS.map(filaDoc).join("")}</tbody></table>
+  <p class="muted">El total es provisorio hasta que se carguen todas las notas. Escala sugerida: 1 (&lt;60) · 2 (60-69) · 3 (70-80) · 4 (81-90) · 5 (≥91). Las notas anteriores de laboratorios y mini proyectos se conservan como registro y no se suman a la nueva ponderación.</p></div>` : `<div class="card muted">Aún no hay estudiantes registrados.</div>`}`;
 }
 function bindDocente() {
   $("#dq")?.addEventListener("input", e => { const q = e.target.value.toLowerCase(); $$("tbody tr[data-q]").forEach(tr => tr.hidden = !tr.dataset.q.includes(q)); });
@@ -692,14 +703,14 @@ function bindDocente() {
     const u = inp.dataset.u, id = inp.dataset.id, g = actById(id), a = ALUMNOS.find(x => x.uid === u);
     if (inp.value === "") delete a.oficial[id]; else a.oficial[id] = Math.max(0, Math.min(g.pts, +inp.value));
     const c = calcular(a.progreso.quiz, a.oficial), tr = inp.closest("tr");
-    tr.querySelector("[data-c=pr]").textContent = fmt(c.practica); tr.querySelector("[data-c=it]").textContent = fmt(c.integ);
-    tr.querySelector("[data-c=tt]").innerHTML = `<b>${fmt(c.total)}</b>`; tr.querySelector("[data-c=es]").innerHTML = `<b>${c.escala}</b>`;
+    tr.querySelector("[data-c=fo]").textContent = fmt(c.foros); tr.querySelector("[data-c=tf]").textContent = fmt(c.trabajoFinal); tr.querySelector("[data-c=co]").textContent = fmt(c.coedicion);
+    tr.querySelector("[data-c=tt]").innerHTML = `<b>${fmt(c.total)}</b>`; tr.querySelector("[data-c=es]").innerHTML = `<b>${c.escala ?? "Pend."}</b>`;
     clearTimeout(timers[u]); timers[u] = setTimeout(() => B.guardarCalificaciones(u, a.oficial).then(() => aviso("Nota guardada ✔")).catch(e => aviso(msgError(e), "bad")), 700);
   }));
   const tablaNotas = () => {
-    const qs = Object.keys(D.quizzes), head = ["apellidos", "nombres", "cedula", "fecha_nacimiento", "sexo", "departamento", "ciudad", "telefono", "email", "cohorte", "avance_%", ...qs.map(n => "quiz" + n + "_%"), "teoria_30", ...GRADED.map(g => g.id), "practica_50", "integrador_20", "total_100", "escala"];
+    const qs = Object.keys(D.quizzes), head = ["apellidos", "nombres", "cedula", "fecha_nacimiento", "sexo", "departamento", "ciudad", "telefono", "email", "cohorte", "avance_%", ...qs.map(n => "quiz" + n + "_%"), "cuestionarios_25", ...GRADED.map(g => g.id), "foros_25", "trabajo_final_30", "coedicion_20", "total_100", "escala"];
     const rows = ALUMNOS.map(a => { const p = a.perfil, q = a.progreso.quiz || {}, c = calcular(q, a.oficial);
-      return [p.apellidos, p.nombres, p.cedula, p.fechaNac, p.sexo, p.departamento, p.ciudad, p.telefono, p.email, p.cohorte, Math.round(progTotal({ done: a.progreso.done || {}, quiz: q }) * 100), ...qs.map(n => q[n]?.mejor ?? ""), fmt(c.teoria, 2), ...GRADED.map(g => a.oficial[g.id] ?? ""), fmt(c.practica, 2), fmt(c.integ, 2), fmt(c.total, 2), c.escala]; });
+      return [p.apellidos, p.nombres, p.cedula, p.fechaNac, p.sexo, p.departamento, p.ciudad, p.telefono, p.email, p.cohorte, Math.round(progTotal({ done: a.progreso.done || {}, quiz: q }) * 100), ...qs.map(n => q[n]?.mejor ?? ""), fmt(c.cuestionarios, 2), ...GRADED.map(g => a.oficial[g.id] ?? ""), fmt(c.foros, 2), fmt(c.trabajoFinal, 2), fmt(c.coedicion, 2), fmt(c.total, 2), c.escala ?? ""]; });
     return { encabezados: head, filas: rows };
   };
   exportar("#csv", "#xlsxNotas", "calificaciones_curso", tablaNotas);
@@ -916,6 +927,7 @@ function bindCalendario(id) {
 function vInicioInvitado() {
   return `${heroHtml(null, "")}
   <div class="card note"><b>Estás viendo el curso como invitado.</b> Podés recorrer los módulos, las presentaciones, los videos, las lecturas y los recursos. Para responder quizzes, entregar actividades, completar formularios o ver calificaciones necesitás una cuenta. <span class="row" style="margin-top:.5rem"><a class="btn sm" href="#/acceso">Ingresar</a><a class="btn sm sec" href="#/registro">Crear cuenta</a></span></div>
+  ${bloqueTrabajoPractico("invitado")}
   <div class="card foro-promo"><div><span class="tag">Ocho unidades · ocho debates</span><h2>💬 Foros de discusión</h2><p>Explorá los desafíos de cada unidad; ingresá con tu cuenta para publicar y responder.</p></div><a class="btn" href="#/foros">Ver los foros →</a></div>
   ${proximosHtml()}
   <h2>Módulos</h2><div class="grid">${D.sesiones.map(s => `<a class="card link" href="#/sesion/${s.n}"><span class="tag">${s.unidad} · Sesión ${s.n}</span><h3 style="margin-top:.5rem">${esc(s.titulo)}</h3><span class="muted">${esc(s.resumen)}${C.fechas?.[s.n] ? " · " + esc(C.fechas[s.n]) : ""}</span></a>`).join("")}</div>`;
@@ -1014,7 +1026,8 @@ function bindSesion() {
   $$("[data-enl]").forEach(inp => inp.addEventListener("change", () => {
     const id = inp.dataset.enl, t = inp.dataset.t, v = inp.value.trim(), a = actById(id);
     S.enlaces[id] = S.enlaces[id] || {};
-    if (v && !RE_ENL[t].test(v)) { aviso(t === "rpubs" ? "El enlace debe ser de rpubs.com (https://rpubs.com/...)." : t === "trabajo" ? "Usá un enlace HTTPS de RPubs o Google Drive/Docs." : "El enlace debe ser de Google Colab o Drive (https://colab.research.google.com/...).", "bad"); return; }
+    if (v && !RE_ENL[t].test(v)) { aviso(t === "rpubs" ? "El enlace debe ser de rpubs.com (https://rpubs.com/...)." : t === "trabajo" ? "Usá un enlace HTTPS de RPubs o Google Drive/Docs." : t === "tp_carpeta" ? "Pegá el enlace HTTPS de tu subcarpeta de Google Drive." : t === "coed" ? "Pegá un enlace HTTPS de Google Docs, Drive o Looker Studio." : "El enlace debe ser de Google Colab o Drive (https://colab.research.google.com/...).", "bad"); return; }
+    if (t === "tp_carpeta" && v.match(/\/folders\/([A-Za-z0-9_-]+)/)?.[1] === C.drive.trabajo_practico) { aviso("Ese enlace abre la carpeta general. Creá tu propia subcarpeta y pegá su enlace.", "bad"); return; }
     if (v) S.enlaces[id][t] = v; else delete S.enlaces[id][t];
     const completo = a.ent.every(x => S.enlaces[id][x]);
     if (completo) S.done[id] = true; else if (!v) delete S.done[id];

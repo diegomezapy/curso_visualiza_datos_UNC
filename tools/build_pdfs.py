@@ -13,7 +13,7 @@ CSS = """@page{size:A4;margin:15mm 15mm 16mm}
 *{box-sizing:border-box}body{font:10.5pt/1.45 'Inter','Segoe UI',Arial,sans-serif;color:#1f2328;margin:0}
 header{border-bottom:3px solid #0072B2;padding-bottom:6px;margin-bottom:12px}
 header .k{font-size:8.5pt;color:#59636e;text-transform:uppercase;letter-spacing:.06em}
-h1{font-size:19pt;margin:2px 0 0;color:#0b2e4a}h2{font-size:12pt;margin:14px 0 5px;color:#0072B2;border-bottom:1px solid #d1d9e0;padding-bottom:2px}
+h1{font-size:19pt;margin:2px 0 0;color:#0b2e4a}h2{font-size:12pt;margin:14px 0 5px;color:#0072B2;border-bottom:1px solid #d1d9e0;padding-bottom:2px;break-after:avoid-page}
 ul,ol{margin:4px 0 4px 18px;padding:0}li{margin:3px 0}
 code{font-family:'JetBrains Mono',Consolas,monospace;font-size:8.6pt;background:#f1f4f7;padding:0 3px;border-radius:3px}
 pre{background:#0d1b2a;color:#e6edf3;border-radius:6px;padding:8px 10px;font:8.3pt/1.4 Consolas,'DejaVu Sans Mono',monospace;margin:4px 0;white-space:pre-wrap;word-break:break-word}
@@ -45,7 +45,7 @@ paginas["elegir_grafico"] = doc("Hoja de ruta: elegir el gráfico", "Hoja de ref
 
 md = lambda p: re.sub(r'href="(?!https?:)[^"]*"', "", markdown.markdown((RAIZ / p).read_text(encoding="utf-8"), extensions=["tables"]))
 paginas["rubricas"] = doc("Rúbricas de comunicación visual", "Evaluación", md("docs/rubricas.md").replace("<h1>Rúbricas de comunicación visual</h1>", ""))
-paginas["evaluacion"] = doc("Evaluación del curso", "Evaluación", md("docs/evaluacion.md").replace("<h1>Evaluación (100 puntos)</h1>", ""))
+paginas["evaluacion"] = doc("Evaluación del curso", "Evaluación", md("docs/evaluacion.md").replace("<h1>Evaluación del curso (100 puntos)</h1>", ""))
 
 lista = []
 for n, h in paginas.items():

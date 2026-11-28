@@ -10,6 +10,6 @@ Cada sesión: **4 h sincrónicas + ≈2,75 h asincrónicas** (8 × 4 = 32 h + 22
 | 5 | vie 27/11 | Dashboards interactivos | Diseño de tablero, Plotly/Dash, Lab 5 | Extender dashboard | **Mini-proyecto 2** · Quiz 5 |
 | 6 | sáb 28/11 | Reporting automatizado | Plantillas, parametrización, Quarto/papermill, Lab 6 | Informe automático + alertas; **propuesta del integrador** | Ejercicio S6 · Quiz 6 |
 | 7 | vie 04/12 | Alta dimensionalidad, series, geodatos | PCA/t-SNE, series, mapas, Lab 7 | Trabajo con dataset real | **Mini-proyecto 3** · Quiz 7 |
-| 8 | sáb 05/12 | Redes (opcional) + integrador | Lab 8 (opcional); **presentaciones** y coevaluación | Informe técnico final | **Integrador** (informe + presentación) |
+| 8 | sáb 05/12 | Redes (opcional) + integrador | Lab 8 (opcional); **presentación y defensa individual** (máximo 15 min) | Trabajo práctico final en subcarpeta personal de Drive | **Trabajo final** (producto 18 + defensa 12) |
 
 > Hitos intermedios del integrador: propuesta (S6), avance con boceto (S7), entrega final (S8).

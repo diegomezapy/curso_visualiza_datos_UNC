@@ -108,7 +108,7 @@ data = {
                  ("anscombe.csv", "Cuarteto de Anscombe"), ("wine.csv", "Vinos: 13 variables y 3 clases (alta dimensionalidad)"), ("karate_aristas.csv", "Red Zachary Karate Club: aristas (+ karate_nodos.csv)"), ("lesmis_aristas.csv", "Red Les Misérables: aristas con peso")],
 }
 (SITE / "data.js").write_text("window.CURSO=" + json.dumps(data, ensure_ascii=False) + ";", encoding="utf-8")
-for f in ("index.html", "aula.css", "aula.js", "backend.js", "planillas.mjs", "xlsx.mjs", "seguimiento.mjs", "fx.js", "fxbg.js", "visibilidad.js", "codigo.mjs", "codigo-retos.mjs", "codigo-pasos.mjs", "codigo-python-worker.mjs"):
+for f in ("index.html", "aula.css", "aula.js", "backend.js", "planillas.mjs", "xlsx.mjs", "seguimiento.mjs", "fx.js", "fxbg.js", "visibilidad.js", "codigo.mjs", "codigo-retos.mjs", "codigo-pasos.mjs", "codigo-python-worker.mjs", "evaluacion.mjs"):
     shutil.copy(RAIZ / "aula" / f, SITE / f)
 shutil.copytree(RAIZ / "aula" / "datos-codigo", SITE / "datos-codigo", dirs_exist_ok=True)
 
@@ -147,7 +147,7 @@ codigo = codigo.replace('"./codigo-retos.mjs"', f'"./codigo-retos.mjs?v={version
 codigo = codigo.replace('"./codigo-python-worker.mjs"', f'"./codigo-python-worker.mjs?v={version("codigo-python-worker.mjs")}"')
 (SITE / "codigo.mjs").write_text(codigo, encoding="utf-8")
 codigo = modulo.read_text(encoding="utf-8")
-for nombre in ("backend.js", "planillas.mjs", "xlsx.mjs", "fx.js", "visibilidad.js", "codigo.mjs"):
+for nombre in ("backend.js", "planillas.mjs", "xlsx.mjs", "fx.js", "visibilidad.js", "codigo.mjs", "evaluacion.mjs"):
     codigo = codigo.replace(f'"./{nombre}"', f'"./{nombre}?v={version(nombre)}"')
 modulo.write_text(codigo, encoding="utf-8")
 

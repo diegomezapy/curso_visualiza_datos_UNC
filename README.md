@@ -31,8 +31,8 @@ Universidad Nacional de Concepción · Facultad de Ciencias Exactas y Tecnológi
 
 Documentos: [datos abiertos reales](docs/datos_abiertos_reales.md) · [diagnóstico, agenda y asistencia](docs/appsscript_diagnostico_agenda.md) · [seguimiento semanal](docs/seguimiento_semanal.md) · [foros](docs/foros.md) · [aula virtual (guía)](docs/aula_virtual.md) · [activar cuentas (Firebase)](docs/configurar_firebase.md) · [programa](docs/programa.md) · [cronograma](docs/cronograma.md) · [evaluación](docs/evaluacion.md) · [rúbricas](docs/rubricas.md) · [proyecto integrador](docs/proyecto_integrador.md) · [banco de quizzes](docs/banco_quizzes.md) · [bibliografía y recursos](docs/bibliografia.md)
 
-## Evaluación (sugerida en el programa)
-**Teoría 30 %** (quizzes y lecturas guiadas) · **Práctica 50 %** (laboratorios y mini-proyectos) · **Integrador 20 %** (informe técnico + presentación). Detalle en [docs/evaluacion.md](docs/evaluacion.md).
+## Evaluación vigente
+**Cuestionarios 25 %** · **foros 25 %** · **trabajo práctico final 30 %** (producto 18 puntos y presentación/defensa 12 puntos) · **edición conjunta 20 %**. Detalle en [docs/evaluacion.md](docs/evaluacion.md) y [guía del trabajo final](docs/proyecto_integrador.md).
 
 ## Cómo empezar
 ```bash

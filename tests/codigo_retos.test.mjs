@@ -42,6 +42,10 @@ test("la comprobación usa resultados, no coincidencia textual ni coerción de t
 test("el editor conserva comillas y caracteres especiales del código inicial", () => {
   const html = codigoHtml(6);
   assert.match(html, /Consola de resultados/);
+  assert.match(html, /codigo-consigna-box/);
+  assert.match(html, /data-codigo-help-panel hidden/);
+  assert.match(html, /Ejemplo en R/);
+  assert.match(html, /Ejemplo en Python/);
   assert.match(html, /codigo-layout/);
   assert.match(html, /data-codigo-paso="10"/);
   assert.doesNotMatch(html, /undefined/);

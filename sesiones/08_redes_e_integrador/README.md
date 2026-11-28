@@ -10,16 +10,16 @@
 |---|---|
 | 0-60 | **Redes (opcional):** grafos, layouts, centralidad, comunidades, matriz vs. nodo-enlace; **Lab 8** |
 | 60-75 | Pausa |
-| 75-210 | **Presentaciones del integrador** (10 min + 5 min de preguntas por equipo/persona) y coevaluación |
+| 75-210 | **Presentaciones del integrador** (hasta 10 min + 5 min de preguntas por estudiante) y coevaluación |
 | 210-240 | Cierre del curso, retroalimentación y encuesta |
 
 ## Trabajo asincrónico
-- Entrega final del **informe técnico** (hasta 7 días tras la sesión).
-- (Opcional) Ejercicio de redes para +3 pts extra.
+- Entrega del **trabajo práctico final** en la subcarpeta personal de Drive, según el plazo comunicado por el docente.
+- (Opcional) Ejercicio de redes como práctica, sin puntos adicionales.
 - Quiz 8 opcional.
 
 ## Entrega y evaluación
-**Integrador** (20 pts: informe 12 + presentación 8) · [Rúbrica](../../docs/proyecto_integrador.md#rubrica).
+**Trabajo práctico final** (30 puntos: producto 18 + presentación y defensa 12, hasta 15 minutos) · [Guía y rúbrica](../../docs/proyecto_integrador.md#rubrica). Además, foros 25 puntos, cuestionarios 25 y coedición 20.
 
 ## Laboratorio
 [`lab08_redes.py`](lab08_redes.py)

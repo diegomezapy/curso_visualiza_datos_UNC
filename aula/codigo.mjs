@@ -83,6 +83,30 @@ function mostrarRespuesta(valor) {
   try { return JSON.stringify(valor) ?? String(valor); } catch { return String(valor); }
 }
 const tipoRespuesta = valor => Array.isArray(valor) ? `una lista de ${valor.length} valores` : typeof valor === "number" ? "un número" : "un texto";
+function ejemplosBreves(grafico) {
+  const r = grafico ? 'muestra <- c(3, 5, 7)\nrespuesta <- sum(muestra)\nbarplot(muestra, names.arg = c("A", "B", "C"))' : 'muestra <- c(3, 5, 7)\nrespuesta <- sum(muestra)';
+  const python = grafico ? 'muestra = [3, 5, 7]\nrespuesta = sum(muestra)\nimport matplotlib.pyplot as plt\nplt.bar(["A", "B", "C"], muestra)' : 'muestra = [3, 5, 7]\nrespuesta = sum(muestra)';
+  return `<div class="codigo-ayuda-grid"><div><strong>Ejemplo en R</strong><pre><code>${esc(r)}</code></pre></div><div><strong>Ejemplo en Python</strong><pre><code>${esc(python)}</code></pre></div></div>`;
+}
+function animarResultado(raiz, feedback, correcto) {
+  feedback.classList.remove("codigo-ok", "codigo-error", "codigo-sacudir");
+  feedback.classList.add(correcto ? "codigo-ok" : "codigo-error");
+  const boton = raiz.querySelector("[data-codigo-run]");
+  boton.classList.remove("codigo-ejecutar-error");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (correcto) {
+    const anterior = raiz.querySelector(".codigo-serpentina"); anterior?.remove();
+    const serpentina = document.createElement("div"); serpentina.className = "codigo-serpentina"; serpentina.setAttribute("aria-hidden", "true");
+    for (let i = 0; i < 12; i++) { const tira = document.createElement("span"); tira.style.left = `${5 + i * 8}%`; tira.style.animationDelay = `${i * 30}ms`; serpentina.appendChild(tira); }
+    raiz.querySelector(".codigo-actions").appendChild(serpentina);
+    setTimeout(() => serpentina.remove(), 1700);
+  } else {
+    void boton.offsetWidth;
+    boton.classList.add("codigo-ejecutar-error");
+    feedback.classList.add("codigo-sacudir");
+    setTimeout(() => { boton.classList.remove("codigo-ejecutar-error"); feedback.classList.remove("codigo-sacudir"); }, 500);
+  }
+}
 
 export function codigoHtml(n, progreso = {}) {
   const retos = retosDe(n), reto = retoDe(n); if (!reto) return "";
@@ -99,21 +123,24 @@ export function codigoHtml(n, progreso = {}) {
         return `<button type="button" data-codigo-paso="${r.paso}" class="codigo-paso ${r.paso === reto.paso ? "activo" : ""} ${ok ? "hecho" : ""}" aria-label="Paso ${r.paso}: ${esc(r.titulo)}${ok ? ", resuelto" : ""}" aria-current="${r.paso === reto.paso ? "step" : "false"}">${r.paso}${ok ? " ✓" : ""}</button>`;
       }).join("")}</div>
       <div class="codigo-step-head"><span class="tag">Paso ${reto.paso} de ${retos.length}</span><h3>${esc(reto.titulo)}</h3></div>
-      <p class="codigo-consigna"><strong>Tu tarea:</strong> ${esc(reto.consigna)}</p>
-      <p class="codigo-entrega"><strong>Para acertar:</strong> asigná ${tipoRespuesta(reto.esperado)} a <code>respuesta</code>${reto.grafico ? " y ejecutá el gráfico" : ""}. Podés volver a intentar cuantas veces necesites.</p>
+      <div class="codigo-consigna-box" role="group" aria-label="Consigna del paso ${reto.paso}"><strong class="codigo-consigna-etiqueta">🎯 Tu desafío</strong>
+        <p class="codigo-consigna">${esc(reto.consigna)}</p>
+        <p class="codigo-entrega"><strong>Para acertar:</strong> asigná ${tipoRespuesta(reto.esperado)} a <code>respuesta</code>${reto.grafico ? " y ejecutá el gráfico" : ""}. Podés volver a intentar cuantas veces necesites.</p>
+      </div>
       ${reto.csv ? `<p class="muted">Datos de este paso: <a href="${esc(reto.csv)}" target="_blank" rel="noopener">${esc(reto.csv.split("/").pop())}</a>. Al ejecutar se cargan como <code>datos.csv</code>.</p>` : ""}
       <div class="codigo-tabs" role="tablist" aria-label="Lenguaje de programación"><button type="button" data-codigo-lang="python" role="tab" aria-selected="${lang === "python"}" class="btn ${lang === "python" ? "" : "sec"}">Python ${estado(progreso, reto, "python").hecho ? "✓" : ""}</button><button type="button" data-codigo-lang="r" role="tab" aria-selected="${lang === "r"}" class="btn ${lang === "r" ? "" : "sec"}">R ${estado(progreso, reto, "r").hecho ? "✓" : ""}</button></div>
       <div class="codigo-layout">
         <div class="codigo-editor-col"><label for="codigo-editor-${n}-${reto.paso}">Código ${lang === "r" ? "R" : "Python"} editable</label>
           <textarea id="codigo-editor-${n}-${reto.paso}" class="codigo-editor" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="codigo-ayuda-${n}">${esc(codigo)}</textarea>
           <p class="muted" id="codigo-ayuda-${n}">Reemplazá <code>${lang === "r" ? "NA" : "None"}</code> en la línea <code>respuesta</code>${reto.grafico ? " y activá el gráfico quitando # de sus líneas" : ""}. Después pulsá «Ejecutar y comprobar».</p>
-          <div class="row codigo-actions"><button type="button" class="btn" data-codigo-run>▶ Ejecutar y comprobar</button><button type="button" class="btn sec" data-codigo-hint>💡 Pedir pista</button><button type="button" class="btn sec" data-codigo-reset>Restaurar ejemplo</button><button type="button" class="btn sec" data-codigo-stop hidden>Detener</button></div>
+          <div class="row codigo-actions"><button type="button" class="btn" data-codigo-run>▶ Ejecutar y comprobar</button><button type="button" class="btn sec" data-codigo-hint>💡 Pedir pista</button><button type="button" class="btn sec" data-codigo-help aria-expanded="false" aria-controls="codigo-mini-${n}-${reto.paso}">📘 Ayuda y ejemplos</button><button type="button" class="btn sec" data-codigo-reset>Restaurar ejemplo</button><button type="button" class="btn sec" data-codigo-stop hidden>Detener</button></div>
+          <div class="codigo-ayuda-panel" id="codigo-mini-${n}-${reto.paso}" data-codigo-help-panel hidden><strong>Miniayuda: así se escribe una respuesta</strong>${reto.pistas?.[0] ? `<p><b>Orientación para este paso:</b> ${esc(reto.pistas[0])}</p>` : ""}<p>Estos ejemplos usan otros datos. Adaptá la idea a la consigna de arriba y reemplazá <code>${lang === "r" ? "NA" : "None"}</code> en tu editor.</p>${ejemplosBreves(reto.grafico)}</div>
           <p class="muted" data-codigo-intentos>Intentos de comprobación: ${actual.intentos || 0}</p>
           <div class="codigo-pista" data-codigo-pista role="status" aria-live="polite"></div>
         </div>
         <section class="codigo-resultados" aria-label="Resultados del código"><h4>Consola de resultados</h4>
           <pre class="codigo-salida" data-codigo-salida aria-live="polite">Ejecutá el código para ver aquí la respuesta y los mensajes.</pre>
-          <div class="codigo-feedback" data-codigo-feedback role="status" aria-live="polite">${actual.hecho ? `✓ Paso resuelto. ${esc(reto.explicacion)}` : "Esperando tu primer intento en este lenguaje."}</div>
+          <div class="codigo-feedback ${actual.hecho ? "codigo-ok" : ""}" data-codigo-feedback role="status" aria-live="polite">${actual.hecho ? `✓ Paso resuelto. ${esc(reto.explicacion)}` : "Esperando tu primer intento en este lenguaje."}</div>
           <h4>Gráfico</h4><div class="codigo-grafico" data-codigo-grafico><p class="muted">${reto.grafico ? "Tu visualización aparecerá aquí." : "Este paso se resuelve sin gráfico."}</p></div>
         </section>
       </div>
@@ -152,8 +179,10 @@ export function enlazarCodigo(n, progreso, guardar) {
   }));
   siguiente.addEventListener("click", () => { guardarBorrador(); pasoActivo.set(n, reto.paso + 1); raiz.outerHTML = codigoHtml(n, progreso); enlazarCodigo(n, progreso, guardar); document.querySelector(`[data-codigo-n="${n}"] .codigo-step-head`)?.scrollIntoView({ behavior: "smooth", block: "start" }); });
   raiz.querySelector("[data-codigo-reset]").addEventListener("click", () => {
-    editor.value = reto.codigo[langActual()]; guardarBorrador(); feedback.textContent = "Ejemplo restaurado. Probá otra vez."; salida.textContent = "Ejecutá el código para ver aquí la respuesta y los mensajes."; mostrarVacio();
+    editor.value = reto.codigo[langActual()]; guardarBorrador(); feedback.textContent = "Ejemplo restaurado. Probá otra vez."; feedback.classList.remove("codigo-ok", "codigo-error", "codigo-sacudir"); raiz.querySelector("[data-codigo-run]").classList.remove("codigo-ejecutar-error"); raiz.querySelector(".codigo-serpentina")?.remove(); salida.textContent = "Ejecutá el código para ver aquí la respuesta y los mensajes."; mostrarVacio();
   });
+  const botonAyuda = raiz.querySelector("[data-codigo-help]"), panelAyuda = raiz.querySelector("[data-codigo-help-panel]");
+  botonAyuda.addEventListener("click", () => { const abrir = panelAyuda.hidden; panelAyuda.hidden = !abrir; botonAyuda.setAttribute("aria-expanded", String(abrir)); botonAyuda.textContent = abrir ? "Cerrar ayuda y ejemplos" : "📘 Ayuda y ejemplos"; });
   raiz.querySelector("[data-codigo-hint]").addEventListener("click", () => {
     const k = clave(reto, langActual()), anterior = progreso[k] || {}, numeroPista = Math.min(3, (anterior.pistas || 0) + 1);
     progreso[k] = { ...anterior, pistas: numeroPista };
@@ -189,10 +218,11 @@ export function enlazarCodigo(n, progreso, guardar) {
       progreso[k] = { ...previo, intentos, hecho: previo.hecho || correcto };
       raiz.querySelector("[data-codigo-intentos]").textContent = `Intentos de comprobación: ${intentos}`;
       if (correcto) feedback.textContent = `✓ Correcto. ${reto.explicacion} ${reto.grafico ? "Podés cambiar el gráfico y ejecutar de nuevo." : "Podés explorar otros valores y ejecutar de nuevo."}`;
-      else feedback.textContent = `Todavía no. ${reto.grafico && !imagenes.length ? "Falta ejecutar el gráfico. " : ""}Compará tu resultado con la consigna y pedí una pista si la necesitás.`;
+      else feedback.textContent = `↻ Todavía no. ${reto.grafico && !imagenes.length ? "Falta ejecutar el gráfico. " : ""}Compará tu resultado con la consigna y pedí una pista si la necesitás.`;
+      animarResultado(raiz, feedback, correcto);
       refrescarEstado(); guardar(n, lang, progreso[k]);
     } catch (error) {
-      if (idEjecucion === ejecucion) { const mensaje = String(error?.message || error).slice(0, 1000); salida.textContent = `Error de ejecución:\n${mensaje}`; feedback.textContent = "Corregí el código y volvé a probar. Este error no cuenta como intento."; }
+      if (idEjecucion === ejecucion) { const mensaje = String(error?.message || error).slice(0, 1000); salida.textContent = `Error de ejecución:\n${mensaje}`; feedback.textContent = "↻ Corregí el código y volvé a probar. Este error no cuenta como intento."; animarResultado(raiz, feedback, false); }
     } finally { clearTimeout(reloj); if (idEjecucion === ejecucion) setOcupado(false); }
   });
 }

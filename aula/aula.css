@@ -174,11 +174,19 @@ section.vz{margin:0}section.vz.vz-ed{padding-top:2px}
 #nav a[hidden]{display:none!important}
 
 [data-inv]{display:none!important}
+.tp-bloque{border:2px solid var(--ac);background:color-mix(in srgb,var(--ac) 5%,var(--card));margin:1.25rem 0;padding:1.25rem}
+.tp-bloque h2{margin:.45rem 0 1rem;font-size:1.3rem}
+.tp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}
+.tp-grid>div{border:1px solid var(--bd);border-radius:8px;padding:.8rem;background:var(--card)}
+.tp-grid p{margin:.35rem 0 0;font-size:.9rem}
+.tp-acciones{margin:1rem 0 .6rem}.tp-acciones .btn{min-height:44px}
+.tp-pesos{margin:.7rem 0 0}
+@media(max-width:700px){.tp-grid{grid-template-columns:1fr}.tp-acciones .btn{flex:1 1 100%;text-align:center}}
 .vz-b.del{right:38px}.vz-b.sec.del{background:var(--bad);color:#fff}.vz-nav .vz-b.del{position:static}
 @media(max-width:640px){.topbar{flex-wrap:wrap;gap:.35rem .5rem;padding:.5rem .8rem}.crumb{flex:1 1 100%;order:5;white-space:normal}#menu{order:0}}
 
 /* Ensayos de código por unidad. */
-.codigo-card{border-color:var(--ac)}
+.codigo-card{border-color:var(--ac);position:relative}
 .codigo-head{display:flex;justify-content:space-between;align-items:start;gap:1rem}
 .codigo-head h3{margin:.5rem 0 .1rem}
 .codigo-intro{margin:.8rem 0;color:var(--mut)}
@@ -188,15 +196,31 @@ section.vz{margin:0}section.vz.vz-ed{padding-top:2px}
 .codigo-paso.hecho:not(.activo){border-color:var(--ok);color:var(--ok);background:color-mix(in srgb,var(--ok) 8%,var(--card))}
 .codigo-paso:focus-visible,.codigo-tabs .btn:focus-visible,.codigo-actions .btn:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
 .codigo-step-head{border-top:1px solid var(--bd);padding-top:1rem;scroll-margin-top:5rem}.codigo-step-head h3{margin:.4rem 0}
-.codigo-consigna{margin:.65rem 0 .4rem}.codigo-entrega{margin:.4rem 0 1rem;color:var(--mut);font-size:.9rem}
+.codigo-consigna-box{border:2px solid var(--ac);border-left-width:6px;border-radius:10px;background:color-mix(in srgb,var(--ac) 11%,var(--card));padding:.8rem 1rem;margin:.8rem 0 1rem}
+.codigo-consigna-etiqueta{display:block;color:var(--ac2);font-size:.83rem;letter-spacing:.03em;text-transform:uppercase}
+.codigo-consigna{margin:.4rem 0 .55rem;font-size:1.07rem;font-weight:600;line-height:1.5}
+.codigo-entrega{margin:.25rem 0 0;font-size:.9rem}
 .codigo-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 .8rem}
 .codigo-tabs .btn{min-width:7rem;min-height:44px}
 .codigo-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:1rem;align-items:start}
 .codigo-editor-col,.codigo-resultados{min-width:0}
 .codigo-editor{display:block;min-height:330px;max-height:65vh;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;tab-size:4}
-.codigo-actions{margin:.8rem 0}.codigo-actions .btn{min-height:44px}
+.codigo-actions{margin:.8rem 0;position:relative}.codigo-actions .btn{min-height:44px}
 .codigo-actions [hidden]{display:none!important}
+.codigo-actions .codigo-ejecutar-error{background:var(--bad);border-color:var(--bad);color:#fff;animation:codigo-sacudir .42s ease-in-out}
+.codigo-ayuda-panel{border:1px solid var(--ac);background:var(--card);border-radius:8px;padding:.8rem;margin:.6rem 0;box-shadow:0 6px 20px color-mix(in srgb,var(--ac) 14%,transparent)}
+.codigo-ayuda-panel[hidden]{display:none!important}.codigo-ayuda-panel>p{font-size:.86rem;margin:.3rem 0 .7rem}
+.codigo-ayuda-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}
+.codigo-ayuda-grid strong{font-size:.85rem}.codigo-ayuda-grid pre{font-size:11px;line-height:1.45;white-space:pre;overflow:auto;margin:.3rem 0 0;padding:.6rem;background:var(--bg);border:1px solid var(--bd);border-radius:6px}
 .codigo-feedback,.codigo-pista{padding:.65rem .8rem;border-radius:8px;background:color-mix(in srgb,var(--ac) 8%,var(--card));margin:.5rem 0}
+.codigo-feedback.codigo-ok{background:color-mix(in srgb,var(--ok) 14%,var(--card));border-left:4px solid var(--ok)}
+.codigo-feedback.codigo-error{background:color-mix(in srgb,var(--bad) 12%,var(--card));border-left:4px solid var(--bad)}
+.codigo-feedback.codigo-sacudir{animation:codigo-sacudir .42s ease-in-out}
+.codigo-serpentina{position:absolute;inset:-45px 0 -80px;z-index:4;overflow:hidden;pointer-events:none}
+.codigo-serpentina span{position:absolute;top:10px;width:11px;height:32px;border:4px solid var(--ac);border-bottom:0;border-radius:60% 60% 0 0;opacity:0;animation:codigo-serpentina 1.3s ease-out forwards}
+.codigo-serpentina span:nth-child(3n){border-color:var(--ok)}.codigo-serpentina span:nth-child(3n+1){border-color:#CC79A7}
+@keyframes codigo-serpentina{0%{opacity:0;transform:translateY(-30px) rotate(0deg) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translateY(180px) rotate(280deg) scale(1)}}
+@keyframes codigo-sacudir{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
 .codigo-pista:empty{display:none}
 .codigo-resultados{border:1px solid var(--bd);background:var(--bg);border-radius:8px;padding:.75rem}
 .codigo-resultados h4{font-size:.9rem;margin:.1rem 0 .45rem}
@@ -208,5 +232,6 @@ section.vz{margin:0}section.vz.vz-ed{padding-top:2px}
 .codigo-next{margin-top:1rem}.codigo-next[hidden]{display:none!important}
 .codigo-nota{margin:.9rem 0 0}
 @media(max-width:900px){.codigo-layout{grid-template-columns:1fr}.codigo-editor{min-height:250px}.codigo-grafico{max-height:260px}.codigo-grafico canvas,.codigo-grafico img{max-height:240px}}
-@media(max-width:640px){.codigo-head{display:block}.codigo-stepper{grid-template-columns:repeat(5,minmax(0,1fr))}.codigo-tabs .btn{flex:1}.codigo-actions .btn{flex:1 1 100%}.codigo-editor{font-size:12px}}
+@media(max-width:640px){.codigo-head{display:block}.codigo-stepper{grid-template-columns:repeat(5,minmax(0,1fr))}.codigo-tabs .btn{flex:1}.codigo-actions .btn{flex:1 1 100%}.codigo-editor{font-size:12px}.codigo-ayuda-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.codigo-serpentina,.codigo-feedback.codigo-sacudir,.codigo-actions .codigo-ejecutar-error{animation:none!important}.codigo-serpentina{display:none}}
 @media print{.codigo-editor,.codigo-actions,.codigo-tabs,.codigo-stepper,.codigo-grafico{display:none!important}}

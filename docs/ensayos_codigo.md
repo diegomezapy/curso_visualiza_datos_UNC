@@ -7,7 +7,7 @@ La secuencia comienza con datos ingresados en el editor. Más adelante, el aula 
 ## Implementación
 
 - `aula/codigo-pasos.mjs` y `aula/codigo-retos.mjs`: consignas, datos de inicio, respuestas y pistas.
-- `aula/codigo.mjs`: interfaz de dos columnas, consola siempre visible, gráficos acotados, verificación y progreso.
+- `aula/codigo.mjs`: consigna resaltada, minivista de ayuda con ejemplos R/Python, interfaz de dos columnas, consola siempre visible, gráficos acotados, verificación y progreso. Un acierto muestra una serpentina breve; un intento incorrecto o error muestra una señal de corrección distinta. Con movimiento reducido, ambos estados se comunican solo por texto y color.
 - `aula/codigo-python-worker.mjs`: ejecución de Python en un worker mediante Pyodide 314.0.8.
 - R se ejecuta mediante webR 0.6.1 en su worker interno.
 - Los motores se descargan al ejecutar por primera vez y requieren conexión a internet. Los CSV se sirven desde el mismo sitio. El botón **Detener** y un límite de 35 segundos permiten reiniciar una ejecución bloqueada.

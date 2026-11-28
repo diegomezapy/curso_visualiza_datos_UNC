@@ -30,14 +30,14 @@ Nombre del tema: `Sesión N · Título · fecha`. En cada uno, en este orden:
 1. **Página** con `paginas/sesion_N.html` (objetivos, Colab, .Rmd, lecturas, videos).
 2. **Reunión virtual**: BigBlueButton/Meet/Zoom según tenga la facultad. Horarios: viernes 18:00–22:00, sábados 08:00–12:00, del 13/11 al 05/12/2026.
 3. **Cuestionario** de la sesión (importado en el paso 1): intentos 2, calificación = mejor intento, retroalimentación después del intento, sin límite de tiempo estricto.
-4. **Tarea** de entrega (donde corresponda): activar *Enviar comentarios*, calificación con **Rúbrica** y finalización por entrega. Las entregas son enlaces a RPubs y Colab: usá *Texto en línea* y pedí los dos enlaces.
+4. **Tarea** de entrega (donde corresponda): activar *Enviar comentarios*, calificación con **Rúbrica** y finalización por entrega. Para los laboratorios, usar los enlaces a RPubs y Colab indicados en cada consigna. Para el trabajo final, pedir el enlace a la subcarpeta personal en [Drive](https://drive.google.com/drive/folders/1spQXcXcYkMJY1RnCgnUsYdZ-l0DSAUt5?usp=sharing); registrar el producto y la defensa por separado (18 y 12 puntos).
 5. Carpeta de **Clases grabadas** (enlace a Drive o YouTube no listado); Moodle no es buen sitio para alojar videos largos.
 
 Tema 0 (general): Anuncios, Programa y evaluación (`docs/programa.md`, `docs/evaluacion.md`), Foro de consultas (el foro de Moodle ya viene incluido), Glosario y Diagnóstico inicial (la actividad **Consulta/Cuestionario** de Moodle sirve para las 10–15 preguntas anónimas; o enlazá `diagnostico/index.html`).
 
 ## 3. Rúbricas y notas
-- Rúbricas R1, R2 e INT: `docs/rubricas.md` → crear en cada **Tarea** (*Método de calificación → Rúbrica*).
-- Ponderación: teoría 30 % (mejores 6 de 8 quizzes), práctica 50 %, integrador 20 %. En *Calificaciones → Configuración* usá **categorías**: *Teoría* (agregación: mejores 6 calificaciones), *Práctica*, *Integrador*.
+- Rúbricas R1 y R2: `docs/rubricas.md`; criterios del trabajo final: `docs/proyecto_integrador.md`; foros y coedición: `docs/evaluacion.md`. Configurá la rúbrica correspondiente en cada tarea calificada.
+- Ponderación: cuestionarios 25 % (promedio de los seis mejores porcentajes disponibles), foros 25 %, trabajo práctico final 30 % (producto 18 + defensa 12) y coedición 20 %. En *Calificaciones → Configuración* creá estas cuatro categorías. Los laboratorios y mini proyectos previos quedan como actividades formativas y no se suman a la nota final.
 - Escala sugerida: 1 (<60) · 2 (60–69) · 3 (70–80) · 4 (81–90) · 5 (≥91). Ajustar al reglamento vigente.
 
 ## 4. Asistencia y calendario

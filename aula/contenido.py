@@ -197,9 +197,11 @@ SESIONES = [
   resumen="Grafos, layouts, centralidad, comunidades y matrices de adyacencia. Presentaciones finales.",
   objetivos=["(Opcional) Representar redes con layouts, métricas y matrices.", "Comunicar el proyecto integrador a una audiencia técnica y de gestión."],
   lecturas=[("Documentación de NetworkX", "https://networkx.org/documentation/stable/")],
-  actividades=[dict(id="s8_red", titulo="(Opcional) Ejercicio de redes: red de co-ocurrencias (+3 pts extra) · RPubs", pts=3, rubrica="R2", entrega=True, ent=["rpubs"]),
-               dict(id="s8_inf", titulo="Integrador: informe técnico (12 pts) · RPubs + notebook reproducible en Colab", pts=12, rubrica="INT", entrega=True, ent=["rpubs", "colab"]),
-               dict(id="s8_pres", titulo="Integrador: presentación (8 pts)", pts=8, rubrica="INT", entrega=False)],
+  actividades=[dict(id="s8_red", titulo="(Opcional) Ejercicio de redes: red de co-ocurrencias · RPubs", pts=0, rubrica="R2", entrega=True, ent=["rpubs"]),
+               dict(id="s8_foros", titulo="Participación fundamentada en los foros de las ocho unidades (25 pts)", pts=25, rubrica="FOROS", entrega=False),
+               dict(id="s8_coed", titulo="Edición conjunta de documentos y tableros (20 pts)", pts=20, rubrica="COED", entrega=False, ent=["coed"]),
+               dict(id="s8_inf", titulo="Trabajo final: bases, investigación y tablero (18 pts)", pts=18, rubrica="INT_INF", entrega=True, ent=["tp_carpeta"]),
+               dict(id="s8_pres", titulo="Trabajo final: presentación y defensa (12 pts, máximo 15 minutos)", pts=12, rubrica="INT_PRE", entrega=False)],
   extra=["Ensayar la presentación de 10 min"]),
 ]
 
@@ -521,7 +523,10 @@ QUIZZES_EXTRA.append(dict(id="17", sesion=7, etiqueta="7A", titulo="Práctica Ea
 RUBRICAS = {
  "R1": ("Gráficos individuales", [("Adecuación del gráfico", 25), ("Integridad y ética", 25), ("Claridad y diseño", 25), ("Accesibilidad", 10), ("Justificación escrita", 15)]),
  "R2": ("Tableros y reportes", [("Responde la pregunta de la audiencia", 20), ("Jerarquía visual y layout", 15), ("KPIs bien definidos", 15), ("Interacción / parametrización", 15), ("Integridad y ética", 15), ("Calidad técnica y reproducibilidad", 10), ("Documentación", 10)]),
- "INT": ("Proyecto integrador", [("Pregunta, audiencia y relevancia", 10), ("Calidad y tratamiento de datos", 10), ("Diseño de visualizaciones", 20), ("Integridad y ética documentada", 15), ("Interacción / automatización", 15), ("Reproducibilidad y calidad técnica", 10), ("Presentación oral", 20)]),
+ "FOROS": ("Participación en foros", [("Aportes iniciales argumentados", 40), ("Réplicas que desarrollan el diálogo", 32), ("Evidencia y fuentes verificables", 20), ("Claridad y trato respetuoso", 8)]),
+ "COED": ("Edición conjunta", [("Aportes sustantivos verificables", 30), ("Comentarios y retroalimentación útiles", 25), ("Integración de cambios y acuerdos", 20), ("Trazabilidad de fuentes y decisiones", 15), ("Coordinación y cumplimiento de roles", 10)]),
+ "INT_INF": ("Trabajo final: producto e investigación", [("Pregunta, audiencia y relevancia", 11), ("Fuente, calidad y tratamiento de datos", 17), ("Visualizaciones y accesibilidad", 22), ("Análisis e interpretación de hallazgos", 11), ("Interacción o automatización funcional", 17), ("Reproducibilidad y documentación técnica", 11), ("Integridad visual, ética y limitaciones", 11)]),
+ "INT_PRE": ("Trabajo final: presentación y defensa", [("Síntesis y claridad dentro del tiempo", 25), ("Demostración del tablero o reporte", 25), ("Justificación de datos, cálculos y decisiones visuales", 25), ("Respuestas fundamentadas a preguntas", 25)]),
 }
 
 GLOSARIO = [

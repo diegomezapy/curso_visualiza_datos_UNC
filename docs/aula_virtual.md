@@ -5,7 +5,7 @@
 ## Qué incluye
 - 8 módulos con objetivos, recursos, laboratorio en Google Colab, actividades con casilla de avance y **autoevaluación con rúbrica**.
 - 8 quizzes autocorregidos (40 preguntas) con retroalimentación; reintentos ilimitados (cuenta el mejor).
-- **Mis notas:** teoría (30), práctica (50), integrador (20), total y escala sugerida 1-5.
+- **Mis notas:** cuestionarios (25), foros (25), trabajo final (30), coedición (20), total y escala sugerida 1-5 una vez cargadas todas las notas.
 - **Recursos:** carpetas de Drive, datasets, documentos, glosario (25 términos).
 - **Panel docente:** consulta registros, respuestas de quizzes y autoevaluaciones; registra notas y descarga cada planilla en CSV o Excel (.xlsx).
 
@@ -36,7 +36,7 @@ Las respuestas por pregunta se conservan desde la activación de esta función. 
 
 ## Limitaciones y recomendaciones
 - **Integridad de los quizzes:** se corrigen en el navegador y sus respuestas están en el código de la página. Para evaluación formal, aplicarlos en sesión sincrónica o con Google Forms.
-- **Privacidad de Drive:** si la carpeta raíz permite “cualquiera con el enlace puede *editar*”, cualquiera puede borrar o ver entregas. Compartir como **Lector** y recibir entregas por **Google Form**. No guardar calificaciones ni datos personales en un Drive compartido.
+- **Privacidad de Drive:** la carpeta de trabajos prácticos actualmente permite editar a cualquier persona con el vínculo para que los estudiantes creen sus subcarpetas. Esa configuración también permite ver o alterar carpetas ajenas. No guardar calificaciones, datos personales, credenciales ni bases restringidas allí; conservar una copia independiente. Si se requiere privacidad por estudiante, usar un mecanismo de entrega con permisos individuales antes de cambiar el acceso.
 - **Hojas externas:** los enlaces se leen del documento `docentes/{correo}` en Firestore y se muestran solo en el panel docente. Google Sheets conserva su propio control de acceso; el docente debe tener permiso directo a cada hoja.
 
 ## Clases grabadas

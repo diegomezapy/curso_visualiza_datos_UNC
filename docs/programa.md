@@ -22,8 +22,8 @@ La visualización es central para explorar datos, comunicar resultados y apoyar 
 ## V. Estrategias didácticas
 Prácticas con datasets reales, análisis de casos, rúbricas de comunicación visual, microproyectos de dashboard.
 
-## VI. Evaluación sugerida
-Teoría 30 % (quizzes / lecturas guiadas) · Práctica 50 % (laboratorios, ejercicios aplicados, mini-proyectos) · Integrador 20 % (informe técnico y presentación).
+## VI. Evaluación vigente
+Cuestionarios 25 % · foros 25 % · trabajo práctico final 30 % (producto 18 puntos y presentación/defensa 12 puntos) · edición conjunta de documentos y tableros 20 %. Los laboratorios y mini proyectos conservan su función formativa y sus registros, pero no se suman por separado a la nota final. Ver [evaluación](evaluacion.md) y [guía del trabajo final](proyecto_integrador.md).
 
 ## VII. Bibliografía referencial
 - Cairo, A. (2011). *El arte funcional*. Alamut.
