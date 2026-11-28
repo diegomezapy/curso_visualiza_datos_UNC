@@ -1,8 +1,10 @@
-/* Ensayos formativos: datos sintéticos, una respuesta verificable y un gráfico progresivo. */
-export const RETOS_CODIGO = [
+/* Ensayos formativos: nueve pasos nuevos y el ensayo original como cierre de cada unidad. */
+import { PASOS_CODIGO } from "./codigo-pasos.mjs";
+
+const RETOS_FINALES = [
   {
     n: 1, titulo: "Cargar datos a mano y reconocer un valor atípico",
-    consigna: "Ingresá cuatro valores y calculá la diferencia entre media y mediana. Guardá el resultado en respuesta.",
+    consigna: "Usá los cuatro valores del ejemplo. Calculá su media y su mediana. En respuesta guardá media menos mediana.",
     esperado: 2, explicacion: "La media es 4 y la mediana es 2. El valor 10 desplaza la media.",
     pistas: ["La media y la mediana resumen aspectos distintos de los mismos datos.", "R: mean() y median(). Python: statistics.mean() y statistics.median().", "Calculá media menos mediana para [2, 2, 2, 10]."],
     codigo: {
@@ -12,7 +14,7 @@ export const RETOS_CODIGO = [
   },
   {
     n: 2, titulo: "Elegir barras para comparar categorías",
-    consigna: "Contá A, B y C; identificá la categoría más frecuente en respuesta y dibujá un gráfico de barras.",
+    consigna: "Contá cuántas veces aparece cada letra. En respuesta guardá la letra más frecuente. Después dibujá una barra para cada letra.",
     esperado: "B", grafico: true, explicacion: "B aparece tres veces. Las barras comparan magnitudes discretas en una escala común.",
     pistas: ["Contá cada categoría antes de decidir cuál lidera.", "R: table() y names(which.max()). Python: Counter() y max(..., key=...).", "La lista es A, B, C, B, A, B. Usá barplot() o plt.bar()."],
     codigo: {
@@ -22,7 +24,7 @@ export const RETOS_CODIGO = [
   },
   {
     n: 3, titulo: "Leer un CSV y evitar un eje engañoso",
-    consigna: "Leé el CSV externo. Si el eje comenzara en 95, ¿cuántas veces parecería mayor la barra 100 frente a la 96? Calculá la razón en respuesta y dibujá barras con eje desde cero.",
+    consigna: "Leé el CSV. Calculá la razón entre las alturas visibles de B y A si el eje empezara en 95; guardala en respuesta. Después dibujá ambas barras con el eje desde cero.",
     csv: "datos-codigo/etica.csv", esperado: 5, grafico: true,
     explicacion: "Con eje en 95, las alturas visibles son 5 y 1: razón 5. El gráfico corregido comienza en cero.",
     pistas: ["La altura aparente se mide desde el límite inferior del eje.", "R: read.csv() y barplot(ylim=c(0,...)). Python: csv.DictReader() y plt.ylim(bottom=0).", "Calculá (100−95)/(96−95) y asegurá que el eje visual arranque en cero."],
@@ -33,7 +35,7 @@ export const RETOS_CODIGO = [
   },
   {
     n: 4, titulo: "Comparar contribuciones a un KPI",
-    consigna: "Leé el CSV y calculá qué sector aportó el mayor aumento. Dejá su nombre en respuesta y compará antes y después en un gráfico.",
+    consigna: "Leé el CSV y restá antes a después en cada sector. En respuesta guardá el sector con mayor aumento. Dibujá barras para comparar los dos períodos.",
     csv: "datos-codigo/kpis.csv", esperado: "B", grafico: true,
     explicacion: "B crece 12 unidades, más que A (+5) y C (+3). La comparación emparejada muestra el aporte.",
     pistas: ["Calculá después menos antes por sector.", "R: which.max(). Python: max(filas, key=...).", "Mostrá barras agrupadas con before/after; el sector B crece 12."],
@@ -44,7 +46,7 @@ export const RETOS_CODIGO = [
   },
   {
     n: 5, titulo: "Aplicar filtros consistentes en un tablero",
-    consigna: "Filtrá 2025 y Norte en el CSV. Guardá la suma de ventas en respuesta y graficá solo las filas filtradas.",
+    consigna: "Leé el CSV y quedate solo con las filas del año 2025 y la sucursal Norte. En respuesta guardá la suma de sus ventas. Graficá únicamente esas filas.",
     csv: "datos-codigo/sucursales.csv", esperado: 130, grafico: true,
     explicacion: "La intersección de año 2025 y sucursal Norte contiene 130 ventas. Un filtro debe afectar también al gráfico.",
     pistas: ["Aplicá ambas condiciones a las mismas filas.", "R: subset(). Python: comprensión con dos condiciones.", "Filtrá año == 2025 y sucursal == Norte antes de calcular y graficar."],
@@ -55,7 +57,7 @@ export const RETOS_CODIGO = [
   },
   {
     n: 6, titulo: "Convertir un cálculo en reporte repetible",
-    consigna: "Completá la función de margen porcentual. Guardá sus resultados para (120, 90) y (200, 100) en respuesta y dibujá ambos.",
+    consigna: "Completá la función margen(ventas, costo). Usala con (120, 90) y (200, 100). En respuesta guardá los dos porcentajes, en ese orden, y dibujá sus barras.",
     esperado: [25, 50], grafico: true,
     explicacion: "Margen = (ventas − costo) / ventas × 100. Una función permite repetir el cálculo sin copiar fórmulas.",
     pistas: ["La base del porcentaje son las ventas.", "La fórmula es (ventas − costo) / ventas × 100.", "La función debe devolver 25 y 50; graficá ambos resultados."],
@@ -66,7 +68,7 @@ export const RETOS_CODIGO = [
   },
   {
     n: 7, titulo: "Normalizar tasas antes de comparar territorios",
-    consigna: "Leé casos, población y coordenadas. Calculá tasas por 100.000, identificá el territorio de mayor tasa en respuesta y dibujá un mapa de puntos proporcional.",
+    consigna: "Leé el CSV y calculá casos por 100.000 habitantes en cada territorio. En respuesta guardá el nombre del territorio con mayor tasa. Dibujá los puntos según sus coordenadas y su tasa.",
     csv: "datos-codigo/territorios.csv", esperado: "B", grafico: true,
     explicacion: "A tiene 40 por 100.000 y B tiene 100 por 100.000. El tamaño del punto representa la tasa, no el total de casos.",
     pistas: ["Compará tasas, no números absolutos de casos.", "Tasa = casos / población × 100.000.", "Usá lon y lat para ubicar los puntos y escalá el tamaño por tasa."],
@@ -77,7 +79,7 @@ export const RETOS_CODIGO = [
   },
   {
     n: 8, titulo: "Integrador: comparar cambios con paneles",
-    consigna: "Leé dos períodos de dos grupos. Calculá el cambio porcentual total de cada grupo, guardá en respuesta el de mayor crecimiento y creá dos paneles, uno por grupo.",
+    consigna: "Leé el CSV. Sumá antes y después para cada grupo y calculá su cambio porcentual. En respuesta guardá el grupo que más creció. Dibujá dos paneles, uno por grupo.",
     csv: "datos-codigo/integrador.csv", esperado: "Norte", grafico: true,
     explicacion: "Norte pasa de 170 a 199 (+17,1%); Sur pasa de 220 a 200 (−9,1%). Los paneles permiten revisar cada serie.",
     pistas: ["Sumá los dos períodos de cada grupo antes de calcular el porcentaje.", "Cambio = (suma después − suma antes) / suma antes × 100.", "Norte tiene crecimiento positivo; dibujá ambos grupos en paneles separados."],
@@ -87,3 +89,6 @@ export const RETOS_CODIGO = [
     }
   }
 ];
+
+export const RETOS_CODIGO = [...PASOS_CODIGO, ...RETOS_FINALES.map(r => ({ ...r, id: String(r.n), paso: 10 }))]
+  .sort((a, b) => a.n - b.n || a.paso - b.paso);

@@ -181,16 +181,32 @@ section.vz{margin:0}section.vz.vz-ed{padding-top:2px}
 .codigo-card{border-color:var(--ac)}
 .codigo-head{display:flex;justify-content:space-between;align-items:start;gap:1rem}
 .codigo-head h3{margin:.5rem 0 .1rem}
-.codigo-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 .3rem}
+.codigo-intro{margin:.8rem 0;color:var(--mut)}
+.codigo-stepper{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:.35rem;margin:1rem 0}
+.codigo-paso{min-height:42px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--fg);font:inherit;font-weight:700;cursor:pointer}
+.codigo-paso.activo{background:var(--ac);border-color:var(--ac);color:#fff}
+.codigo-paso.hecho:not(.activo){border-color:var(--ok);color:var(--ok);background:color-mix(in srgb,var(--ok) 8%,var(--card))}
+.codigo-paso:focus-visible,.codigo-tabs .btn:focus-visible,.codigo-actions .btn:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.codigo-step-head{border-top:1px solid var(--bd);padding-top:1rem;scroll-margin-top:5rem}.codigo-step-head h3{margin:.4rem 0}
+.codigo-consigna{margin:.65rem 0 .4rem}.codigo-entrega{margin:.4rem 0 1rem;color:var(--mut);font-size:.9rem}
+.codigo-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 .8rem}
 .codigo-tabs .btn{min-width:7rem;min-height:44px}
-.codigo-editor{display:block;min-height:230px;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;overflow:auto;tab-size:4}
+.codigo-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:1rem;align-items:start}
+.codigo-editor-col,.codigo-resultados{min-width:0}
+.codigo-editor{display:block;min-height:330px;max-height:65vh;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;tab-size:4}
 .codigo-actions{margin:.8rem 0}.codigo-actions .btn{min-height:44px}
 .codigo-actions [hidden]{display:none!important}
 .codigo-feedback,.codigo-pista{padding:.65rem .8rem;border-radius:8px;background:color-mix(in srgb,var(--ac) 8%,var(--card));margin:.5rem 0}
-.codigo-pista:empty,.codigo-grafico:empty{display:none}
-.codigo-salida{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:.7rem;max-height:240px;overflow:auto}
-.codigo-grafico{display:flex;flex-wrap:wrap;gap:.6rem;align-items:start;margin:.8rem 0}
-.codigo-grafico canvas,.codigo-grafico img{display:block;max-width:100%;height:auto;border:1px solid var(--bd);border-radius:8px;background:#fff}
+.codigo-pista:empty{display:none}
+.codigo-resultados{border:1px solid var(--bd);background:var(--bg);border-radius:8px;padding:.75rem}
+.codigo-resultados h4{font-size:.9rem;margin:.1rem 0 .45rem}
+.codigo-resultados h4:not(:first-child){margin-top:1rem}
+.codigo-salida{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:.7rem;min-height:95px;max-height:200px;overflow:auto;margin:0;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+.codigo-grafico{display:flex;align-items:center;justify-content:center;min-height:170px;max-height:320px;overflow:hidden;border:1px solid var(--bd);border-radius:8px;background:var(--card);padding:.4rem}
+.codigo-grafico canvas,.codigo-grafico img{display:block;width:auto;height:auto;max-width:100%;max-height:300px;object-fit:contain;background:#fff}
+.codigo-grafico .muted{text-align:center}
+.codigo-next{margin-top:1rem}.codigo-next[hidden]{display:none!important}
 .codigo-nota{margin:.9rem 0 0}
-@media(max-width:640px){.codigo-head{display:block}.codigo-tabs .btn{flex:1}.codigo-actions .btn{flex:1 1 100%}.codigo-editor{font-size:12px}}
-@media print{.codigo-editor,.codigo-actions,.codigo-tabs,.codigo-grafico{display:none!important}}
+@media(max-width:900px){.codigo-layout{grid-template-columns:1fr}.codigo-editor{min-height:250px}.codigo-grafico{max-height:260px}.codigo-grafico canvas,.codigo-grafico img{max-height:240px}}
+@media(max-width:640px){.codigo-head{display:block}.codigo-stepper{grid-template-columns:repeat(5,minmax(0,1fr))}.codigo-tabs .btn{flex:1}.codigo-actions .btn{flex:1 1 100%}.codigo-editor{font-size:12px}}
+@media print{.codigo-editor,.codigo-actions,.codigo-tabs,.codigo-stepper,.codigo-grafico{display:none!important}}

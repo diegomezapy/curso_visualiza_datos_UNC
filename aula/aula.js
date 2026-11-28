@@ -6,7 +6,7 @@ import { iniciarVis, cargarVis, aplicarNav, aplicarMain, botonEdicion, rutaOcult
 import { csvPlanilla, tablaRegistros, tablaQuizzes, tablaAutoevaluaciones, tablaEntregasS3 } from "./planillas.mjs";
 import { xlsxPlanilla, XLSX_MIME } from "./xlsx.mjs";
 import { semanaDe, resumirParticipacion } from "./seguimiento.mjs";
-import { codigoHtml, enlazarCodigo, codigosPorSesion } from "./codigo.mjs";
+import { codigoHtml, enlazarCodigo, codigoProgreso, cancelarCodigo } from "./codigo.mjs";
 (async () => {
 "use strict";
 const D = window.CURSO, C = D.config;
@@ -23,6 +23,7 @@ let tmr;
 const persist = () => { if (!USER || !PERFIL || PERFIL.virtual) return; clearTimeout(tmr); tmr = setTimeout(flush, 500); };
 const flush = () => { clearTimeout(tmr); if (USER && PERFIL && !PERFIL.virtual) B.guardarProgreso(USER.uid, { done: S.done, quiz: S.quiz, auto: S.auto, enlaces: S.enlaces, codigo: S.codigo }).catch(e => aviso(msgError(e), "bad")); };
 addEventListener("pagehide", flush);
+addEventListener("pagehide", cancelarCodigo);
 function aviso(msg, tipo = "ok") { const t = $("#toast"); t.textContent = msg; t.className = "show " + tipo; clearTimeout(aviso.t); aviso.t = setTimeout(() => t.className = "", 4500); }
 const drive = id => `https://drive.google.com/drive/folders/${id}`;
 const nombreCompleto = p => `${p.nombres || ""} ${p.apellidos || ""}`.trim();
@@ -58,10 +59,11 @@ function autoPct(auto, act) {
 }
 function progSes(s, st = S) {
   const qids = s.quizIds || (s.quiz ? [String(s.n)] : []);
-  const items = s.actividades.length + qids.length + 2;
+  const practicasCodigo = codigoProgreso(st.codigo, s.n);
+  const items = s.actividades.length + qids.length + practicasCodigo.items;
   let done = s.actividades.filter(a => st.done[a.id]).length;
   done += qids.filter(id => (st.quiz[id]?.mejor ?? -1) >= 60).length;
-  done += codigosPorSesion(s.n).filter(id => st.codigo?.[id]?.hecho).length;
+  done += practicasCodigo.done;
   return { done, items, pct: items ? done / items : 0 };
 }
 const progTotal = (st = S) => { let d = 0, i = 0; D.sesiones.forEach(s => { const p = progSes(s, st); d += p.done; i += p.items; }); return i ? d / i : 0; };
@@ -1025,7 +1027,7 @@ function bindSesion() {
     $("#ap_" + id).innerHTML = `Autoestimación: <b>${fmt(ap * a.pts)}/${a.pts}</b> pts (${fmt(ap * 100, 0)}%) — referencial; la nota oficial la asigna el docente.`;
   }));
 }
-addEventListener("hashchange", () => { if (!location.hash.startsWith("#/quiz/")) Object.keys(QZ).forEach(k => delete QZ[k]); render(); window.scrollTo(0, 0); });
+addEventListener("hashchange", () => { cancelarCodigo(); if (!location.hash.startsWith("#/quiz/")) Object.keys(QZ).forEach(k => delete QZ[k]); render(); window.scrollTo(0, 0); });
 $("#menu").addEventListener("click", () => { $("#side").classList.toggle("open"); sincronizarMenu(); });
 addEventListener("resize", sincronizarMenu);
 $("#logout").addEventListener("click", salir);

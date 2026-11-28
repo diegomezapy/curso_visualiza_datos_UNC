@@ -2,9 +2,16 @@ import { RETOS_CODIGO } from "./codigo-retos.mjs";
 
 const borradores = new Map();
 const idioma = new Map();
+const pasoActivo = new Map();
 const esc = x => String(x ?? "").replace(/[&<>"']/g, s => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[s]));
-const clave = (n, lang) => `${n}_${lang}`;
-const retoDe = n => RETOS_CODIGO.find(r => r.n === n);
+const retosDe = n => RETOS_CODIGO.filter(r => r.n === n).sort((a, b) => a.paso - b.paso);
+const retoDe = n => retosDe(n).find(r => r.paso === (pasoActivo.get(n) || 1));
+const clave = (reto, lang) => `${reto.id}_${lang}`;
+const estado = (progreso, reto, lang) => progreso?.[clave(reto, lang)] || {};
+export function codigoProgreso(progreso, n) {
+  const retos = retosDe(n);
+  return { done: retos.filter(r => ["r", "python"].some(lang => estado(progreso, r, lang).hecho)).length, items: retos.length };
+}
 let webR;
 let webRPromesa;
 let pyWorker;
@@ -70,63 +77,97 @@ export function comprobarRespuesta(obtenido, esperado) {
   if (Array.isArray(esperado)) return Array.isArray(obtenido) && esperado.length === obtenido.length && esperado.every((v, i) => comprobarRespuesta(obtenido[i], v));
   return typeof esperado === "number" ? typeof obtenido === "number" && Number.isFinite(obtenido) && Math.abs(obtenido - esperado) < 0.001 : String(obtenido ?? "").trim() === esperado;
 }
+function mostrarRespuesta(valor) {
+  if (valor && typeof valor === "object" && Object.hasOwn(valor, "values")) valor = valor.values;
+  if (Array.isArray(valor) && valor.length === 1) valor = valor[0];
+  try { return JSON.stringify(valor) ?? String(valor); } catch { return String(valor); }
+}
+const tipoRespuesta = valor => Array.isArray(valor) ? `una lista de ${valor.length} valores` : typeof valor === "number" ? "un número" : "un texto";
 
 export function codigoHtml(n, progreso = {}) {
-  const reto = retoDe(n); if (!reto) return "";
-  const lang = idioma.get(n) || "python", codigo = borradores.get(clave(n, lang)) ?? reto.codigo[lang];
-  const hechos = ["r", "python"].filter(l => progreso?.[clave(n, l)]?.hecho).length;
-  const actual = progreso?.[clave(n, lang)] || {};
+  const retos = retosDe(n), reto = retoDe(n); if (!reto) return "";
+  const lang = idioma.get(n) || "python", codigo = borradores.get(clave(reto, lang)) ?? reto.codigo[lang];
+  const actual = estado(progreso, reto, lang), avance = codigoProgreso(progreso, n);
+  const resuelto = ["r", "python"].some(l => estado(progreso, reto, l).hecho);
   return `<section class="codigo-wrap" data-codigo-n="${n}" aria-labelledby="codigo-titulo-${n}">
-    <h2 id="codigo-titulo-${n}">💻 Ensayo de código · R y Python</h2>
-    <div class="card codigo-card"><div class="codigo-head"><div><span class="tag" data-codigo-badge>Unidad ${n} · ${hechos}/2 lenguajes resueltos</span><h3>${esc(reto.titulo)}</h3></div><span class="muted">Práctica formativa · reintentos ilimitados</span></div>
-    <p>${esc(reto.consigna)}</p>
-    ${reto.csv ? `<p class="muted">Archivo CSV sintético: <a href="${esc(reto.csv)}" target="_blank" rel="noopener">${esc(reto.csv.split("/").pop())}</a>. Se descarga al ejecutar y se monta como <code>datos.csv</code>.</p>` : ""}
-    <div class="codigo-tabs" role="tablist" aria-label="Lenguaje de programación"><button type="button" data-codigo-lang="python" role="tab" aria-selected="${lang === "python"}" class="btn ${lang === "python" ? "" : "sec"}">Python ${progreso?.[clave(n, "python")]?.hecho ? "✓" : ""}</button><button type="button" data-codigo-lang="r" role="tab" aria-selected="${lang === "r"}" class="btn ${lang === "r" ? "" : "sec"}">R ${progreso?.[clave(n, "r")]?.hecho ? "✓" : ""}</button></div>
-    <label for="codigo-editor-${n}">Editá el código ${lang === "r" ? "R" : "Python"}</label>
-    <textarea id="codigo-editor-${n}" class="codigo-editor" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="codigo-ayuda-${n}">${esc(codigo)}</textarea>
-    <p class="muted" id="codigo-ayuda-${n}">Reemplazá el valor pendiente de <code>respuesta</code>${reto.grafico ? " y descomentá las líneas del gráfico" : ""}. Se comprueba el resultado, no el texto del código.</p>
-    <div class="row codigo-actions"><button type="button" class="btn" data-codigo-run>▶ Ejecutar y comprobar</button><button type="button" class="btn sec" data-codigo-hint>💡 Pedir pista</button><button type="button" class="btn sec" data-codigo-reset>Restaurar ejemplo</button><button type="button" class="btn sec" data-codigo-stop hidden>Detener</button></div>
-    <p class="muted" data-codigo-intentos>Intentos de comprobación: ${actual.intentos || 0}</p>
-    <div class="codigo-feedback" data-codigo-feedback role="status" aria-live="polite">${actual.hecho ? `✓ Resuelto. ${esc(reto.explicacion)}` : "Preparado para probar tu solución."}</div>
-    <div class="codigo-pista" data-codigo-pista role="status" aria-live="polite"></div>
-    <pre class="codigo-salida" data-codigo-salida hidden></pre><div class="codigo-grafico" data-codigo-grafico></div>
-    <p class="muted codigo-nota">El código se ejecuta en tu navegador. La comprobación es orientativa y no modifica la nota oficial.</p>
+    <h2 id="codigo-titulo-${n}">💻 Prácticas guiadas de código</h2>
+    <div class="card codigo-card">
+      <div class="codigo-head"><div><span class="tag" data-codigo-badge>Unidad ${n} · ${avance.done}/${avance.items} pasos resueltos</span><h3>Aprendé con R o Python, paso a paso</h3></div><span class="muted">10 pasos · reintentos ilimitados</span></div>
+      <p class="codigo-intro">Elegí un paso y un lenguaje. Resolvé la consigna editando el código; podés repetir cada intento y pedir pistas. Completar un paso en cualquiera de los dos lenguajes suma al avance.</p>
+      <div class="codigo-stepper" role="group" aria-label="Pasos de la unidad ${n}">${retos.map(r => {
+        const ok = ["r", "python"].some(l => estado(progreso, r, l).hecho);
+        return `<button type="button" data-codigo-paso="${r.paso}" class="codigo-paso ${r.paso === reto.paso ? "activo" : ""} ${ok ? "hecho" : ""}" aria-label="Paso ${r.paso}: ${esc(r.titulo)}${ok ? ", resuelto" : ""}" aria-current="${r.paso === reto.paso ? "step" : "false"}">${r.paso}${ok ? " ✓" : ""}</button>`;
+      }).join("")}</div>
+      <div class="codigo-step-head"><span class="tag">Paso ${reto.paso} de ${retos.length}</span><h3>${esc(reto.titulo)}</h3></div>
+      <p class="codigo-consigna"><strong>Tu tarea:</strong> ${esc(reto.consigna)}</p>
+      <p class="codigo-entrega"><strong>Para acertar:</strong> asigná ${tipoRespuesta(reto.esperado)} a <code>respuesta</code>${reto.grafico ? " y ejecutá el gráfico" : ""}. Podés volver a intentar cuantas veces necesites.</p>
+      ${reto.csv ? `<p class="muted">Datos de este paso: <a href="${esc(reto.csv)}" target="_blank" rel="noopener">${esc(reto.csv.split("/").pop())}</a>. Al ejecutar se cargan como <code>datos.csv</code>.</p>` : ""}
+      <div class="codigo-tabs" role="tablist" aria-label="Lenguaje de programación"><button type="button" data-codigo-lang="python" role="tab" aria-selected="${lang === "python"}" class="btn ${lang === "python" ? "" : "sec"}">Python ${estado(progreso, reto, "python").hecho ? "✓" : ""}</button><button type="button" data-codigo-lang="r" role="tab" aria-selected="${lang === "r"}" class="btn ${lang === "r" ? "" : "sec"}">R ${estado(progreso, reto, "r").hecho ? "✓" : ""}</button></div>
+      <div class="codigo-layout">
+        <div class="codigo-editor-col"><label for="codigo-editor-${n}-${reto.paso}">Código ${lang === "r" ? "R" : "Python"} editable</label>
+          <textarea id="codigo-editor-${n}-${reto.paso}" class="codigo-editor" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="codigo-ayuda-${n}">${esc(codigo)}</textarea>
+          <p class="muted" id="codigo-ayuda-${n}">Reemplazá <code>${lang === "r" ? "NA" : "None"}</code> en la línea <code>respuesta</code>${reto.grafico ? " y activá el gráfico quitando # de sus líneas" : ""}. Después pulsá «Ejecutar y comprobar».</p>
+          <div class="row codigo-actions"><button type="button" class="btn" data-codigo-run>▶ Ejecutar y comprobar</button><button type="button" class="btn sec" data-codigo-hint>💡 Pedir pista</button><button type="button" class="btn sec" data-codigo-reset>Restaurar ejemplo</button><button type="button" class="btn sec" data-codigo-stop hidden>Detener</button></div>
+          <p class="muted" data-codigo-intentos>Intentos de comprobación: ${actual.intentos || 0}</p>
+          <div class="codigo-pista" data-codigo-pista role="status" aria-live="polite"></div>
+        </div>
+        <section class="codigo-resultados" aria-label="Resultados del código"><h4>Consola de resultados</h4>
+          <pre class="codigo-salida" data-codigo-salida aria-live="polite">Ejecutá el código para ver aquí la respuesta y los mensajes.</pre>
+          <div class="codigo-feedback" data-codigo-feedback role="status" aria-live="polite">${actual.hecho ? `✓ Paso resuelto. ${esc(reto.explicacion)}` : "Esperando tu primer intento en este lenguaje."}</div>
+          <h4>Gráfico</h4><div class="codigo-grafico" data-codigo-grafico><p class="muted">${reto.grafico ? "Tu visualización aparecerá aquí." : "Este paso se resuelve sin gráfico."}</p></div>
+        </section>
+      </div>
+      <button type="button" class="btn sec codigo-next" data-codigo-next ${resuelto && reto.paso < retos.length ? "" : "hidden"}>Siguiente paso →</button>
+      <p class="muted codigo-nota">La comprobación es formativa y no modifica la nota oficial. El código se ejecuta en tu navegador.</p>
     </div></section>`;
 }
 
 export function enlazarCodigo(n, progreso, guardar) {
   const raiz = document.querySelector(`[data-codigo-n="${n}"]`); if (!raiz) return;
-  const reto = retoDe(n), editor = raiz.querySelector(".codigo-editor"), feedback = raiz.querySelector("[data-codigo-feedback]"), pista = raiz.querySelector("[data-codigo-pista]"), salida = raiz.querySelector("[data-codigo-salida]"), grafico = raiz.querySelector("[data-codigo-grafico]"), run = raiz.querySelector("[data-codigo-run]"), stop = raiz.querySelector("[data-codigo-stop]");
+  const reto = retoDe(n), editor = raiz.querySelector(".codigo-editor"), feedback = raiz.querySelector("[data-codigo-feedback]"), pista = raiz.querySelector("[data-codigo-pista]"), salida = raiz.querySelector("[data-codigo-salida]"), grafico = raiz.querySelector("[data-codigo-grafico]"), run = raiz.querySelector("[data-codigo-run]"), stop = raiz.querySelector("[data-codigo-stop]"), siguiente = raiz.querySelector("[data-codigo-next]");
   const langActual = () => idioma.get(n) || "python";
-  const guardarBorrador = () => borradores.set(clave(n, langActual()), editor.value);
+  const guardarBorrador = () => borradores.set(clave(reto, langActual()), editor.value);
+  const mostrarVacio = () => { grafico.replaceChildren(); const p = document.createElement("p"); p.className = "muted"; p.textContent = reto.grafico ? "Tu visualización aparecerá aquí." : "Este paso se resuelve sin gráfico."; grafico.appendChild(p); };
+  const setOcupado = v => { ocupado = v; run.disabled = v; stop.hidden = !v; raiz.querySelectorAll("[data-codigo-paso], [data-codigo-lang], [data-codigo-next]").forEach(b => b.disabled = v); };
   const refrescarEstado = () => {
-    const hechos = ["r", "python"].filter(l => progreso[clave(n, l)]?.hecho).length;
-    raiz.querySelector("[data-codigo-badge]").textContent = `Unidad ${n} · ${hechos}/2 lenguajes resueltos`;
-    raiz.querySelectorAll("[data-codigo-lang]").forEach(b => { const l = b.dataset.codigoLang; b.textContent = `${l === "r" ? "R" : "Python"}${progreso[clave(n, l)]?.hecho ? " ✓" : ""}`; });
+    const avance = codigoProgreso(progreso, n);
+    raiz.querySelector("[data-codigo-badge]").textContent = `Unidad ${n} · ${avance.done}/${avance.items} pasos resueltos`;
+    raiz.querySelectorAll("[data-codigo-lang]").forEach(b => { const l = b.dataset.codigoLang; b.textContent = `${l === "r" ? "R" : "Python"}${estado(progreso, reto, l).hecho ? " ✓" : ""}`; });
+    const botonPaso = raiz.querySelector(`[data-codigo-paso="${reto.paso}"]`);
+    const pasoResuelto = ["r", "python"].some(l => estado(progreso, reto, l).hecho);
+    botonPaso.textContent = `${reto.paso}${pasoResuelto ? " ✓" : ""}`;
+    botonPaso.classList.toggle("hecho", pasoResuelto);
+    botonPaso.setAttribute("aria-label", `Paso ${reto.paso}: ${reto.titulo}${pasoResuelto ? ", resuelto" : ""}`);
+    siguiente.hidden = reto.paso >= 10 || !["r", "python"].some(l => estado(progreso, reto, l).hecho);
   };
   editor.addEventListener("input", guardarBorrador);
+  raiz.querySelectorAll("[data-codigo-paso]").forEach(b => b.addEventListener("click", () => {
+    guardarBorrador(); pasoActivo.set(n, Number(b.dataset.codigoPaso));
+    raiz.outerHTML = codigoHtml(n, progreso); enlazarCodigo(n, progreso, guardar);
+  }));
   raiz.querySelectorAll("[data-codigo-lang]").forEach(b => b.addEventListener("click", () => {
     guardarBorrador(); idioma.set(n, b.dataset.codigoLang);
     raiz.outerHTML = codigoHtml(n, progreso);
     enlazarCodigo(n, progreso, guardar);
   }));
+  siguiente.addEventListener("click", () => { guardarBorrador(); pasoActivo.set(n, reto.paso + 1); raiz.outerHTML = codigoHtml(n, progreso); enlazarCodigo(n, progreso, guardar); document.querySelector(`[data-codigo-n="${n}"] .codigo-step-head`)?.scrollIntoView({ behavior: "smooth", block: "start" }); });
   raiz.querySelector("[data-codigo-reset]").addEventListener("click", () => {
-    editor.value = reto.codigo[langActual()]; guardarBorrador(); feedback.textContent = "Ejemplo restaurado. Probá otra vez."; salida.hidden = true; grafico.replaceChildren();
+    editor.value = reto.codigo[langActual()]; guardarBorrador(); feedback.textContent = "Ejemplo restaurado. Probá otra vez."; salida.textContent = "Ejecutá el código para ver aquí la respuesta y los mensajes."; mostrarVacio();
   });
   raiz.querySelector("[data-codigo-hint]").addEventListener("click", () => {
-    const k = clave(n, langActual()), anterior = progreso[k] || {}, siguiente = Math.min(3, (anterior.pistas || 0) + 1);
-    progreso[k] = { ...anterior, pistas: siguiente };
-    pista.textContent = `Pista ${siguiente}/3: ${reto.pistas[siguiente - 1]}`;
+    const k = clave(reto, langActual()), anterior = progreso[k] || {}, numeroPista = Math.min(3, (anterior.pistas || 0) + 1);
+    progreso[k] = { ...anterior, pistas: numeroPista };
+    pista.textContent = `Pista ${numeroPista}/3: ${reto.pistas[numeroPista - 1]}`;
     guardar(n, langActual(), progreso[k]);
   });
-  stop.addEventListener("click", () => { ejecucion++; detener(); ocupado = false; run.disabled = false; stop.hidden = true; feedback.textContent = "Ejecución detenida. Podés corregir el código y volver a intentar."; });
+  stop.addEventListener("click", () => { ejecucion++; detener(); setOcupado(false); feedback.textContent = "Ejecución detenida. Podés corregir el código y volver a intentar."; salida.textContent = "Ejecución detenida por el estudiante."; });
   run.addEventListener("click", async () => {
     if (ocupado) return;
     const idEjecucion = ++ejecucion;
-    const lang = langActual(), k = clave(n, lang), codigo = editor.value;
+    const lang = langActual(), k = clave(reto, lang), codigo = editor.value;
     if (codigo.length > 12000) { feedback.textContent = "El ensayo admite hasta 12.000 caracteres."; return; }
-    guardarBorrador(); ocupado = true; run.disabled = true; stop.hidden = false;
-    feedback.textContent = `Cargando ${lang === "r" ? "R" : "Python"} y ejecutando el código…`; pista.textContent = ""; salida.hidden = true; grafico.replaceChildren();
+    guardarBorrador(); setOcupado(true);
+    feedback.textContent = `Cargando ${lang === "r" ? "R" : "Python"} y ejecutando el código…`; pista.textContent = ""; salida.textContent = "Ejecutando el código. La primera carga del motor puede tardar unos segundos…"; mostrarVacio();
     let reloj;
     try {
       let csv = null;
@@ -139,20 +180,21 @@ export function enlazarCodigo(n, progreso, guardar) {
       const resultado = await Promise.race([tarea, new Promise((_, rechazar) => { reloj = setTimeout(() => { rechazar(new Error("La ejecución excedió 35 segundos. Revisá posibles bucles y reintentá.")); detener(); }, 35000); })]);
       if (idEjecucion !== ejecucion) return;
       const imagenes = lang === "r" ? resultado.imagenes : resultado.imagen ? [resultado.imagen] : [];
+      if (imagenes.length) grafico.replaceChildren();
       if (lang === "r") imagenes.forEach(img => { const canvas = document.createElement("canvas"); canvas.width = img.width; canvas.height = img.height; canvas.setAttribute("role", "img"); canvas.setAttribute("aria-label", `Gráfico creado con R: ${reto.titulo}`); canvas.getContext("2d").drawImage(img, 0, 0); grafico.appendChild(canvas); img.close?.(); });
       else if (imagenes.length) { const img = document.createElement("img"); img.src = `data:image/png;base64,${resultado.imagen}`; img.alt = `Gráfico creado con Python: ${reto.titulo}`; grafico.appendChild(img); }
-      if (resultado.salida) { salida.textContent = resultado.salida.slice(0, 2000); salida.hidden = false; }
+      salida.textContent = `respuesta = ${mostrarRespuesta(resultado.respuesta)}${resultado.salida ? "\n\nSalida del programa:\n" + resultado.salida.slice(0, 2000) : ""}`;
       const previo = progreso[k] || {}, intentos = (previo.intentos || 0) + 1;
       const correcto = comprobarRespuesta(resultado.respuesta, reto.esperado) && (!reto.grafico || imagenes.length > 0);
       progreso[k] = { ...previo, intentos, hecho: previo.hecho || correcto };
       raiz.querySelector("[data-codigo-intentos]").textContent = `Intentos de comprobación: ${intentos}`;
       if (correcto) feedback.textContent = `✓ Correcto. ${reto.explicacion} ${reto.grafico ? "Podés cambiar el gráfico y ejecutar de nuevo." : "Podés explorar otros valores y ejecutar de nuevo."}`;
-      else feedback.textContent = `Todavía no. ${reto.grafico && !imagenes.length ? "Falta ejecutar el gráfico. " : ""}Revisá la variable respuesta y pedí una pista si la necesitás.`;
+      else feedback.textContent = `Todavía no. ${reto.grafico && !imagenes.length ? "Falta ejecutar el gráfico. " : ""}Compará tu resultado con la consigna y pedí una pista si la necesitás.`;
       refrescarEstado(); guardar(n, lang, progreso[k]);
     } catch (error) {
-      if (idEjecucion === ejecucion) feedback.textContent = `Error de ejecución: ${String(error?.message || error).slice(0, 1000)} Corregí el código y volvé a probar; este error no cuenta como intento.`;
-    } finally { clearTimeout(reloj); if (idEjecucion === ejecucion) { ocupado = false; run.disabled = false; stop.hidden = true; } }
+      if (idEjecucion === ejecucion) { const mensaje = String(error?.message || error).slice(0, 1000); salida.textContent = `Error de ejecución:\n${mensaje}`; feedback.textContent = "Corregí el código y volvé a probar. Este error no cuenta como intento."; }
+    } finally { clearTimeout(reloj); if (idEjecucion === ejecucion) setOcupado(false); }
   });
 }
 
-export const codigosPorSesion = n => ["r", "python"].map(lang => clave(n, lang));
+export function cancelarCodigo() { ejecucion++; detener(); ocupado = false; }
